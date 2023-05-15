@@ -1,5 +1,22 @@
 {
   "dependencies": {
+    "com.diesel.utilities": {
+      "version": "https://github.com/Emerald001/DieselUtilities_Base.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "cb8b518fd73581eca7e8e8f8b7a9bd7b7e18e60f"
+    },
+    "com.diesel.utilities.extended": {
+      "version": "https://github.com/Emerald001/DieselUtilities_Extended.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.diesel.utilities": "1.1.0",
+        "com.unity.textmeshpro": "3.0.6"
+      },
+      "hash": "c11e19b87b70352505a6a73c34a16e807fa746a9"
+    },
     "com.unity.burst": {
       "version": "1.8.4",
       "depth": 1,
