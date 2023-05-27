@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "cb8b518fd73581eca7e8e8f8b7a9bd7b7e18e60f"
+      "hash": "5c80ecd2a0fa157198e1956e898f00132eb43363"
     },
     "com.diesel.utilities.extended": {
       "version": "https://github.com/Emerald001/DieselUtilities_Extended.git",
