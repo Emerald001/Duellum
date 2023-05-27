@@ -1,0 +1,66 @@
+	Unknown: You are <i>Gay</i>
+	Unknown: I am <i>Gay</i>
+	Unknown: You are $ SET_TYPE_TIME 0,2 $ indeed $ SET_TYPE_TIME 0,05 $ gay
+	Unknown: We are <i>Gay</i>
+
+% stop
+
+$ ON_TEST_EVENT true
+
+	Unknown: Yes <i>Gay</i>
+
+% start OptionSection
+
+	Unknown: Any <b>Questions</b>?
+	&
+
+@ Am I Gay?
+	% jump SectionOne
+@ Why am I Gay?
+	% jump SectionTwo
+@ So we are Both Gay?
+	% jump SectionThree
+@ Damn Gay, no Questions
+	% stop
+
+% end OptionSection
+
+
+% start SectionOne
+
+	Unknown: You are $ SET_TYPE_TIME 0,2 $ indeed $ SET_TYPE_TIME 0,05 $ gay
+	Unknown: I am not sorry
+	Unknown: Hope you will be fine
+
+	% jump OptionSection
+% end SectionOne
+
+
+% start SectionTwo
+
+	Unknown: You were always Gay
+	Unknown: Eversince you were a little human
+	Unknown: You think you will be okay?
+	&
+
+@ Probably
+	% jump OptionSection
+@ NO!
+	% stop
+
+% end SectionTwo
+
+
+% start SectionThree
+
+	Unknown: Uhmm...
+	&
+	Unknown: Well..
+	&
+	Unknown: Uhhh...
+	&
+	Unknown: Yes
+
+	% jump OptionSection
+
+% end SectionThree
