@@ -3,28 +3,12 @@ using System.Linq;
 using UnityEngine;
 
 public class MakeGrid {
-    private readonly Vector2Int[] evenNeighbours = {
-            new Vector2Int(-1, -1),
-            new Vector2Int(-1, 1),
-            new Vector2Int(0, -1),
-            new Vector2Int(-1, 0),
-            new Vector2Int(1, 0),
-            new Vector2Int(0, 1),
-        };
-
-    private readonly Vector2Int[] unevenNeighbours = {
-            new Vector2Int(0, -1),
-            new Vector2Int(1, -1),
-            new Vector2Int(-1, 0),
-            new Vector2Int(1, 0),
-            new Vector2Int(0, 1),
-            new Vector2Int(1, 1),
-        };
-
     private readonly List<Hex> Hexes = new();
     private readonly Hex HexPrefab;
     private readonly Hex ExtraHexPrefab;
-    private GameObject Parent;
+    private readonly GameObject Parent;
+
+    private GameObject Plane;
 
     private Vector3 startpos;
 
@@ -36,17 +20,25 @@ public class MakeGrid {
     private readonly int rings;
     private readonly int extraRings;
 
-    public MakeGrid(Hex HexPrefab, Hex ExtraHexPrefab, int rings, int extraRings, float roughness, float scaler) {
+    private Texture2D heightMap;
+
+    public MakeGrid(Hex HexPrefab, Hex ExtraHexPrefab, Texture2D heightMap, GameObject plane, int rings, int extraRings, float roughness, float scaler) {
         this.HexPrefab = HexPrefab;
         this.ExtraHexPrefab = ExtraHexPrefab;
         this.rings = rings;
         this.extraRings = extraRings;
         this.roughness = roughness;
         this.scaler = scaler;
+        this.Plane = plane;
 
-        UnitStaticFunctions.HexHeight = hexHeight;
-        UnitStaticFunctions.HexWidth = hexWidth;
-        UnitStaticFunctions.StartPos = startpos;
+        if (!heightMap)
+            CreateRandomNoiseMap();
+        else
+            this.heightMap = heightMap;
+
+        GridStaticFunctions.HexHeight = hexHeight;
+        GridStaticFunctions.HexWidth = hexWidth;
+        GridStaticFunctions.StartPos = startpos;
 
         Parent = new() {
             name = "Grid"
@@ -55,60 +47,59 @@ public class MakeGrid {
         GenerateGrid();
     }
 
-    private void GenerateGrid() {
-        List<Vector2Int> openList = new();
-        List<Vector2Int> layerList = new();
-        List<Vector2Int> closedList = new();
-        Dictionary<Vector2Int, float> positions = new();
+    private void CreateRandomNoiseMap() {
+        int width = (rings + extraRings) * 2;
         float offset = Random.Range(0, 1f);
+        Color[] pix = new Color[width * width];
+
         scaler /= roughness;
-
-        for (float x = -(rings + extraRings); x < rings + extraRings; x++) {
-            for (float y = -(rings + extraRings); y < rings + extraRings; y++) {
-                float xCoord = offset + x / ((rings + extraRings) * 2) * roughness;
-                float yCoord = offset + y / ((rings + extraRings) * 2) * roughness;
+        for (float x = 0; x < width; x++) {
+            for (float y = 0; y < width; y++) {
+                float xCoord = offset + x / width * roughness;
+                float yCoord = offset + y / width * roughness;
+                
                 float sample = Mathf.PerlinNoise(xCoord, yCoord);
+                float editedSample = FloorTo(sample, 1, 10) * sample;
 
-                positions.Add(new Vector2Int((int)x, (int)y), sample);
+                pix[(int)y * width + (int)x] = new Color(editedSample, editedSample, editedSample);
             }
         }
 
-        openList.Add(new Vector2Int(0, 0));
-        for (int i = 0; i < rings + extraRings; i++) {
-            foreach (Vector2Int currentPos in openList) {
-                Vector2Int[] listToUse;
+        heightMap = new Texture2D(width, width);
+        heightMap.SetPixels(pix);
+        heightMap.Apply();
 
-                if (currentPos.y % 2 != 0)
-                    listToUse = unevenNeighbours;
-                else
-                    listToUse = evenNeighbours;
+        Plane.GetComponent<Renderer>().material.mainTexture = heightMap;
+    }
 
-                foreach (Vector2Int neighbour in listToUse.Select(dir => currentPos + dir)) {
-                    if (openList.Contains(neighbour) || closedList.Contains(neighbour) || layerList.Contains(neighbour))
-                        continue;
-
-                    layerList.Add(neighbour);
-                }
-
-                Hex hex = Object.Instantiate(i > rings ? ExtraHexPrefab : HexPrefab);
-
-                hex.GridPos = currentPos;
-                hex.transform.position = UnitStaticFunctions.CalcWorldPos(currentPos);
-                hex.transform.parent = Parent.transform;
-                hex.name = $"Hexagon {currentPos.x}|{currentPos.y}";
-                Hexes.Add(hex);
-
-                closedList.Add(currentPos);
-            }
-
-            openList.Clear();
-            for (int j = 0; j < layerList.Count; j++)
-                openList.Add(layerList[j]);
-
-            layerList.Clear();
+    private float FloorTo(float value, int place, uint @base) {
+        if (place == 0)
+            return (float)Mathf.Floor(value);
+        else {
+            float p = (float)Mathf.Pow(@base, place);
+            return (float)Mathf.Floor(value * p) / p;
         }
+    }
 
-        Hexes.ForEach(x => UnitStaticFunctions.Grid.Add(x.GridPos, x));
+    private void GenerateGrid() {
+        GridStaticFunctions.RippleThroughGridPositions(new Vector2Int(0, 0), rings + extraRings, (currentPos, i) => {
+            Hex hex = Object.Instantiate(i > rings ? ExtraHexPrefab : HexPrefab);
+            hex.GridPos = currentPos;
+            hex.transform.position = GridStaticFunctions.CalcWorldPos(currentPos);
+            hex.transform.parent = Parent.transform;
+            hex.name = $"Hexagon {currentPos.x}|{currentPos.y}";
+            Hexes.Add(hex);
+        }, false);
+        Hexes.ForEach(x => GridStaticFunctions.Grid.Add(x.GridPos, x));
+
+        int width = (rings + extraRings);
+        Dictionary<Vector2Int, float> positions = new();
+        for (int x = 0; x < heightMap.width; x++) {
+            for (int y = 0; y < heightMap.height; y++) {
+                Color pixel = heightMap.GetPixel(x, y);
+                positions.Add(new Vector2Int(x - width, y - width), pixel.r);
+            }
+        }
 
         float lowestValue = positions.Values.Min() * scaler;
         foreach (Hex hex in Hexes) {
@@ -119,6 +110,6 @@ public class MakeGrid {
         }
 
         Camera.main.transform.position = new Vector3(0, rings * 2, -(rings * 2 + 2));
-        Camera.main.transform.parent.position = new Vector3(0, UnitStaticFunctions.Grid[new Vector2Int(0, 0)].transform.position.y, 0);
+        Camera.main.transform.parent.position = new Vector3(0, GridStaticFunctions.Grid[new Vector2Int(0, 0)].transform.position.y, 0);
     }
 }
