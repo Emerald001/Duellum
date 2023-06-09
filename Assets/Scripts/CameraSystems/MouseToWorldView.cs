@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MouseToWorldView : MonoBehaviour
 {
-    public static Vector2Int HoverTileGridPos { get; set; }
+    public static Vector2Int HoverTileGridPos { get; set; } = GridStaticFunctions.CONST_EMPTY;
     public static Vector3 HoverPointPos { get; set; }
 
     [SerializeField] private Material Hovercolor;
@@ -15,7 +15,7 @@ public class MouseToWorldView : MonoBehaviour
         if (!hit.transform.CompareTag("WalkableTile")) {
             if (lastTile != null) {
                 lastTile.SetColor();
-                HoverTileGridPos = Vector2Int.zero;
+                HoverTileGridPos = GridStaticFunctions.GetGridPosFromWorldPos(null);
             }
 
             HoverPointPos = hit.point;
@@ -28,7 +28,7 @@ public class MouseToWorldView : MonoBehaviour
             lastTile = hitTile.GetComponent<Hex>();
             lastTile.SetColor(Hovercolor);
 
-            HoverTileGridPos = UnitStaticFunctions.GetGridPosFromWorldPos(hitTile);
+            HoverTileGridPos = GridStaticFunctions.GetGridPosFromWorldPos(hitTile);
         }
 
         HoverPointPos = hit.point;
