@@ -6,20 +6,20 @@ public static class GridStaticFunctions {
 
     private static readonly Vector2Int[] evenNeighbours = {
             new Vector2Int(-1, -1),
-            new Vector2Int(-1, 1),
             new Vector2Int(0, -1),
-            new Vector2Int(-1, 0),
             new Vector2Int(1, 0),
             new Vector2Int(0, 1),
+            new Vector2Int(-1, 1),
+            new Vector2Int(-1, 0),
         };
 
     private static readonly Vector2Int[] unevenNeighbours = {
             new Vector2Int(0, -1),
             new Vector2Int(1, -1),
-            new Vector2Int(-1, 0),
             new Vector2Int(1, 0),
-            new Vector2Int(0, 1),
             new Vector2Int(1, 1),
+            new Vector2Int(0, 1),
+            new Vector2Int(-1, 0),
         };
 
     public static float HexWidth { get; set; }
@@ -38,7 +38,7 @@ public static class GridStaticFunctions {
         return new Vector3(x, 0, z);
     }
 
-    public static Vector2Int GetGridPosFromWorldPos(GameObject valueVar) {
+    public static Vector2Int GetGridPosFromHexGameObject(GameObject valueVar) {
         foreach (Vector2Int keyVar in Grid.Keys) {
             if (Grid[keyVar].gameObject != valueVar)
                 continue;
@@ -56,12 +56,7 @@ public static class GridStaticFunctions {
         for (int i = 0; i < range; i++) {
             for (int j = 0; j < openList.Count; j++) {
                 Vector2Int currentPos = openList[j];
-                Vector2Int[] listToUse;
-
-                if (currentPos.y % 2 != 0)
-                    listToUse = unevenNeighbours;
-                else
-                    listToUse = evenNeighbours;
+                Vector2Int[] listToUse = currentPos.y % 2 != 0 ? unevenNeighbours : evenNeighbours;
 
                 for (int k = 0; k < 6; k++) {
                     Vector2Int neighbour = currentPos + listToUse[k];
@@ -77,10 +72,19 @@ public static class GridStaticFunctions {
             }
 
             openList.Clear();
-            for (int j = 0; j < layerList.Count; j++)
-                openList.Add(layerList[j]);
-
+            openList.AddRange(layerList);
             layerList.Clear();
         }
+    }
+
+    public static bool TryGetHexNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {
+        Vector2Int[] listToUse = startPos.y % 2 != 0 ? unevenNeighbours : evenNeighbours;
+        if (Grid.TryGetValue(startPos + listToUse[dirIndex], out Hex hex)) {
+            result = hex.GridPos;
+            return true;
+        }
+
+        result = CONST_EMPTY;
+        return false;
     }
 }
