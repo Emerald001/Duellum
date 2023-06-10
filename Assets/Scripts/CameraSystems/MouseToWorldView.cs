@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MouseToWorldView : MonoBehaviour
@@ -6,31 +8,39 @@ public class MouseToWorldView : MonoBehaviour
     public static Vector3 HoverPointPos { get; set; }
 
     [SerializeField] private Material Hovercolor;
-    private Hex lastTile;
+    [SerializeField] private BaseSelector selector;
+    private readonly List<Hex> lastTiles = new();
 
     void Update() {
         if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 10000))
             return;
 
-        if (!hit.transform.CompareTag("WalkableTile")) {
-            if (lastTile != null) {
-                lastTile.SetColor();
-                HoverTileGridPos = GridStaticFunctions.GetGridPosFromWorldPos(null);
-            }
+        UpdateTileColors(hit);
 
-            HoverPointPos = hit.point;
+        HoverPointPos = hit.point;
+    }
+
+    private void UpdateTileColors(RaycastHit hit) {
+        if (!hit.transform.CompareTag("WalkableTile")) {
+            if (lastTiles.Count > 0) {
+                lastTiles.ForEach(x => x.SetColor());
+                HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(null);
+            }
             return;
         }
 
         GameObject hitTile = hit.transform.parent.gameObject;
-        if (hitTile != lastTile) {
-            lastTile?.SetColor();
-            lastTile = hitTile.GetComponent<Hex>();
-            lastTile.SetColor(Hovercolor);
+        List<Vector2Int> newTiles = selector.GetAvailableTiles(GridStaticFunctions.GetGridPosFromHexGameObject(hitTile), 5, 6);
 
-            HoverTileGridPos = GridStaticFunctions.GetGridPosFromWorldPos(hitTile);
+        foreach (var lastTile in lastTiles) {
+            if (newTiles.Contains(lastTile.GridPos))
+                lastTile.SetColor(Hovercolor);
+            else
+                lastTile.SetColor();
         }
 
-        HoverPointPos = hit.point;
+        lastTiles.Clear();
+        lastTiles.AddRange(newTiles.Select(x => GridStaticFunctions.Grid[x]));
+        HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(hitTile);
     }
 }
