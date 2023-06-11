@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class GridEffects : MonoBehaviour {
     [Header("Raise")]
-    [SerializeField] BaseSelector RaiseSelector;
+    [SerializeField] Selector RaiseSelector;
     [SerializeField] private int tileAmount;
     [SerializeField] private int directionIndex;
     [SerializeField] private float height;
 
     [Header("Ripple")]
-    [SerializeField] BaseSelector RippleSelector;
+    [SerializeField] Selector RippleSelector;
     [SerializeField] private int rippleRange;
     [SerializeField] private float rippleStrength;
 
@@ -24,7 +24,7 @@ public class GridEffects : MonoBehaviour {
     }
 
     private void Ripple(Vector2Int gridPos, int rippleRange, float rippleStrength) {
-        List<Vector2Int> positions = RippleSelector.GetAvailableTiles(gridPos, rippleRange, 6);
+        List<Vector2Int> positions = GridStaticSelectors.GetPositions(RaiseSelector, gridPos);
 
         for (int i = 0; i < positions.Count; i++) {
             Hex currentHex = GridStaticFunctions.Grid[positions[i]];
@@ -41,7 +41,7 @@ public class GridEffects : MonoBehaviour {
     }
 
     private void Raise(Vector2Int gridPos, bool invert, int tileAmount, float height) {
-        List<Vector2Int> positions = RaiseSelector.GetAvailableTiles(gridPos, tileAmount, 6);
+        List<Vector2Int> positions = GridStaticSelectors.GetPositions(RaiseSelector, gridPos);
 
         for (int i = 0; i < positions.Count; i++) {
             float newHeight = invert ? -height : height;

@@ -8,7 +8,7 @@ public class MouseToWorldView : MonoBehaviour
     public static Vector3 HoverPointPos { get; set; }
 
     [SerializeField] private Material Hovercolor;
-    [SerializeField] private BaseSelector selector;
+    [SerializeField] private Selector selector;
     private readonly List<Hex> lastTiles = new();
 
     void Update() {
@@ -30,7 +30,7 @@ public class MouseToWorldView : MonoBehaviour
         }
 
         GameObject hitTile = hit.transform.parent.gameObject;
-        List<Vector2Int> newTiles = selector.GetAvailableTiles(GridStaticFunctions.GetGridPosFromHexGameObject(hitTile), 5, 6);
+        List<Vector2Int> newTiles = GridStaticSelectors.GetPositions(selector, GridStaticFunctions.GetGridPosFromHexGameObject(hitTile));
 
         foreach (var lastTile in lastTiles) {
             if (newTiles.Contains(lastTile.GridPos))

@@ -7,12 +7,12 @@ public class RotateCamera : MonoBehaviour
     private ActionQueue queue = new();
 
     private readonly float[] yRots = {
-        0, 
-        60,
-        120,
-        180,
-        240,
-        300
+        30,
+        90,
+        150,
+        210,
+        270,
+        330
     };
 
     private bool canInvoke = true;
