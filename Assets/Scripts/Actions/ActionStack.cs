@@ -19,5 +19,8 @@ public class ActionStack : Action
             if (action.IsDone)
                 actionsToPerform.Remove(action);
         }
+
+        if (actionsToPerform.Count < 1)
+            IsDone = true;
     }
 }

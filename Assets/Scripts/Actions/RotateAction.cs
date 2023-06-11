@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 public class RotateAction : Action {
-    public RotateAction(GameObject go, Vector3 rot, float speed, float precision) {
+    public RotateAction(GameObject go, Vector3 rotateTo, float speed, float precision) {
         this.go = go;
-        rotateTo = rot;
+        this.rotateTo = rotateTo;
         this.speed = speed;
         this.precision = precision;
     }
