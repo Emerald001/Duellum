@@ -16,3 +16,9 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Discription: 
   ManaCost: 0
+  selector:
+    type: 2
+    includeCentreTile: 0
+    AllDirections: 0
+    range: 1
+    rotIndex: 1
