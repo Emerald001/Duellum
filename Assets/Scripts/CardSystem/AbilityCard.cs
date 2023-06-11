@@ -7,10 +7,11 @@ public class AbilityCard : ScriptableObject
     public string Name;
     public Sprite Icon;
 
+
     public string Discription;
 
     [Header("Card Abilities")]
     public int ManaCost;
 
-    public BaseSelector selector;
+    public Selector selector;
 }
