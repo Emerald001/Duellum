@@ -11,10 +11,10 @@ public static class GridStaticSelectors
                 result.Add(startPos);
                 break;
             case SelectorType.Circle:
-                result = GetAvailableTilesCircle(startPos, selector.range);
+                result = GetAvailableTilesCircle(selector, startPos);
                 break;
             case SelectorType.Line:
-                result = GetAvailableTilesLine(startPos, selector.range, selector.rotIndex);
+                result = GetAvailableTilesLine(selector, startPos);
                 break;
 
             default:
@@ -25,31 +25,29 @@ public static class GridStaticSelectors
         return result;
     }
 
-    private static List<Vector2Int> GetAvailableTilesCircle(Vector2Int startPos, int range) {
+    private static List<Vector2Int> GetAvailableTilesCircle(Selector selector, Vector2Int startPos) {
         List<Vector2Int> result = new();
 
-        GridStaticFunctions.RippleThroughGridPositions(startPos, range, (currentPos, index) => {
+        GridStaticFunctions.RippleThroughGridPositions(startPos, selector.range, (currentPos, index) => {
             result.Add(currentPos);
         });
+
+        if (!selector.includeCentreTile)
+            result.Remove(startPos);
 
         return result;
     }
 
-    private static List<Vector2Int> GetAvailableTilesLine(Vector2Int startPos, int range, int index) {
+    private static List<Vector2Int> GetAvailableTilesLine(Selector selector, Vector2Int startPos) {
         List<Vector2Int> result = new() {
             startPos
         };
 
-        if (index > 6) {
-            Debug.LogError("Index is above 6, this is not possible!");
-            return null;
-        }
-
-        if (index == 6)
+        if (selector.AllDirections)
             for (int j = 0; j < 6; j++) {
                 result.Add(startPos);
 
-                for (int i = 0; i < range; i++) {
+                for (int i = 0; i < selector.range; i++) {
                     if (GridStaticFunctions.TryGetHexNeighbour(result[^1], j, out Vector2Int pos))
                         result.Add(pos);
                 }
@@ -57,11 +55,13 @@ public static class GridStaticSelectors
                 result.Remove(startPos);
             }
         else
-            for (int i = 0; i < range; i++) {
-                if (GridStaticFunctions.TryGetHexNeighbour(result[^1], index, out Vector2Int pos))
+            for (int i = 0; i < selector.range; i++) {
+                if (GridStaticFunctions.TryGetHexNeighbour(result[^1], selector.rotIndex, out Vector2Int pos))
                     result.Add(pos);
             }
-        result.Remove(startPos);
+
+        if (!selector.includeCentreTile)
+            result.Remove(startPos);
 
         return result;
     }
