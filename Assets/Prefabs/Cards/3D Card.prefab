@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9139614077483618305}
   - component: {fileID: 4583326601434715047}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2280153571222687279}
   - component: {fileID: 1293180971853066017}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Square (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8217239866371085567}
-  m_Layer: 0
+  - component: {fileID: 5226560222687344958}
+  m_Layer: 5
   m_Name: 3D Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,6 +204,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5226560222687344958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8217239866371085566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c23a3548ace8d4b46a3e522fe4c9dd46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: {fileID: 0}
+  Discription: {fileID: 0}
+  ManaCost: {fileID: 0}
+  Icon: {fileID: 0}
+  Background: {fileID: 0}
 --- !u!1 &8217239867070493652
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +233,7 @@ GameObject:
   - component: {fileID: 8217239867070493648}
   - component: {fileID: 8217239867070493655}
   - component: {fileID: 8217239867070493654}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,7 +328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4544236820009418942}
   - component: {fileID: 5532202397943342710}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}

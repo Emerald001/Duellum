@@ -9,10 +9,10 @@ public class Hex : MonoBehaviour {
     public Vector2Int GridPos { get; set; }
     public Vector3 StandardPosition { get; set; }
 
-    private readonly ActionQueue Queue = new();
+    private readonly ActionQueue queue = new();
 
     private void Update() {
-        Queue.OnUpdate();
+        queue.OnUpdate();
     }
 
     public void SetColor(Material color = null) {
@@ -24,8 +24,8 @@ public class Hex : MonoBehaviour {
 
     public void SetActionQueue(List<Action> actions) {
         foreach (var item in actions)
-            Queue.Enqueue(item);
+            queue.Enqueue(item);
     }
 
-    public void ClearQueue() => Queue.Clear();
+    public void ClearQueue() => queue.Clear();
 }
