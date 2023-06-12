@@ -6,7 +6,7 @@ public class AbilityCard : ScriptableObject
     [Header("Visuals")]
     public string Name;
     public Sprite Icon;
-
+    public Sprite Background;
 
     public string Discription;
 
