@@ -20,6 +20,7 @@ public class RotateCamera : MonoBehaviour
 
     private void Start() {
         queue = new(() => canInvoke = true);
+        Rotate(0);
     }
 
     private void Update() {
