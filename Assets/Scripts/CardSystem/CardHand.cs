@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.IMGUI.Controls;
+using System.Linq;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class CardHand : MonoBehaviour
 {
@@ -11,15 +9,22 @@ public class CardHand : MonoBehaviour
 
     [SerializeField] private Transform StackPos;
 
-    [SerializeField] private float cardMoveSpeed;
+    [SerializeField] private float cardSpawnMoveSpeed;
+    [SerializeField] private float cardViewMoveSpeed;
     [SerializeField] private float cardRotationSpeed;
 
     [SerializeField] private float spacing;
     [SerializeField] private float maxWidth;
     [SerializeField] private float radius;
+    [SerializeField] private float moveOverDistance;
 
     private readonly List<CardAssetHolder> cards = new();
     private CardAssetHolder nextCard;
+
+    private void OnEnable() {
+        CardBehaviour.OnHoverEnter += SetCardsToMoveOver;
+        CardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
+    }
 
     private void Start() {
         nextCard = Instantiate(CardPrefab, StackPos.position, StackPos.rotation);
@@ -68,12 +73,58 @@ public class CardHand : MonoBehaviour
             Vector3 position = transform.position + new Vector3(x, y, 0f);
             Quaternion rotation = Quaternion.LookRotation(Vector3.forward, position - transform.position);
 
-            card.ClearQueue();
-            card.SetActionQueue(new List<Action>() {
+            card.cardBehaviour.ClearQueue();
+            card.cardBehaviour.SetActionQueue(new List<Action>() {
+                new DoMethodAction(() => card.cardBehaviour.canInvoke = false),
                 new ActionStack(
-                    new MoveObjectAction(card.gameObject, cardMoveSpeed, position + new Vector3(0, -radius, 0)),
+                    new MoveObjectAction(card.gameObject, cardSpawnMoveSpeed, position + new Vector3(0, -radius, 0)),
                     new RotateAction(card.gameObject, rotation.eulerAngles, cardRotationSpeed, .01f)
-                )
+                ),
+                new DoMethodAction(() => card.cardBehaviour.SetValues(position + new Vector3(0, -radius, 0) + new Vector3(0, 1, 0)))
+            });
+        }
+    }
+
+    private void SetCardsToMoveOver(CardBehaviour raisedCard, System.Action actionForRaisedCard) {
+        if (cards.Where(x => x.cardBehaviour.canInvoke == false).ToList().Count > 0)
+            return;
+
+        bool hasReachedraisedCard = false;
+        foreach (CardAssetHolder card in cards) {
+            if (card.cardBehaviour == raisedCard) {
+                actionForRaisedCard.Invoke();
+                hasReachedraisedCard = true;
+                continue;
+            }
+
+            if (!hasReachedraisedCard) {
+                card.cardBehaviour.ClearQueue(true);
+                card.cardBehaviour.SetActionQueue(new List<Action>() {
+                    new MoveObjectAction(card.gameObject, cardViewMoveSpeed, card.cardBehaviour.StandardPosition + new Vector3(-moveOverDistance, 0, 0)),
+                });
+            }
+            else {
+                card.cardBehaviour.ClearQueue(true);
+                card.cardBehaviour.SetActionQueue(new List<Action>() {
+                    new MoveObjectAction(card.gameObject, cardViewMoveSpeed, card.cardBehaviour.StandardPosition + new Vector3(moveOverDistance, 0, 0)),
+                });
+            }
+        }
+    }
+
+    private void SetCardsBackToStandardPos(CardBehaviour raisedCard, System.Action actionForRaisedCard) {
+        if (cards.Where(x => x.cardBehaviour.canInvoke == false).ToList().Count > 0)
+            return;
+
+        foreach (CardAssetHolder card in cards) {
+            if (card.cardBehaviour == raisedCard) {
+                actionForRaisedCard.Invoke();
+                continue;
+            }
+
+            card.cardBehaviour.ClearQueue(true);
+            card.cardBehaviour.SetActionQueue(new List<Action>() {
+                new MoveObjectAction(card.gameObject, cardViewMoveSpeed, card.cardBehaviour.StandardPosition),
             });
         }
     }
