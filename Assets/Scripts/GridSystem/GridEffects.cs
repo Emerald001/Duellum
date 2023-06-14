@@ -45,7 +45,7 @@ public class GridEffects : MonoBehaviour {
             Hex currentHex = GridStaticFunctions.Grid[positions[i]];
             currentHex.ClearQueue();
             List<Action> queue = new() {
-                    new MoveObjectAction(currentHex.gameObject, 50 / Mathf.Pow(i, i / 70f), currentHex.StandardPosition + new Vector3(0, newHeight, 0)),
+                    new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardPosition + new Vector3(0, newHeight, 0)),
                     new DoMethodAction(() => currentHex.StandardPosition = currentHex.transform.position),
                 };
             currentHex.SetActionQueue(queue);
