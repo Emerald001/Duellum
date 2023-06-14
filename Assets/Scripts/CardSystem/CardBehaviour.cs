@@ -11,6 +11,7 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] float scaleModifier;
 
     private readonly ActionQueue queue = new();
+    private readonly ActionQueue resizeQueue = new();
 
     public Vector3 StandardPosition => standardPos;
     private Vector3 standardPos;
@@ -33,6 +34,7 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void Update() {
         queue.OnUpdate();
+        resizeQueue.OnUpdate();
     }
 
     public void SetActionQueue(List<Action> actions) {
@@ -49,9 +51,8 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         OnHoverEnter.Invoke(this, () =>
         {
             queue.Clear();
-            queue.Enqueue(new ActionStack(
-                new MoveObjectAction(gameObject, moveSpeed, raisedPos),
-                new ResizeAction(transform, resizeSpeed, raisedSize)));
+            queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, raisedPos));
+            resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, raisedSize));
         });
     }
 
@@ -62,9 +63,8 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         OnHoverExit.Invoke(this, () =>
         {
             queue.Clear();
-            queue.Enqueue(new ActionStack(
-                new MoveObjectAction(gameObject, moveSpeed, standardPos),
-                new ResizeAction(transform, resizeSpeed, standardSize)));
+            queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));
+            resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
         });
     }
 }

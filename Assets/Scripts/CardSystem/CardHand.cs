@@ -98,13 +98,13 @@ public class CardHand : MonoBehaviour
             }
 
             if (!hasReachedraisedCard) {
-                card.cardBehaviour.ClearQueue(true);
+                card.cardBehaviour.ClearQueue();
                 card.cardBehaviour.SetActionQueue(new List<Action>() {
                     new MoveObjectAction(card.gameObject, cardViewMoveSpeed, card.cardBehaviour.StandardPosition + new Vector3(-moveOverDistance, 0, 0)),
                 });
             }
             else {
-                card.cardBehaviour.ClearQueue(true);
+                card.cardBehaviour.ClearQueue();
                 card.cardBehaviour.SetActionQueue(new List<Action>() {
                     new MoveObjectAction(card.gameObject, cardViewMoveSpeed, card.cardBehaviour.StandardPosition + new Vector3(moveOverDistance, 0, 0)),
                 });
@@ -122,7 +122,7 @@ public class CardHand : MonoBehaviour
                 continue;
             }
 
-            card.cardBehaviour.ClearQueue(true);
+            card.cardBehaviour.ClearQueue();
             card.cardBehaviour.SetActionQueue(new List<Action>() {
                 new MoveObjectAction(card.gameObject, cardViewMoveSpeed, card.cardBehaviour.StandardPosition),
             });
