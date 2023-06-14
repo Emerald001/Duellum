@@ -5,10 +5,11 @@ public class AbilityCard : ScriptableObject
 {
     [Header("Visuals")]
     public string Name;
+    public string Discription;
+
     public Sprite Icon;
     public Sprite Background;
-
-    public string Discription;
+    public Sprite Border;
 
     [Header("Card Abilities")]
     public int ManaCost;

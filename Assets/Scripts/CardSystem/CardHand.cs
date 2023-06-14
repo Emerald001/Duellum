@@ -39,11 +39,11 @@ public class CardHand : MonoBehaviour
     public void AddCard(AbilityCard card) {
         CardAssetHolder cardObject = Instantiate(CardPrefab, StackPos.position, StackPos.rotation);
 
-        //cardObject.Name.text = card.Name;
-        //cardObject.Discription.text = card.Discription;
-        //cardObject.Icon.sprite = card.Icon;
-        //cardObject.Background.sprite = card.Background;
-        //cardObject.ManaCost.text = card.ManaCost.ToString();
+        cardObject.Name.text = card.Name;
+        cardObject.Discription.text = card.Discription;
+        cardObject.Icon.sprite = card.Icon;
+        cardObject.Background.sprite = card.Background;
+        cardObject.ManaCost.text = card.ManaCost.ToString();
 
         nextCard.transform.parent = transform;
         cards.Add(nextCard);
@@ -75,7 +75,7 @@ public class CardHand : MonoBehaviour
 
             card.cardBehaviour.ClearQueue();
             card.cardBehaviour.SetActionQueue(new List<Action>() {
-                new DoMethodAction(() => card.cardBehaviour.canInvoke = false),
+                new DoMethodAction(() => card.cardBehaviour.CanInvoke = false),
                 new ActionStack(
                     new MoveObjectAction(card.gameObject, cardSpawnMoveSpeed, position + new Vector3(0, -radius, 0)),
                     new RotateAction(card.gameObject, rotation.eulerAngles, cardRotationSpeed, .01f)
@@ -86,7 +86,7 @@ public class CardHand : MonoBehaviour
     }
 
     private void SetCardsToMoveOver(CardBehaviour raisedCard, System.Action actionForRaisedCard) {
-        if (cards.Where(x => x.cardBehaviour.canInvoke == false).ToList().Count > 0)
+        if (cards.Where(x => x.cardBehaviour.CanInvoke == false).ToList().Count > 0)
             return;
 
         bool hasReachedraisedCard = false;
@@ -113,7 +113,7 @@ public class CardHand : MonoBehaviour
     }
 
     private void SetCardsBackToStandardPos(CardBehaviour raisedCard, System.Action actionForRaisedCard) {
-        if (cards.Where(x => x.cardBehaviour.canInvoke == false).ToList().Count > 0)
+        if (cards.Where(x => x.cardBehaviour.CanInvoke == false).ToList().Count > 0)
             return;
 
         foreach (CardAssetHolder card in cards) {

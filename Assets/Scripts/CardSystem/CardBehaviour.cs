@@ -20,7 +20,7 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private Vector3 standardSize;
     private Vector3 raisedSize;
 
-    public bool canInvoke { get; set; }
+    public bool CanInvoke { get; set; }
 
     public void SetValues(Vector3 raisedPos) {
         standardPos = transform.position;
@@ -29,7 +29,7 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         this.raisedPos = raisedPos;
         raisedSize = standardSize * scaleModifier;
 
-        canInvoke = true;
+        CanInvoke = true;
     }
 
     private void Update() {
@@ -45,24 +45,26 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void ClearQueue(bool finishAction = false) => queue.Clear(finishAction);
 
     public void OnPointerEnter(PointerEventData eventData) {
-        if (!canInvoke)
+        if (!CanInvoke)
             return;
 
         OnHoverEnter.Invoke(this, () =>
         {
             queue.Clear();
+            resizeQueue.Clear();
             queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, raisedPos));
             resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, raisedSize));
         });
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        if (!canInvoke)
+        if (!CanInvoke)
             return;
 
         OnHoverExit.Invoke(this, () =>
         {
             queue.Clear();
+            resizeQueue.Clear();
             queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));
             resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
         });

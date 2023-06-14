@@ -15,6 +15,7 @@ public class CardAssetHolder : MonoBehaviour
 
     public Image Icon;
     public Image Background;
+    public Image Border;
 
     private readonly ActionQueue queue = new();
 }
