@@ -2378,5 +2378,10 @@ PrefabInstance:
       propertyPath: RaiseSelector.AllDirections
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
+        type: 3}
+      propertyPath: RaiseSelector.includeCentreTile
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf5b0b921193735488872437d1ebf0c5, type: 3}
