@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Hex : MonoBehaviour {
-    public Material BaseColor;
+    [SerializeField] private Renderer renderer;
 
     public Material GivenColor { get; set; }
 
@@ -10,16 +10,25 @@ public class Hex : MonoBehaviour {
     public Vector3 StandardPosition { get; set; }
 
     private readonly ActionQueue queue = new();
+    private Material BaseMaterial;
 
     private void Update() {
         queue.OnUpdate();
     }
 
+    public void SetBaseColor(Color color) {
+        BaseMaterial = new(renderer.material) {
+            color = color
+        };
+
+        SetColor();
+    }
+
     public void SetColor(Material color = null) {
         if (color == null)
-            GetComponentInChildren<Renderer>().material = BaseColor;
+            renderer.material = BaseMaterial;
         else
-            GetComponentInChildren<Renderer>().material = GivenColor = color;
+            renderer.material = GivenColor = color;
     }
 
     public void SetActionQueue(List<Action> actions) {
