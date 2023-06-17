@@ -51,11 +51,15 @@ MonoBehaviour:
     type: 3}
   ExtraHexPrefab: {fileID: 2960576815679478495, guid: 3cfdf33f67fd7344e8e7375d5774670b,
     type: 3}
-  heightMap: {fileID: 0}
   rings: 10
   extraRings: 0
   roughness: 0.95
-  scaler: 5.86
+  scaler: 6.48
+  generator:
+    scale: 10
+    octaves: 4
+    persistence: 0.3
+    lacunarity: 2
 --- !u!114 &4201081140094914186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,11 +72,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eab47054f9f23384883fda6cec80687b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RaiseSelector: {fileID: 11400000, guid: 7c3c2e0dce9e4b9439bbd7cad9841dfd, type: 2}
-  tileAmount: 10
+  RaiseSelector:
+    type: 2
+    includeCentreTile: 1
+    AllDirections: 0
+    range: 5
+    rotIndex: 5
   height: 1
-  rippleRange: 10
-  dirIndex: 0
+  RippleSelector:
+    type: 1
+    includeCentreTile: 0
+    AllDirections: 0
+    range: 10
+    rotIndex: 0
   rippleStrength: 10
 --- !u!1 &4201081139179008082
 GameObject:
