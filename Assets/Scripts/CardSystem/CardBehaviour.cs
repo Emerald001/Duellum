@@ -6,21 +6,21 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public static event System.Action<CardBehaviour, System.Action> OnHoverEnter;
     public static event System.Action<CardBehaviour, System.Action> OnHoverExit;
 
-    [SerializeField] float moveSpeed;
-    [SerializeField] float resizeSpeed;
-    [SerializeField] float scaleModifier;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float resizeSpeed;
+    [SerializeField] private float scaleModifier;
 
     private readonly ActionQueue queue = new();
     private readonly ActionQueue resizeQueue = new();
 
     public Vector3 StandardPosition => standardPos;
+    public bool CanInvoke { get; set; }
+
     private Vector3 standardPos;
     private Vector3 raisedPos;
 
     private Vector3 standardSize;
     private Vector3 raisedSize;
-
-    public bool CanInvoke { get; set; }
 
     public void SetValues(Vector3 raisedPos) {
         standardPos = transform.position;
