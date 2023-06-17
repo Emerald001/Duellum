@@ -307,7 +307,7 @@ MonoBehaviour:
   StackPos: {fileID: 1876400315}
   cardSpawnMoveSpeed: 50
   cardViewMoveSpeed: 5
-  cardRotationSpeed: 10
+  cardRotationSpeed: 50
   spacing: 7
   maxWidth: 40
   radius: 3
@@ -2332,55 +2332,14 @@ PrefabInstance:
       propertyPath: plane
       value: 
       objectReference: {fileID: 680710186}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
+    - target: {fileID: 4201081139046023302, guid: bf5b0b921193735488872437d1ebf0c5,
         type: 3}
-      propertyPath: dirIndex
-      value: 0
+      propertyPath: generator.scale
+      value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
+    - target: {fileID: 4201081139179008086, guid: bf5b0b921193735488872437d1ebf0c5,
         type: 3}
-      propertyPath: RippleSelector
-      value: 
-      objectReference: {fileID: 11400000, guid: 7c3c2e0dce9e4b9439bbd7cad9841dfd,
-        type: 2}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
-        type: 3}
-      propertyPath: RaiseSelector.type
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
-        type: 3}
-      propertyPath: RaiseSelector.range
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
-        type: 3}
-      propertyPath: RippleSelector.type
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
-        type: 3}
-      propertyPath: RippleSelector.range
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
-        type: 3}
-      propertyPath: RaiseSelector.rotIndex
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
-        type: 3}
-      propertyPath: RippleSelector.rotIndex
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
-        type: 3}
-      propertyPath: RaiseSelector.AllDirections
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4201081140094914186, guid: bf5b0b921193735488872437d1ebf0c5,
-        type: 3}
-      propertyPath: RaiseSelector.includeCentreTile
+      propertyPath: m_LocalPosition.y
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
