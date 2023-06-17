@@ -36,6 +36,8 @@ public class MakeGrid {
         else
             this.heightMap = heightMap;
 
+        Plane.GetComponent<Renderer>().material.mainTexture = this.heightMap;
+
         GridStaticFunctions.HexHeight = hexHeight;
         GridStaticFunctions.HexWidth = hexWidth;
         GridStaticFunctions.StartPos = startpos;
@@ -68,8 +70,6 @@ public class MakeGrid {
         heightMap = new Texture2D(width, width);
         heightMap.SetPixels(pix);
         heightMap.Apply();
-
-        Plane.GetComponent<Renderer>().material.mainTexture = heightMap;
     }
 
     private float FloorTo(float value, int place, uint @base) {
@@ -101,10 +101,11 @@ public class MakeGrid {
             }
         }
 
-        float lowestValue = positions.Values.Min() * scaler;
+        //float lowestValue = positions.Values.Min() * scaler;
         foreach (Hex hex in Hexes) {
             if (positions.TryGetValue(hex.GridPos, out float value)) {
-                hex.transform.position += new Vector3(0, (value * scaler) - lowestValue, 0);
+                hex.SetBaseColor(new Color(value, value, value));
+                hex.transform.position += new Vector3(0, (value * scaler), 0);
                 hex.StandardPosition = hex.transform.position;
             }
         }

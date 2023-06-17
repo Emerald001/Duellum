@@ -5,7 +5,6 @@ public class GridGenerator : MonoBehaviour
     [SerializeField] private GameObject plane;
     [SerializeField] private Hex HexPrefab;
     [SerializeField] private Hex ExtraHexPrefab;
-    [SerializeField] private Texture2D heightMap;
 
     [SerializeField] private int rings;
     [SerializeField] private int extraRings;
@@ -14,7 +13,9 @@ public class GridGenerator : MonoBehaviour
     [Range(1, 20)]
     [SerializeField] private float scaler;
 
+    [SerializeField] private HeightMapGenerator generator;
+
     private void Awake() {
-        new MakeGrid(HexPrefab, ExtraHexPrefab, heightMap, plane, rings, extraRings, roughness, scaler);
+        new MakeGrid(HexPrefab, ExtraHexPrefab, generator.GenerateHeightMap(rings + extraRings), plane, rings, extraRings, roughness, scaler);
     }
 }
