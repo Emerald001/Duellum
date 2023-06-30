@@ -46,20 +46,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c2dcadd10ecfb4ea411d1fdcc7d101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plane: {fileID: 0}
   HexPrefab: {fileID: 2960576815679478495, guid: ab4e46aaa51fb35448df68811882646f,
     type: 3}
   ExtraHexPrefab: {fileID: 2960576815679478495, guid: 3cfdf33f67fd7344e8e7375d5774670b,
     type: 3}
   rings: 10
   extraRings: 0
-  roughness: 0.95
-  scaler: 6.48
+  initialSpawnSpeed: 7
   generator:
-    scale: 10
+    scale: 8.3
     octaves: 4
     persistence: 0.3
     lacunarity: 2
+    roughness: 0.05
+  scaler: 7
 --- !u!114 &4201081140094914186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4201081139179008082}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 20, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []

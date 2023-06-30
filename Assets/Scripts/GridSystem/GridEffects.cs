@@ -21,10 +21,9 @@ public class GridEffects : MonoBehaviour {
     }
 
     private void Ripple(Vector2Int gridPos, float rippleStrength) {
-        List<Vector2Int> positions = GridStaticSelectors.GetPositions(RippleSelector, gridPos);
-
-        for (int i = 0; i < positions.Count; i++) {
-            Hex currentHex = GridStaticFunctions.Grid[positions[i]];
+        GridStaticFunctions.RippleThroughGridPositions(gridPos, RippleSelector.range, (gridPos, i) =>
+        {
+            Hex currentHex = GridStaticFunctions.Grid[gridPos];
             currentHex.ClearQueue();
             List<Action> queue = new() {
                     new WaitAction(Mathf.Pow(i, i / 70f) - Mathf.Pow(1, 1 / 70f)),
@@ -32,7 +31,7 @@ public class GridEffects : MonoBehaviour {
                     new MoveObjectAction(currentHex.gameObject, 2 / Mathf.Pow(i, i / 10f), currentHex.StandardPosition),
                 };
             currentHex.SetActionQueue(queue);
-        }
+        });
 
         EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, .4f);
     }
