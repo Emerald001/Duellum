@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Hex : MonoBehaviour {
-    [SerializeField] private Renderer renderer;
+    [SerializeField] private new Renderer renderer;
 
     public Material GivenColor { get; set; }
 

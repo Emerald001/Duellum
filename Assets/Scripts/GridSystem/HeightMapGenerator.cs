@@ -6,6 +6,7 @@ public class HeightMapGenerator {
     public int octaves = 6; // Number of noise layers
     public float persistence = 0.5f; // Controls the amplitude of each octave
     public float lacunarity = 2f; // Controls the frequency of each octave
+    public float roughness = .1f;
 
     public Texture2D GenerateHeightMap(int rings) {
         int width = rings * 2;
@@ -23,16 +24,18 @@ public class HeightMapGenerator {
                     case 0: color = Color.black; break; // Water
                     case 1: color = new Color32(50, 50, 50, 255); break; // Base battlefield
                     case 2: color = new Color32(50, 50, 50, 255); break; // Base battlefield
-                    case 3: color = new Color32(75, 75, 75, 255); break; // Base battlefield
-                    case 4: color = new Color32(75, 75, 75, 255); break; // Step up to 6
+                    case 3: color = new Color32(50, 50, 50, 255); break; // Base battlefield
+                    case 4: color = new Color32(50, 50, 50, 255); break; // Base battlefield
                     case 5: color = new Color32(75, 75, 75, 255); break; // Raised battlefield
-                    case 6: color = new Color32(100, 100, 100, 255); break; // Raised battlefield
-                    case 7: color = new Color32(100, 100, 100, 255); break; // Raised battlefield
-                    case 8: color = new Color32(170, 170, 170, 255); break; // Mountains
+                    case 6: color = new Color32(75, 75, 75, 255); break; // Raised battlefield
+                    case 7: color = new Color32(75, 75, 75, 255); break; // Raised battlefield
+                    case 8: color = new Color32(125, 125, 125, 255); break; // Mountains
                     case 9: color = new Color32(225, 225, 225, 255); break; // Mountains
                     case 10: color = Color.white; break; // Snowy Peaks
                 }
 
+                float noise = Mathf.PerlinNoise((x + offset) / scale, (y + offset) / scale) * roughness;
+                color.r += noise;
                 heightMap.SetPixel(x, y, color);
             }
         }
