@@ -2334,6 +2334,17 @@ PrefabInstance:
       objectReference: {fileID: 680710186}
     - target: {fileID: 4201081139046023302, guid: bf5b0b921193735488872437d1ebf0c5,
         type: 3}
+      propertyPath: CubePrefab
+      value: 
+      objectReference: {fileID: 3143461922185471495, guid: dc880879d8e71f04cb24a265c5db0265,
+        type: 3}
+    - target: {fileID: 4201081139046023302, guid: bf5b0b921193735488872437d1ebf0c5,
+        type: 3}
+      propertyPath: isHexagons
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201081139046023302, guid: bf5b0b921193735488872437d1ebf0c5,
+        type: 3}
       propertyPath: generator.scale
       value: 7
       objectReference: {fileID: 0}

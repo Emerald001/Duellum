@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class GridStaticSelectors
-{
+public static class GridStaticSelectors {
     public static List<Vector2Int> GetPositions(Selector selector, Vector2Int startPos) {
         List<Vector2Int> result = new();
 
@@ -17,6 +16,12 @@ public static class GridStaticSelectors
                 result = GetAvailableTilesLine(selector, startPos);
                 break;
 
+            case SelectorType.FriendlyUnits:
+            case SelectorType.EnemyUnits:
+            case SelectorType.AllUnits:
+                GetAvailableTilesUnits(selector, startPos);
+                break;
+
             default:
                 Debug.LogError($"{selector.type} not yet Implemented");
                 break;
@@ -28,7 +33,8 @@ public static class GridStaticSelectors
     private static List<Vector2Int> GetAvailableTilesCircle(Selector selector, Vector2Int startPos) {
         List<Vector2Int> result = new();
 
-        GridStaticFunctions.RippleThroughGridPositions(startPos, selector.range, (currentPos, index) => {
+        GridStaticFunctions.RippleThroughGridPositions(startPos, selector.range, (currentPos, index) =>
+        {
             result.Add(currentPos);
         });
 
@@ -40,8 +46,8 @@ public static class GridStaticSelectors
 
     private static List<Vector2Int> GetAvailableTilesLine(Selector selector, Vector2Int startPos) {
         List<Vector2Int> result = new() {
-            startPos
-        };
+        startPos
+    };
 
         if (selector.AllDirections)
             for (int j = 0; j < 6; j++) {
@@ -64,5 +70,24 @@ public static class GridStaticSelectors
             result.Remove(startPos);
 
         return result;
+    }
+
+    public static List<Vector2Int> GetAvailableTilesUnits(Selector selector, Vector2Int startpos) {
+        List<Vector2Int> result = new();
+
+        if (selector.includeCentreTile)
+            result.Add(startpos);
+
+        switch (selector.type) {
+            case SelectorType.AllUnits:
+                return new List<Vector2Int>();
+            case SelectorType.FriendlyUnits:
+                return new List<Vector2Int>();
+            case SelectorType.EnemyUnits:
+                return new List<Vector2Int>();
+
+            default:
+                return null;
+        }
     }
 }
