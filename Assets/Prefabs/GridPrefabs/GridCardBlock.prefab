@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3143461922185471494}
   - component: {fileID: 3143461922185471495}
   m_Layer: 0
-  m_Name: GridBlock
+  m_Name: GridCardBlock
   m_TagString: WalkableTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,7 +108,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d833684fc1608704fbd4f03fb721dcac, type: 2}
+  - {fileID: 2100000, guid: 8bb8ab14025b3c84faf2641154110bb6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
