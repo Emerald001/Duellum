@@ -31,7 +31,9 @@ public class GridGenerator : MonoBehaviour
 
     private Texture2D heightMap;
 
-    private void Awake() {
+    private readonly List<Hex> Hexes = new();
+
+    public void SpawnGrid() {
         heightMap = generator.GenerateHeightMap(rings + extraRings);
 
         GridStaticFunctions.HexHeight = hexHeight;
@@ -50,8 +52,6 @@ public class GridGenerator : MonoBehaviour
         else
             GenerateSquareGrid();
     }
-
-    private readonly List<Hex> Hexes = new();
 
     private void GenerateHexGrid() {
         GridStaticFunctions.RippleThroughGridPositions(new Vector2Int(0, 0), rings + extraRings, (currentPos, i) => {
