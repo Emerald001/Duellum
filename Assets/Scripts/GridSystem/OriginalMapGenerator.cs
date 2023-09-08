@@ -23,6 +23,10 @@ public class OriginalMapGenerator : MonoBehaviour {
     private readonly Dictionary<Vector2Int, Hex> Grid = new();
 
     public void SetUp() {
+        GridStaticFunctions.GridWidth = width;
+        GridStaticFunctions.GridHeight = height;
+        GridStaticFunctions.GridGap = gap;
+
         AllocateGrid();
         SpawnGrid();
     }
@@ -34,8 +38,8 @@ public class OriginalMapGenerator : MonoBehaviour {
             Color color = tmp.GetComponentInChildren<Renderer>().material.color;
             tmp.SetBaseColor(color);
             tmp.GridPos = item.Key;
-            tmp.StandardPosition = CalculateWorldPos(item.Key);
-            tmp.transform.position = CalculateWorldPos(item.Key);
+            tmp.StandardPosition = GridStaticFunctions.CalcSquareWorldPos(item.Key);
+            tmp.transform.position = GridStaticFunctions.CalcSquareWorldPos(item.Key);
 
             Grid.Add(item.Key, tmp);
         }
@@ -107,12 +111,5 @@ public class OriginalMapGenerator : MonoBehaviour {
                 counter--;
             }
         }
-    }
-
-    private Vector3 CalculateWorldPos(Vector2Int gridpos) {
-        return new Vector3(
-            gridpos.x - (width / 2 + (gap * width) / 2) + gap * gridpos.x, 
-            0, 
-            gridpos.y - (height / 2 + (gap * height) / 2) + gap * gridpos.y);
     }
 }

@@ -1,5 +1,8 @@
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public static class GridStaticFunctions {
     public static Vector2Int CONST_EMPTY = new(12345, 12345);
@@ -39,10 +42,16 @@ public static class GridStaticFunctions {
     public static float SquareWidth { get; set; }
     public static float SquareHeight { get; set; }
 
+    public static int GridWidth { get; set; }
+    public static int GridHeight { get; set; }
+    public static float GridGap { get; set; }
+
     public static Vector3 StartPos { get; set; }
     public static Dictionary<Vector2Int, Hex> Grid { get; set; } = new();
     public static List<Vector2Int> PlayerSpawnPos { get; set; } = new();
     public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
+
+    public static List<Tuple<Vector2Int, UnitController>> UnitPositions { get; set; } = new();
 
     public static Vector3 CalcHexWorldPos(Vector2Int gridPos) {
         float offset = 0;
@@ -55,9 +64,9 @@ public static class GridStaticFunctions {
         return new Vector3(x, 0, z);
     }
 
-    public static Vector3 CalcSquareWorldPos(Vector2Int gridPos) {
-        float x = StartPos.x + gridPos.x * SquareWidth;
-        float z = StartPos.z - gridPos.y * SquareHeight;
+    public static Vector3 CalcSquareWorldPos(Vector2Int gridpos) {
+        float x = gridpos.x - (GridWidth / 2 + (GridGap * GridWidth) / 2) + GridGap * gridpos.x;
+        float z = gridpos.y - (GridHeight / 2 + (GridGap * GridHeight) / 2) + GridGap * gridpos.y;
 
         return new Vector3(x, 0, z);
     }
@@ -111,12 +120,14 @@ public static class GridStaticFunctions {
             for (int j = 0; j < openList.Count; j++) {
                 Vector2Int currentPos = openList[j];
 
-                for (int k = 0; k < 8; k++) {
-                    Vector2Int neighbour = currentPos + cubeNeighbours[k];
-                    if (openList.Contains(neighbour) || closedList.Contains(neighbour) || layerList.Contains(neighbour) || (hasCreatedGrid && !Grid.ContainsKey(neighbour)))
-                        continue;
+                if (i < range - 1) {
+                    for (int k = 0; k < 8; k++) {
+                        Vector2Int neighbour = currentPos + cubeNeighbours[k];
+                        if (openList.Contains(neighbour) || closedList.Contains(neighbour) || layerList.Contains(neighbour) || (hasCreatedGrid && !Grid.ContainsKey(neighbour)))
+                            continue;
 
-                    layerList.Add(neighbour);
+                        layerList.Add(neighbour);
+                    }
                 }
 
                 // Invokes on every tile found
@@ -128,6 +139,10 @@ public static class GridStaticFunctions {
             openList.AddRange(layerList);
             layerList.Clear();
         }
+
+        openList.Clear();
+        layerList.Clear();
+        closedList.Clear();
     }
 
     public static bool TryGetHexNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {
@@ -138,6 +153,18 @@ public static class GridStaticFunctions {
         }
 
         result = CONST_EMPTY;
+        return false;
+    }
+
+    public static bool TryGetUnitFromGridPos(Vector2Int position, out UnitController unit) {
+        foreach (var item in UnitPositions) {
+            if (item.Item1 == position) {
+                unit = item.Item2;
+                return true;
+            }
+        }
+
+        unit = null;
         return false;
     }
 }
