@@ -14,5 +14,23 @@ public class AbilityCard : ScriptableObject
     [Header("Card Abilities")]
     public int ManaCost;
 
-    public Selector selector;
+    [Header("Card Selectors")]
+    public Selector areaOfEffectSelector;
+    public Selector availabletilesSelector;
+
+    public AbilityCardType abilityType;
+}
+
+public enum AbilityCardType {
+    AttackBoost,
+    DefenceBoost,
+    SpeedBoost,
+    Climb,
+    Teleport,
+    Trap,
+    PlaceBoulder,
+    Revive,
+    SkipOpponentsTurn,
+    FuryEffect,
+    FearEffect,
 }

@@ -163,7 +163,7 @@ public class CardHand : MonoBehaviour
 
         if (hasCardFaded != hasCardFadedCallRan) {
             if (hasCardFaded)
-                EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, abilityCards[card.Index].selector);
+                EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, abilityCards[card.Index].areaOfEffectSelector);
             else
                 EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
 
@@ -173,13 +173,19 @@ public class CardHand : MonoBehaviour
 
     private void PerformRelease(CardBehaviour card, System.Action actionForRaisedCard) {
         CanvasGroup canvasGroup = cards[card.Index].Fader;
+        var ability = abilityCards[card.Index];
+
         EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
 
         if (hasCardFaded) {
-            // TODO:
-            // Check if the selection was valid before removing card and calling it's effect!
+            List<Vector2Int> validTiles = GridStaticSelectors.GetPositions(ability.availabletilesSelector, MouseToWorldView.HoverTileGridPos);
+            if (validTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
+                var affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos);
+
+                AbilityManager.PerformAbility(ability.abilityType, affectedTiles.ToArray());
                 RemoveCard(card.Index);
-            return;
+                return;
+            }
         }
 
         // If no other thing was done

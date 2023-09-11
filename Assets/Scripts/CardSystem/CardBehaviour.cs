@@ -6,8 +6,8 @@ public class CardBehaviour : MonoBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler {
     public static event System.Action<CardBehaviour, System.Action> OnHoverEnter;
     public static event System.Action<CardBehaviour, System.Action> OnHoverExit;
-    public static event System.Action<CardBehaviour> OnMove;
     public static event System.Action<CardBehaviour, System.Action> OnMoveRelease;
+    public static event System.Action<CardBehaviour> OnMove;
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float resizeSpeed;
@@ -115,6 +115,5 @@ public class CardBehaviour : MonoBehaviour,
     public void OnPointerMove(PointerEventData eventData) {
         if (!grabbed || !CanInvoke)
             return;
-
     }
 }
