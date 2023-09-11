@@ -301,17 +301,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 300be5ea9a4e3fe47988d7e3296b33e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UICam: {fileID: 783440547}
   TMPCardToAdd: {fileID: 11400000, guid: 17aa3ac734168b140b7f86386df26471, type: 2}
   CardPrefab: {fileID: 5226560222687344958, guid: 0b976eb92b7b2ab46b27abc708faa38e,
     type: 3}
   StackPos: {fileID: 1876400315}
   cardSpawnMoveSpeed: 50
-  cardViewMoveSpeed: 30
+  cardViewMoveSpeed: 15
   cardRotationSpeed: 50
-  spacing: 1
+  spacing: 1.5
   maxWidth: 500
   radius: 50
   moveOverDistance: 5
+  raisedAmount: 3
+  fadeThreshold: 3
 --- !u!1 &290912098
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,12 +494,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9d00290829401c4a9cb26eb3aa6fd31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hovercolor: {fileID: 2100000, guid: 60e4fff2b4acfcc45879b86ca25abb71, type: 2}
-  selector:
+  hovercolor: {fileID: 2100000, guid: 60e4fff2b4acfcc45879b86ca25abb71, type: 2}
+  standardSelector:
     type: 0
-    includeCentreTile: 1
-    AllDirections: 1
-    range: 10
+    includeCentreTile: 0
+    AllDirections: 0
+    range: 1
     rotIndex: 1
 --- !u!114 &330585549
 MonoBehaviour:
@@ -1842,7 +1845,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036886693}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eab47054f9f23384883fda6cec80687b, type: 3}
   m_Name: 
