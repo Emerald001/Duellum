@@ -25,6 +25,10 @@ public class SelectorDrawer : PropertyDrawer {
                 DrawLineFields(position, property);
                 break;
 
+            case SelectorType.AllTiles:
+                DrawAllTilesFields(position, property);
+                break;
+
             default:
                 break;
         }
@@ -56,6 +60,18 @@ public class SelectorDrawer : PropertyDrawer {
             totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
             EditorGUI.IntSlider(position, property.FindPropertyRelative("rotIndex"), 0, 5);
         }
+    }
+
+    private void DrawAllTilesFields(Rect position, SerializedProperty property) {
+        position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
+        totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
+        EditorGUI.PropertyField(position, property.FindPropertyRelative("includeWater"));
+        position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
+        totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
+        EditorGUI.PropertyField(position, property.FindPropertyRelative("includeCover"));
+        position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
+        totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
+        EditorGUI.PropertyField(position, property.FindPropertyRelative("excludeUnits"));
     }
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {

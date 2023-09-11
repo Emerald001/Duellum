@@ -9,6 +9,11 @@ public class Selector {
 
     public int range = 1;
     public int rotIndex = 1;
+
+    // For Alltiles
+    public bool includeWater;
+    public bool includeCover;
+    public bool excludeUnits;
 }
 
 public enum SelectorType {
@@ -18,4 +23,5 @@ public enum SelectorType {
     AllUnits,
     FriendlyUnits,
     EnemyUnits,
+    AllTiles,
 }

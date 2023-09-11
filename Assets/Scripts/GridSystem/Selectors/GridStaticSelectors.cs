@@ -72,11 +72,27 @@ public static class GridStaticSelectors {
         return result;
     }
 
-    public static List<Vector2Int> GetAvailableTilesUnits(Selector selector, Vector2Int startpos) {
+    private static List<Vector2Int> GetAvailableTilesUnits(Selector selector, Vector2Int startpos) {
         List<Vector2Int> result = new();
 
         if (selector.includeCentreTile)
             result.Add(startpos);
+
+        switch (selector.type) {
+            case SelectorType.AllUnits:
+                return new List<Vector2Int>();
+            case SelectorType.FriendlyUnits:
+                return new List<Vector2Int>();
+            case SelectorType.EnemyUnits:
+                return new List<Vector2Int>();
+
+            default:
+                return null;
+        }
+    }
+
+    private static List<Vector2Int> GetAllTiles(Selector selector, Vector2Int startPos) {
+        List<Vector2Int> result = new();
 
         switch (selector.type) {
             case SelectorType.AllUnits:
