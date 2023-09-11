@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
+public class CardBehaviour : MonoBehaviour, 
+    IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler {
     public static event System.Action<CardBehaviour, System.Action> OnHoverEnter;
     public static event System.Action<CardBehaviour, System.Action> OnHoverExit;
+    public static event System.Action<CardBehaviour> OnMove;
+    public static event System.Action<CardBehaviour, System.Action> OnMoveRelease;
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float resizeSpeed;
@@ -15,6 +18,9 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public Vector3 StandardPosition => standardPos;
     public bool CanInvoke { get; set; }
+    public int Index { get; set; }
+
+    private Camera UICam;
 
     private Vector3 standardPos;
     private Vector3 raisedPos;
@@ -22,17 +28,29 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     private Vector3 standardSize;
     private Vector3 raisedSize;
 
-    public void SetValues(Vector3 raisedPos) {
+    private Vector3 offset;
+
+    private bool grabbed = false;
+
+    public void SetValues(Vector3 raisedPos, Camera UICam, int index) {
         standardPos = transform.position;
         standardSize = transform.localScale;
 
         this.raisedPos = raisedPos;
         raisedSize = standardSize * scaleModifier;
 
+        this.UICam = UICam;
+        Index = index;
+
         CanInvoke = true;
     }
 
     private void Update() {
+        if (grabbed && CanInvoke) {
+            transform.position = UICam.ScreenToWorldPoint(Input.mousePosition) + offset;
+            OnMove.Invoke(this);
+        }
+
         queue.OnUpdate();
         resizeQueue.OnUpdate();
     }
@@ -45,7 +63,7 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void ClearQueue(bool finishAction = false) => queue.Clear(finishAction);
 
     public void OnPointerEnter(PointerEventData eventData) {
-        if (!CanInvoke)
+        if (grabbed || !CanInvoke)
             return;
 
         OnHoverEnter.Invoke(this, () =>
@@ -58,7 +76,7 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        if (!CanInvoke)
+        if (grabbed || !CanInvoke)
             return;
 
         OnHoverExit.Invoke(this, () =>
@@ -68,5 +86,35 @@ public class CardBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));
             resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
         });
+    }
+
+    public void OnPointerDown(PointerEventData eventData) {
+        if (!CanInvoke)
+            return;
+
+        grabbed = true; 
+        offset = transform.position - UICam.ScreenToWorldPoint(eventData.position);
+
+        queue.Clear();
+        resizeQueue.Clear();
+    }
+
+    public void OnPointerUp(PointerEventData eventData) {
+        if (!CanInvoke)
+            return;
+
+        grabbed = false;
+
+        OnMoveRelease.Invoke(this, () =>
+        {
+            queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));
+            resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
+        });
+    }
+
+    public void OnPointerMove(PointerEventData eventData) {
+        if (!grabbed || !CanInvoke)
+            return;
+
     }
 }

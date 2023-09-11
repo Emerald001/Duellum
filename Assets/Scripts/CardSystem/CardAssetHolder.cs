@@ -8,6 +8,9 @@ public class CardAssetHolder : MonoBehaviour
     public CardBehaviour cardBehaviour;
 
     [Header("Visuals")]
+    public GameObject ToggleVisual;
+    public CanvasGroup Fader;
+
     public TextMeshProUGUI Name;
     public TextMeshProUGUI Discription;
     public TextMeshProUGUI ManaCost;
