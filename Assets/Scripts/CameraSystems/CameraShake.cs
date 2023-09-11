@@ -25,7 +25,3 @@ public class CameraShake : MonoBehaviour
         queue.Enqueue(new ShakeObjectAction(transform, .1f, amount));
     }
 }
-
-public enum CameraEventType {
-    DO_CAMERA_SHAKE,
-}

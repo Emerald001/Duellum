@@ -33,7 +33,7 @@ public static class GridStaticSelectors {
     private static List<Vector2Int> GetAvailableTilesCircle(Selector selector, Vector2Int startPos) {
         List<Vector2Int> result = new();
 
-        GridStaticFunctions.RippleThroughGridPositions(startPos, selector.range, (currentPos, index) =>
+        GridStaticFunctions.RippleThroughSquareGridPositions(startPos, selector.range, (currentPos, index) =>
         {
             result.Add(currentPos);
         });
@@ -46,8 +46,8 @@ public static class GridStaticSelectors {
 
     private static List<Vector2Int> GetAvailableTilesLine(Selector selector, Vector2Int startPos) {
         List<Vector2Int> result = new() {
-        startPos
-    };
+            startPos
+        };
 
         if (selector.AllDirections)
             for (int j = 0; j < 6; j++) {
