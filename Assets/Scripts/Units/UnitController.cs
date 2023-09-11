@@ -7,11 +7,21 @@ public class UnitController : MonoBehaviour {
 
     private UnitValues values;
     private UnitMovementComponent unitMovementComponent;
+    private Vector2Int gridPosition;
 
     public void SetUp(UnitData data) {
         UnitBaseData = Instantiate(data);
 
         values = new(UnitBaseData);
+        unitMovementComponent = new();
+    }
+
+    public void OnEnter() {
+        unitMovementComponent.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
+    }
+
+    public void OnExit() {
+        GridStaticFunctions.ResetTileColors();
     }
 }
 
@@ -36,10 +46,10 @@ public class UnitMovementComponent {
     public bool IsDone { get; private set; }
 
     private readonly ActionQueue movementQueue;
-    private Dictionary<Vector2Int, Vector2Int> parentDictionary;
-    private List<Vector2Int> currentAccessableTiles;
+    private readonly Dictionary<Vector2Int, Vector2Int> parentDictionary = new();
+    private readonly List<Vector2Int> currentAccessableTiles = new();
 
-    public UnitMovementComponent(UnitData data) {
+    public UnitMovementComponent() {
         movementQueue = new(() => IsDone = true);
     }
 
@@ -78,6 +88,8 @@ public class UnitMovementComponent {
             openList.AddRange(layerList); // Use ForEach for adding elements from one list to another
             layerList.Clear();
         }
+
+        GridStaticFunctions.HighlightTiles(currentAccessableTiles);
     }
 
     private void Move() {

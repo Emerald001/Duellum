@@ -6,6 +6,7 @@ using System;
 
 public static class GridStaticFunctions {
     public static Vector2Int CONST_EMPTY = new(12345, 12345);
+    public static Color CONST_HIGHLIGHT_COLOR = new(50, 50, 50);
 
     private static readonly Vector2Int[] evenNeighbours = {
         new Vector2Int(-1, -1),
@@ -139,10 +140,22 @@ public static class GridStaticFunctions {
             openList.AddRange(layerList);
             layerList.Clear();
         }
+    }
 
-        openList.Clear();
-        layerList.Clear();
-        closedList.Clear();
+    public static void HighlightTiles(List<Vector2Int> tiles) {
+        foreach (var tile in tiles) {
+            var color = Grid[tile].GivenColor.color + CONST_HIGHLIGHT_COLOR;
+            Material mat = new(Grid[tile].GetComponent<Renderer>().material) {
+                color = color
+            };
+
+            Grid[tile].SetColor(mat);
+        }
+    }
+
+    public static void ResetTileColors() {
+        foreach (var tile in Grid.Values)
+            tile.SetColor();
     }
 
     public static bool TryGetHexNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {

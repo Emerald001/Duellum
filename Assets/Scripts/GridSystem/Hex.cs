@@ -4,6 +4,7 @@ using UnityEngine;
 public class Hex : MonoBehaviour {
     [SerializeField] private new Renderer renderer;
 
+    public Renderer GivenRenderer => renderer;
     public Material GivenColor { get; set; }
 
     public Vector2Int GridPos { get; set; }

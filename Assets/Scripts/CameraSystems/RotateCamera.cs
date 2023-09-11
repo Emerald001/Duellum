@@ -7,12 +7,10 @@ public class RotateCamera : MonoBehaviour
     private ActionQueue queue = new();
 
     private readonly float[] yRots = {
-        30,
-        90,
-        150,
-        210,
-        270,
-        330
+        45,
+        135,
+        225,
+        315,
     };
 
     private bool canInvoke = true;
@@ -39,10 +37,10 @@ public class RotateCamera : MonoBehaviour
         canInvoke = false;
 
         index += dir;
-        if (index > 5)
+        if (index > yRots.Length - 1)
             index = 0;
         if (index < 0)
-            index = 5;
+            index = yRots.Length - 1;
 
         queue.Enqueue(new RotateAction(gameObject, new Vector3(0, yRots[index], 0), rotSpeed, .01f));
     }
