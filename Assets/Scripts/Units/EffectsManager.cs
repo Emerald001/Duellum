@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum EffectType {
+    AttackBoost,
+    DefenceBoost,
+    SpeedBoost,
+
+
     Burn,
     Poison,
     Slow,
@@ -10,6 +16,7 @@ public enum EffectType {
     KnockedOut,
 }
 
+[Serializable]
 public class Effect {
     public Sprite Icon;
     public EffectType type;
@@ -21,11 +28,11 @@ public class Effect {
 }
 
 public static class EffectsManager {
-    public static void ApplyEffects(UnitData data, List<Effect> effects) {
-        foreach (var item in effects) {
-            switch (item.type) {
+    public static void ApplyEffects(UnitValues data, List<Effect> effects) {
+        foreach (var effect in effects) {
+            switch (effect.type) {
                 case EffectType.Poison:
-                    ApplyPoisonEffect(data, item.sevarity);
+                    data.currentStats.EnergyPoints -= 1 * effect.sevarity;
                     break;
 
                 case EffectType.Burn:
@@ -33,9 +40,5 @@ public static class EffectsManager {
                     break;
             }
         }
-    }
-
-    private static void ApplyPoisonEffect(UnitData data, int severity) {
-        data.BaseStatBlock.EnergyPoints -= 1 * severity;
     }
 }
