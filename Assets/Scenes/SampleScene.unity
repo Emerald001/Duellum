@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -501,6 +501,9 @@ MonoBehaviour:
     AllDirections: 0
     range: 1
     rotIndex: 1
+    includeWater: 0
+    includeCover: 0
+    excludeUnits: 0
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1856,6 +1859,9 @@ MonoBehaviour:
     AllDirections: 0
     range: 1
     rotIndex: 1
+    includeWater: 0
+    includeCover: 0
+    excludeUnits: 0
   height: 1
   RippleSelector:
     type: 2
@@ -1863,6 +1869,9 @@ MonoBehaviour:
     AllDirections: 0
     range: 10
     rotIndex: 1
+    includeWater: 0
+    includeCover: 0
+    excludeUnits: 0
   rippleStrength: 20
 --- !u!114 &1036886696
 MonoBehaviour:
@@ -1876,11 +1885,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af95526346842f740bdc0f86926bfbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitPlaceholder: {fileID: 7409916168802375494, guid: 0064cf83475593d44b4283697c357888,
-    type: 3}
   UnitPrefab: {fileID: 7409916168802375495, guid: 0064cf83475593d44b4283697c357888,
     type: 3}
-  PlaceholderData: {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
+  PlayerUnitsToSpawn:
+  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
+  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
+  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
+  EnemyUnitsToSpawn:
+  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
+  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
+  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
   GridGenerator: {fileID: 1036886697}
 --- !u!114 &1036886697
 MonoBehaviour:
