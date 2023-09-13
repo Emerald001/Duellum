@@ -20,6 +20,7 @@ public abstract class UnitController : MonoBehaviour {
 
         values = new(UnitBaseData);
         unitMovement = new();
+        attackModule = new(UnitBaseData.Attack);
 
         gridPosition = pos;
 
