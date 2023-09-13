@@ -1885,7 +1885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af95526346842f740bdc0f86926bfbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitPrefab: {fileID: 7409916168802375495, guid: 0064cf83475593d44b4283697c357888,
+  UnitPrefab: {fileID: 4147554668627666437, guid: 0064cf83475593d44b4283697c357888,
     type: 3}
   PlayerUnitsToSpawn:
   - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
