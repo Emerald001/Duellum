@@ -105,14 +105,14 @@ public class TurnManager : MonoBehaviour
 
     private void OnExit() {
         if (enemyUnitsInPlay.Count < 1) {
-            var header = "Win";
-            var body = "You won in " + currentTurn + " turns.";
+            //var header = "Win";
+            //var body = "You won in " + currentTurn + " turns.";
 
             //UIManager.ShowEndScreen(header, body);
         }
         else if (playerUnitsInPlay.Count < 1) {
-            var header = "Lose";
-            var body = "You lost in " + currentTurn + " turns.";
+            //var header = "Lose";
+            //var body = "You lost in " + currentTurn + " turns.";
 
             //UIManager.ShowEndScreen(header, body);
         }

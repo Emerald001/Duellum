@@ -18,6 +18,7 @@ public class UnitData : ScriptableObject {
     public Sprite Icon;
     public SpriteAtlas Animations;
     public GameObject PawnPrefab;
+    public float movementSpeed;
 
     [Header("Tile Coverage")]
     public UnitTileCoverType tileCover;
