@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3143461922185471494}
   - component: {fileID: 3143461922185471495}
   m_Layer: 0
-  m_Name: GridCardBlock
-  m_TagString: WalkableTile
+  m_Name: GridSpawnBlock
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,6 +46,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderer: {fileID: 3143461923594965698}
+  standardColor: {fileID: 2100000, guid: 959cb5d0c807aab47b3bed0e43c0cbe1, type: 2}
+  HoverColor: {fileID: 2100000, guid: d833684fc1608704fbd4f03fb721dcac, type: 2}
+  movementColor: {fileID: 2100000, guid: d6b0338079e4151449a07ec1499e8038, type: 2}
+  attackColor: {fileID: 2100000, guid: 12881b21d09933b4882c9a936f694af3, type: 2}
 --- !u!1 &3143461923594965703
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +64,7 @@ GameObject:
   - component: {fileID: 3143461923594965701}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: WalkableTile
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,7 +112,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8bb8ab14025b3c84faf2641154110bb6, type: 2}
+  - {fileID: 2100000, guid: 959cb5d0c807aab47b3bed0e43c0cbe1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
