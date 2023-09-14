@@ -182,7 +182,7 @@ public class CardHand : MonoBehaviour
             if (validTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
                 var affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos);
 
-                AbilityManager.PerformAbility(ability.abilityType, affectedTiles.ToArray());
+                AbilityManager.PerformAbility(ability, affectedTiles.ToArray());
                 RemoveCard(card.Index);
                 return;
             }

@@ -1,44 +1,38 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public static class AbilityManager {
-    public static void PerformAbility(AbilityCardType type, params Vector2Int[] positions) {
-        switch (type) {
-            case AbilityCardType.AttackBoost:
-                // Select any unit
-                break;
-            case AbilityCardType.DefenceBoost:
-                // Select any unit
-                break;
-            case AbilityCardType.SpeedBoost:
-                // Select any unit
-                break;
-            case AbilityCardType.Climb:
-                // Select any unit
-                break;
+    public static void PerformAbility(AbilityCard card, params Vector2Int[] positions) {
+        switch (card.abilityType) {
+            case AbilityCardType.ApplyEffect:
+                List<UnitController> controllerList = new();
+                foreach (Vector2Int position in positions) {
+                    if (GridStaticFunctions.TryGetUnitFromGridPos(position, out var unit))
+                        controllerList.Add(unit);
+                }
+
+                foreach (var unit in controllerList)
+                    unit.AddEffect(card.effectToApply);
+            break;
+
             case AbilityCardType.Teleport:
                 // Select any unit
-                break;
-            case AbilityCardType.Trap:
-                // Select any unit
-                break;
+            break;
+
             case AbilityCardType.PlaceBoulder:
                 // Select a specific tile
-                break;
+            break;
+
             case AbilityCardType.Revive:
                 // Select any unit
-                break;
+            break;
+
             case AbilityCardType.SkipOpponentsTurn:
                 // Select All Enemy units
-                break;
-            case AbilityCardType.FuryEffect:
-                // Select any unit
-                break;
-            case AbilityCardType.FearEffect:
-                // Select any unit
-                break;
+            break;
 
             default:
-                throw new System.NotImplementedException($"{type} Not Yet Implemented");
+                throw new System.NotImplementedException($"{card.abilityType} Not Yet Implemented");
         }
     }
 }

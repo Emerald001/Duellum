@@ -19,18 +19,13 @@ public class AbilityCard : ScriptableObject
     public Selector availabletilesSelector;
 
     public AbilityCardType abilityType;
+    public Effect effectToApply;
 }
 
 public enum AbilityCardType {
-    AttackBoost,
-    DefenceBoost,
-    SpeedBoost,
-    Climb,
+    ApplyEffect,
     Teleport,
-    Trap,
     PlaceBoulder,
     Revive,
     SkipOpponentsTurn,
-    FuryEffect,
-    FearEffect,
 }

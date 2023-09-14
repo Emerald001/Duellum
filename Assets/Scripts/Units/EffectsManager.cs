@@ -6,12 +6,9 @@ public enum EffectType {
     AttackBoost,
     DefenceBoost,
     SpeedBoost,
-
-
-    Burn,
-    Poison,
+    Fury,
+    Fear,
     Slow,
-    Drunk,
     Exhaust,
     KnockedOut,
 }
@@ -31,12 +28,21 @@ public static class EffectsManager {
     public static void ApplyEffects(UnitValues data, List<Effect> effects) {
         foreach (var effect in effects) {
             switch (effect.type) {
-                case EffectType.Poison:
-                    data.currentStats.EnergyPoints -= 1 * effect.sevarity;
+                case EffectType.AttackBoost:
                     break;
-
-                case EffectType.Burn:
-                    // Apply Burn Effect
+                case EffectType.DefenceBoost:
+                    break;
+                case EffectType.SpeedBoost:
+                    break;
+                case EffectType.Fury:
+                    break;
+                case EffectType.Fear:
+                    break;
+                case EffectType.Slow:
+                    break;
+                case EffectType.Exhaust:
+                    break;
+                case EffectType.KnockedOut:
                     break;
             }
         }
