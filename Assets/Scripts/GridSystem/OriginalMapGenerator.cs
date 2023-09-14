@@ -22,10 +22,16 @@ public class OriginalMapGenerator : MonoBehaviour {
     private readonly Dictionary<Vector2Int, Hex> GridToSpawn = new();
     private readonly Dictionary<Vector2Int, Hex> Grid = new();
 
+    private GameObject gridParent;
+
     public void SetUp() {
         GridStaticFunctions.GridWidth = width;
         GridStaticFunctions.GridHeight = height;
         GridStaticFunctions.GridGap = gap;
+
+        gridParent = new() {
+            name = "Grid"
+        };
 
         AllocateGrid();
         SpawnGrid();
@@ -37,8 +43,9 @@ public class OriginalMapGenerator : MonoBehaviour {
 
             tmp.SetHighlight(HighlightType.None);
             tmp.GridPos = item.Key;
-            tmp.StandardPosition = GridStaticFunctions.CalcSquareWorldPos(item.Key);
+            tmp.StandardWorldPosition = GridStaticFunctions.CalcSquareWorldPos(item.Key);
             tmp.transform.position = GridStaticFunctions.CalcSquareWorldPos(item.Key);
+            tmp.transform.SetParent(gridParent.transform);
 
             Grid.Add(item.Key, tmp);
         }

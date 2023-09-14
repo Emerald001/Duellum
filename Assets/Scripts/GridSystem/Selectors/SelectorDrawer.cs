@@ -12,6 +12,8 @@ public class SelectorDrawer : PropertyDrawer {
         totalHeight = EditorGUIUtility.singleLineHeight;
         position.height = EditorGUIUtility.singleLineHeight;
 
+        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+
         SerializedProperty enumProperty = property.FindPropertyRelative("type");
         EditorGUI.PropertyField(position, enumProperty, GUIContent.none);
 
@@ -19,18 +21,18 @@ public class SelectorDrawer : PropertyDrawer {
         switch (selectorOption) {
             case SelectorType.Circle:
                 DrawCircleFields(position, property);
-                break;
+            break;
 
             case SelectorType.Line:
                 DrawLineFields(position, property);
-                break;
+            break;
 
             case SelectorType.AllTiles:
                 DrawAllTilesFields(position, property);
-                break;
+            break;
 
             default:
-                break;
+            break;
         }
 
         EditorGUI.EndProperty();
