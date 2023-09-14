@@ -144,8 +144,8 @@ public static class GridStaticFunctions {
 
     public static void HighlightTiles(List<Vector2Int> tiles) {
         foreach (var tile in tiles) {
-            var color = Grid[tile].GivenColor.color + CONST_HIGHLIGHT_COLOR;
-            Material mat = new(Grid[tile].GetComponent<Renderer>().material) {
+            var color = Grid[tile].BaseColor.color + CONST_HIGHLIGHT_COLOR;
+            Material mat = new(Grid[tile].GivenRenderer.material) {
                 color = color
             };
 

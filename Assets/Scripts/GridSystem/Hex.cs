@@ -6,19 +6,20 @@ public class Hex : MonoBehaviour {
 
     public Renderer GivenRenderer => renderer;
     public Material GivenColor { get; set; }
+    public Material BaseColor => baseMaterial;
 
     public Vector2Int GridPos { get; set; }
     public Vector3 StandardPosition { get; set; }
 
     private readonly ActionQueue queue = new();
-    private Material BaseMaterial;
+    private Material baseMaterial;
 
     private void Update() {
         queue.OnUpdate();
     }
 
     public void SetBaseColor(Color color) {
-        BaseMaterial = new(renderer.material) {
+        baseMaterial = new(renderer.material) {
             color = color
         };
 
@@ -27,7 +28,7 @@ public class Hex : MonoBehaviour {
 
     public void SetColor(Material color = null) {
         if (color == null)
-            renderer.material = BaseMaterial;
+            renderer.material = baseMaterial;
         else
             renderer.material = GivenColor = color;
     }
