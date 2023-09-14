@@ -35,8 +35,7 @@ public class OriginalMapGenerator : MonoBehaviour {
         foreach (var item in GridToSpawn) {
             Hex tmp = Instantiate(item.Value);
 
-            Color color = tmp.GetComponentInChildren<Renderer>().material.color;
-            tmp.SetBaseColor(color);
+            tmp.SetHighlight(HighlightType.None);
             tmp.GridPos = item.Key;
             tmp.StandardPosition = GridStaticFunctions.CalcSquareWorldPos(item.Key);
             tmp.transform.position = GridStaticFunctions.CalcSquareWorldPos(item.Key);

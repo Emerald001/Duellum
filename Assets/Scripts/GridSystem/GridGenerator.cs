@@ -110,11 +110,11 @@ public class GridGenerator : MonoBehaviour
 
         foreach (Hex hex in Hexes) {
             if (positions.TryGetValue(hex.GridPos, out float value)) {
-                hex.SetBaseColor(new Color(value, value, value));
+                hex.SetHighlight(HighlightType.None);
                 hex.SetActionQueue(new List<Action>() {
                     new WaitAction(initialSpawnDelay),
                     new MoveObjectAction(hex.gameObject, initialSpawnSpeed * value, hex.transform.position + new Vector3(0, (value * scaler), 0)),
-                    new DoMethodAction(() => hex.StandardPosition = hex.transform.position)
+                    new DoMethodAction(() => hex.StandardWorldPosition = hex.transform.position)
                 });
             }
         }

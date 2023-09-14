@@ -115,13 +115,13 @@ public class PlayerUnitController : UnitController {
         //ResetHexColor(AttackableTiles);
 
         if (lastAbilityTiles.Count > 0)
-            ChangeHexColor(lastAbilityTiles, null);
+            ChangeHexColor(lastAbilityTiles, HighlightType.None);
         lastAbilityTiles.Clear();
 
         foreach (var pos in lastHighlightedTiles)
-            GridStaticFunctions.Grid[pos].SetColor();
+            GridStaticFunctions.Grid[pos].SetHighlight(HighlightType.None);
 
-        GridStaticFunctions.Grid[gridPosition].SetColor();
+        GridStaticFunctions.Grid[gridPosition].SetHighlight(HighlightType.None);
     }
 
     public override void FindTiles() {
@@ -135,12 +135,12 @@ public class PlayerUnitController : UnitController {
 
         // TODO:
         // Give this a highlighted color
-        GridStaticFunctions.Grid[gridPosition].SetColor();
+        GridStaticFunctions.Grid[gridPosition].SetHighlight(HighlightType.None);
     }
 
-    public void ChangeHexColor(List<Vector2Int> list, Material color) {
+    public void ChangeHexColor(List<Vector2Int> list, HighlightType type) {
         for (int i = 0; i < list.Count; i++)
-            GridStaticFunctions.Grid[list[i]].SetColor(color);
+            GridStaticFunctions.Grid[list[i]].SetHighlight(type);
     }
 
     private void CreatePathForLine() {

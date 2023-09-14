@@ -143,19 +143,13 @@ public static class GridStaticFunctions {
     }
 
     public static void HighlightTiles(List<Vector2Int> tiles) {
-        foreach (var tile in tiles) {
-            var color = Grid[tile].BaseColor.color + CONST_HIGHLIGHT_COLOR;
-            Material mat = new(Grid[tile].GivenRenderer.material) {
-                color = color
-            };
-
-            Grid[tile].SetColor(mat);
-        }
+        foreach (var tile in tiles)
+            Grid[tile].SetHighlight(HighlightType.MovementHighlight);
     }
 
     public static void ResetTileColors() {
         foreach (var tile in Grid.Values)
-            tile.SetColor();
+            tile.SetHighlight(HighlightType.None);
     }
 
     public static bool TryGetHexNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {
