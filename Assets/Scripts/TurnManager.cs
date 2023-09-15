@@ -99,6 +99,8 @@ public class TurnManager : MonoBehaviour
 
         //UIManager.SetInfoText("Turn " + currentTurn.ToString());
 
+        EventManager<BattleEvents>.Invoke(BattleEvents.NewTurn);
+
         OrderUnits();
         NextUnit();
     }
@@ -187,5 +189,7 @@ public enum BattleEvents {
     StartBattle,
     EndUnitTurn,
     NewTurn,
+    GrabbedAbilityCard,
+    ReleasedAbilityCard,
     BattleEnd,
 }

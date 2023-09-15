@@ -15,6 +15,10 @@ public class PlayerUnitController : UnitController {
         //turnManager.UIManager.ActivateButtons();
 
         base.OnEnter();
+
+        HighlightTiles();
+
+        EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, HighlightTiles);
     }
 
     public override void OnUpdate() {
@@ -108,12 +112,15 @@ public class PlayerUnitController : UnitController {
         //turnManager.UIManager.DeactivateButtons();
         //Tooltip.HideTooltip_Static();
         Line.enabled = false;
+
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, HighlightTiles);
+    }
+
+    public void HighlightTiles() {
+        GridStaticFunctions.HighlightTiles(unitMovement.AccessableTiles, HighlightType.MovementHighlight);
     }
 
     public void ResetTiles() {
-        //ResetHexColor(AccessableTiles);
-        //ResetHexColor(AttackableTiles);
-
         if (lastAbilityTiles.Count > 0)
             ChangeHexColor(lastAbilityTiles, HighlightType.None);
         lastAbilityTiles.Clear();

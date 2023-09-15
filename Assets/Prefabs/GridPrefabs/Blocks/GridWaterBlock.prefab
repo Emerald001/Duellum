@@ -50,6 +50,7 @@ MonoBehaviour:
   HoverColor: {fileID: 2100000, guid: 3917d7fec51b7784f92787460b1ed1c1, type: 2}
   movementColor: {fileID: 2100000, guid: 23ca69a6f9957c347943877f1c651344, type: 2}
   attackColor: {fileID: 2100000, guid: 12881b21d09933b4882c9a936f694af3, type: 2}
+  type: 1
 --- !u!1 &3143461923594965703
 GameObject:
   m_ObjectHideFlags: 0

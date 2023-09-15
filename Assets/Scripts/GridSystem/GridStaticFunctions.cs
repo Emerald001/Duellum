@@ -140,9 +140,9 @@ public static class GridStaticFunctions {
         }
     }
 
-    public static void HighlightTiles(List<Vector2Int> tiles) {
+    public static void HighlightTiles(List<Vector2Int> tiles, HighlightType type) {
         foreach (var tile in tiles)
-            Grid[tile].SetHighlight(HighlightType.MovementHighlight);
+            Grid[tile].SetHighlight(type);
     }
 
     public static void ResetTileColors() {

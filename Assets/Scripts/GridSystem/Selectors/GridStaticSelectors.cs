@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class GridStaticSelectors {
@@ -19,7 +20,11 @@ public static class GridStaticSelectors {
             case SelectorType.FriendlyUnits:
             case SelectorType.EnemyUnits:
             case SelectorType.AllUnits:
-                GetAvailableTilesUnits(selector, startPos);
+                result = GetAvailableTilesUnits(selector, startPos);
+                break;
+
+            case SelectorType.AllTiles:
+                result = GetAllTiles(selector);
                 break;
 
             default:
@@ -91,19 +96,30 @@ public static class GridStaticSelectors {
         }
     }
 
-    private static List<Vector2Int> GetAllTiles(Selector selector, Vector2Int startPos) {
-        List<Vector2Int> result = new();
+    private static List<Vector2Int> GetAllTiles(Selector selector) {
+        List<Vector2Int> result = GridStaticFunctions.Grid.Values
+            .Where(tile => tile.Type == HexType.Normal)
+            .Select(tile => tile.GridPos).ToList();
 
-        switch (selector.type) {
-            case SelectorType.AllUnits:
-                return new List<Vector2Int>();
-            case SelectorType.FriendlyUnits:
-                return new List<Vector2Int>();
-            case SelectorType.EnemyUnits:
-                return new List<Vector2Int>();
+        Debug.Log(result.Count);
 
-            default:
-                return null;
+        if (selector.includeWater) {
+            result.AddRange(GridStaticFunctions.Grid.Values
+                .Where(tile => tile.Type == HexType.Water)
+                .Select(tile => tile.GridPos));
         }
+        if (selector.includeCover) {
+            result.AddRange(GridStaticFunctions.Grid.Values
+                .Where(tile => tile.Type == HexType.Cover)
+                .Select(tile => tile.GridPos));
+        }
+        if (selector.excludeUnits) {
+            foreach (var item in GridStaticFunctions.UnitPositions) {
+                if (result.Contains(item.Item1))
+                    result.Remove(item.Item1);
+            }
+        }
+
+        return result;
     }
 }

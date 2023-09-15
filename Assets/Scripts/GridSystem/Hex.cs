@@ -10,8 +10,11 @@ public class Hex : MonoBehaviour {
     [SerializeField] private Material movementColor;
     [SerializeField] private Material attackColor;
 
+    [SerializeField] private HexType type;
+
     public Vector2Int GridPos { get; set; }
     public Vector3 StandardWorldPosition { get; set; }
+    public HexType Type => type;
 
     private HighlightType currentType = HighlightType.None;
     private readonly ActionQueue queue = new();
@@ -50,4 +53,11 @@ public enum HighlightType {
     None,
     MovementHighlight,
     AttackHighlight,
+}
+
+public enum HexType {
+    Normal,
+    Water,
+    Cover,
+    Spawn,
 }

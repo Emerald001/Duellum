@@ -266,6 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 259494338}
   - component: {fileID: 259494339}
+  - component: {fileID: 259494340}
   m_Layer: 5
   m_Name: CardHandHolder
   m_TagString: Untagged
@@ -301,11 +302,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 300be5ea9a4e3fe47988d7e3296b33e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UICam: {fileID: 783440547}
-  TMPCardToAdd: {fileID: 11400000, guid: 96350e12c46863540ad6ce61a51955b9, type: 2}
-  CardPrefab: {fileID: 5226560222687344958, guid: 0b976eb92b7b2ab46b27abc708faa38e,
+  uiCam: {fileID: 783440547}
+  cardPrefab: {fileID: 5226560222687344958, guid: 0b976eb92b7b2ab46b27abc708faa38e,
     type: 3}
-  StackPos: {fileID: 1876400315}
+  cardStack: {fileID: 259494340}
+  stackPos: {fileID: 1876400315}
   cardSpawnMoveSpeed: 50
   cardViewMoveSpeed: 15
   cardRotationSpeed: 50
@@ -315,6 +316,42 @@ MonoBehaviour:
   moveOverDistance: 5
   raisedAmount: 3
   fadeThreshold: 3
+--- !u!114 &259494340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259494337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58cc238a01760814fa32003611946cc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Cards:
+  - {fileID: 11400000, guid: 797d6a85f0908604e88eb0400d4c1960, type: 2}
+  - {fileID: 11400000, guid: 797d6a85f0908604e88eb0400d4c1960, type: 2}
+  - {fileID: 11400000, guid: 797d6a85f0908604e88eb0400d4c1960, type: 2}
+  - {fileID: 11400000, guid: 797d6a85f0908604e88eb0400d4c1960, type: 2}
+  - {fileID: 11400000, guid: 96350e12c46863540ad6ce61a51955b9, type: 2}
+  - {fileID: 11400000, guid: 96350e12c46863540ad6ce61a51955b9, type: 2}
+  - {fileID: 11400000, guid: 96350e12c46863540ad6ce61a51955b9, type: 2}
+  - {fileID: 11400000, guid: 96350e12c46863540ad6ce61a51955b9, type: 2}
+  - {fileID: 11400000, guid: 2cbe82b386c228c4898749a90c6715ea, type: 2}
+  - {fileID: 11400000, guid: 2cbe82b386c228c4898749a90c6715ea, type: 2}
+  - {fileID: 11400000, guid: 2cbe82b386c228c4898749a90c6715ea, type: 2}
+  - {fileID: 11400000, guid: 817657423400d0b4d9e579aa2846aaaa, type: 2}
+  - {fileID: 11400000, guid: 87981ad461f684d438dd390497ec703e, type: 2}
+  - {fileID: 11400000, guid: 87981ad461f684d438dd390497ec703e, type: 2}
+  - {fileID: 11400000, guid: 216e0f8a55374594e94c74b78ec2f94c, type: 2}
+  - {fileID: 11400000, guid: 216e0f8a55374594e94c74b78ec2f94c, type: 2}
+  - {fileID: 11400000, guid: 216e0f8a55374594e94c74b78ec2f94c, type: 2}
+  - {fileID: 11400000, guid: 5518aa1864f7a4a44b52e484426d1990, type: 2}
+  - {fileID: 11400000, guid: 5518aa1864f7a4a44b52e484426d1990, type: 2}
+  - {fileID: 11400000, guid: 5518aa1864f7a4a44b52e484426d1990, type: 2}
+  - {fileID: 11400000, guid: 387a5b79ac0318b4fb9648f7bba4ad9b, type: 2}
+  - {fileID: 11400000, guid: 387a5b79ac0318b4fb9648f7bba4ad9b, type: 2}
+  - {fileID: 11400000, guid: 387a5b79ac0318b4fb9648f7bba4ad9b, type: 2}
 --- !u!1 &290912098
 GameObject:
   m_ObjectHideFlags: 0

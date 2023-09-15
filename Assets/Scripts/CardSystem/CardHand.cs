@@ -38,13 +38,21 @@ public class CardHand : MonoBehaviour
     }
 
     private void Start() {
-        nextCard = Instantiate(CardPrefab, StackPos.position, StackPos.rotation);
-        nextCard.transform.parent = StackPos;
+        cardStack.ResetDeck();
+
+        AddCard(cardStack.GetCard());
+        AddCard(cardStack.GetCard());
+        AddCard(cardStack.GetCard());
+        //nextCard = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
+        //nextCard.transform.parent = stackPos;
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.V))
-            AddCard(TMPCardToAdd);
+        if (Input.GetKeyDown(KeyCode.V)) {
+            AbilityCard card = cardStack.GetCard();
+            if (card != null) 
+                AddCard(card);
+        }
     }
 
     public void AddCard(AbilityCard card) {
@@ -161,11 +169,18 @@ public class CardHand : MonoBehaviour
         hasCardFaded = newAlpha < .1f;
 
         if (hasCardFaded != hasCardFadedCallRan) {
-            if (hasCardFaded)
-                EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, abilityCards[card.Index].areaOfEffectSelector);
-            else
-                EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
+            if (hasCardFaded) {
+                GridStaticFunctions.ResetTileColors();
 
+                GridStaticFunctions.HighlightTiles(GridStaticSelectors.GetPositions(
+                    abilityCards[card.Index].availabletilesSelector, 
+                    GridStaticFunctions.CONST_EMPTY),
+                    HighlightType.MovementHighlight);
+            }
+            else
+                GridStaticFunctions.ResetTileColors();
+            
+            EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, hasCardFaded ? abilityCards[card.Index].areaOfEffectSelector : null);
             hasCardFadedCallRan = hasCardFaded;
         }
     }
