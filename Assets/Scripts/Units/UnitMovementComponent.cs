@@ -13,13 +13,16 @@ public class UnitMovementComponent {
     public void FindAccessibleTiles(Vector2Int gridPos, int speedValue) {
         unitPosition = gridPos;
 
+        parentDictionary.Clear();
+        currentAccessableTiles.Clear();
+
         List<Vector2Int> openList = new();
         List<Vector2Int> layerList = new();
-        List<Vector2Int> closedList = new(); // Use HashSet for faster membership checks
+        List<Vector2Int> closedList = new();
 
         openList.Add(gridPos);
         for (int i = 0; i < speedValue; i++) {
-            foreach (var currentPos in openList.ToList()) { // Use ToList() to avoid modification during iteration
+            foreach (var currentPos in openList.ToList()) {
                 GridStaticFunctions.RippleThroughSquareGridPositions(currentPos, 2, (neighbour, count) => {
                     if (neighbour == currentPos)
                         return;
@@ -42,11 +45,9 @@ public class UnitMovementComponent {
             }
 
             openList.Clear();
-            openList.AddRange(layerList); // Use ForEach for adding elements from one list to another
+            openList.AddRange(layerList);
             layerList.Clear();
         }
-
-        GridStaticFunctions.HighlightTiles(currentAccessableTiles);
     }
 
     public List<Vector2Int> GetPath(Vector2Int endPos) {

@@ -155,9 +155,8 @@ public class TurnManager : MonoBehaviour
         curUnit.Values.currentStats.Initiative *= -1;
         OrderUnits();
 
-        for (int i = 0; i < unitAttackOrder.Count; i++) {
+        for (int i = 0; i < unitAttackOrder.Count; i++)
             unitAttackOrder[i].gameObject.GetComponentInChildren<Text>().text = (i + 2).ToString();
-        }
     }
 
     public void UnitEndTurn() {

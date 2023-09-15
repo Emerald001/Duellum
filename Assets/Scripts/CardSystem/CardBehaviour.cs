@@ -104,7 +104,6 @@ public class CardBehaviour : MonoBehaviour,
             return;
 
         grabbed = false;
-
         OnMoveRelease.Invoke(this, () =>
         {
             queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));

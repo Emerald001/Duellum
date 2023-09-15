@@ -13,7 +13,7 @@ public class UnitValues {
     [HideInInspector] public int Morale;
 
     public StatBlock currentStats;
-    public List<Effect> CurrentEffects;
+    public List<Effect> CurrentEffects = new();
     
     private UnitData baseData;
 

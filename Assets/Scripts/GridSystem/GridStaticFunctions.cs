@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -26,14 +24,14 @@ public static class GridStaticFunctions {
         new Vector2Int(-1, 0),
     };
 
-    private static readonly Vector2Int[] cubeNeighbours = {
-        new Vector2Int(1, 1),
+    private static readonly Vector2Int[] directCubeNeighbours = {
         new Vector2Int(1, 0),
-        new Vector2Int(1, -1),
         new Vector2Int(0, 1),
-        new Vector2Int(0, -1),
-        new Vector2Int(-1, 1),
         new Vector2Int(-1, 0),
+        new Vector2Int(0, -1),
+        new Vector2Int(1, 1),
+        new Vector2Int(1, -1),
+        new Vector2Int(-1, 1),
         new Vector2Int(-1, -1),
     };
 
@@ -123,7 +121,7 @@ public static class GridStaticFunctions {
 
                 if (i < range - 1) {
                     for (int k = 0; k < 8; k++) {
-                        Vector2Int neighbour = currentPos + cubeNeighbours[k];
+                        Vector2Int neighbour = currentPos + directCubeNeighbours[k];
                         if (openList.Contains(neighbour) || closedList.Contains(neighbour) || layerList.Contains(neighbour) || (hasCreatedGrid && !Grid.ContainsKey(neighbour)))
                             continue;
 

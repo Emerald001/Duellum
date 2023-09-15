@@ -36,7 +36,6 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void OnExit() {
-
         IsDone = false;
     }
 
@@ -62,14 +61,16 @@ public abstract class UnitController : MonoBehaviour {
         }));
 
         foreach (var item in unitMovement.GetPath(targetPosition)) {
+            Vector2Int newPos = item;
             queue.Enqueue(new MoveObjectAction(gameObject, UnitBaseData.movementSpeed, GridStaticFunctions.CalcSquareWorldPos(item)));
-            queue.Enqueue(new DoMethodAction(() => gridPosition = item));
+            queue.Enqueue(new DoMethodAction(() => gridPosition = newPos));
             queue.Enqueue(new DoMethodAction(() => values.currentStats.Speed--));
         }
 
         queue.Enqueue(new DoMethodAction(() => {
             //UnitAnimator.WalkAnim(false);
             //UnitAudio.PlayLoopedAudio("Walking", false);
+
             FindTiles();
             GridStaticFunctions.ResetTileColors();
         }));

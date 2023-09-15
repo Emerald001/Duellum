@@ -5,11 +5,10 @@ using UnityEngine;
 public class CardHand : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Camera UICam;
-    [SerializeField] private AbilityCard TMPCardToAdd;
-    [SerializeField] private CardAssetHolder CardPrefab;
-
-    [SerializeField] private Transform StackPos;
+    [SerializeField] private Camera uiCam;
+    [SerializeField] private CardAssetHolder cardPrefab;
+    [SerializeField] private CardStack cardStack;
+    [SerializeField] private Transform stackPos;
 
     [Header("Card Move Values")]
     [SerializeField] private float cardSpawnMoveSpeed;
@@ -49,20 +48,20 @@ public class CardHand : MonoBehaviour
     }
 
     public void AddCard(AbilityCard card) {
-        CardAssetHolder cardObject = Instantiate(CardPrefab, StackPos.position, StackPos.rotation);
+        CardAssetHolder cardObject = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
 
         cardObject.Name.text = card.Name;
         cardObject.Discription.text = card.Discription;
         cardObject.Icon.sprite = card.Icon;
-        cardObject.Background.sprite = card.Background;
+        //cardObject.Background.sprite = card.Background;
         cardObject.ManaCost.text = card.ManaCost.ToString();
 
-        nextCard.transform.parent = transform;
-        cards.Add(nextCard);
+        //nextCard.transform.parent = transform;
+        cards.Add(cardObject);
         abilityCards.Add(card);
         LineOutCards();
 
-        nextCard = cardObject;
+        //nextCard = cardObject;
     }
 
     public void RemoveCard(int index) {
@@ -101,7 +100,7 @@ public class CardHand : MonoBehaviour
                     new MoveObjectAction(card.gameObject, cardSpawnMoveSpeed, position + new Vector3(0, -radius, 0)),
                     new RotateAction(card.gameObject, rotation.eulerAngles, cardRotationSpeed, .01f)
                 ),
-                new DoMethodAction(() => card.cardBehaviour.SetValues(position + new Vector3(0, -radius, 0) + new Vector3(0, raisedAmount, 0), UICam, index))
+                new DoMethodAction(() => card.cardBehaviour.SetValues(position + new Vector3(0, -radius, 0) + new Vector3(0, raisedAmount, 0), uiCam, index))
             });
         }
     }
@@ -182,6 +181,7 @@ public class CardHand : MonoBehaviour
             if (validTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
                 var affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos);
 
+                GridStaticFunctions.ResetTileColors();
                 AbilityManager.PerformAbility(ability, affectedTiles.ToArray());
                 RemoveCard(card.Index);
                 return;
