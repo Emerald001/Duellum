@@ -2,30 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 [CreateAssetMenu(fileName = "New UnitAttack", menuName = "Unit/UnitAttack")]
-public abstract class UnitAttack : ScriptableObject {
-    public List<Effect> EffectsToApply;
-    public Selector AreaOfEffectSelector;
-    public Selector ApplicableTilesSelector;
-
-    public AbilityType Type;
-    public DamageType damageType;
-
-    public int energyCost;
-    public int Damage;
-    [Range(0, 100)]
-    public int RandomnessRange;
-    public int cooldown;
-
+public class UnitAttack : ScriptableObject {
     public string Name;
     public string Description;
 
-    // Implementation
-    public abstract void OnEnter();
-    public abstract void OnUpdate();
-    public abstract void OnExit();
+    public List<Effect> EffectsToApply;
+    //public Selector AreaOfEffectSelector;
+    public Selector ApplicableTilesSelector;
 
-    public int CurrentCooldown { get; set; }
+    //public AbilityType Type;
+    public DamageType damageType;
+
+    //public int energyCost;
+    //public int Damage;
+    //[Range(0, 100)]
+    //public int RandomnessRange;
+    //public int cooldown;
 }
 
 public enum DamageType {

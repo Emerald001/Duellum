@@ -1,47 +1,45 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class UnitAttackModule {
-    public UnitAttack PickedAttack => pickedAttack;
+    public List<Vector2Int> AttackableTiles => currentAttackableTiles;
 
-    private readonly List<UnitAttack> attacks;
-    private UnitAttack pickedAttack;
+    private readonly List<Vector2Int> currentAttackableTiles = new();
+    private readonly UnitAttack attack;
 
-    public UnitAttackModule(List<UnitAttack> attacks) {
-        this.attacks = attacks;
-
-        EventManager<BattleEvents>.Subscribe(BattleEvents.NewTurn, LowerAbilityCooldowns);
+    public UnitAttackModule(UnitAttack attack) {
+        this.attack = attack;
     }
 
-    private void LowerAbilityCooldowns() {
-        foreach (var ability in attacks) {
-            if (ability.CurrentCooldown > 0)
-                ability.CurrentCooldown--;
+    public void FindAttackableTiles(Vector2Int gridpos) {
+        List<Vector2Int> tiles = GridStaticSelectors.GetPositions(attack.ApplicableTilesSelector, gridpos);
+
+        List<Vector2Int> result = new();
+        foreach (var tile in tiles) {
+            if (UnitStaticManager.TryGetUnitFromGridPos(tile, out var unit))
+                result.Add(tile);
         }
     }
 
-    public virtual void SelectAttack(int index) {
-        if (pickedAttack == attacks[index]) {
-            pickedAttack.OnExit();
-            pickedAttack = null;
-        }
-        else {
-            if (pickedAttack != null) {
-                pickedAttack.OnExit();
+    public Vector2Int GetClosestTile(Vector2Int gridPos, Vector2Int tile, Vector3 worldpoint, List<Vector2Int> accessableTiles) {
+        float smallestDistance = Mathf.Infinity;
+        
+        Vector2Int closestTile = Vector2Int.zero;
+        Vector2Int currentPos = tile;
+
+        GridStaticFunctions.RippleThroughSquareGridPositions(gridPos, 2, (neighbour, j) => {
+            if (!accessableTiles.Contains(neighbour) && neighbour != gridPos)
+                return;
+
+            if (Vector3.Distance(GridStaticFunctions.CalcSquareWorldPos(neighbour), worldpoint) < smallestDistance) {
+                smallestDistance = Vector3.Distance(GridStaticFunctions.CalcSquareWorldPos(neighbour), worldpoint);
+                closestTile = neighbour;
             }
-            pickedAttack = attacks[index];
+        });
 
-            //if (pickedAttack.targetAnything)
-            //    pickedAttack.OnEnter(this, turnManager.LivingUnitsInPlay);
-            //else if (pickedAttack.targetEnemy)
-            //    pickedAttack.OnEnter(this, EnemyList);
-            //else
-            //    pickedAttack.OnEnter(this, OwnList);
-        }
-    }
+        if (closestTile != Vector2Int.zero)
+            return closestTile;
 
-    private void Reset() {
-        pickedAttack?.OnExit();
-
-        pickedAttack = null;
+        return Vector2Int.zero;
     }
 }
