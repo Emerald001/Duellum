@@ -1,6 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public static class GridStaticFunctions {
     public static Vector2Int CONST_EMPTY = new(12345, 12345);
@@ -29,10 +30,13 @@ public static class GridStaticFunctions {
         new Vector2Int(0, 1),
         new Vector2Int(-1, 0),
         new Vector2Int(0, -1),
-        new Vector2Int(1, 1),
-        new Vector2Int(1, -1),
-        new Vector2Int(-1, 1),
-        new Vector2Int(-1, -1),
+    };
+
+    private static readonly float[] lookDirections = {
+        90,
+        0,
+        270,
+        180,
     };
 
     public static float HexWidth { get; set; }
@@ -77,7 +81,7 @@ public static class GridStaticFunctions {
         return CONST_EMPTY;
     }
 
-    public static void RippleThroughGridPositions(Vector2Int spawnPos, float range, System.Action<Vector2Int, int> action, bool hasCreatedGrid = true) {
+    public static void RippleThroughGridPositions(Vector2Int spawnPos, float range, Action<Vector2Int, int> action, bool hasCreatedGrid = true) {
         List<Vector2Int> openList = new();
         List<Vector2Int> layerList = new();
         List<Vector2Int> closedList = new();
@@ -107,7 +111,7 @@ public static class GridStaticFunctions {
         }
     }
 
-    public static void RippleThroughSquareGridPositions(Vector2Int spawnPos, float range, System.Action<Vector2Int, int> action, bool hasCreatedGrid = true) {
+    public static void RippleThroughSquareGridPositions(Vector2Int spawnPos, float range, Action<Vector2Int, int> action, bool hasCreatedGrid = true) {
         List<Vector2Int> openList = new();
         List<Vector2Int> layerList = new();
         List<Vector2Int> closedList = new();
@@ -118,7 +122,7 @@ public static class GridStaticFunctions {
                 Vector2Int currentPos = openList[j];
 
                 if (i < range - 1) {
-                    for (int k = 0; k < 8; k++) {
+                    for (int k = 0; k < directCubeNeighbours.Length; k++) {
                         Vector2Int neighbour = currentPos + directCubeNeighbours[k];
                         if (openList.Contains(neighbour) || closedList.Contains(neighbour) || layerList.Contains(neighbour) || (hasCreatedGrid && !Grid.ContainsKey(neighbour)))
                             continue;
@@ -146,6 +150,21 @@ public static class GridStaticFunctions {
     public static void ResetTileColors() {
         foreach (var tile in Grid.Values)
             tile.SetHighlight(HighlightType.None);
+    }
+
+    public static Vector2Int GetVector2RotationFromDirection(Vector3 dir) {
+        Vector2Int result = new(Mathf.RoundToInt(dir.x), Mathf.RoundToInt(dir.z));
+
+        return result;
+    }
+
+    public static float GetRotationFromVector2Direction(Vector2Int dir) {
+        for (int i = 0; i < directCubeNeighbours.Length; i++) {
+            Vector2Int direction = directCubeNeighbours[i];
+            if (direction == dir)
+                return lookDirections[i];
+        }
+        return 0;
     }
 
     public static bool TryGetHexNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {

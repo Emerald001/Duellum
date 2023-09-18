@@ -10,6 +10,7 @@ public abstract class UnitController : MonoBehaviour {
     protected UnitMovementComponent unitMovement;
     protected UnitAttackModule attackModule;
     protected Vector2Int gridPosition;
+    protected Vector2Int lookDirection;
 
     private ActionQueue queue;
 
@@ -40,15 +41,17 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void PickedTile(Vector2Int pickedTile, Vector2Int standingPos_optional) {
-        if (false) { //AttackableTiles.Contains(pickedTile)) {
-            //if (gridPosition == standingPos_optional) {
-            //    //queue.Enqueue(new UnitAttack(this, Unit, EnemyPositions[pickedTile], values.damageValue));
-            //}
-            //else {
-            //    EnqueueMovement(standingPos_optional);
+        if (attackModule.AttackableTiles.Contains(pickedTile)) {
+            if (gridPosition == standingPos_optional) {
+                //queue.Enqueue();
+                didAttack = true;
+            }
+            else {
+                EnqueueMovement(standingPos_optional);
 
-            //    //queue.Enqueue(new UnitAttack(this, Unit, EnemyPositions[pickedTile], values.damageValue));
-            //}
+                //queue.Enqueue();
+                didAttack = true;
+            }
         }
         else if (unitMovement.AccessableTiles.Contains(pickedTile))
             EnqueueMovement(pickedTile);
@@ -60,11 +63,23 @@ public abstract class UnitController : MonoBehaviour {
             //UnitAudio.PlayLoopedAudio("Walking", true);
         }));
 
-        foreach (var item in unitMovement.GetPath(targetPosition)) {
-            Vector2Int newPos = item;
-            queue.Enqueue(new MoveObjectAction(gameObject, UnitBaseData.movementSpeed, GridStaticFunctions.CalcSquareWorldPos(item)));
-            queue.Enqueue(new DoMethodAction(() => gridPosition = newPos));
-            queue.Enqueue(new DoMethodAction(() => values.currentStats.Speed--));
+        Vector2Int lastPos = gridPosition;
+        foreach (var newPos in unitMovement.GetPath(targetPosition)) {
+            Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(newPos) - GridStaticFunctions.CalcSquareWorldPos(lastPos));
+
+            queue.Enqueue(new ActionStack(
+                new MoveObjectAction(gameObject, UnitBaseData.movementSpeed, GridStaticFunctions.CalcSquareWorldPos(newPos)),
+                new RotateAction(gameObject, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0), 360f, .01f)
+                ));
+
+            queue.Enqueue(new DoMethodAction(() => {
+                this.lookDirection = lookDirection;
+                UnitStaticManager.SetUnitPosition(this, newPos);
+                gridPosition = newPos;
+                values.currentStats.Speed--;
+            }));
+
+            lastPos = newPos;
         }
 
         queue.Enqueue(new DoMethodAction(() => {
@@ -78,6 +93,7 @@ public abstract class UnitController : MonoBehaviour {
 
     public virtual void FindTiles() {
         unitMovement.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
+        attackModule.FindAttackableTiles(gridPosition);
     }
 
     public void AddEffect(Effect effect) {
@@ -86,7 +102,8 @@ public abstract class UnitController : MonoBehaviour {
 
     private bool ShouldEndTurn() {
         bool speedDown = values.currentStats.Speed < 1;
+        bool noAttacks = attackModule.AttackableTiles.Count < 1;
 
-        return speedDown || didAttack;
+        return (speedDown && noAttacks) || didAttack;
     }
 }
