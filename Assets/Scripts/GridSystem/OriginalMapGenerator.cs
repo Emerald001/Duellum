@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class OriginalMapGenerator : MonoBehaviour {
     [SerializeField] private Hex gridCubePrefab;
-    [SerializeField] private Hex gridSpawnCubePrefab;
     [SerializeField] private Hex gridWaterCubePrefab;
     [SerializeField] private Hex gridCardCubePrefab;
     [SerializeField] private Hex gridCoverCubePrefab;
@@ -86,15 +85,9 @@ public class OriginalMapGenerator : MonoBehaviour {
         GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2 - 1));
         GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2 + 1));
 
-        foreach (var item in GridStaticFunctions.PlayerSpawnPos)
-            GridToSpawn[item] = gridSpawnCubePrefab;
-
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2));
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 - 1));
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 + 1));
-
-        foreach (var item in GridStaticFunctions.EnemySpawnPos)
-            GridToSpawn[item] = gridSpawnCubePrefab;
 
         int totalTiles = height * width;
         int waterTileAmount = Mathf.RoundToInt(totalTiles * ((float)waterPercentage / 100));

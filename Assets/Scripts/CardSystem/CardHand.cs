@@ -25,7 +25,6 @@ public class CardHand : MonoBehaviour
 
     private readonly List<CardAssetHolder> cards = new();
     private readonly List<AbilityCard> abilityCards = new();
-    private CardAssetHolder nextCard;
 
     private bool hasCardFaded;
     private bool hasCardFadedCallRan;
@@ -64,12 +63,9 @@ public class CardHand : MonoBehaviour
         //cardObject.Background.sprite = card.Background;
         cardObject.ManaCost.text = card.ManaCost.ToString();
 
-        //nextCard.transform.parent = transform;
         cards.Add(cardObject);
         abilityCards.Add(card);
         LineOutCards();
-
-        //nextCard = cardObject;
     }
 
     public void RemoveCard(int index) {
@@ -97,7 +93,7 @@ public class CardHand : MonoBehaviour
             float x = radius * Mathf.Sin(radianAngle);
             float y = radius * Mathf.Cos(radianAngle);
 
-            Vector3 position = transform.position + new Vector3(x, y, 0f);
+            Vector3 position = transform.position + new Vector3(x, y,  i * .01f);
             Quaternion rotation = Quaternion.LookRotation(Vector3.forward, position - transform.position);
 
             int index = i;

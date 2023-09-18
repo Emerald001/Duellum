@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UnitMovementComponent {
     public List<Vector2Int> AccessableTiles => currentAccessableTiles;
-    public bool IsDone { get; private set; }
 
     private readonly Dictionary<Vector2Int, Vector2Int> parentDictionary = new();
     private readonly List<Vector2Int> currentAccessableTiles = new();
@@ -30,7 +29,7 @@ public class UnitMovementComponent {
                     if (GridStaticFunctions.TryGetUnitFromGridPos(neighbour, out var tmp))
                         return;
 
-                    if (!GridStaticFunctions.Grid[neighbour].CompareTag("WalkableTile") ||
+                    if (GridStaticFunctions.Grid[neighbour].Type != HexType.Normal ||
                         openList.Contains(neighbour) ||
                         closedList.Contains(neighbour) ||
                         layerList.Contains(neighbour))

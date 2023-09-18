@@ -24,7 +24,6 @@ public class AbilityCard : ScriptableObject
 
 public enum AbilityCardType {
     ApplyEffect,
-    Teleport,
     PlaceBoulder,
     Revive,
     SkipOpponentsTurn,

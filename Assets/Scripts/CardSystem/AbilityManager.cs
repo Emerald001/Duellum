@@ -15,10 +15,6 @@ public static class AbilityManager {
                     unit.AddEffect(card.effectToApply);
             break;
 
-            case AbilityCardType.Teleport:
-                // Select any unit
-            break;
-
             case AbilityCardType.PlaceBoulder:
                 // Select a specific tile
             break;

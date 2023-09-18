@@ -28,7 +28,7 @@ public class UnitData : ScriptableObject {
     public StatBlock BaseStatBlock;
 
     [Header("Attacks")]
-    public List<UnitAttack> Attack;
+    public UnitAttack Attack;
 
     [Header("Properties")]
     public List<UnitAttribute> Properties;
