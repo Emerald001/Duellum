@@ -13,18 +13,10 @@ public class TurnManager : MonoBehaviour
     [Header("GridSettings")]
     [SerializeField] private OriginalMapGenerator GridGenerator;
 
-    private readonly List<UnitController> livingUnitsInPlay = new();
-
-    private readonly List<UnitController> deadUnitsInPlay = new();
-    private readonly List<UnitController> unitsWithTurnLeft = new();
-
-    private readonly List<UnitController> enemyUnitsInPlay = new();
-    private readonly List<UnitController> playerUnitsInPlay = new();
-
     private List<UnitController> unitAttackOrder = new();
     private UnitController currentUnit;
 
-    private int currentTurn;
+    private int currentTurn = 0;
 
     private UnitFactory unitFactory;
 
@@ -36,7 +28,7 @@ public class TurnManager : MonoBehaviour
         GridGenerator.SetUp();
 
         SpawnUnits();
-        NextUnit();
+        NextTurn();
     }
 
     private void Update() {
@@ -53,18 +45,26 @@ public class TurnManager : MonoBehaviour
 
     private void SpawnUnits() {
         for (int i = 0; i < GridStaticFunctions.PlayerSpawnPos.Count; i++) {
-            Vector2Int item = GridStaticFunctions.PlayerSpawnPos[i];
-            livingUnitsInPlay.Add(unitFactory.CreateUnit(PlayerUnitsToSpawn[i], item));
+            Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPos[i];
+
+            var unit = unitFactory.CreateUnit(PlayerUnitsToSpawn[i], spawnPos);
+            UnitStaticManager.SetUnitPosition(unit, spawnPos);
+            UnitStaticManager.LivingUnitsInPlay.Add(unit);
+            UnitStaticManager.PlayerUnitsInPlay.Add(unit);
         }
 
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
-            Vector2Int item = GridStaticFunctions.EnemySpawnPos[i];
-            livingUnitsInPlay.Add(unitFactory.CreateUnit(EnemyUnitsToSpawn[i], item));
+            Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
+
+            var unit = unitFactory.CreateUnit(EnemyUnitsToSpawn[i], spawnPos);
+            UnitStaticManager.SetUnitPosition(unit, spawnPos);
+            UnitStaticManager.LivingUnitsInPlay.Add(unit);
+            UnitStaticManager.EnemyUnitsInPlay.Add(unit);
         }
     }
 
     private void OrderUnits() {
-        unitAttackOrder = new List<UnitController>(unitsWithTurnLeft.OrderBy(x => x.Values.currentStats.Initiative).Reverse());
+        unitAttackOrder = new List<UnitController>(UnitStaticManager.UnitsWithTurnLeft.OrderBy(x => x.Values.currentStats.Initiative).Reverse());
     }
 
     private void NextUnit() {
@@ -79,7 +79,7 @@ public class TurnManager : MonoBehaviour
 
             currentUnit = unitAttackOrder[0];
             unitAttackOrder.RemoveAt(0);
-            unitsWithTurnLeft.Remove(currentUnit);
+            UnitStaticManager.UnitsWithTurnLeft.Remove(currentUnit);
             currentUnit.OnEnter();
         }
         else {
@@ -92,8 +92,8 @@ public class TurnManager : MonoBehaviour
     }
 
     private void NextTurn() {
-        foreach (var unit in livingUnitsInPlay)
-            unitsWithTurnLeft.Add(unit);
+        foreach (var unit in UnitStaticManager.LivingUnitsInPlay)
+            UnitStaticManager.UnitsWithTurnLeft.Add(unit);
 
         currentTurn++;
 
@@ -106,13 +106,13 @@ public class TurnManager : MonoBehaviour
     }
 
     private void OnExit() {
-        if (enemyUnitsInPlay.Count < 1) {
+        if (UnitStaticManager.EnemyUnitsInPlay.Count < 1) {
             //var header = "Win";
             //var body = "You won in " + currentTurn + " turns.";
 
             //UIManager.ShowEndScreen(header, body);
         }
-        else if (playerUnitsInPlay.Count < 1) {
+        else if (UnitStaticManager.PlayerUnitsInPlay.Count < 1) {
             //var header = "Lose";
             //var body = "You lost in " + currentTurn + " turns.";
 
@@ -121,27 +121,27 @@ public class TurnManager : MonoBehaviour
     }
 
     public void UnitDeath(UnitController unit) {
-        livingUnitsInPlay.Remove(unit);
-        deadUnitsInPlay.Add(unit);
+        UnitStaticManager.LivingUnitsInPlay.Remove(unit);
+        UnitStaticManager.DeadUnitsInPlay.Add(unit);
 
         if (unitAttackOrder.Contains(unit)) {
-            unitsWithTurnLeft.Remove(unit);
+            UnitStaticManager.UnitsWithTurnLeft.Remove(unit);
             unitAttackOrder.Remove(unit);
         }
 
         OrderUnits();
 
-        if (playerUnitsInPlay.Contains(unit)) {
-            playerUnitsInPlay.Remove(unit);
+        if (UnitStaticManager.PlayerUnitsInPlay.Contains(unit)) {
+            UnitStaticManager.PlayerUnitsInPlay.Remove(unit);
 
-            if (playerUnitsInPlay.Count < 1)
+            if (UnitStaticManager.PlayerUnitsInPlay.Count < 1)
                 OnExit();
                 //StartCoroutine(ExitDelay(2));
         }
-        else if (enemyUnitsInPlay.Contains(unit)) {
-            enemyUnitsInPlay.Remove(unit);
+        else if (UnitStaticManager.EnemyUnitsInPlay.Contains(unit)) {
+            UnitStaticManager.EnemyUnitsInPlay.Remove(unit);
 
-            if (enemyUnitsInPlay.Count < 1)
+            if (UnitStaticManager.EnemyUnitsInPlay.Count < 1)
                 OnExit();
                 //StartCoroutine(ExitDelay(2));
         }
@@ -153,7 +153,7 @@ public class TurnManager : MonoBehaviour
 
         var curUnit = currentUnit;
         NextUnit();
-        unitsWithTurnLeft.Add(curUnit);
+        UnitStaticManager.UnitsWithTurnLeft.Add(curUnit);
         curUnit.Values.currentStats.Initiative *= -1;
         OrderUnits();
 

@@ -26,7 +26,7 @@ public class UnitMovementComponent {
                     if (neighbour == currentPos)
                         return;
 
-                    if (GridStaticFunctions.TryGetUnitFromGridPos(neighbour, out var tmp))
+                    if (UnitStaticManager.TryGetUnitFromGridPos(neighbour, out var tmp))
                         return;
 
                     if (GridStaticFunctions.Grid[neighbour].Type != HexType.Normal ||

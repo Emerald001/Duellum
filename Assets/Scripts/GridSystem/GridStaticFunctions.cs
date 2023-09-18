@@ -50,8 +50,6 @@ public static class GridStaticFunctions {
     public static List<Vector2Int> PlayerSpawnPos { get; set; } = new();
     public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
 
-    public static List<Tuple<Vector2Int, UnitController>> UnitPositions { get; set; } = new();
-
     public static Vector3 CalcHexWorldPos(Vector2Int gridPos) {
         float offset = 0;
         if (gridPos.y % 2 != 0)
@@ -161,15 +159,13 @@ public static class GridStaticFunctions {
         return false;
     }
 
-    public static bool TryGetUnitFromGridPos(Vector2Int position, out UnitController unit) {
-        foreach (var item in UnitPositions) {
-            if (item.Item1 == position) {
-                unit = item.Item2;
-                return true;
-            }
+    public static bool TryGetSquareNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {
+        if (Grid.TryGetValue(startPos + directCubeNeighbours[dirIndex], out Hex hex)) {
+            result = hex.GridPos;
+            return true;
         }
 
-        unit = null;
+        result = CONST_EMPTY;
         return false;
     }
 }

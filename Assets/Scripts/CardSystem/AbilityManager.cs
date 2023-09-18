@@ -7,7 +7,7 @@ public static class AbilityManager {
             case AbilityCardType.ApplyEffect:
                 List<UnitController> controllerList = new();
                 foreach (Vector2Int position in positions) {
-                    if (GridStaticFunctions.TryGetUnitFromGridPos(position, out var unit))
+                    if (UnitStaticManager.TryGetUnitFromGridPos(position, out var unit))
                         controllerList.Add(unit);
                 }
 
