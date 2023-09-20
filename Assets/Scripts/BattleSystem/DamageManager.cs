@@ -1,0 +1,21 @@
+using UnityEngine;
+
+public static class DamageManager
+{
+    public static void CalculateDamage(UnitValues attackingUnit, params UnitController[] defendingUnits) {
+        foreach (UnitController unit in defendingUnits) {
+            if (attackingUnit.currentStats.Attack + RollDice() > unit.Values.currentStats.Defence) {
+                unit.AddEffect(new Effect(
+                    EffectType.KnockedOut,
+                    false,
+                    1000,
+                    100));
+                UnitStaticManager.UnitDeath(unit);
+            }
+        }
+    }
+
+    private static int RollDice() {
+        return Random.Range(1, 7);
+    }
+}
