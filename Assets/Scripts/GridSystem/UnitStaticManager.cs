@@ -32,6 +32,29 @@ public static class UnitStaticManager {
         return false;
     }
 
+    public static void UnitDeath(UnitController unit) {
+        LivingUnitsInPlay.Remove(unit);
+        DeadUnitsInPlay.Add(unit);
+
+        if (UnitsWithTurnLeft.Contains(unit))
+            UnitsWithTurnLeft.Remove(unit);
+
+        if (PlayerUnitsInPlay.Contains(unit)) {
+            PlayerUnitsInPlay.Remove(unit);
+
+            if (PlayerUnitsInPlay.Count < 1)
+                EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
+        }
+        else if (EnemyUnitsInPlay.Contains(unit)) {
+            EnemyUnitsInPlay.Remove(unit);
+
+            if (EnemyUnitsInPlay.Count < 1)
+                EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
+        }
+
+        EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitDeath, unit);
+    }
+
     public static List<UnitController> GetEnemies(UnitController unit) {
         if (EnemyUnitsInPlay.Contains(unit))
             return PlayerUnitsInPlay;

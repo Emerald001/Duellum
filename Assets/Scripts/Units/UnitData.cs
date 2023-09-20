@@ -55,6 +55,7 @@ public enum UnitRace {
     Demon,
     Undead,
     Human,
+    Beast,
     Elemental,
     Celestial,
 }

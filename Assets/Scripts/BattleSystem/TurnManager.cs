@@ -31,6 +31,14 @@ public class TurnManager : MonoBehaviour
         NextTurn();
     }
 
+    private void OnEnable() {
+        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
+    }
+
+    private void OnDisable() {
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitDeath);
+    }
+
     private void Update() {
         if (currentUnit == null)
             return;
@@ -69,13 +77,8 @@ public class TurnManager : MonoBehaviour
 
     private void NextUnit() {
         if (unitAttackOrder.Count != 0) {
-            //for (int i = 0; i < unitAttackOrder.Count; i++)
-            //    unitAttackOrder[i].gameObject.GetComponentInChildren<Text>().text = (i + 1).ToString();
-
-            if (currentUnit != null) {
+           if (currentUnit != null)
                 currentUnit.OnExit();
-                //currentUnit.gameObject.GetComponentInChildren<Text>().text = "-";
-            }
 
             currentUnit = unitAttackOrder[0];
             unitAttackOrder.RemoveAt(0);
@@ -96,8 +99,6 @@ public class TurnManager : MonoBehaviour
             UnitStaticManager.UnitsWithTurnLeft.Add(unit);
 
         currentTurn++;
-
-        //UIManager.SetInfoText("Turn " + currentTurn.ToString());
 
         EventManager<BattleEvents>.Invoke(BattleEvents.NewTurn);
 
@@ -121,30 +122,10 @@ public class TurnManager : MonoBehaviour
     }
 
     public void UnitDeath(UnitController unit) {
-        UnitStaticManager.LivingUnitsInPlay.Remove(unit);
-        UnitStaticManager.DeadUnitsInPlay.Add(unit);
-
-        if (unitAttackOrder.Contains(unit)) {
-            UnitStaticManager.UnitsWithTurnLeft.Remove(unit);
+        if (unitAttackOrder.Contains(unit))
             unitAttackOrder.Remove(unit);
-        }
 
         OrderUnits();
-
-        if (UnitStaticManager.PlayerUnitsInPlay.Contains(unit)) {
-            UnitStaticManager.PlayerUnitsInPlay.Remove(unit);
-
-            if (UnitStaticManager.PlayerUnitsInPlay.Count < 1)
-                OnExit();
-                //StartCoroutine(ExitDelay(2));
-        }
-        else if (UnitStaticManager.EnemyUnitsInPlay.Contains(unit)) {
-            UnitStaticManager.EnemyUnitsInPlay.Remove(unit);
-
-            if (UnitStaticManager.EnemyUnitsInPlay.Count < 1)
-                OnExit();
-                //StartCoroutine(ExitDelay(2));
-        }
     }
 
     public void UnitWait() {
@@ -189,6 +170,7 @@ public enum BattleEvents {
     StartBattle,
     EndUnitTurn,
     NewTurn,
+    UnitDeath,
     GrabbedAbilityCard,
     ReleasedAbilityCard,
     BattleEnd,

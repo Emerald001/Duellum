@@ -14,13 +14,19 @@ public enum EffectType {
 
 [Serializable]
 public class Effect {
-    public Sprite Icon;
     public EffectType type;
 
     public bool canBeStacked;
 
     public int duration;
     public int sevarity;
+
+    public Effect(EffectType type, bool canBeStacked, int duration, int sevarity) {
+        this.type = type;
+        this.canBeStacked = canBeStacked;
+        this.duration = duration;
+        this.sevarity = sevarity;
+    }
 }
 
 public static class EffectsManager {
