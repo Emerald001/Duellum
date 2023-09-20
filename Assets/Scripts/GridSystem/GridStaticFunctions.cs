@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public static class GridStaticFunctions {
@@ -153,7 +152,9 @@ public static class GridStaticFunctions {
     }
 
     public static Vector2Int GetVector2RotationFromDirection(Vector3 dir) {
-        Vector2Int result = new(Mathf.RoundToInt(dir.x), Mathf.RoundToInt(dir.z));
+        Vector2Int result = new(
+            Mathf.Min(1, Mathf.Max(-1, Mathf.RoundToInt(dir.x))),
+            Mathf.Min(1, Mathf.Max(-1, Mathf.RoundToInt(dir.z))));
 
         return result;
     }

@@ -43,16 +43,14 @@ public abstract class UnitController : MonoBehaviour {
 
     public virtual void PickedTile(Vector2Int pickedTile, Vector2Int standingPos_optional) {
         if (attackModule.AttackableTiles.Contains(pickedTile)) {
-            if (gridPosition == standingPos_optional) {
-                //queue.Enqueue();
-                didAttack = true;
-            }
+            if (gridPosition == standingPos_optional)
+                EnqueueAttack(pickedTile, standingPos_optional);
             else {
                 EnqueueMovement(standingPos_optional);
-
-                //queue.Enqueue();
-                didAttack = true;
+                EnqueueAttack(pickedTile, standingPos_optional);
             }
+            
+            didAttack = true;
         }
         else if (unitMovement.AccessableTiles.Contains(pickedTile))
             EnqueueMovement(pickedTile);
@@ -89,6 +87,19 @@ public abstract class UnitController : MonoBehaviour {
 
             FindTiles();
             GridStaticFunctions.ResetTileColors();
+        }));
+    }
+
+    private void EnqueueAttack(Vector2Int targetPosition, Vector2Int standingPos) {
+        Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(targetPosition) - GridStaticFunctions.CalcSquareWorldPos(standingPos));
+
+        queue.Enqueue(new RotateAction(gameObject, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0), 360f, .01f));
+        queue.Enqueue(new DoMethodAction(() => {
+            bool hit = UnitStaticManager.TryGetUnitFromGridPos(targetPosition, out var unit);
+            if (!hit)
+                throw new System.Exception("Something went Very wrong with getting the units attackable tiles");
+
+            DamageManager.DealDamage(values, unit);
         }));
     }
 

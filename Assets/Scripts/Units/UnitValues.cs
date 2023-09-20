@@ -29,6 +29,15 @@ public class UnitValues {
         EffectsManager.ApplyEffects(this, effect);
     }
 
+    public void RemoveEffect(EffectType type) {
+        if (CurrentEffects.Count == 0) 
+            return;
+
+        IEnumerable<Effect> tmp = CurrentEffects.Where(x => x.type == type);
+        foreach (var item in tmp)
+            CurrentEffects.Remove(item);
+    }
+
     private void ApplyEffects() {
         currentStats = new(baseData.BaseStatBlock);
 

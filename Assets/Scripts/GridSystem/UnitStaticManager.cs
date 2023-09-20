@@ -55,6 +55,17 @@ public static class UnitStaticManager {
         EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitDeath, unit);
     }
 
+    public static void RemoveUnitFromOrder(UnitController unit) {
+
+    }
+
+    public static void ReviveUnit(UnitController unit) {
+        DeadUnitsInPlay.Remove(unit);
+
+        PlayerUnitsInPlay.Add(unit);
+        LivingUnitsInPlay.Add(unit);
+    }
+
     public static List<UnitController> GetEnemies(UnitController unit) {
         if (EnemyUnitsInPlay.Contains(unit))
             return PlayerUnitsInPlay;
