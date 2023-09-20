@@ -1323,16 +1323,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af95526346842f740bdc0f86926bfbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitPrefab: {fileID: 4147554668627666437, guid: 0064cf83475593d44b4283697c357888,
+  PlayerUnitPrefab: {fileID: 4147554668627666437, guid: 0064cf83475593d44b4283697c357888,
+    type: 3}
+  EnemyUnitPrefab: {fileID: 4145673499434279597, guid: 919b967ef4647eb4884630713477122d,
     type: 3}
   PlayerUnitsToSpawn:
-  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
-  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
-  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
+  - {fileID: 11400000, guid: d4447bfd73bc11b4ca2d3d10eaffd33d, type: 2}
+  - {fileID: 11400000, guid: 489929063081c174f8dd2b2753260492, type: 2}
+  - {fileID: 11400000, guid: 6aa7346ce546ff74e8f0fefe1efe09a4, type: 2}
   EnemyUnitsToSpawn:
   - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
-  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
-  - {fileID: 11400000, guid: cd2a2108c72830445ad44064a4d95fb3, type: 2}
+  - {fileID: 11400000, guid: daaa0629f5b4e0a46ac7eb812275b2ef, type: 2}
+  - {fileID: 11400000, guid: 15cf53af59f0255428f6cf91c50c502b, type: 2}
   GridGenerator: {fileID: 1036886697}
 --- !u!114 &1036886697
 MonoBehaviour:
