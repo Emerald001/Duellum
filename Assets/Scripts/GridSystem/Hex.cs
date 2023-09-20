@@ -9,6 +9,7 @@ public class Hex : MonoBehaviour {
     [SerializeField] private Material HoverColor;
     [SerializeField] private Material movementColor;
     [SerializeField] private Material attackColor;
+    [SerializeField] private Material ownPositionColor;
 
     [SerializeField] private HexType type;
 
@@ -28,6 +29,7 @@ public class Hex : MonoBehaviour {
             HighlightType.None => standardColor,
             HighlightType.MovementHighlight => movementColor,
             HighlightType.AttackHighlight => attackColor,
+            HighlightType.OwnPositionHighlight => ownPositionColor,
             _ => throw new System.NotImplementedException(),
         };
 
@@ -53,6 +55,7 @@ public enum HighlightType {
     None,
     MovementHighlight,
     AttackHighlight,
+    OwnPositionHighlight,
 }
 
 public enum HexType {

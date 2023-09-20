@@ -18,7 +18,7 @@ public class PlayerUnitController : UnitController {
     public override void OnEnter() {
         base.OnEnter();
 
-        EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, AfterCard);
+        EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
 
         HighlightTiles();
     }
@@ -42,17 +42,13 @@ public class PlayerUnitController : UnitController {
 
         Line.enabled = false;
 
-        EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, AfterCard);
-    }
-
-    private void AfterCard() {
-        FindTiles();
-        HighlightTiles();
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
     }
 
     public void HighlightTiles() {
         GridStaticFunctions.HighlightTiles(unitMovement.AccessableTiles, HighlightType.MovementHighlight);
         GridStaticFunctions.HighlightTiles(attackModule.AttackableTiles, HighlightType.AttackHighlight);
+        GridStaticFunctions.Grid[gridPosition].SetHighlight(HighlightType.OwnPositionHighlight);
     }
 
     public void ResetTiles() {
@@ -69,9 +65,7 @@ public class PlayerUnitController : UnitController {
     public override void FindTiles() {
         base.FindTiles();
 
-        // TODO:
-        // Give this a highlighted color
-        GridStaticFunctions.Grid[gridPosition].SetHighlight(HighlightType.None);
+        HighlightTiles();
     }
 
     public void ChangeHexColor(List<Vector2Int> list, HighlightType type) {
