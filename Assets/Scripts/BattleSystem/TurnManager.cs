@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
-    [SerializeField] private UnitController UnitPrefab;
+    [SerializeField] private UnitController PlayerUnitPrefab;
+    [SerializeField] private UnitController EnemyUnitPrefab;
 
     [SerializeField] private List<UnitData> PlayerUnitsToSpawn;
     [SerializeField] private List<UnitData> EnemyUnitsToSpawn;
@@ -23,7 +24,7 @@ public class TurnManager : MonoBehaviour
     public bool IsDone { get; private set; }
 
     private void Awake() {
-        unitFactory = new(UnitPrefab);
+        unitFactory = new();
 
         GridGenerator.SetUp();
 
@@ -55,7 +56,7 @@ public class TurnManager : MonoBehaviour
         for (int i = 0; i < GridStaticFunctions.PlayerSpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPos[i];
 
-            var unit = unitFactory.CreateUnit(PlayerUnitsToSpawn[i], spawnPos);
+            var unit = unitFactory.CreateUnit(PlayerUnitPrefab, PlayerUnitsToSpawn[i], spawnPos);
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.PlayerUnitsInPlay.Add(unit);
@@ -64,7 +65,7 @@ public class TurnManager : MonoBehaviour
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
 
-            var unit = unitFactory.CreateUnit(EnemyUnitsToSpawn[i], spawnPos);
+            var unit = unitFactory.CreateUnit(EnemyUnitPrefab, EnemyUnitsToSpawn[i], spawnPos);
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.EnemyUnitsInPlay.Add(unit);
@@ -149,13 +150,7 @@ public class TurnManager : MonoBehaviour
 }
 
 public class UnitFactory {
-    public UnitFactory(UnitController prefab) {
-        this.prefab = prefab;
-    }
-
-    private readonly UnitController prefab;
-    
-    public UnitController CreateUnit(UnitData data, Vector2Int spawnPos) {
+    public UnitController CreateUnit(UnitController prefab, UnitData data, Vector2Int spawnPos) {
         UnitController unit = Object.Instantiate(prefab);
 
         unit.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos);

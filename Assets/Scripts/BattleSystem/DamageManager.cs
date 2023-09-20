@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class DamageManager
 {
-    public static void CalculateDamage(UnitValues attackingUnit, params UnitController[] defendingUnits) {
+    public static void DealDamage(UnitValues attackingUnit, params UnitController[] defendingUnits) {
         foreach (UnitController unit in defendingUnits) {
             if (attackingUnit.currentStats.Attack + RollDice() > unit.Values.currentStats.Defence) {
                 unit.AddEffect(new Effect(
@@ -10,6 +10,9 @@ public static class DamageManager
                     false,
                     1000,
                     100));
+
+                Debug.Log("UNIT DIED");
+
                 UnitStaticManager.UnitDeath(unit);
             }
         }
