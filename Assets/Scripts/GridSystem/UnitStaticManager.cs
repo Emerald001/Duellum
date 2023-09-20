@@ -31,4 +31,11 @@ public static class UnitStaticManager {
         unit = null;
         return false;
     }
+
+    public static List<UnitController> GetEnemies(UnitController unit) {
+        if (EnemyUnitsInPlay.Contains(unit))
+            return PlayerUnitsInPlay;
+        else
+            return EnemyUnitsInPlay;
+    }
 }

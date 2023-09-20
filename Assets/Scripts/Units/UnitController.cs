@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
     public UnitData UnitBaseData { get; private set; }
@@ -93,7 +94,11 @@ public abstract class UnitController : MonoBehaviour {
 
     public virtual void FindTiles() {
         unitMovement.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
-        attackModule.FindAttackableTiles(gridPosition);
+
+        List<Vector2Int> tiles = new(unitMovement.AccessableTiles) {
+            gridPosition
+        };
+        attackModule.FindAttackableTiles(tiles, UnitStaticManager.GetEnemies(this));
     }
 
     public void AddEffect(Effect effect) {

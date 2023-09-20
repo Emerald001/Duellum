@@ -34,7 +34,10 @@ public class PlayerUnitController : UnitController {
 
     private void RunAttack() {
         if (Input.GetKeyDown(KeyCode.Mouse0))
-            PickedTile(MouseToWorldView.HoverTileGridPos, MouseToWorldView.HoverTileGridPos);
+            PickedTile(
+                MouseToWorldView.HoverTileGridPos, 
+                attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos, gridPosition, MouseToWorldView.HoverPointPos, unitMovement.AccessableTiles)
+            );
     }
 
     public override void OnExit() {

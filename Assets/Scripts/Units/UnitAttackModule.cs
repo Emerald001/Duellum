@@ -11,24 +11,28 @@ public class UnitAttackModule {
         this.attack = attack;
     }
 
-    public void FindAttackableTiles(Vector2Int gridpos) {
-        List<Vector2Int> tiles = GridStaticSelectors.GetPositions(attack.ApplicableTilesSelector, gridpos);
+    public void FindAttackableTiles(List<Vector2Int> gridpositions, List<UnitController> enemies) {
+        currentAttackableTiles.Clear();
 
-        List<Vector2Int> result = new();
+        List<Vector2Int> tiles = new();
+        for (int i = 0; i < gridpositions.Count; i++)
+            tiles.AddRange(GridStaticSelectors.GetPositions(attack.ApplicableTilesSelector, gridpositions[i]));
+
         foreach (var tile in tiles) {
             if (UnitStaticManager.TryGetUnitFromGridPos(tile, out var unit))
-                result.Add(tile);
+                if (enemies.Contains(unit))
+                    currentAttackableTiles.Add(tile);
         }
     }
 
     public Vector2Int GetClosestTile(Vector2Int gridPos, Vector2Int tile, Vector3 worldpoint, List<Vector2Int> accessableTiles) {
         float smallestDistance = Mathf.Infinity;
         
-        Vector2Int closestTile = Vector2Int.zero;
+        Vector2Int closestTile = GridStaticFunctions.CONST_EMPTY;
         Vector2Int currentPos = tile;
 
         GridStaticFunctions.RippleThroughSquareGridPositions(gridPos, 2, (neighbour, j) => {
-            if (!accessableTiles.Contains(neighbour) && neighbour != gridPos)
+            if (!accessableTiles.Contains(neighbour) || neighbour == gridPos)
                 return;
 
             if (Vector3.Distance(GridStaticFunctions.CalcSquareWorldPos(neighbour), worldpoint) < smallestDistance) {
@@ -37,9 +41,6 @@ public class UnitAttackModule {
             }
         });
 
-        if (closestTile != Vector2Int.zero)
-            return closestTile;
-
-        return Vector2Int.zero;
+        return closestTile;
     }
 }
