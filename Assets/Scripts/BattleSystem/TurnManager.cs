@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
@@ -14,12 +12,11 @@ public class TurnManager : MonoBehaviour
     [Header("GridSettings")]
     [SerializeField] private OriginalMapGenerator GridGenerator;
 
-    private List<UnitController> unitAttackOrder = new();
-    private UnitController currentUnit;
-
-    private int currentTurn = 0;
-
     private UnitFactory unitFactory;
+
+    private List<TurnController> players = new();
+    private TurnController currentPlayer;
+    private int currentPlayerIndex;
 
     public bool IsDone { get; private set; }
 
@@ -29,27 +26,19 @@ public class TurnManager : MonoBehaviour
         GridGenerator.SetUp();
 
         SpawnUnits();
-        NextTurn();
-    }
-
-    private void OnEnable() {
-        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
-    }
-
-    private void OnDisable() {
-        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitDeath);
+        NextPlayer();
     }
 
     private void Update() {
-        if (currentUnit == null)
+        if (currentPlayer == null)
             return;
 
-        if (currentUnit.IsDone) {
-            NextUnit();
+        if (currentPlayer.IsDone) {
+            NextPlayer();
             return;
         }
 
-        currentUnit.OnUpdate();
+        currentPlayer.OnUpdate();
     }
 
     private void SpawnUnits() {
@@ -61,6 +50,7 @@ public class TurnManager : MonoBehaviour
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.PlayerUnitsInPlay.Add(unit);
         }
+        players.Add(new PlayerTurnController(UnitStaticManager.PlayerUnitsInPlay));
 
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
@@ -70,82 +60,21 @@ public class TurnManager : MonoBehaviour
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.EnemyUnitsInPlay.Add(unit);
         }
+        players.Add(new EnemyTurnController(UnitStaticManager.EnemyUnitsInPlay));
     }
 
-    private void OrderUnits() {
-        unitAttackOrder = new List<UnitController>(UnitStaticManager.UnitsWithTurnLeft.OrderBy(x => x.Values.currentStats.Initiative).Reverse());
-    }
+    private void NextPlayer() {
+        if (currentPlayerIndex > players.Count - 1) {
+            EventManager<BattleEvents>.Invoke(BattleEvents.NewTurn);
 
-    private void NextUnit() {
-        if (unitAttackOrder.Count != 0) {
-           if (currentUnit != null)
-                currentUnit.OnExit();
-
-            currentUnit = unitAttackOrder[0];
-            unitAttackOrder.RemoveAt(0);
-            UnitStaticManager.UnitsWithTurnLeft.Remove(currentUnit);
-            currentUnit.OnEnter();
+            currentPlayerIndex = 0;
         }
-        else {
-            if (currentUnit != null)
-                currentUnit.OnExit();
 
-            currentUnit = null;
-            NextTurn();
-        }
-    }
+        currentPlayer?.OnExit();
+        currentPlayer = players[currentPlayerIndex];
+        currentPlayer.OnEnter();
 
-    private void NextTurn() {
-        foreach (var unit in UnitStaticManager.LivingUnitsInPlay)
-            UnitStaticManager.UnitsWithTurnLeft.Add(unit);
-
-        currentTurn++;
-
-        EventManager<BattleEvents>.Invoke(BattleEvents.NewTurn);
-
-        OrderUnits();
-        NextUnit();
-    }
-
-    private void OnExit() {
-        if (UnitStaticManager.EnemyUnitsInPlay.Count < 1) {
-            //var header = "Win";
-            //var body = "You won in " + currentTurn + " turns.";
-
-            //UIManager.ShowEndScreen(header, body);
-        }
-        else if (UnitStaticManager.PlayerUnitsInPlay.Count < 1) {
-            //var header = "Lose";
-            //var body = "You lost in " + currentTurn + " turns.";
-
-            //UIManager.ShowEndScreen(header, body);
-        }
-    }
-
-    public void UnitDeath(UnitController unit) {
-        if (unitAttackOrder.Contains(unit))
-            unitAttackOrder.Remove(unit);
-
-        OrderUnits();
-    }
-
-    public void UnitWait() {
-        if (currentUnit.Values.currentStats.Initiative < 1)
-            return;
-
-        var curUnit = currentUnit;
-        NextUnit();
-        UnitStaticManager.UnitsWithTurnLeft.Add(curUnit);
-        curUnit.Values.currentStats.Initiative *= -1;
-        OrderUnits();
-
-        for (int i = 0; i < unitAttackOrder.Count; i++)
-            unitAttackOrder[i].gameObject.GetComponentInChildren<Text>().text = (i + 2).ToString();
-    }
-
-    public void UnitEndTurn() {
-        currentUnit.Values.currentStats.Defence *= 2;
-        NextUnit();
+        currentPlayerIndex++;
     }
 }
 
