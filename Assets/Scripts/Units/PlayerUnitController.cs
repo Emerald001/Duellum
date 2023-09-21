@@ -82,7 +82,7 @@ public class PlayerUnitController : UnitController {
         if (unitMovement.AccessableTiles.Contains(endPos))
             CurrentPath = unitMovement.GetPath(endPos);
         else if (attackModule.AttackableTiles.Contains(endPos)) {
-            CurrentPath = unitMovement.GetPath(attackModule.GetClosestTile(gridPosition, endPos, MouseToWorldView.HoverPointPos, unitMovement.AccessableTiles));
+            CurrentPath = unitMovement.GetPath(attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos, unitMovement.AccessableTiles));
             CurrentPath.Add(MouseToWorldView.HoverTileGridPos);
         }
         else {

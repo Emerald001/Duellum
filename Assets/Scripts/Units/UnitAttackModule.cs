@@ -25,14 +25,12 @@ public class UnitAttackModule {
         }
     }
 
-    public Vector2Int GetClosestTile(Vector2Int gridPos, Vector2Int tile, Vector3 worldpoint, List<Vector2Int> accessableTiles) {
+    public Vector2Int GetClosestTile(Vector2Int tileToAttackPosition, Vector2Int attackingUnitPos, Vector3 worldpoint, List<Vector2Int> accessableTiles) {
         float smallestDistance = Mathf.Infinity;
-        
         Vector2Int closestTile = GridStaticFunctions.CONST_EMPTY;
-        Vector2Int currentPos = tile;
 
-        GridStaticFunctions.RippleThroughSquareGridPositions(gridPos, 2, (neighbour, j) => {
-            if (!accessableTiles.Contains(neighbour) || neighbour == gridPos)
+        GridStaticFunctions.RippleThroughSquareGridPositions(tileToAttackPosition, attack.ApplicableTilesSelector.range + 1, (neighbour, j) => {
+            if (!accessableTiles.Contains(neighbour) && neighbour != attackingUnitPos)
                 return;
 
             if (Vector3.Distance(GridStaticFunctions.CalcSquareWorldPos(neighbour), worldpoint) < smallestDistance) {
