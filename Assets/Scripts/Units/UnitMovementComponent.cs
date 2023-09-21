@@ -29,8 +29,16 @@ public class UnitMovementComponent {
                     if (UnitStaticManager.TryGetUnitFromGridPos(neighbour, out var tmp))
                         return;
 
-                    if (GridStaticFunctions.Grid[neighbour].Type != HexType.Normal ||
-                        openList.Contains(neighbour) ||
+                    //if (Has effect or Attribute that allows water or Flight movement)
+                        //if (Tile contains water or Body)
+                        //if (applicalble)
+                            //Get all neighbours or add tile anyway
+
+                    // Only applicable if no other thing is needed
+                    if (GridStaticFunctions.Grid[neighbour].Type != HexType.Normal)
+                        return;
+
+                    if (openList.Contains(neighbour) ||
                         closedList.Contains(neighbour) ||
                         layerList.Contains(neighbour))
                         return;

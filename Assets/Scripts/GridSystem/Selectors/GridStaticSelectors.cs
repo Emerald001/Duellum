@@ -133,8 +133,6 @@ public static class GridStaticSelectors {
             .Where(tile => tile.Type == HexType.Normal)
             .Select(tile => tile.GridPos).ToList();
 
-        Debug.Log(result.Count);
-
         if (selector.includeWater) {
             result.AddRange(GridStaticFunctions.Grid.Values
                 .Where(tile => tile.Type == HexType.Water)

@@ -19,6 +19,8 @@ public static class DamageManager
     }
 
     private static int RollDice() {
-        return Random.Range(1, 7);
+        int roll = Random.Range(1, 7);
+        Debug.Log(roll);
+        return roll;
     }
 }

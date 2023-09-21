@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class UnitController : MonoBehaviour {
     public UnitData UnitBaseData { get; private set; }
     public bool IsDone { get; private set; }
+    public bool HasPerformedAction { get; private set; }
 
     public UnitValues Values => values;
     protected UnitValues values;
