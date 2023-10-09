@@ -3,10 +3,10 @@ using System.Linq;
 using UnityEngine;
 
 public class PlayerTurnController : TurnController {
-    public PlayerTurnController(List<UnitController> units) : base (units) { }
-
     public override void OnEnter() {
         base.OnEnter();
+
+        units = UnitStaticManager.PlayerUnitsInPlay;
 
         HighlightUnits();
         isPicking = true;
@@ -43,7 +43,6 @@ public class PlayerTurnController : TurnController {
         GridStaticFunctions.ResetTileColors();
 
         List<Vector2Int> positions = units.Select(unit => UnitStaticManager.UnitPositions[unit]).ToList();
-
         GridStaticFunctions.HighlightTiles(positions, HighlightType.OwnPositionHighlight);
     }
 
@@ -52,5 +51,15 @@ public class PlayerTurnController : TurnController {
 
         if (!isPicking)
             EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, HighlightUnits);
+    }
+
+    public void AddUnit(UnitController unit) {
+        if (!units.Contains(unit))
+            units.Add(unit);
+    }
+
+    public void RemoveUnit(UnitController unit) {
+        if (units.Contains(unit))
+            units.Remove(unit);
     }
 }
