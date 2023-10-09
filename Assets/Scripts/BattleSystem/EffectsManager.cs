@@ -42,8 +42,10 @@ public static class EffectsManager {
                 data.currentStats.Speed += effect.sevarity;
                 break;
             case EffectType.Fury:
+
                 break;
             case EffectType.Fear:
+
                 break;
             case EffectType.Slow:
                 data.currentStats.Speed -= effect.sevarity;
@@ -52,6 +54,7 @@ public static class EffectsManager {
                 data.currentStats.Speed -= 1000;
                 break;
             case EffectType.KnockedOut:
+
                 break;
         }
     }

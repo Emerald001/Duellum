@@ -11,7 +11,7 @@ public static class DamageManager
                     1000,
                     100));
 
-                Debug.Log("UNIT DIED");
+                Debug.Log($"UNIT DIED");
 
                 UnitStaticManager.UnitDeath(unit);
             }
@@ -20,7 +20,7 @@ public static class DamageManager
 
     private static int RollDice() {
         int roll = Random.Range(1, 7);
-        Debug.Log(roll);
+        Debug.Log($"Rolled a {roll}");
         return roll;
     }
 }

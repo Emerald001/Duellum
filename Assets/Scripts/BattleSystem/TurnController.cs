@@ -4,16 +4,12 @@ using UnityEngine;
 public abstract class TurnController {
     public bool IsDone { get; protected set; }
 
-    protected readonly List<UnitController> units;
+    protected List<UnitController> units;
     protected UnitController currentUnit;
     protected bool isPicking = true;
 
-    public TurnController(List<UnitController> units) {
-        this.units = units;
-    }
-
     public virtual void OnEnter() {
-
+        IsDone = false;
     }
 
     public virtual void OnUpdate() {

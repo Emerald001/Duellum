@@ -3,8 +3,8 @@ using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
     public UnitData UnitBaseData { get; private set; }
-    public bool IsDone { get; private set; }
     public bool HasPerformedAction { get; private set; }
+    public bool IsDone { get; private set; }
 
     public UnitValues Values => values;
     protected UnitValues values;
@@ -31,6 +31,7 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void OnEnter() {
+        IsDone = false;
         FindTiles();
     }
 
@@ -39,6 +40,7 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void OnExit() {
+        HasPerformedAction = false;
         IsDone = false;
     }
 
@@ -50,7 +52,7 @@ public abstract class UnitController : MonoBehaviour {
                 EnqueueMovement(standingPos_optional);
                 EnqueueAttack(pickedTile, standingPos_optional);
             }
-            
+
             didAttack = true;
         }
         else if (unitMovement.AccessableTiles.Contains(pickedTile))
@@ -89,6 +91,8 @@ public abstract class UnitController : MonoBehaviour {
             FindTiles();
             GridStaticFunctions.ResetTileColors();
         }));
+
+        HasPerformedAction = true;
     }
 
     private void EnqueueAttack(Vector2Int targetPosition, Vector2Int standingPos) {
@@ -102,6 +106,8 @@ public abstract class UnitController : MonoBehaviour {
 
             DamageManager.DealDamage(values, unit);
         }));
+
+        HasPerformedAction = true;
     }
 
     public virtual void FindTiles() {

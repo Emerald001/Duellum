@@ -12,13 +12,14 @@ public class TurnManager : MonoBehaviour
     [Header("GridSettings")]
     [SerializeField] private OriginalMapGenerator GridGenerator;
 
+    public TurnController CurrentPlayer => currentPlayer;
+    public bool IsDone { get; private set; }
+
     private UnitFactory unitFactory;
 
     private List<TurnController> players = new();
     private TurnController currentPlayer;
     private int currentPlayerIndex;
-
-    public bool IsDone { get; private set; }
 
     private void Awake() {
         unitFactory = new();
@@ -50,7 +51,7 @@ public class TurnManager : MonoBehaviour
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.PlayerUnitsInPlay.Add(unit);
         }
-        players.Add(new PlayerTurnController(UnitStaticManager.PlayerUnitsInPlay));
+        players.Add(new PlayerTurnController());
 
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
@@ -60,7 +61,7 @@ public class TurnManager : MonoBehaviour
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.EnemyUnitsInPlay.Add(unit);
         }
-        players.Add(new EnemyTurnController(UnitStaticManager.EnemyUnitsInPlay));
+        players.Add(new EnemyTurnController());
     }
 
     private void NextPlayer() {

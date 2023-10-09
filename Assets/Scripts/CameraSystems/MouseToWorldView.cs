@@ -47,6 +47,9 @@ public class MouseToWorldView : MonoBehaviour
         GameObject hitTile = hit.transform.parent.gameObject;
         List<Vector2Int> newTiles = GridStaticSelectors.GetPositions(displaySelector, GridStaticFunctions.GetGridPosFromHexGameObject(hitTile));
 
+        if (newTiles.Contains(GridStaticFunctions.CONST_EMPTY))
+            newTiles.Remove(GridStaticFunctions.CONST_EMPTY);
+
         foreach (var lastTile in lastTiles)
             lastTile.SetHover(newTiles.Contains(lastTile.GridPos));
 

@@ -22,10 +22,15 @@ public enum AttributeType {
     Weakness,
     DamageImmunity,
     EffectImmunity,
+    ExtraDamage,
 }
 
 [Serializable]
 public struct RWIData {
     public DamageType DamageType;
     public int Severity;
+}
+
+public static class AttributeManager {
+
 }
