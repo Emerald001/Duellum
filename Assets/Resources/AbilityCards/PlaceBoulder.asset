@@ -20,6 +20,7 @@ MonoBehaviour:
   ManaCost: 0
   areaOfEffectSelector:
     type: 0
+    isHex: 0
     includeCentreTile: 0
     AllDirections: 0
     range: 1
@@ -29,6 +30,7 @@ MonoBehaviour:
     excludeUnits: 1
   availabletilesSelector:
     type: 6
+    isHex: 0
     includeCentreTile: 0
     AllDirections: 0
     range: 1
@@ -36,10 +38,11 @@ MonoBehaviour:
     includeWater: 0
     includeCover: 0
     excludeUnits: 1
-  abilityType: 2
+  abilityType: 1
   effectToApply:
-    Icon: {fileID: 0}
     type: 0
     canBeStacked: 0
     duration: 0
     sevarity: 0
+  hexPrefab: {fileID: 3143461922185471495, guid: 0f9784cd1e1e1564e93d7ead78e3ddcd,
+    type: 3}

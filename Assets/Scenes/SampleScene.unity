@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17276844, g: 0.21589246, b: 0.2978263, a: 1}
+  m_IndirectSpecularColor: {r: 0.17276807, g: 0.21589197, b: 0.29782572, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -417,7 +417,7 @@ Camera:
   near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 7
   m_Depth: -1
   m_CullingMask:
@@ -461,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 0
+  m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -1253,6 +1253,7 @@ GameObject:
   - component: {fileID: 1036886694}
   - component: {fileID: 1036886696}
   - component: {fileID: 1036886697}
+  - component: {fileID: 1036886698}
   - component: {fileID: 1036886695}
   m_Layer: 0
   m_Name: TurnManager
@@ -1362,6 +1363,20 @@ MonoBehaviour:
   waterPercentage: 11
   cardPercentage: 12
   coverPercentage: 0
+--- !u!114 &1036886698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036886693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56777d9f122c504ca80c9b739be328d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardsToSpawn: 0
+  pickupCardPrefab: {fileID: 0}
 --- !u!1 &1100824561
 GameObject:
   m_ObjectHideFlags: 0
