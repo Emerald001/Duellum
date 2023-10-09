@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class GridStaticFunctions {
@@ -49,6 +50,8 @@ public static class GridStaticFunctions {
     public static float GridGap { get; set; }
 
     public static Vector3 StartPos { get; set; }
+
+    public static Dictionary<Vector2Int, GameObject> CardPositions { get; set; } = new();
     public static Dictionary<Vector2Int, Hex> Grid { get; set; } = new();
     public static List<Vector2Int> PlayerSpawnPos { get; set; } = new();
     public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
@@ -151,10 +154,34 @@ public static class GridStaticFunctions {
             tile.SetHighlight(HighlightType.None);
     }
 
+    public static void ReplaceHex(Hex hexPrefab, params Vector2Int[] hexPositions) {
+        foreach (var hex in hexPositions) {
+            UnityEngine.Object.Destroy(Grid[hex].gameObject);
+
+            Grid[hex] = UnityEngine.Object.Instantiate(hexPrefab);
+            Grid[hex].transform.position = CalcSquareWorldPos(hex);
+        }
+    }
+
     public static Vector2Int GetVector2RotationFromDirection(Vector3 dir) {
         Vector2Int result = new(
             Mathf.Min(1, Mathf.Max(-1, Mathf.RoundToInt(dir.x))),
             Mathf.Min(1, Mathf.Max(-1, Mathf.RoundToInt(dir.z))));
+
+        return result;
+    }
+
+    public static List<Vector2Int> GetAllOpenGridPositions() {
+        var result = Grid.Keys.Where(hex => Grid[hex].Type == HexType.Normal).ToList();
+        var unitPositions = UnitStaticManager.UnitPositions.Values.ToList();
+
+        for (int i = result.Count - 1; i >= 0; i--) {
+            if (unitPositions.Contains(result[i]))
+                result.RemoveAt(i);
+
+            if (CardPositions.ContainsKey(result[i]))
+                result.RemoveAt(i);
+        }
 
         return result;
     }
