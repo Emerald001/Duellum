@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c994313354a7f8744bf0841a9d70ac51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomAmount: 10
+  tileAmount: 20
   tileSize: 1
   rooms:
   - name: 1
@@ -408,6 +408,21 @@ MonoBehaviour:
     - {x: 0, y: 1, z: 1, w: 0}
     - {x: 0, y: 1, z: 0, w: 1}
     - {x: 1, y: 0, z: 1, w: 0}
+    - {x: 1, y: 0, z: 0, w: 1}
+  - name: 4
+    size: {x: 2, y: 5}
+    prefab: {fileID: 1154763844953667180, guid: 7801363f456425a41aae490b54f73f18,
+      type: 3}
+    connections:
+    - {x: 0, y: 1, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 1, z: 0, w: 0}
+    - {x: 1, y: 0, z: 1, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 1, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
     - {x: 1, y: 0, z: 0, w: 1}
   endRooms:
   - name: End 1
