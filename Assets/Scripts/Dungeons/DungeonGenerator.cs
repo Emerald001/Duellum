@@ -1,11 +1,11 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour {
     private const int SKEWED_POWER = 1;
 
-    [SerializeField] private int roomAmount;
+    [SerializeField] private int tileAmount;
     [SerializeField] private int tileSize;
 
     [SerializeField] private List<DungeonRoomTile> rooms;
@@ -25,10 +25,20 @@ public class DungeonGenerator : MonoBehaviour {
         List<Vector2Int> closedSet = new();
 
         openSet.Add(new(0, 0));
-        connectionDict.Add(new(0, 0), new(0, 0));
+        connectionDict.Add(new(0, 0), new(0, 1));
 
+        void AddNewTile(Vector2Int currentPos, Vector2Int direction) {
+            Vector2Int newTile = currentPos + direction;
+            if (closedSet.Contains(newTile) || openSet.Contains(newTile))
+                return;
+
+            openSet.Add(newTile);
+            if (!connectionDict.ContainsKey(newTile))
+                connectionDict.Add(newTile, currentPos);
+        }
+        
         while (openSet.Count > 0) {
-            if (openSet.Count + closedSet.Count >= roomAmount)
+            if (openSet.Count + closedSet.Count >= tileAmount)
                 break;
 
             Vector2Int currentPos = openSet[0];
@@ -42,49 +52,27 @@ public class DungeonGenerator : MonoBehaviour {
                     Vector2Int tile = currentPos + new Vector2Int(x, y) - offset;
                     Vector4 connections = room.connections[index];
 
-                    if (connections.x > 0) {
-                        if (!closedSet.Contains(tile + new Vector2Int(1, 0)) && !openSet.Contains(tile + new Vector2Int(1, 0))) {
-                            openSet.Add(tile + new Vector2Int(1, 0));
-                            if (!connectionDict.ContainsKey(tile + new Vector2Int(1, 0)))
-                                connectionDict.Add(tile + new Vector2Int(1, 0), tile);
-                        }
-                    }
-                    if (connections.y > 0) {
-                        if (!closedSet.Contains(tile + new Vector2Int(-1, 0)) && !openSet.Contains(tile + new Vector2Int(-1, 0))) {
-                            openSet.Add(tile + new Vector2Int(-1, 0));
-                            connectionDict.Add(tile + new Vector2Int(-1, 0), tile);
-                        }
-                    }
-                    if (connections.z > 0) {
-                        if (!closedSet.Contains(tile + new Vector2Int(0, 1)) && !openSet.Contains(tile + new Vector2Int(0, 1))) {
-                            openSet.Add(tile + new Vector2Int(0, 1));
-                            connectionDict.Add(tile + new Vector2Int(0, 1), tile);
-                        }
-                    }
-                    if (connections.w > 0) {
-                        if (!closedSet.Contains(tile + new Vector2Int(0, -1)) && !openSet.Contains(tile + new Vector2Int(0, -1))) {
-                            openSet.Add(tile + new Vector2Int(0, -1));
-                            connectionDict.Add(tile + new Vector2Int(0, -1), tile);
-                        }
-                    }
+                    if (connections.x > 0)
+                        AddNewTile(tile, new Vector2Int(1, 0));
+                    if (connections.y > 0)
+                        AddNewTile(tile, new Vector2Int(-1, 0));
+                    if (connections.z > 0)
+                        AddNewTile(tile, new Vector2Int(0, -1));
+                    if (connections.w > 0)
+                        AddNewTile(tile, new Vector2Int(0, 1));
 
                     if (openSet.Contains(tile))
                         openSet.Remove(tile);
 
+                    closedSet.Add(tile);
                     dungeon.Add(tile, room);
                     index++;
                 }
             }
-
-            closedSet.Add(currentPos);
-            foreach (var item in openSet) {
-                if (closedSet.Contains(item))
-                    Debug.Log("Something Is Wrong");
-            }
         }
 
         for (int i = 0; i < openSet.Count; i++) {
-            Vector2Int currentPos = openSet[0];
+            Vector2Int currentPos = openSet[i];
             Vector2Int connectionDirection = currentPos - connectionDict[currentPos];
             DungeonRoomTile room = SpawnRoom(endRooms, currentPos, connectionDirection);
 
@@ -108,23 +96,21 @@ public class DungeonGenerator : MonoBehaviour {
 
         for (int i = availableTiles.Count - 1; i >= 0; i--) {
             DungeonRoomTile tile = availableTiles[i];
-
-            List<int> availableIndices = new(tile.GridPositionsPerIndex.Keys);
-            for (int r = 0; r < tile.GridPositionsPerIndex.Count; r++) {
-                Vector2Int offset = Vector2Int.zero - tile.GridPositionsPerIndex[r];
-
-                if (!CheckForFit(tile, offset, position) || CheckForConnections(tile, connectionDir, r))
-                    availableIndices.Remove(r);
-            }
+            List<int> availableIndices = tile.GridPositionsPerIndex.Keys
+                .Where(r => CheckForFit(tile, position, r) && CheckForConnections(tile, connectionDir, r))
+                .ToList();
 
             if (availableIndices.Count > 0)
-                tile.CurrentIndex = availableIndices[0];
+                tile.CurrentIndex = availableIndices[Random.Range(0, availableIndices.Count)];
+            else
+                availableTiles.Remove(tile);
         }
 
-        int skewedRandomValue = Mathf.RoundToInt(Mathf.Pow(UnityEngine.Random.value, SKEWED_POWER) * (availableTiles.Count - 1) + 0);
+        int skewedRandomValue = Mathf.RoundToInt(Mathf.Pow(Random.value, SKEWED_POWER) * (availableTiles.Count - 1) + 0);
         DungeonRoomTile room = availableTiles[skewedRandomValue];
 
         GameObject spawnedRoom = Instantiate(room.prefab);
+        spawnedRoom.name = spawnedRoom.name + "/" + room.name;
         spawnedRoom.transform.position = CalculateWorldPosition(position, room);
 
         return room;
@@ -146,16 +132,17 @@ public class DungeonGenerator : MonoBehaviour {
 
     private bool CheckForConnections(DungeonRoomTile room, Vector2Int connectionDirection, int index) {
         Vector4 connections = room.connections[index];
-        if (connectionDirection.x > 0 && connections.x > 0 ||
+
+        return 
+            connectionDirection.x > 0 && connections.x > 0 ||
             connectionDirection.x < 0 && connections.y > 0 ||
             connectionDirection.y > 0 && connections.z > 0 ||
-            connectionDirection.y < 0 && connections.w > 0)
-            return true;
-
-        return false;
+            connectionDirection.y < 0 && connections.w > 0;
     }
 
-    private bool CheckForFit(DungeonRoomTile room, Vector2Int offset, Vector2Int position) {
+    private bool CheckForFit(DungeonRoomTile room, Vector2Int position, int index) {
+        Vector2Int offset = Vector2Int.zero - room.GridPositionsPerIndex[index];
+
         for (int x = 0; x < room.size.x; x++) {
             for (int y = 0; y < room.size.y; y++) {
                 Vector2Int roomTile = new Vector2Int(x, y) - offset;
@@ -166,30 +153,5 @@ public class DungeonGenerator : MonoBehaviour {
         }
 
         return true;
-    }
-}
-
-[Serializable]
-public class DungeonRoomTile {
-    public string name;
-    public Vector2Int size;
-    public GameObject prefab;
-
-    public List<Vector4> connections;
-
-    public Dictionary<int, Vector2Int> GridPositionsPerIndex { get; private set; }
-    public int CurrentIndex { get; set; }
-
-    public void Init() {
-        GridPositionsPerIndex = new();
-
-        int counter = 0;
-        for (int x = 0; x < size.x; x++) {
-            for (int y = 0; y < size.y; y++) {
-                GridPositionsPerIndex.Add(counter, new Vector2Int(x, y));
-
-                counter++;
-            }
-        }
     }
 }
