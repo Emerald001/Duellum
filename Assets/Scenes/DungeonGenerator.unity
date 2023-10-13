@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -385,24 +385,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c994313354a7f8744bf0841a9d70ac51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileAmount: 20
+  tileAmount: 100
   tileSize: 1
   rooms:
   - name: 1
     size: {x: 1, y: 1}
-    prefab: {fileID: 1154763844953667180, guid: 97f0166e75cf2db4884aee27e0250ae8,
-      type: 3}
+    prefab: {fileID: 502260893760250004, guid: 6311d915e512505408a04e3df7176c22, type: 3}
     connections:
     - {x: 1, y: 1, z: 1, w: 1}
+  - name: 1.5
+    size: {x: 2, y: 1}
+    prefab: {fileID: 4041915012533457316, guid: a3bee0dcda447e84a85ebd51edcabadc,
+      type: 3}
+    connections:
+    - {x: 0, y: 1, z: 0, w: 0}
+    - {x: 0, y: 0, z: 1, w: 1}
   - name: 2
     size: {x: 1, y: 1}
-    prefab: {fileID: 1154763844953667180, guid: 97f0166e75cf2db4884aee27e0250ae8,
+    prefab: {fileID: 3290643363561231301, guid: 9de4ea77074ea674ea2e2808f4412017,
       type: 3}
     connections:
     - {x: 1, y: 1, z: 0, w: 0}
   - name: 3
     size: {x: 2, y: 2}
-    prefab: {fileID: 1154763844953667180, guid: ef8c72c2ace774141a41702e3c17f25d,
+    prefab: {fileID: 4041915012533457316, guid: 0c178c1bbfe02764daed5e53ceef96cb,
       type: 3}
     connections:
     - {x: 0, y: 1, z: 1, w: 0}
@@ -411,7 +417,7 @@ MonoBehaviour:
     - {x: 1, y: 0, z: 0, w: 1}
   - name: 4
     size: {x: 2, y: 5}
-    prefab: {fileID: 1154763844953667180, guid: 7801363f456425a41aae490b54f73f18,
+    prefab: {fileID: 4041915012533457316, guid: 9da5941990b37ba49a3560869b8bfea3,
       type: 3}
     connections:
     - {x: 0, y: 1, z: 0, w: 0}
@@ -427,28 +433,30 @@ MonoBehaviour:
   endRooms:
   - name: End 1
     size: {x: 1, y: 1}
-    prefab: {fileID: 1154763844953667180, guid: 97f0166e75cf2db4884aee27e0250ae8,
+    prefab: {fileID: 8269667916821687923, guid: 4574a3b994ea7ba49a3ac4496909a383,
       type: 3}
     connections:
     - {x: 1, y: 0, z: 0, w: 0}
   - name: End 2
     size: {x: 1, y: 1}
-    prefab: {fileID: 1154763844953667180, guid: 97f0166e75cf2db4884aee27e0250ae8,
+    prefab: {fileID: 8269667916821687923, guid: 4574a3b994ea7ba49a3ac4496909a383,
       type: 3}
     connections:
     - {x: 0, y: 1, z: 0, w: 0}
   - name: End 3
     size: {x: 1, y: 1}
-    prefab: {fileID: 1154763844953667180, guid: 97f0166e75cf2db4884aee27e0250ae8,
+    prefab: {fileID: 2999143173095309518, guid: ee2073de6382aa5459177199c5ee4dfc,
       type: 3}
     connections:
     - {x: 0, y: 0, z: 1, w: 0}
   - name: End 4
     size: {x: 1, y: 1}
-    prefab: {fileID: 1154763844953667180, guid: 97f0166e75cf2db4884aee27e0250ae8,
+    prefab: {fileID: 8572193602836217388, guid: bc51e4164da33d84f87a69811cd1da8c,
       type: 3}
     connections:
     - {x: 0, y: 0, z: 0, w: 1}
+  generateInstantly: 0
+  generationSpeed: 1
 --- !u!4 &1965523698
 Transform:
   m_ObjectHideFlags: 0
