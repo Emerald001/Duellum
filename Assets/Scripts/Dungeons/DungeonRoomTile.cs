@@ -10,11 +10,21 @@ public class DungeonRoomTile {
 
     public List<Vector4> connections;
 
+    public DungeonRoomTile(DungeonRoomTile roomTile) {
+        name = roomTile.name;
+        size = roomTile.size;
+        prefab = roomTile.prefab;
+        connections = new(roomTile.connections);
+    }
+
     public Dictionary<int, Vector2Int> GridPositionsPerIndex { get; private set; }
     public int CurrentIndex { get; set; }
-    public int RotationIndex { get; set; }
+    public int RotationIndex { get; set; } = 0;
 
-    public void Init() {
+    public void Init(int rotIndex) {
+        if (rotIndex > 0)
+            Rotate(rotIndex);
+
         GridPositionsPerIndex = new();
 
         int counter = 0;
@@ -27,7 +37,15 @@ public class DungeonRoomTile {
         }
     }
 
-    public void Rotate(int rotIndex) {
+    private void Rotate(int rotIndex) {
+        RotationIndex = rotIndex;
 
+        for (int i = 0; i < rotIndex; i++) {
+            for (int j = 0; j < connections.Count; j++) {
+                Vector4 connection = connections[j];
+
+                connections[j] = new Vector4(connection.z, connection.w, connection.y, connection.x);
+            }
+        }
     }
 }
