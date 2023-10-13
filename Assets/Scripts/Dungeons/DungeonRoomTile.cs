@@ -12,6 +12,7 @@ public class DungeonRoomTile {
 
     public Dictionary<int, Vector2Int> GridPositionsPerIndex { get; private set; }
     public int CurrentIndex { get; set; }
+    public int RotationIndex { get; set; }
 
     public void Init() {
         GridPositionsPerIndex = new();
@@ -24,5 +25,9 @@ public class DungeonRoomTile {
                 counter++;
             }
         }
+    }
+
+    public void Rotate(int rotIndex) {
+
     }
 }
