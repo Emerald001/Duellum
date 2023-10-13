@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -385,37 +385,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c994313354a7f8744bf0841a9d70ac51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileAmount: 100
+  tileAmount: 10000
   tileSize: 1
   rooms:
-  - name: 1
+  - name: End Cap
+    size: {x: 1, y: 1}
+    prefab: {fileID: 2999143173095309518, guid: ee2073de6382aa5459177199c5ee4dfc,
+      type: 3}
+    connections:
+    - {x: 0, y: 1, z: 0, w: 0}
+  - name: 2 L - Room
+    size: {x: 1, y: 1}
+    prefab: {fileID: 1596550666254034389, guid: d0b2a581f3a86544095278332235385d,
+      type: 3}
+    connections:
+    - {x: 1, y: 0, z: 0, w: 1}
+  - name: 2 I - Corridor
+    size: {x: 1, y: 1}
+    prefab: {fileID: 3290643363561231301, guid: 9de4ea77074ea674ea2e2808f4412017,
+      type: 3}
+    connections:
+    - {x: 1, y: 1, z: 0, w: 0}
+  - name: 3 T - Room
+    size: {x: 1, y: 1}
+    prefab: {fileID: 4531463131601601719, guid: 42ba83f21d9164b418af6c4adaaddee8,
+      type: 3}
+    connections:
+    - {x: 1, y: 0, z: 1, w: 1}
+  - name: 4 - Sided Room
     size: {x: 1, y: 1}
     prefab: {fileID: 502260893760250004, guid: 6311d915e512505408a04e3df7176c22, type: 3}
     connections:
     - {x: 1, y: 1, z: 1, w: 1}
-  - name: 1.5
+  - name: 1 by 2 - Room
     size: {x: 2, y: 1}
     prefab: {fileID: 4041915012533457316, guid: a3bee0dcda447e84a85ebd51edcabadc,
       type: 3}
     connections:
     - {x: 0, y: 1, z: 0, w: 0}
     - {x: 0, y: 0, z: 1, w: 1}
-  - name: 2
-    size: {x: 1, y: 1}
-    prefab: {fileID: 3290643363561231301, guid: 9de4ea77074ea674ea2e2808f4412017,
-      type: 3}
-    connections:
-    - {x: 1, y: 1, z: 0, w: 0}
-  - name: 3
+  - name: 2 by 2 - room
     size: {x: 2, y: 2}
     prefab: {fileID: 4041915012533457316, guid: 0c178c1bbfe02764daed5e53ceef96cb,
       type: 3}
     connections:
-    - {x: 0, y: 1, z: 1, w: 0}
     - {x: 0, y: 1, z: 0, w: 1}
-    - {x: 1, y: 0, z: 1, w: 0}
+    - {x: 0, y: 1, z: 1, w: 0}
     - {x: 1, y: 0, z: 0, w: 1}
-  - name: 4
+    - {x: 1, y: 0, z: 1, w: 0}
+  - name: 2 by 5 - Room
     size: {x: 2, y: 5}
     prefab: {fileID: 4041915012533457316, guid: 9da5941990b37ba49a3560869b8bfea3,
       type: 3}
@@ -425,38 +443,67 @@ MonoBehaviour:
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 1, z: 0, w: 0}
-    - {x: 1, y: 0, z: 1, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 1, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
     - {x: 1, y: 0, z: 0, w: 1}
-  endRooms:
-  - name: End 1
-    size: {x: 1, y: 1}
-    prefab: {fileID: 8269667916821687923, guid: 4574a3b994ea7ba49a3ac4496909a383,
-      type: 3}
-    connections:
+    - {x: 0, y: 0, z: 0, w: 0}
     - {x: 1, y: 0, z: 0, w: 0}
-  - name: End 2
-    size: {x: 1, y: 1}
-    prefab: {fileID: 8269667916821687923, guid: 4574a3b994ea7ba49a3ac4496909a383,
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 1, y: 0, z: 1, w: 0}
+  - name: 3 by 6 - Room
+    size: {x: 3, y: 6}
+    prefab: {fileID: 4041915012533457316, guid: 02791569542955f47bd3756af0f8e0ea,
       type: 3}
     connections:
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 1, z: 0, w: 0}
-  - name: End 3
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 1}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 1, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 1, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+  endRooms:
+  - name: End
     size: {x: 1, y: 1}
-    prefab: {fileID: 2999143173095309518, guid: ee2073de6382aa5459177199c5ee4dfc,
+    prefab: {fileID: 5167788080752939028, guid: aa0b8173142196744891aea0fb3a1e03,
       type: 3}
     connections:
     - {x: 0, y: 0, z: 1, w: 0}
-  - name: End 4
+  - name: L
     size: {x: 1, y: 1}
-    prefab: {fileID: 8572193602836217388, guid: bc51e4164da33d84f87a69811cd1da8c,
+    prefab: {fileID: 1596550666254034389, guid: d0b2a581f3a86544095278332235385d,
       type: 3}
     connections:
-    - {x: 0, y: 0, z: 0, w: 1}
-  generateInstantly: 0
-  generationSpeed: 1
+    - {x: 1, y: 0, z: 0, w: 1}
+  - name: I
+    size: {x: 1, y: 1}
+    prefab: {fileID: 3290643363561231301, guid: 9de4ea77074ea674ea2e2808f4412017,
+      type: 3}
+    connections:
+    - {x: 1, y: 1, z: 0, w: 0}
+  - name: T
+    size: {x: 1, y: 1}
+    prefab: {fileID: 4531463131601601719, guid: 42ba83f21d9164b418af6c4adaaddee8,
+      type: 3}
+    connections:
+    - {x: 1, y: 0, z: 1, w: 1}
+  - name: Plus
+    size: {x: 1, y: 1}
+    prefab: {fileID: 4531463131601601719, guid: 09d7a51839e681048b0af1de47207187,
+      type: 3}
+    connections:
+    - {x: 1, y: 1, z: 1, w: 1}
+  generateInstantly: 1
+  generationSpeed: 1e-15
 --- !u!4 &1965523698
 Transform:
   m_ObjectHideFlags: 0
