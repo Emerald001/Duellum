@@ -385,38 +385,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c994313354a7f8744bf0841a9d70ac51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileAmount: 10000
+  roomAmount: 10
+  bigRoomAmount: 2
   tileSize: 1
   rooms:
-  - name: End Cap
+  - name: 4 - Sided Room
     size: {x: 1, y: 1}
-    prefab: {fileID: 2999143173095309518, guid: ee2073de6382aa5459177199c5ee4dfc,
-      type: 3}
+    prefab: {fileID: 502260893760250004, guid: 6311d915e512505408a04e3df7176c22, type: 3}
     connections:
-    - {x: 0, y: 1, z: 0, w: 0}
-  - name: 2 L - Room
-    size: {x: 1, y: 1}
-    prefab: {fileID: 1596550666254034389, guid: d0b2a581f3a86544095278332235385d,
-      type: 3}
-    connections:
-    - {x: 1, y: 0, z: 0, w: 1}
-  - name: 2 I - Corridor
-    size: {x: 1, y: 1}
-    prefab: {fileID: 3290643363561231301, guid: 9de4ea77074ea674ea2e2808f4412017,
-      type: 3}
-    connections:
-    - {x: 1, y: 1, z: 0, w: 0}
+    - {x: 1, y: 1, z: 1, w: 1}
   - name: 3 T - Room
     size: {x: 1, y: 1}
     prefab: {fileID: 4531463131601601719, guid: 42ba83f21d9164b418af6c4adaaddee8,
       type: 3}
     connections:
     - {x: 1, y: 0, z: 1, w: 1}
-  - name: 4 - Sided Room
+  - name: 2 I - Corridor
     size: {x: 1, y: 1}
-    prefab: {fileID: 502260893760250004, guid: 6311d915e512505408a04e3df7176c22, type: 3}
+    prefab: {fileID: 3290643363561231301, guid: 9de4ea77074ea674ea2e2808f4412017,
+      type: 3}
     connections:
-    - {x: 1, y: 1, z: 1, w: 1}
+    - {x: 1, y: 1, z: 0, w: 0}
+  - name: 2 L - Room
+    size: {x: 1, y: 1}
+    prefab: {fileID: 1596550666254034389, guid: d0b2a581f3a86544095278332235385d,
+      type: 3}
+    connections:
+    - {x: 1, y: 0, z: 0, w: 1}
+  - name: End Cap
+    size: {x: 1, y: 1}
+    prefab: {fileID: 2999143173095309518, guid: ee2073de6382aa5459177199c5ee4dfc,
+      type: 3}
+    connections:
+    - {x: 0, y: 1, z: 0, w: 0}
   - name: 1 by 2 - Room
     size: {x: 2, y: 1}
     prefab: {fileID: 4041915012533457316, guid: a3bee0dcda447e84a85ebd51edcabadc,
@@ -424,15 +425,15 @@ MonoBehaviour:
     connections:
     - {x: 0, y: 1, z: 0, w: 0}
     - {x: 0, y: 0, z: 1, w: 1}
-  - name: 2 by 2 - room
+  - name: 2 by 2 - Room
     size: {x: 2, y: 2}
-    prefab: {fileID: 4041915012533457316, guid: 0c178c1bbfe02764daed5e53ceef96cb,
+    prefab: {fileID: 4041915012533457316, guid: e62ecca409d870544a1d1cf6328988b8,
       type: 3}
     connections:
-    - {x: 0, y: 1, z: 0, w: 1}
-    - {x: 0, y: 1, z: 1, w: 0}
-    - {x: 1, y: 0, z: 0, w: 1}
-    - {x: 1, y: 0, z: 1, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 0, w: 1}
+    - {x: 0, y: 0, z: 1, w: 0}
   - name: 2 by 5 - Room
     size: {x: 2, y: 5}
     prefab: {fileID: 4041915012533457316, guid: 9da5941990b37ba49a3560869b8bfea3,
@@ -474,10 +475,10 @@ MonoBehaviour:
   endRooms:
   - name: End
     size: {x: 1, y: 1}
-    prefab: {fileID: 5167788080752939028, guid: aa0b8173142196744891aea0fb3a1e03,
+    prefab: {fileID: 2999143173095309518, guid: ee2073de6382aa5459177199c5ee4dfc,
       type: 3}
     connections:
-    - {x: 0, y: 0, z: 1, w: 0}
+    - {x: 0, y: 1, z: 0, w: 0}
   - name: L
     size: {x: 1, y: 1}
     prefab: {fileID: 1596550666254034389, guid: d0b2a581f3a86544095278332235385d,
@@ -502,7 +503,7 @@ MonoBehaviour:
       type: 3}
     connections:
     - {x: 1, y: 1, z: 1, w: 1}
-  generateInstantly: 1
+  generateInstantly: 0
   generationSpeed: 1e-15
 --- !u!4 &1965523698
 Transform:
