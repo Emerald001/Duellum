@@ -4,9 +4,10 @@ using System.Linq;
 using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour {
-    private const float SKEWED_POWER = .1f;
+    private const float SKEWED_POWER = .3f;
 
-    [SerializeField] private int tileAmount;
+    [SerializeField] private int roomAmount;
+    [SerializeField] private int bigRoomAmount;
     [SerializeField] private int tileSize;
 
     [SerializeField] private List<DungeonRoomTile> rooms;
@@ -51,9 +52,10 @@ public class DungeonGenerator : MonoBehaviour {
                 debugObjects.Add(newTile, tmp);
             }
         }
-        
+
+        int roomsSpawned = 0;
         while (openSet.Count > 0) {
-            if (openSet.Count + closedSet.Count >= tileAmount)
+            if (openSet.Count + roomsSpawned >= roomAmount)
                 break;
 
             Vector2Int currentPos = openSet[0];
@@ -63,6 +65,7 @@ public class DungeonGenerator : MonoBehaviour {
 
             Vector2Int connectionDirection = currentPos - connectionDict[currentPos];
             DungeonRoomTile room = SpawnRoom(rooms, currentPos, connectionDirection);
+            roomsSpawned++;
 
             if (!generateInstantly)
                 yield return new WaitForSeconds(generationSpeed);
@@ -149,6 +152,12 @@ public class DungeonGenerator : MonoBehaviour {
 
         for (int i = availableTiles.Count - 1; i >= 0; i--) {
             DungeonRoomTile tile = availableTiles[i];
+
+            if (bigRoomAmount < 1 && (tile.size.x > 1 || tile.size.y > 1)) {
+                availableTiles.Remove(tile);
+                continue;
+            }
+
             List<int> availableIndices = tile.GridPositionsPerIndex.Keys
                 .Where(r => CheckForFit(tile, position, r) && CheckForConnections(tile, position, connectionDir, r))
                 .ToList();
@@ -162,6 +171,9 @@ public class DungeonGenerator : MonoBehaviour {
         int skewedRandomValue = Mathf.RoundToInt(Mathf.Pow(Random.value, SKEWED_POWER) * (availableTiles.Count - 1) + 0);
         int index = spawnFirst ? 0 : skewedRandomValue;
         DungeonRoomTile room = availableTiles[index];
+
+        if (room.size.x > 1 || room.size.y > 1)
+            bigRoomAmount--;
 
         GameObject spawnedRoom = Instantiate(room.prefab);
         spawnedRoom.name = room.name;
