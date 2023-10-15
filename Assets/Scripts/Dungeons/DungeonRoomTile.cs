@@ -7,7 +7,6 @@ public class DungeonRoomTile {
     public string name;
     public Vector2Int size;
     public GameObject prefab;
-
     public List<Vector4> connections;
 
     public DungeonRoomTile(DungeonRoomTile roomTile) {
@@ -19,11 +18,20 @@ public class DungeonRoomTile {
 
     public Dictionary<int, Vector2Int> GridPositionsPerIndex { get; private set; }
     public int CurrentIndex { get; set; }
-    public int RotationIndex { get; set; } = 0;
+    public int RotationIndex { get; set; }
 
     public void Init(int rotIndex) {
-        if (rotIndex > 0)
-            Rotate(rotIndex);
+        if (rotIndex > 0) {
+            RotationIndex = rotIndex;
+
+            for (int i = 0; i < rotIndex; i++) {
+                for (int j = 0; j < connections.Count; j++) {
+                    Vector4 connection = connections[j];
+
+                    connections[j] = new Vector4(connection.z, connection.w, connection.y, connection.x);
+                }
+            }
+        }
 
         GridPositionsPerIndex = new();
 
@@ -33,18 +41,6 @@ public class DungeonRoomTile {
                 GridPositionsPerIndex.Add(counter, new Vector2Int(x, y));
 
                 counter++;
-            }
-        }
-    }
-
-    private void Rotate(int rotIndex) {
-        RotationIndex = rotIndex;
-
-        for (int i = 0; i < rotIndex; i++) {
-            for (int j = 0; j < connections.Count; j++) {
-                Vector4 connection = connections[j];
-
-                connections[j] = new Vector4(connection.z, connection.w, connection.y, connection.x);
             }
         }
     }
