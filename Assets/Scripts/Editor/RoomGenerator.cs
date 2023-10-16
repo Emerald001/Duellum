@@ -17,9 +17,8 @@ public class RoomGeneratorEditor : EditorWindow {
         size = EditorGUILayout.Vector2IntField("Size", size);
         tilesPerRoom = EditorGUILayout.IntField("Tiles Per Room", tilesPerRoom);
 
-        if (GUILayout.Button("Generate Room")) {
+        if (GUILayout.Button("Generate Room"))
             GenerateRoom();
-        }
 
         if (grid != null) {
             GUILayout.Label("Click to toggle tiles:");
@@ -27,9 +26,8 @@ public class RoomGeneratorEditor : EditorWindow {
             for (int y = 0; y < size.y * tilesPerRoom; y++) {
                 EditorGUILayout.BeginHorizontal();
 
-                for (int x = 0; x < size.x * tilesPerRoom; x++) {
-                    grid[x, y] = GUILayout.Toggle(grid[x, y], "", GUILayout.ExpandWidth(false));
-                }
+                for (int x = 0; x < size.x * tilesPerRoom; x++)
+                    grid[x, y] = GUILayout.Button("  ", GUILayout.ExpandWidth(false));
 
                 EditorGUILayout.EndHorizontal();
             }
