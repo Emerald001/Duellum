@@ -159,8 +159,8 @@ Camera:
   m_GameObject: {fileID: 1308055897}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -444,11 +444,11 @@ MonoBehaviour:
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 1, z: 0, w: 0}
-    - {x: 1, y: 0, z: 0, w: 1}
+    - {x: 0, y: 0, z: 0, w: 1}
     - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 1, y: 0, z: 0, w: 0}
     - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 1, y: 0, z: 1, w: 0}
+    - {x: 0, y: 0, z: 0, w: 0}
+    - {x: 0, y: 0, z: 1, w: 0}
   - name: 3 by 6 - Room
     size: {x: 3, y: 6}
     prefab: {fileID: 4041915012533457316, guid: 02791569542955f47bd3756af0f8e0ea,
@@ -503,7 +503,7 @@ MonoBehaviour:
       type: 3}
     connections:
     - {x: 1, y: 1, z: 1, w: 1}
-  generateInstantly: 0
+  generateInstantly: 1
   generationSpeed: 1e-15
 --- !u!4 &1965523698
 Transform:
