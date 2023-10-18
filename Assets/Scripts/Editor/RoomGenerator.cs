@@ -8,7 +8,7 @@ public class RoomGeneratorEditor : EditorWindow {
     private Vector4[,] connectionGrid;
 
     private Vector2Int lastSize = new();
-    private int tilesPerRoom = 10;
+    private readonly int tilesPerRoom = 10;
 
     private enum TileState {
         Empty,
@@ -33,11 +33,9 @@ public class RoomGeneratorEditor : EditorWindow {
         EditorGUILayout.HelpBox("1x1 rooms are automatically added with the four rotations, others are not.", MessageType.Info);
 
         size = EditorGUILayout.Vector2IntField("Size", size);
-        //tilesPerRoom = EditorGUILayout.IntField("Tiles Per Room", tilesPerRoom);
 
         if (size.x > 10)
             size = new(10, size.y);
-
         if (size.y > 10)
             size = new(size.x, 10);
 
@@ -125,7 +123,7 @@ public class RoomGeneratorEditor : EditorWindow {
 
         EditorGUILayout.BeginVertical();
 
-        for (int y = 0; y < size.y * tilesPerRoom; y++) {
+        for (int y = size.y * tilesPerRoom - 1; y >= 0; y--) {
             EditorGUILayout.BeginHorizontal();
 
             for (int x = 0; x < size.x * tilesPerRoom; x++) {
@@ -139,8 +137,7 @@ public class RoomGeneratorEditor : EditorWindow {
             }
 
             EditorGUILayout.EndHorizontal();
-
-            if (y % tilesPerRoom == tilesPerRoom - 1 && y < size.y * tilesPerRoom - 1)
+            if (y % tilesPerRoom == 0 && y < size.y * tilesPerRoom)
                 EditorGUILayout.Space();
         }
 
