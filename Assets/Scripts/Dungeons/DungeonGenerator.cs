@@ -133,7 +133,7 @@ public class DungeonGenerator : MonoBehaviour {
                 return false;
 
             List<int> availableIndices = tile.GridPositionsPerIndex.Keys
-                .Where(r => CheckForFit(tile, position, r) && CheckForConnections(tile, position, r))
+                .Where(r => CheckForFit(tile, position, r))
                 .ToList();
 
             if (availableIndices.Count > 0) {
@@ -170,7 +170,7 @@ public class DungeonGenerator : MonoBehaviour {
         return worldPosition / (room.size.x * room.size.y);
     }
 
-    private bool CheckForConnections(DungeonRoomTile room, Vector2Int spawnPos, int index) {
+    private bool CheckForFit(DungeonRoomTile room, Vector2Int spawnPos, int index) {
         int i = 0;
         for (int x = 0; x < room.size.x; x++) {
             for (int y = 0; y < room.size.y; y++) {
@@ -192,13 +192,9 @@ public class DungeonGenerator : MonoBehaviour {
             }
         }
 
-        return true;
-    }
-
-    private bool CheckForFit(DungeonRoomTile room, Vector2Int position, int index) {
         return !Enumerable.Range(0, room.size.x)
                 .SelectMany(x => Enumerable.Range(0, room.size.y)
-                .Select(y => position + new Vector2Int(x, y) - room.GridPositionsPerIndex[index]))
+                .Select(y => spawnPos + new Vector2Int(x, y) - room.GridPositionsPerIndex[index]))
                 .Any(tile => dungeon.ContainsKey(tile));
     }
 }
