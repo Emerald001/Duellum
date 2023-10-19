@@ -2,18 +2,16 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-public class RoomGeneratorEditor : EditorWindow {
+public partial class RoomGeneratorEditor : EditorWindow {
     private Vector2Int size = new(1, 1);
-    private TileState[,] grid;
+    private bool[,] grid;
     private Vector4[,] connectionGrid;
+    private string tileName = "New Room";
 
     private Vector2Int lastSize = new();
     private readonly int tilesPerRoom = 10;
 
-    private enum TileState {
-        Empty,
-        Filled
-    }
+    private DungeonRoomSO currentRoom;
 
     private enum Directions {
         North,
@@ -29,15 +27,36 @@ public class RoomGeneratorEditor : EditorWindow {
 
     private void OnGUI() {
         GUILayout.Label("Room Generator", EditorStyles.boldLabel);
-
         EditorGUILayout.HelpBox("1x1 rooms are automatically added with the four rotations, others are not.", MessageType.Info);
 
+        currentRoom = (DungeonRoomSO)EditorGUILayout.ObjectField("Current Room", currentRoom, typeof(DungeonRoomSO));
+
+        if (GUILayout.Button("Save"))
+            SaveData();
+
+        if (GUILayout.Button("Load")) {
+            tileName = currentRoom.room.name;
+            size = currentRoom.room.size;
+            grid = currentRoom.grid;
+            connectionGrid = currentRoom.connectionGrid;
+        }
+
+        DrawUILine(Color.gray);
+
+        tileName = EditorGUILayout.TextField("Name", tileName);
         size = EditorGUILayout.Vector2IntField("Size", size);
+
+        DrawUILine(Color.gray);
 
         if (size.x > 10)
             size = new(10, size.y);
         if (size.y > 10)
             size = new(size.x, 10);
+
+        if (size.x < 1)
+            size = new(1, size.y);
+        if (size.y < 1)
+            size = new(size.x, 1);
 
         if (GUILayout.Button("Reset")) {
             AllocateRoomPositions();
@@ -61,8 +80,69 @@ public class RoomGeneratorEditor : EditorWindow {
             DrawTiles();
     }
 
+    private void GenerateRoom() {
+        EditorSceneManager.OpenScene("Assets/Scenes/RoomEditor.unity", OpenSceneMode.Single);
+
+        GameObject room = GameObject.Find("New Room");
+        if (room != null) {
+            for (int i = room.transform.childCount - 1; i >= 0; i--)
+                DestroyImmediate(room.transform.GetChild(0).gameObject);
+        }
+
+        GameObject hexGO = Resources.Load("GridBlocks/GridBlock") as GameObject;
+        GameObject coverGO = Resources.Load("GridBlocks/GridCoverBlock") as GameObject;
+
+        Hex hex = hexGO.GetComponent<Hex>();
+        Hex coverHex = coverGO.GetComponent<Hex>();
+
+        Transform parent = room != null ? room.transform : new GameObject("New Room").transform;
+
+        GenerateGrid(parent, hex, coverHex);
+
+    }
+
+    private void GenerateGrid(Transform parent, Hex prefab, Hex coverPrefab) {
+        for (int y = -1; y < size.y * tilesPerRoom + 1; y++) {
+            for (int x = -1; x < size.x * tilesPerRoom + 1; x++) {
+                Vector2Int gridPos = new(x, y);
+
+                Hex pref = y < 0 || x < 0 || y == size.y * tilesPerRoom || x == size.x * tilesPerRoom
+                    ? coverPrefab
+                    : grid[x, y] ? prefab : coverPrefab;
+
+                var tmp = Instantiate(pref, parent);
+
+                tmp.SetHighlight(HighlightType.None);
+                tmp.GridPos = gridPos;
+                tmp.StandardWorldPosition = CalcSquareWorldPos(gridPos);
+                tmp.transform.position = CalcSquareWorldPos(gridPos);
+                tmp.transform.SetParent(parent);
+            }
+        }
+    }
+
+    private void SaveData() {
+        DungeonRoomSO newScriptableObject = CreateInstance<DungeonRoomSO>();
+
+        newScriptableObject.room.name = tileName;
+        newScriptableObject.grid = grid;
+        newScriptableObject.connectionGrid = connectionGrid;
+        newScriptableObject.room.size = size;
+
+        AssetDatabase.CreateAsset(newScriptableObject, $"Assets/Resources/Rooms/{tileName}.asset");
+        AssetDatabase.SaveAssets();
+    }
+
+    private Vector3 CalcSquareWorldPos(Vector2Int gridpos) {
+        float x = gridpos.x - (((size.x * tilesPerRoom) - 1 + (0.02f * ((size.x * tilesPerRoom) - 1))) / 2) + 0.02f * gridpos.x;
+        float z = gridpos.y - (((size.y * tilesPerRoom) - 1 + (0.02f * ((size.y * tilesPerRoom) - 1))) / 2) + 0.02f * gridpos.y;
+
+        return new Vector3(x, 0, z);
+    }
+}
+
+public partial class RoomGeneratorEditor {
     private void DrawConnections() {
-        DrawUILine(Color.gray);
         GUILayout.Label("Click on the buttons to identify their connections");
 
         EditorGUILayout.BeginVertical();
@@ -127,7 +207,7 @@ public class RoomGeneratorEditor : EditorWindow {
             EditorGUILayout.BeginHorizontal();
 
             for (int x = 0; x < size.x * tilesPerRoom; x++) {
-                GUI.backgroundColor = grid[x, y] == TileState.Empty ? Color.white : Color.gray;
+                GUI.backgroundColor = grid[x, y] ? Color.white : Color.gray;
 
                 if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                     ToggleTileState(x, y);
@@ -153,56 +233,12 @@ public class RoomGeneratorEditor : EditorWindow {
         r.width += 6;
         EditorGUI.DrawRect(r, color);
     }
-
-    private void GenerateRoom() {
-        EditorSceneManager.OpenScene("Assets/Scenes/RoomEditor.unity", OpenSceneMode.Single);
-
-        GameObject room = GameObject.Find("New Room");
-        if (room != null) {
-            for (int i = room.transform.childCount - 1; i >= 0; i--)
-                DestroyImmediate(room.transform.GetChild(0).gameObject);
-        }
-
-        GameObject hexGO = Resources.Load("GridBlocks/GridBlock") as GameObject;
-        GameObject coverGO = Resources.Load("GridBlocks/GridCoverBlock") as GameObject;
-
-        Hex hex = hexGO.GetComponent<Hex>();
-        Hex coverHex = coverGO.GetComponent<Hex>();
-
-        Transform parent = room != null ? room.transform : new GameObject("New Room").transform;
-
-        GenerateGrid(parent, hex, coverHex);
-    }
-
-    private void GenerateGrid(Transform parent, Hex prefab, Hex coverPrefab) {
-        for (int y = 0; y < size.y * tilesPerRoom; y++) {
-            for (int x = 0; x < size.x * tilesPerRoom; x++) {
-                Vector2Int gridPos = new(x, y);
-
-                var tmp = Instantiate(grid[x, y] == TileState.Empty ? prefab : coverPrefab, parent);
-
-                tmp.SetHighlight(HighlightType.None);
-                tmp.GridPos = gridPos;
-                tmp.StandardWorldPosition = CalcSquareWorldPos(gridPos);
-                tmp.transform.position = CalcSquareWorldPos(gridPos);
-                tmp.transform.SetParent(parent);
-            }
-        }
-    }
-
-    private Vector3 CalcSquareWorldPos(Vector2Int gridpos) {
-        float x = gridpos.x - (((size.x * tilesPerRoom) - 1 + (0.02f * ((size.x * tilesPerRoom) - 1))) / 2) + 0.02f * gridpos.x;
-        float z = gridpos.y - (((size.y * tilesPerRoom) - 1 + (0.02f * ((size.y * tilesPerRoom) - 1))) / 2) + 0.02f * gridpos.y;
-
-        return new Vector3(x, 0, z);
-    }
-
     private void AllocateRoomPositions() {
-        grid = new TileState[size.x * tilesPerRoom , size.y * tilesPerRoom];
+        grid = new bool[size.x * tilesPerRoom, size.y * tilesPerRoom];
 
         for (int y = 0; y < size.y * tilesPerRoom; y++) {
             for (int x = 0; x < size.x * tilesPerRoom; x++)
-                grid[x, y] = TileState.Empty;
+                grid[x, y] = true;
         }
     }
 
@@ -215,7 +251,7 @@ public class RoomGeneratorEditor : EditorWindow {
     }
 
     private void ToggleTileState(int x, int y) {
-        grid[x, y] = grid[x, y] == TileState.Empty ? TileState.Filled : TileState.Empty;
+        grid[x, y] = !grid[x, y];
     }
 
     private void ToggleConnectionState(int x, int y, Directions direction) {
