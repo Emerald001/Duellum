@@ -1,11 +1,15 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public partial class RoomGeneratorEditor : EditorWindow {
     private Vector2Int size = new(1, 1);
-    private bool[,] grid;
-    private Vector4[,] connectionGrid;
+
+    private Dictionary<Vector2Int, bool> grid = new();
+    private Dictionary<Vector2Int, Vector4> connectionGrid = new();
+
     private string tileName = "New Room";
 
     private Vector2Int lastSize = new();
@@ -37,8 +41,14 @@ public partial class RoomGeneratorEditor : EditorWindow {
         if (GUILayout.Button("Load")) {
             tileName = currentRoom.room.name;
             size = currentRoom.room.size;
-            grid = currentRoom.grid;
-            connectionGrid = currentRoom.connectionGrid;
+            
+            grid = currentRoom.gridPositions.Zip(currentRoom.gridValues, (k, v) => new { k, v })
+              .ToDictionary(x => x.k, x => x.v);
+            connectionGrid = currentRoom.connectionPositions.Zip(currentRoom.connectionValues, (k, v) => new { k, v })
+              .ToDictionary(x => x.k, x => x.v);
+
+            DrawConnections();
+            DrawTiles();
         }
 
         DrawUILine(Color.gray);
@@ -73,10 +83,10 @@ public partial class RoomGeneratorEditor : EditorWindow {
             lastSize = size;
         }
 
-        if (connectionGrid != null)
+        if (connectionGrid.Count > 0)
             DrawConnections();
 
-        if (grid != null)
+        if (grid.Count > 0)
             DrawTiles();
     }
 
@@ -98,7 +108,6 @@ public partial class RoomGeneratorEditor : EditorWindow {
         Transform parent = room != null ? room.transform : new GameObject("New Room").transform;
 
         GenerateGrid(parent, hex, coverHex);
-
     }
 
     private void GenerateGrid(Transform parent, Hex prefab, Hex coverPrefab) {
@@ -108,9 +117,9 @@ public partial class RoomGeneratorEditor : EditorWindow {
 
                 Hex pref = y < 0 || x < 0 || y == size.y * tilesPerRoom || x == size.x * tilesPerRoom
                     ? coverPrefab
-                    : grid[x, y] ? prefab : coverPrefab;
+                    : grid[new(x, y)] ? prefab : coverPrefab;
 
-                var tmp = Instantiate(pref, parent);
+                Hex tmp = Instantiate(pref, parent);
 
                 tmp.SetHighlight(HighlightType.None);
                 tmp.GridPos = gridPos;
@@ -124,13 +133,23 @@ public partial class RoomGeneratorEditor : EditorWindow {
     private void SaveData() {
         DungeonRoomSO newScriptableObject = CreateInstance<DungeonRoomSO>();
 
-        newScriptableObject.room.name = tileName;
-        newScriptableObject.grid = grid;
-        newScriptableObject.connectionGrid = connectionGrid;
-        newScriptableObject.room.size = size;
+        List<Vector4> list = new();
+        for (int x = 0; x < size.x; x++) {
+            for (int y = 0; y < size.y; y++)
+                list.Add(connectionGrid[new(x, y)]);
+        }
+        newScriptableObject.room = new(tileName, size, null, list);
+
+        newScriptableObject.gridPositions = new(grid.Keys);
+        newScriptableObject.gridValues = new(grid.Values);
+
+        newScriptableObject.connectionPositions = new(connectionGrid.Keys);
+        newScriptableObject.connectionValues = new(connectionGrid.Values);
 
         AssetDatabase.CreateAsset(newScriptableObject, $"Assets/Resources/Rooms/{tileName}.asset");
         AssetDatabase.SaveAssets();
+
+        currentRoom = null;
     }
 
     private Vector3 CalcSquareWorldPos(Vector2Int gridpos) {
@@ -151,7 +170,7 @@ public partial class RoomGeneratorEditor {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space(21f, false);
         for (int x = 0; x < size.x; x++) {
-            GUI.backgroundColor = connectionGrid[x, 0].z == 1 ? Color.green : Color.white;
+            GUI.backgroundColor = connectionGrid[new(x, 0)].z == 1 ? Color.green : Color.white;
 
             if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                 ToggleConnectionState(x, 0, Directions.North);
@@ -163,13 +182,13 @@ public partial class RoomGeneratorEditor {
             EditorGUILayout.BeginHorizontal();
             for (int x = 0; x < size.x + 2; x++) {
                 if (x == 0) {
-                    GUI.backgroundColor = connectionGrid[x, y].y == 1 ? Color.green : Color.white;
+                    GUI.backgroundColor = connectionGrid[new(x, y)].y == 1 ? Color.green : Color.white;
 
                     if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                         ToggleConnectionState(x, y, Directions.West);
                 }
                 else if (x == size.x + 1) {
-                    GUI.backgroundColor = connectionGrid[x - 2, y].x == 1 ? Color.green : Color.white;
+                    GUI.backgroundColor = connectionGrid[new(x - 2, y)].x == 1 ? Color.green : Color.white;
 
                     if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                         ToggleConnectionState(x - 2, y, Directions.East);
@@ -186,7 +205,7 @@ public partial class RoomGeneratorEditor {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space(21f, false);
         for (int x = 0; x < size.x; x++) {
-            GUI.backgroundColor = connectionGrid[x, size.y - 1].w == 1 ? Color.green : Color.white;
+            GUI.backgroundColor = connectionGrid[new(x, size.y - 1)].w == 1 ? Color.green : Color.white;
 
             if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                 ToggleConnectionState(x, size.y - 1, Directions.South);
@@ -207,7 +226,7 @@ public partial class RoomGeneratorEditor {
             EditorGUILayout.BeginHorizontal();
 
             for (int x = 0; x < size.x * tilesPerRoom; x++) {
-                GUI.backgroundColor = grid[x, y] ? Color.white : Color.gray;
+                GUI.backgroundColor = grid[new(x, y)] ? Color.white : Color.gray;
 
                 if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                     ToggleTileState(x, y);
@@ -233,40 +252,42 @@ public partial class RoomGeneratorEditor {
         r.width += 6;
         EditorGUI.DrawRect(r, color);
     }
+
     private void AllocateRoomPositions() {
-        grid = new bool[size.x * tilesPerRoom, size.y * tilesPerRoom];
+        grid.Clear();
 
         for (int y = 0; y < size.y * tilesPerRoom; y++) {
             for (int x = 0; x < size.x * tilesPerRoom; x++)
-                grid[x, y] = true;
+                grid.Add(new(x, y), true);
         }
     }
 
     private void GenerateConnections() {
-        connectionGrid = new Vector4[size.x, size.y];
+        connectionGrid.Clear();
+
         for (int y = 0; y < size.y; y++) {
             for (int x = 0; x < size.x; x++)
-                connectionGrid[x, y] = new Vector4();
+                connectionGrid.Add(new(x, y), new Vector4());
         }
     }
 
     private void ToggleTileState(int x, int y) {
-        grid[x, y] = !grid[x, y];
+        grid[new(x, y)] = !grid[new(x, y)];
     }
 
     private void ToggleConnectionState(int x, int y, Directions direction) {
         switch (direction) {
             case Directions.North:
-                connectionGrid[x, y] = new(connectionGrid[x, y].x, connectionGrid[x, y].y, connectionGrid[x, y].z == 0 ? 1 : 0, connectionGrid[x, y].w);
+                connectionGrid[new(x, y)] = new(connectionGrid[new(x, y)].x, connectionGrid[new(x, y)].y, connectionGrid[new(x, y)].z == 0 ? 1 : 0, connectionGrid[new(x, y)].w);
                 break;
             case Directions.East:
-                connectionGrid[x, y] = new(connectionGrid[x, y].x == 0 ? 1 : 0, connectionGrid[x, y].y, connectionGrid[x, y].z, connectionGrid[x, y].w);
+                connectionGrid[new(x, y)] = new(connectionGrid[new(x, y)].x == 0 ? 1 : 0, connectionGrid[new(x, y)].y, connectionGrid[new(x, y)].z, connectionGrid[new(x, y)].w);
                 break;
             case Directions.South:
-                connectionGrid[x, y] = new(connectionGrid[x, y].x, connectionGrid[x, y].y, connectionGrid[x, y].z, connectionGrid[x, y].w == 0 ? 1 : 0);
+                connectionGrid[new(x, y)] = new(connectionGrid[new(x, y)].x, connectionGrid[new(x, y)].y, connectionGrid[new(x, y)].z, connectionGrid[new(x, y)].w == 0 ? 1 : 0);
                 break;
             case Directions.West:
-                connectionGrid[x, y] = new(connectionGrid[x, y].x, connectionGrid[x, y].y == 0 ? 1 : 0, connectionGrid[x, y].z, connectionGrid[x, y].w);
+                connectionGrid[new(x, y)] = new(connectionGrid[new(x, y)].x, connectionGrid[new(x, y)].y == 0 ? 1 : 0, connectionGrid[new(x, y)].z, connectionGrid[new(x, y)].w);
                 break;
             default:
                 break;

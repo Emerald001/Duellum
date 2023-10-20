@@ -9,11 +9,11 @@ public class DungeonRoomTile {
     public GameObject prefab;
     public List<Vector4> connections;
 
-    public DungeonRoomTile(DungeonRoomTile roomTile) {
-        name = roomTile.name;
-        size = roomTile.size;
-        prefab = roomTile.prefab;
-        connections = new(roomTile.connections);
+    public DungeonRoomTile(string name, Vector2Int size, GameObject prefab, List<Vector4> connections) {
+        this.name = name;
+        this.size = size;
+        this.prefab = prefab;
+        this.connections = connections;
     }
 
     public Dictionary<int, Vector2Int> GridPositionsPerIndex { get; private set; }

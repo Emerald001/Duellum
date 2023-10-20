@@ -123,7 +123,7 @@ public class DungeonGenerator : MonoBehaviour {
         List<DungeonRoomTile> availableTiles = listToUse
         .SelectMany(item => Enumerable.Range(0, (item.size.x > 1 || item.size.y > 1) ? 1 : 4)
             .Select(i => {
-                DungeonRoomTile roomTile = new(item);
+                DungeonRoomTile roomTile = new(item.name, item.size, item.prefab, item.connections);
                 roomTile.Init(i);
 
                 return roomTile;
