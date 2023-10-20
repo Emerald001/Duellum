@@ -29,5 +29,5 @@ MonoBehaviour:
     Defence: 4
     Initiative: 5
     Speed: 1
-  Attack: {fileID: 11400000, guid: f7a586e7450f6ba46bfa6aedad9e818c, type: 2}
+  Attack: {fileID: 11400000, guid: 30a598603e865a24097146ca25fb4322, type: 2}
   Properties: []
