@@ -18,10 +18,11 @@ MonoBehaviour:
   Catagory: 1
   Icon: {fileID: 21300000, guid: c389ee7a0df15ac4f8d5d8c90a1bc1d0, type: 3}
   Animations: {fileID: 0}
-  PawnPrefab: {fileID: 0}
+  PawnPrefab: {fileID: 418859313218980017, guid: d1d66aa8ff7b84e438b849f067f609cf,
+    type: 3}
   movementSpeed: 5
-  tileCover: 0
-  TileCoverage: 1
+  tileCover: 1
+  TileCoverage: 3
   BaseStatBlock:
     EnergyPoints: 5
     Attack: 1

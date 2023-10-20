@@ -2,10 +2,13 @@
 using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
+
+    private Animator unitAnimator;
+    [SerializeField] private GameObject pawnParent;
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
-
+    
     public UnitValues Values => values;
     protected UnitValues values;
 
@@ -18,9 +21,20 @@ public abstract class UnitController : MonoBehaviour {
 
     private bool didAttack;
 
+    private void OnEnable() {
+        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
+    }
+
+    private void OnDisable() {
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitDeath);
+    }
+    private void Start() {
+        
+        unitAnimator = GetComponentInChildren<Animator>();
+    }
     public virtual void SetUp(UnitData data, Vector2Int pos) {
         UnitBaseData = Instantiate(data);
-
+        GameObject pawn = Instantiate(data.PawnPrefab, pawnParent.transform);
         values = new(UnitBaseData);
         unitMovement = new();
         attackModule = new(UnitBaseData.Attack);
@@ -41,6 +55,7 @@ public abstract class UnitController : MonoBehaviour {
 
     public virtual void OnExit() {
         HasPerformedAction = false;
+        didAttack = false;
         IsDone = false;
     }
 
@@ -61,7 +76,7 @@ public abstract class UnitController : MonoBehaviour {
 
     private void EnqueueMovement(Vector2Int targetPosition) {
         queue.Enqueue(new DoMethodAction(() => {
-            //UnitAnimator.WalkAnim(true);
+            unitAnimator.SetBool("Walking", true);
             //UnitAudio.PlayLoopedAudio("Walking", true);
         }));
 
@@ -85,7 +100,7 @@ public abstract class UnitController : MonoBehaviour {
         }
 
         queue.Enqueue(new DoMethodAction(() => {
-            //UnitAnimator.WalkAnim(false);
+            unitAnimator.SetBool("Walking", false);
             //UnitAudio.PlayLoopedAudio("Walking", false);
 
             FindTiles();
@@ -105,11 +120,19 @@ public abstract class UnitController : MonoBehaviour {
                 throw new System.Exception("Something went Very wrong with getting the units attackable tiles");
 
             DamageManager.DealDamage(values, unit);
+            unit.unitAnimator.SetTrigger("GettingHit");
+            unitAnimator.SetBool("Attacking", true);
+            
         }));
 
+        unitAnimator.SetBool("Attacking", false);
+        EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, 0.1f);
         HasPerformedAction = true;
     }
 
+    private void UnitDeath(UnitController unit) {
+        unit.unitAnimator.SetTrigger("Dying");
+    }
     public virtual void FindTiles() {
         unitMovement.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
 

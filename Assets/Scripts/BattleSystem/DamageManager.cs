@@ -12,7 +12,8 @@ public static class DamageManager
                     100));
 
                 Debug.Log($"UNIT DIED");
-
+                EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, 0.8f);
+                EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitDeath, unit);
                 UnitStaticManager.UnitDeath(unit);
             }
         }

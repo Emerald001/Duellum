@@ -18,7 +18,8 @@ MonoBehaviour:
   Catagory: 0
   Icon: {fileID: 21300000, guid: c389ee7a0df15ac4f8d5d8c90a1bc1d0, type: 3}
   Animations: {fileID: 0}
-  PawnPrefab: {fileID: 0}
+  PawnPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4,
+    type: 3}
   movementSpeed: 6
   tileCover: 0
   TileCoverage: 1

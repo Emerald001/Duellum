@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4103a876d6022e49aa3633db9b02008, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitAnimator: {fileID: 0}
+  pawnParent: {fileID: 7664963239355839591}
 --- !u!1 &7664963239355839591
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +145,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyPawnPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 6360839925723573790, guid: f48c9d2afe2b1464fba70a55c34738a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f48c9d2afe2b1464fba70a55c34738a0, type: 3}

@@ -8,15 +8,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BaseHexColor
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: d407a4ce217a12145a22bd9679484441,
+    type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -90,25 +90,39 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _FoamOffset: 0.104
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Metallic: 0.201
+    - _Metallic: 0
+    - _NormalExtraSize: 10
+    - _NormalStrengthExtra: 1
+    - _NormalStrengthRipple: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _RippleDissolve: 3.29
+    - _RippleScale: 1.29
+    - _Smootheness: 0
     - _Smoothness: 0.226
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Transparency: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.28635636, g: 0.44601667, b: 0.6132076, a: 1}
+    - _BaseColor: {r: 0.04601279, g: 0.27780458, b: 0.5188679, a: 1}
     - _Color: {r: 0.28635633, g: 0.44601667, b: 0.6132076, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FoamColor: {r: 0.00018382353, g: 0.00018382353, b: 0.00018382353, a: 0}
+    - _NormalSpeed: {r: 0.1, g: 0.2, b: 0, a: 0}
+    - _RadialStrength: {r: 1, g: 1, b: 0, a: 0}
+    - _RippleColor: {r: 0.73018867, g: 1, b: 0.9971143, a: 1}
+    - _RippleSpeed: {r: 1, g: 0.2, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3989278480036406476
