@@ -62,5 +62,7 @@ public enum TileType {
     Normal,
     Water,
     Cover,
+    HalfCover,
     Spawn,
+    Special,
 }

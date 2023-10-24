@@ -34,7 +34,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
         GUILayout.Label("Room Generator", EditorStyles.boldLabel);
         EditorGUILayout.HelpBox("1x1 rooms are automatically added with the four rotations, others are not.", MessageType.Info);
 
-        currentRoom = (DungeonRoomSO)EditorGUILayout.ObjectField("Current Room", currentRoom, typeof(DungeonRoomSO));
+        currentRoom = (DungeonRoomSO)EditorGUILayout.ObjectField("Current Room", currentRoom, typeof(DungeonRoomSO), false);
 
         if (GUILayout.Button("Save"))
             SaveData();
