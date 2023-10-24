@@ -13,7 +13,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
     private string tileName = "New Room";
 
     private Vector2Int lastSize = new();
-    private readonly int tilesPerRoom = 10;
+    private Vector2 scrollPosition = Vector2.zero;
+    private readonly int tilesPerRoom = 11;
 
     private DungeonRoomSO currentRoom;
 
@@ -73,9 +74,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
             GenerateConnections();
         }
 
-        if (GUILayout.Button("Generate Room")) {
+        if (GUILayout.Button("Generate Room"))
             GenerateRoom();
-        }
 
         if (size != lastSize) {
             AllocateRoomPositions();
@@ -99,6 +99,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
                 DestroyImmediate(room.transform.GetChild(0).gameObject);
         }
 
+        var comp = room.GetComponent<RoomComponent>();
         GameObject hexGO = Resources.Load("GridBlocks/GridBlock") as GameObject;
         GameObject coverGO = Resources.Load("GridBlocks/GridCoverBlock") as GameObject;
 
@@ -107,27 +108,48 @@ public partial class RoomGeneratorEditor : EditorWindow {
 
         Transform parent = room != null ? room.transform : new GameObject("New Room").transform;
 
-        GenerateGrid(parent, hex, coverHex);
+        Dictionary<Vector2Int, Hex> dict = GenerateGrid(parent, hex, coverHex);
+        comp.SetUp(dict.Keys.ToList(), dict.Values.ToList());
     }
 
-    private void GenerateGrid(Transform parent, Hex prefab, Hex coverPrefab) {
+    private Dictionary<Vector2Int, Hex> GenerateGrid(Transform parent, Hex prefab, Hex coverPrefab) {
+        Dictionary<Vector2Int, Hex> result = new();
+
         for (int y = -1; y < size.y * tilesPerRoom + 1; y++) {
             for (int x = -1; x < size.x * tilesPerRoom + 1; x++) {
                 Vector2Int gridPos = new(x, y);
+                Vector2Int connectionPos = new(Mathf.Min(Mathf.FloorToInt(x / tilesPerRoom), size.x - 1), Mathf.Min(Mathf.FloorToInt(y / tilesPerRoom), size.y - 1));
 
                 Hex pref = y < 0 || x < 0 || y == size.y * tilesPerRoom || x == size.x * tilesPerRoom
                     ? coverPrefab
                     : grid[new(x, y)] ? prefab : coverPrefab;
 
-                Hex tmp = Instantiate(pref, parent);
+                if ((y == -1 && connectionGrid[connectionPos].w == 1) ||
+                    (y == size.y * tilesPerRoom && connectionGrid[connectionPos].z == 1) ||
+                    (x == -1 && connectionGrid[connectionPos].y == 1) ||
+                    (x == size.x * tilesPerRoom && connectionGrid[connectionPos].x == 1)) {
+                    if (x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) ||
+                        y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2)) {
+                        pref = prefab;
+                    }
+                }
 
+                Hex tmp = Instantiate(pref, parent);
+                if (y >= 0 && x >= 0 && y != size.y * tilesPerRoom && x != size.x * tilesPerRoom && grid[new(x, y)])
+                    tmp.transform.GetChild(0).eulerAngles = new Vector3(Random.Range(0, 4), Random.Range(0, 4), Random.Range(0, 4)) * 90;
+
+                tmp.name = $"{gridPos} | {tmp.name}";
                 tmp.SetHighlight(HighlightType.None);
                 tmp.GridPos = gridPos;
                 tmp.StandardWorldPosition = CalcSquareWorldPos(gridPos);
                 tmp.transform.position = CalcSquareWorldPos(gridPos);
                 tmp.transform.SetParent(parent);
+
+                result.Add(gridPos, tmp);
             }
         }
+
+        return result;
     }
 
     private void SaveData() {
@@ -153,8 +175,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
     }
 
     private Vector3 CalcSquareWorldPos(Vector2Int gridpos) {
-        float x = gridpos.x - (((size.x * tilesPerRoom) - 1 + (0.02f * ((size.x * tilesPerRoom) - 1))) / 2) + 0.02f * gridpos.x;
-        float z = gridpos.y - (((size.y * tilesPerRoom) - 1 + (0.02f * ((size.y * tilesPerRoom) - 1))) / 2) + 0.02f * gridpos.y;
+        float x = gridpos.x - (((size.x * tilesPerRoom) - 1 + (0 * ((size.x * tilesPerRoom) - 1))) / 2) + 0 * gridpos.x;
+        float z = gridpos.y - (((size.y * tilesPerRoom) - 1 + (0 * ((size.y * tilesPerRoom) - 1))) / 2) + 0 * gridpos.y;
 
         return new Vector3(x, 0, z);
     }
@@ -170,15 +192,15 @@ public partial class RoomGeneratorEditor {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space(21f, false);
         for (int x = 0; x < size.x; x++) {
-            GUI.backgroundColor = connectionGrid[new(x, 0)].z == 1 ? Color.green : Color.white;
+            GUI.backgroundColor = connectionGrid[new(x, size.y - 1)].z == 1 ? Color.green : Color.white;
 
             if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
-                ToggleConnectionState(x, 0, Directions.North);
+                ToggleConnectionState(x, size.y - 1, Directions.North);
         }
         EditorGUILayout.EndHorizontal();
 
         // Middle Line
-        for (int y = 0; y < size.y; y++) {
+        for (int y = size.y - 1; y >= 0; y--) {
             EditorGUILayout.BeginHorizontal();
             for (int x = 0; x < size.x + 2; x++) {
                 if (x == 0) {
@@ -205,10 +227,10 @@ public partial class RoomGeneratorEditor {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space(21f, false);
         for (int x = 0; x < size.x; x++) {
-            GUI.backgroundColor = connectionGrid[new(x, size.y - 1)].w == 1 ? Color.green : Color.white;
+            GUI.backgroundColor = connectionGrid[new(x, 0)].w == 1 ? Color.green : Color.white;
 
             if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
-                ToggleConnectionState(x, size.y - 1, Directions.South);
+                ToggleConnectionState(x, 0, Directions.South);
         }
         EditorGUILayout.EndHorizontal();
 
@@ -219,9 +241,9 @@ public partial class RoomGeneratorEditor {
         DrawUILine(Color.gray);
 
         GUILayout.Label("Click on the buttons to identify blockades");
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         EditorGUILayout.BeginVertical();
-
         for (int y = size.y * tilesPerRoom - 1; y >= 0; y--) {
             EditorGUILayout.BeginHorizontal();
 
@@ -241,6 +263,8 @@ public partial class RoomGeneratorEditor {
         }
 
         EditorGUILayout.EndVertical();
+        EditorGUILayout.EndScrollView();
+
         DrawUILine(Color.gray);
     }
 
