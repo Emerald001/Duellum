@@ -129,7 +129,11 @@ public partial class RoomGeneratorEditor : EditorWindow {
                     (x == -1 && connectionGrid[connectionPos].y == 1) ||
                     (x == size.x * tilesPerRoom && connectionGrid[connectionPos].x == 1)) {
                     if (x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) ||
-                        y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2)) {
+                        x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) + 1 ||
+                        x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) - 1 ||
+                        y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) ||
+                        y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) + 1 ||
+                        y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) - 1) {
                         pref = prefab;
                     }
                 }
