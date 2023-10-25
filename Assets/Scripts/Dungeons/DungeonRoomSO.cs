@@ -8,8 +8,11 @@ public class DungeonRoomSO : ScriptableObject {
     public DungeonRoomTile room;
 
     public List<Vector2Int> gridPositions;
-    public List<bool> gridValues;
+    public List<HexType> gridValues;
 
     public List<Vector2Int> connectionPositions;
     public List<Vector4> connectionValues;
+
+    public List<Vector2Int> heightPositions;
+    public List<int> heightValues;
 }
