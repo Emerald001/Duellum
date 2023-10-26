@@ -11,6 +11,7 @@ public class TurnManager : MonoBehaviour
 
     [Header("GridSettings")]
     [SerializeField] private OriginalMapGenerator GridGenerator;
+    [SerializeField] private GridCardManager GridCardManager;
 
     public TurnController CurrentPlayer => currentPlayer;
     public bool IsDone { get; private set; }
@@ -25,6 +26,7 @@ public class TurnManager : MonoBehaviour
         unitFactory = new();
 
         GridGenerator.SetUp();
+        GridCardManager.SetUp();
 
         SpawnUnits();
         NextPlayer();
@@ -95,8 +97,10 @@ public enum BattleEvents {
     StartBattle,
     EndUnitTurn,
     NewTurn,
+    UnitHit,
     UnitDeath,
+    UnitRevive,
     GrabbedAbilityCard,
     ReleasedAbilityCard,
-    BattleEnd,
+    BattleEnd
 }

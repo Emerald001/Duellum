@@ -39,10 +39,10 @@ public class CardHand : MonoBehaviour
     private void Start() {
         cardStack.ResetDeck();
 
-        AddCard(cardStack.GetCard());
-        AddCard(cardStack.GetCard());
-        AddCard(cardStack.GetCard());
-        //nextCard = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
+        //AddCard(cardStack.GetCard());
+        //AddCard(cardStack.GetCard());
+        //AddCard(cardStack.GetCard());
+        ////nextCard = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
         //nextCard.transform.parent = stackPos;
     }
 

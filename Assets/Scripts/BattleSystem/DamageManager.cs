@@ -4,6 +4,8 @@ public static class DamageManager
 {
     public static void DealDamage(UnitValues attackingUnit, params UnitController[] defendingUnits) {
         foreach (UnitController unit in defendingUnits) {
+            EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitHit, unit);
+            
             if (attackingUnit.currentStats.Attack + RollDice() > unit.Values.currentStats.Defence) {
                 unit.AddEffect(new Effect(
                     EffectType.KnockedOut,
@@ -12,7 +14,6 @@ public static class DamageManager
                     100));
 
                 Debug.Log($"UNIT DIED");
-                EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, 0.8f);
                 EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitDeath, unit);
                 UnitStaticManager.UnitDeath(unit);
             }

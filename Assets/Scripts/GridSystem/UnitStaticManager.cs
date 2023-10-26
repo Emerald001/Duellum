@@ -67,9 +67,6 @@ public static class UnitStaticManager {
     }
 
     public static List<UnitController> GetEnemies(UnitController unit) {
-        if (EnemyUnitsInPlay.Contains(unit))
-            return PlayerUnitsInPlay;
-        else
-            return EnemyUnitsInPlay;
+        return EnemyUnitsInPlay.Contains(unit) ? PlayerUnitsInPlay : EnemyUnitsInPlay;
     }
 }

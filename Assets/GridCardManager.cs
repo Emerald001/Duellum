@@ -14,7 +14,6 @@ public class GridCardManager : MonoBehaviour {
         var tmp = GridStaticFunctions.GetAllOpenGridPositions();
 
         int randomSpot = Random.Range(0, tmp.Count);
-        
     }
 
     public void PickUpCard() {

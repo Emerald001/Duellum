@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using UnityEditor.U2D;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public abstract class UnitController : MonoBehaviour {
 
@@ -8,7 +10,7 @@ public abstract class UnitController : MonoBehaviour {
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
-    
+
     public UnitValues Values => values;
     protected UnitValues values;
 
@@ -23,23 +25,37 @@ public abstract class UnitController : MonoBehaviour {
 
     private void OnEnable() {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
+        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitHit, UnitHit);
+        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitRevive, UnitRevive);
     }
 
     private void OnDisable() {
         EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitDeath);
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitHit);
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitRevive);
     }
+
     private void Start() {
-        
         unitAnimator = GetComponentInChildren<Animator>();
     }
+
     public virtual void SetUp(UnitData data, Vector2Int pos) {
         UnitBaseData = Instantiate(data);
         GameObject pawn = Instantiate(data.PawnPrefab, pawnParent.transform);
+        
         values = new(UnitBaseData);
         unitMovement = new();
         attackModule = new(UnitBaseData.Attack);
-
         gridPosition = pos;
+        GameObject card = Instantiate(data.UnitCard);
+        card.transform.localPosition = new Vector3(pos.x + pawn.transform.position.x, 0, pos.y + pawn.transform.position.z);
+        
+        CharacterCard cardScript = card.GetComponent<CharacterCard>();
+        cardScript.name = data.name;
+        cardScript.descriptionText.SetText(data.Description.ToString());
+        cardScript.defenseText.SetText(data.BaseStatBlock.Defence.ToString()); 
+        cardScript.attackText.SetText(data.BaseStatBlock.Attack.ToString());
+        cardScript.visuals.sprite = data.Icon;
 
         queue = new(() => IsDone = ShouldEndTurn());
     }
@@ -101,7 +117,6 @@ public abstract class UnitController : MonoBehaviour {
 
         queue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", false);
-            //UnitAudio.PlayLoopedAudio("Walking", false);
 
             FindTiles();
             GridStaticFunctions.ResetTileColors();
@@ -114,25 +129,31 @@ public abstract class UnitController : MonoBehaviour {
         Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(targetPosition) - GridStaticFunctions.CalcSquareWorldPos(standingPos));
 
         queue.Enqueue(new RotateAction(gameObject, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0), 360f, .01f));
+        queue.Enqueue(new DoMethodAction(() => unitAnimator.SetTrigger("Attacking")));
+        queue.Enqueue(new WaitAction(.2f));
         queue.Enqueue(new DoMethodAction(() => {
             bool hit = UnitStaticManager.TryGetUnitFromGridPos(targetPosition, out var unit);
             if (!hit)
                 throw new System.Exception("Something went Very wrong with getting the units attackable tiles");
 
             DamageManager.DealDamage(values, unit);
-            unit.unitAnimator.SetTrigger("GettingHit");
-            unitAnimator.SetBool("Attacking", true);
-            
         }));
-
-        unitAnimator.SetBool("Attacking", false);
-        EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, 0.1f);
         HasPerformedAction = true;
+    }
+
+    private void UnitHit(UnitController unit) {
+        unit.unitAnimator.SetTrigger("GettingHit");
+        EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, 0.1f);
     }
 
     private void UnitDeath(UnitController unit) {
         unit.unitAnimator.SetTrigger("Dying");
     }
+
+    private void UnitRevive(UnitController unit) {
+        unit.unitAnimator.SetTrigger("Reviving");
+    }
+
     public virtual void FindTiles() {
         unitMovement.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
 

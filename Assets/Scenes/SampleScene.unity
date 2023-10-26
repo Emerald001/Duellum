@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &177592902
 Transform:
   m_ObjectHideFlags: 0
@@ -1163,7 +1163,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &921092190
 Transform:
   m_ObjectHideFlags: 0
@@ -1338,6 +1338,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 489929063081c174f8dd2b2753260492, type: 2}
   - {fileID: 11400000, guid: 5d9b6f57dd76a9045a3af9f5f6a79046, type: 2}
   GridGenerator: {fileID: 1036886697}
+  GridCardManager: {fileID: 1036886698}
 --- !u!114 &1036886697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1376,8 +1377,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56777d9f122c504ca80c9b739be328d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsToSpawn: 0
-  pickupCardPrefab: {fileID: 0}
+  cardsToSpawn: 3
+  pickupCardPrefab: {fileID: 8137534332355796912, guid: fd9df713b62d60d4c8c098e253df4157,
+    type: 3}
 --- !u!114 &1036886699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1390,73 +1392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b953c2057d3640340979963c8af4c01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myStyle:
-    m_Name: style
-    m_Normal:
-      m_Background: {fileID: 2800000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
-    m_Hover:
-      m_Background: {fileID: 2800000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
-    m_Active:
-      m_Background: {fileID: 2800000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
-    m_Focused:
-      m_Background: {fileID: 2800000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
-    m_OnNormal:
-      m_Background: {fileID: 2800000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
-    m_OnHover:
-      m_Background: {fileID: 2800000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
-    m_OnActive:
-      m_Background: {fileID: 2800000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
-    m_OnFocused:
-      m_Background: {fileID: 2800000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
-    m_Border:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Margin:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Padding:
-      m_Left: 5
-      m_Right: 5
-      m_Top: 5
-      m_Bottom: 5
-    m_Overflow:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Font: {fileID: 12800000, guid: 2a29e27936eb547458f646f71125b264, type: 3}
-    m_FontSize: 24
-    m_FontStyle: 0
-    m_Alignment: 0
-    m_WordWrap: 0
-    m_RichText: 1
-    m_TextClipping: 0
-    m_ImagePosition: 0
-    m_ContentOffset: {x: 0, y: 0}
-    m_FixedWidth: 0
-    m_FixedHeight: 0
-    m_StretchWidth: 1
-    m_StretchHeight: 0
 --- !u!1 &1100824561
 GameObject:
   m_ObjectHideFlags: 0
