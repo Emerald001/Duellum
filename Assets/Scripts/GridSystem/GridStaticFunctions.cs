@@ -55,6 +55,7 @@ public static class GridStaticFunctions {
     public static Dictionary<Vector2Int, Hex> Grid { get; set; } = new();
     public static List<Vector2Int> PlayerSpawnPos { get; set; } = new();
     public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
+    public static List<GameObject> SpawnCubes { get; set; } = new();
 
     public static Vector3 CalcHexWorldPos(Vector2Int gridPos) {
         float offset = 0;
@@ -163,6 +164,15 @@ public static class GridStaticFunctions {
         }
     }
 
+    public static GameObject GetGameObjectAtPosition(Vector2Int position) {
+        if (Grid.ContainsKey(position)) {
+            Hex hex = Grid[position];
+            if (hex != null) {
+                return hex.gameObject;
+            }
+        }
+        return null;
+    }
     public static Vector2Int GetVector2RotationFromDirection(Vector3 dir) {
         Vector2Int result = new(
             Mathf.Min(1, Mathf.Max(-1, Mathf.RoundToInt(dir.x))),

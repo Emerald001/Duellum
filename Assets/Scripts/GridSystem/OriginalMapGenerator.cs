@@ -89,6 +89,7 @@ public class OriginalMapGenerator : MonoBehaviour {
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 - 1));
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 + 1));
 
+        
         int totalTiles = height * width;
         int waterTileAmount = Mathf.RoundToInt(totalTiles * ((float)waterPercentage / 100));
         int cardTileAmount = Mathf.RoundToInt(totalTiles * ((float)cardPercentage / 100));

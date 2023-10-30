@@ -34,8 +34,12 @@ public class CardHand : MonoBehaviour
         CardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
         CardBehaviour.OnMove += HandleCardDrag;
         CardBehaviour.OnMoveRelease += PerformRelease;
+        EventManager<BattleEvents>.Subscribe(BattleEvents.GiveAbilityCard, GiveCard);
     }
+    private void OnDisable() {
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.GiveAbilityCard, GiveCard);
 
+    }
     private void Start() {
         cardStack.ResetDeck();
 
@@ -54,6 +58,11 @@ public class CardHand : MonoBehaviour
         }
     }
 
+    public void GiveCard() {
+        AbilityCard card = cardStack.GetCard();
+        if (card != null)
+            AddCard(card);
+    }
     public void AddCard(AbilityCard card) {
         CardAssetHolder cardObject = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
 

@@ -1,8 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System.Collections;
 
 public class TurnManager : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI infoText;
+
     [SerializeField] private UnitController PlayerUnitPrefab;
     [SerializeField] private UnitController EnemyUnitPrefab;
 
@@ -30,6 +34,14 @@ public class TurnManager : MonoBehaviour
 
         SpawnUnits();
         NextPlayer();
+    }
+
+    private void OnEnable() {
+        EventManager<BattleEvents, string>.Subscribe(BattleEvents.InfoTextUpdate, UpdateInfoUI);    
+    }
+
+    private void OnDisable() {
+        EventManager<BattleEvents, string>.Unsubscribe(BattleEvents.InfoTextUpdate, UpdateInfoUI);    
     }
 
     private void Update() {
@@ -66,6 +78,9 @@ public class TurnManager : MonoBehaviour
         players.Add(new EnemyTurnController());
     }
 
+    private void UpdateInfoUI(string name) {
+        infoText.text = name;
+    }
     private void NextPlayer() {
         if (currentPlayerIndex > players.Count - 1) {
             EventManager<BattleEvents>.Invoke(BattleEvents.NewTurn);
@@ -92,6 +107,7 @@ public class UnitFactory {
     }
 }
 
+//I don't know how to add new enum for events and link them to the eventmanager, so for now I'm gonna put them in battle events.
 public enum BattleEvents {
     SetupBattle,
     StartBattle,
@@ -99,7 +115,10 @@ public enum BattleEvents {
     NewTurn,
     UnitHit,
     UnitDeath,
+    InfoTextUpdate,
     UnitRevive,
+    GiveAbilityCard,
+    SpawnAbilityCard,
     GrabbedAbilityCard,
     ReleasedAbilityCard,
     BattleEnd

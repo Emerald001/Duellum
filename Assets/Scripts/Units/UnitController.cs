@@ -5,8 +5,9 @@ using UnityEngine.UIElements;
 
 public abstract class UnitController : MonoBehaviour {
 
-    private Animator unitAnimator;
     [SerializeField] private GameObject pawnParent;
+
+    private Animator unitAnimator;
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
@@ -47,9 +48,19 @@ public abstract class UnitController : MonoBehaviour {
         unitMovement = new();
         attackModule = new(UnitBaseData.Attack);
         gridPosition = pos;
-        GameObject card = Instantiate(data.UnitCard);
-        card.transform.localPosition = new Vector3(pos.x + pawn.transform.position.x, 0, pos.y + pawn.transform.position.z);
+
+        GameObject unitGridParent = GridStaticFunctions.GetGameObjectAtPosition(pos);
+        GameObject card = Instantiate(data.UnitCard, unitGridParent.transform);
+        //add to list???
+        //if player spawn or 
+        //GridStaticFunctions.PlayerSpawnPos //list vect2int
         
+        Transform canvasTransform = card.GetComponentInChildren<Transform>();
+        //why does this not work ;-;
+        float padding = 150f;  
+        Vector3 offset = new Vector3(padding, 0, 0);
+        canvasTransform.transform.position = unitGridParent.transform.position  + offset;
+
         CharacterCard cardScript = card.GetComponent<CharacterCard>();
         cardScript.name = data.name;
         cardScript.descriptionText.SetText(data.Description.ToString());
@@ -61,6 +72,7 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void OnEnter() {
+        queue.Enqueue(new DoMethodAction(() => { EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "Right mouse button to cancel action"); }));
         IsDone = false;
         FindTiles();
     }
@@ -70,6 +82,7 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void OnExit() {
+        queue.Enqueue(new DoMethodAction(() => { EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, ""); }));
         HasPerformedAction = false;
         didAttack = false;
         IsDone = false;
@@ -172,5 +185,12 @@ public abstract class UnitController : MonoBehaviour {
         bool noAttacks = attackModule.AttackableTiles.Count < 1;
 
         return (speedDown && noAttacks) || didAttack;
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Card")) {
+            EventManager<BattleEvents>.Invoke(BattleEvents.SpawnAbilityCard);
+            Destroy(other.gameObject);
+        }
     }
 }
