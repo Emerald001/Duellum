@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEditor.U2D;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public abstract class UnitController : MonoBehaviour {
 
@@ -43,31 +41,11 @@ public abstract class UnitController : MonoBehaviour {
     public virtual void SetUp(UnitData data, Vector2Int pos) {
         UnitBaseData = Instantiate(data);
         GameObject pawn = Instantiate(data.PawnPrefab, pawnParent.transform);
-        
+
         values = new(UnitBaseData);
         unitMovement = new();
         attackModule = new(UnitBaseData.Attack);
         gridPosition = pos;
-
-        GameObject unitGridParent = GridStaticFunctions.GetGameObjectAtPosition(pos);
-        GameObject card = Instantiate(data.UnitCard, unitGridParent.transform);
-        //add to list???
-        //if player spawn or 
-        //GridStaticFunctions.PlayerSpawnPos //list vect2int
-        
-        Transform canvasTransform = card.GetComponentInChildren<Transform>();
-        //why does this not work ;-;
-        float padding = 150f;  
-        Vector3 offset = new Vector3(padding, 0, 0);
-        canvasTransform.transform.position = unitGridParent.transform.position  + offset;
-
-        CharacterCard cardScript = card.GetComponent<CharacterCard>();
-        cardScript.name = data.name;
-        cardScript.descriptionText.SetText(data.Description.ToString());
-        cardScript.defenseText.SetText(data.BaseStatBlock.Defence.ToString()); 
-        cardScript.attackText.SetText(data.BaseStatBlock.Attack.ToString());
-        cardScript.visuals.sprite = data.Icon;
-
         queue = new(() => IsDone = ShouldEndTurn());
     }
 

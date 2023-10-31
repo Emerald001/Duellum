@@ -64,6 +64,23 @@ public class TurnManager : MonoBehaviour
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.PlayerUnitsInPlay.Add(unit);
+
+            GameObject card = Instantiate(unit.UnitBaseData.UnitCard, GameObject.Find("UnitCards").transform);
+            Canvas canvas = card.GetComponentInChildren<Canvas>();
+            Vector3 originalSpawnPos = GridStaticFunctions.CalcSquareWorldPos(spawnPos);
+            Vector3 cardPos = new Vector3(originalSpawnPos.x, originalSpawnPos.y, originalSpawnPos.z);
+            canvas.transform.position = cardPos;
+
+            float spaceToGrid = 12f;
+            Vector3 localOffset = new Vector3(0, spaceToGrid, 0);
+            canvas.transform.localPosition -= localOffset;
+
+            CharacterCard cardScript = card.GetComponent<CharacterCard>();
+            cardScript.name = unit.UnitBaseData.name;
+            cardScript.descriptionText.SetText(unit.UnitBaseData.Description.ToString());
+            cardScript.defenseText.SetText(unit.UnitBaseData.BaseStatBlock.Defence.ToString());
+            cardScript.attackText.SetText(unit.UnitBaseData.BaseStatBlock.Attack.ToString());
+            cardScript.visuals.sprite = unit.UnitBaseData.Icon;
         }
         players.Add(new PlayerTurnController());
 
@@ -74,8 +91,42 @@ public class TurnManager : MonoBehaviour
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.EnemyUnitsInPlay.Add(unit);
+
+            GameObject card = Instantiate(unit.UnitBaseData.UnitCard, GameObject.Find("UnitCards").transform);
+            Canvas canvas = card.GetComponentInChildren<Canvas>();
+            Vector3 originalSpawnPos = GridStaticFunctions.CalcSquareWorldPos(spawnPos);
+            Vector3 cardPos = new Vector3(originalSpawnPos.x, originalSpawnPos.y, originalSpawnPos.z);
+            canvas.transform.position = cardPos;
+
+            float spaceToGrid = 12f;
+            Vector3 localOffset = new Vector3(0, spaceToGrid, 0);
+            canvas.transform.localPosition += localOffset;
+            Quaternion oppositeRotation = Quaternion.Euler(0, 0, 180);
+            canvas.transform.localRotation = transform.localRotation * oppositeRotation;
+
+            CharacterCard cardScript = card.GetComponent<CharacterCard>();
+            cardScript.name = unit.UnitBaseData.name;
+            cardScript.descriptionText.SetText(unit.UnitBaseData.Description.ToString());
+            cardScript.defenseText.SetText(unit.UnitBaseData.BaseStatBlock.Defence.ToString());
+            cardScript.attackText.SetText(unit.UnitBaseData.BaseStatBlock.Attack.ToString());
+            cardScript.visuals.sprite = unit.UnitBaseData.Icon;
         }
         players.Add(new EnemyTurnController());
+
+        //GameObject unitGridParent = GridStaticFunctions.GetGameObjectAtPosition(pos);
+        //Canvas canvas = card.GetComponentInChildren<Canvas>();
+
+        //if (!GridStaticFunctions.EnemySpawnPos.Contains(gridPosition)) {
+        //    float padding = 12f;
+        //    Vector3 localOffset = new Vector3(0, padding, 0);
+        //    canvas.transform.localPosition -= localOffset;
+        //    return;
+        //}
+        //else {
+
+        //}
+
+
     }
 
     private void UpdateInfoUI(string name) {
