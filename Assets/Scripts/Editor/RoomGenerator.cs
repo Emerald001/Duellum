@@ -45,16 +45,13 @@ public partial class RoomGeneratorEditor : EditorWindow {
         if (GUILayout.Button("Load")) {
             tileName = currentRoom.room.name;
             size = currentRoom.room.size;
-            
+
             grid = currentRoom.gridPositions.Zip(currentRoom.gridValues, (k, v) => new { k, v })
               .ToDictionary(x => x.k, x => x.v);
             connectionGrid = currentRoom.connectionPositions.Zip(currentRoom.connectionValues, (k, v) => new { k, v })
               .ToDictionary(x => x.k, x => x.v);
             heightGrid = currentRoom.heightPositions.Zip(currentRoom.heightValues, (k, v) => new { k, v })
               .ToDictionary(x => x.k, x => x.v);
-
-            DrawConnections();
-            DrawTiles();
         }
 
         DrawUILine(Color.gray);
@@ -125,9 +122,13 @@ public partial class RoomGeneratorEditor : EditorWindow {
             for (int i = room.transform.childCount - 1; i >= 0; i--)
                 DestroyImmediate(room.transform.GetChild(0).gameObject);
         }
+        else {
+            room = new GameObject("New Room");
+            room.AddComponent<RoomComponent>();
+        }
 
+        Transform parent = room.transform;
         RoomComponent roomComp = room.GetComponent<RoomComponent>();
-        Transform parent = room != null ? room.transform : new GameObject("New Room").transform;
 
         Dictionary<Vector2Int, Hex> dict = GenerateGrid(parent);
         roomComp.SetUp(dict.Keys.ToList(), dict.Values.ToList());
@@ -146,10 +147,10 @@ public partial class RoomGeneratorEditor : EditorWindow {
                     ? prefabs[HexType.Cover]
                     : prefabs[grid[new(x, y)]];
 
-                if ((y == -1 && connectionGrid[connectionPos].w == 1) ||
-                    (y == size.y * tilesPerRoom && connectionGrid[connectionPos].z == 1) ||
-                    (x == -1 && connectionGrid[connectionPos].y == 1) ||
-                    (x == size.x * tilesPerRoom && connectionGrid[connectionPos].x == 1)) {
+                if ((y == -1 && connectionGrid[connectionPos].w != GridStaticFunctions.CONST_INT) ||
+                    (y == size.y * tilesPerRoom && connectionGrid[connectionPos].z != GridStaticFunctions.CONST_INT) ||
+                    (x == -1 && connectionGrid[connectionPos].y != GridStaticFunctions.CONST_INT) ||
+                    (x == size.x * tilesPerRoom && connectionGrid[connectionPos].x != GridStaticFunctions.CONST_INT)) {
                     if (x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) ||
                         x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) + 1 ||
                         x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) - 1 ||
@@ -243,11 +244,11 @@ public partial class RoomGeneratorEditor : EditorWindow {
                 heightPos.y = size.y * tilesPerRoom - 1;
         }
 
-        float x = gridpos.x - (((size.x * tilesPerRoom) - 1) / 2);
+        float x = gridpos.x - (((float)(size.x * tilesPerRoom) - 1) / 2);
         float y = heightGrid[heightPos];
-        float z = gridpos.y - (((size.y * tilesPerRoom) - 1) / 2);
+        float z = gridpos.y - (((float)(size.y * tilesPerRoom) - 1) / 2);
 
-        return new Vector3(x, y, z);
+        return new(x, y, z);
     }
 }
 
@@ -261,7 +262,7 @@ public partial class RoomGeneratorEditor {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space(21f, false);
         for (int x = 0; x < size.x; x++) {
-            GUI.backgroundColor = connectionGrid[new(x, size.y - 1)].z == 1 ? Color.green : Color.white;
+            GUI.backgroundColor = connectionGrid[new(x, size.y - 1)].z != GridStaticFunctions.CONST_INT ? Color.green : Color.white;
 
             if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                 ToggleConnectionState(x, size.y - 1, Directions.North);
@@ -273,13 +274,13 @@ public partial class RoomGeneratorEditor {
             EditorGUILayout.BeginHorizontal();
             for (int x = 0; x < size.x + 2; x++) {
                 if (x == 0) {
-                    GUI.backgroundColor = connectionGrid[new(x, y)].y == 1 ? Color.green : Color.white;
+                    GUI.backgroundColor = connectionGrid[new(x, y)].y != GridStaticFunctions.CONST_INT ? Color.green : Color.white;
 
                     if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                         ToggleConnectionState(x, y, Directions.West);
                 }
                 else if (x == size.x + 1) {
-                    GUI.backgroundColor = connectionGrid[new(x - 2, y)].x == 1 ? Color.green : Color.white;
+                    GUI.backgroundColor = connectionGrid[new(x - 2, y)].x != GridStaticFunctions.CONST_INT ? Color.green : Color.white;
 
                     if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                         ToggleConnectionState(x - 2, y, Directions.East);
@@ -296,7 +297,7 @@ public partial class RoomGeneratorEditor {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space(21f, false);
         for (int x = 0; x < size.x; x++) {
-            GUI.backgroundColor = connectionGrid[new(x, 0)].w == 1 ? Color.green : Color.white;
+            GUI.backgroundColor = connectionGrid[new(x, 0)].w != GridStaticFunctions.CONST_INT ? Color.green : Color.white;
 
             if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                 ToggleConnectionState(x, 0, Directions.South);
@@ -361,6 +362,7 @@ public partial class RoomGeneratorEditor {
         EditorGUILayout.EndScrollView();
 
         DrawUILine(Color.gray);
+        UpdateHeightForConnections();
     }
 
     private void DrawUILine(Color color, int thickness = 1, int padding = 10) {
@@ -392,7 +394,7 @@ public partial class RoomGeneratorEditor {
 
         for (int y = 0; y < size.y; y++) {
             for (int x = 0; x < size.x; x++)
-                connectionGrid.Add(new(x, y), new Vector4());
+                connectionGrid.Add(new(x, y), new Vector4(GridStaticFunctions.CONST_INT, GridStaticFunctions.CONST_INT, GridStaticFunctions.CONST_INT, GridStaticFunctions.CONST_INT));
         }
     }
 
@@ -423,21 +425,64 @@ public partial class RoomGeneratorEditor {
     }
 
     private void ToggleConnectionState(int x, int y, Directions direction) {
+        Vector4 connection = connectionGrid[new(x, y)];
+
         switch (direction) {
             case Directions.North:
-                connectionGrid[new(x, y)] = new(connectionGrid[new(x, y)].x, connectionGrid[new(x, y)].y, connectionGrid[new(x, y)].z == 0 ? 1 : 0, connectionGrid[new(x, y)].w);
+                connectionGrid[new(x, y)] = new(connection.x, connection.y, connection.z == GridStaticFunctions.CONST_INT ? 0 : GridStaticFunctions.CONST_INT, connection.w);
                 break;
             case Directions.East:
-                connectionGrid[new(x, y)] = new(connectionGrid[new(x, y)].x == 0 ? 1 : 0, connectionGrid[new(x, y)].y, connectionGrid[new(x, y)].z, connectionGrid[new(x, y)].w);
+                connectionGrid[new(x, y)] = new(connection.x == GridStaticFunctions.CONST_INT ? 0 : GridStaticFunctions.CONST_INT, connection.y, connection.z, connection.w);
                 break;
             case Directions.South:
-                connectionGrid[new(x, y)] = new(connectionGrid[new(x, y)].x, connectionGrid[new(x, y)].y, connectionGrid[new(x, y)].z, connectionGrid[new(x, y)].w == 0 ? 1 : 0);
+                connectionGrid[new(x, y)] = new(connection.x, connection.y, connection.z, connection.w == GridStaticFunctions.CONST_INT ? 0 : GridStaticFunctions.CONST_INT);
                 break;
             case Directions.West:
-                connectionGrid[new(x, y)] = new(connectionGrid[new(x, y)].x, connectionGrid[new(x, y)].y == 0 ? 1 : 0, connectionGrid[new(x, y)].z, connectionGrid[new(x, y)].w);
+                connectionGrid[new(x, y)] = new(connection.x, connection.y == GridStaticFunctions.CONST_INT ? 0 : GridStaticFunctions.CONST_INT, connection.z, connection.w);
                 break;
             default:
                 break;
+        }
+
+        UpdateHeightForConnections();
+    }
+
+    private void UpdateHeightForConnections() {
+        for (int y = -1; y < size.y * tilesPerRoom + 1; y++) {
+            for (int x = -1; x < size.x * tilesPerRoom + 1; x++) {
+                Vector2Int gridPos = new(x, y);
+                Vector2Int connectionPos = new(Mathf.Min(Mathf.FloorToInt(x / tilesPerRoom), size.x - 1), Mathf.Min(Mathf.FloorToInt(y / tilesPerRoom), size.y - 1));
+
+                Vector2Int heightPos = gridPos;
+                if (!heightGrid.ContainsKey(heightPos)) {
+                    if (heightPos.x < 0)
+                        heightPos.x = 0;
+                    if (heightPos.y < 0)
+                        heightPos.y = 0;
+                    if (heightPos.x >= size.x * tilesPerRoom)
+                        heightPos.x = size.x * tilesPerRoom - 1;
+                    if (heightPos.y >= size.y * tilesPerRoom)
+                        heightPos.y = size.y * tilesPerRoom - 1;
+                }
+
+                if (x == size.x * tilesPerRoom && connectionGrid[connectionPos].x != GridStaticFunctions.CONST_INT) {
+                    if (y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2))
+                        connectionGrid[connectionPos] = new Vector4(heightGrid[heightPos], connectionGrid[connectionPos].y, connectionGrid[connectionPos].z, connectionGrid[connectionPos].w);
+                }
+                if (x == -1 && connectionGrid[connectionPos].y != GridStaticFunctions.CONST_INT) {
+                    if (y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2))
+                        connectionGrid[connectionPos] = new Vector4(connectionGrid[connectionPos].x, heightGrid[heightPos], connectionGrid[connectionPos].z, connectionGrid[connectionPos].w);
+                }
+
+                if (y == size.y * tilesPerRoom && connectionGrid[connectionPos].z != GridStaticFunctions.CONST_INT) {
+                    if (x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2))
+                        connectionGrid[connectionPos] = new Vector4(connectionGrid[connectionPos].x, connectionGrid[connectionPos].y, heightGrid[heightPos], connectionGrid[connectionPos].w);
+                }
+                if (y == -1 && connectionGrid[connectionPos].w != GridStaticFunctions.CONST_INT) {
+                    if (x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2))
+                        connectionGrid[connectionPos] = new Vector4(connectionGrid[connectionPos].x, connectionGrid[connectionPos].y, connectionGrid[connectionPos].z, heightGrid[heightPos]);
+                }
+            }
         }
     }
 

@@ -13,12 +13,13 @@ public class DungeonRoomTile {
         this.name = name;
         this.size = size;
         this.prefab = prefab;
-        this.connections = connections;
+        this.connections = new(connections);
     }
 
     public Dictionary<int, Vector2Int> GridPositionsPerIndex { get; private set; }
     public int CurrentIndex { get; set; }
     public int RotationIndex { get; set; }
+    public float Height { get; set; }
 
     public void Init(int rotIndex) {
         if (rotIndex > 0) {

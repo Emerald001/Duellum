@@ -10,6 +10,9 @@ public class DungeonGenerator : MonoBehaviour {
     [SerializeField] private int bigRoomAmount;
     [SerializeField] private int tileSize;
 
+    [SerializeField] private List<DungeonRoomSO> roomList;
+    [SerializeField] private List<DungeonRoomSO> endRoomList;
+
     [SerializeField] private List<DungeonRoomTile> rooms;
     [SerializeField] private List<DungeonRoomTile> endRooms;
 
@@ -24,14 +27,17 @@ public class DungeonGenerator : MonoBehaviour {
 
     private IEnumerator SpawnRooms() {
         List<Vector2Int> openSet = new() { new(0, 0) };
+        Dictionary<Vector2Int, float> heights = new() { { new(0, 0), 0 } };
         Dictionary<Vector2Int, GameObject> debugObjects = new();
 
-        void AddNewTile(Vector2Int currentPos, Vector2Int direction) {
+        void AddNewTile(Vector2Int currentPos, Vector2Int direction, DungeonRoomTile spawnedRoom, float height) {
             Vector2Int newTile = currentPos + direction;
             if (dungeon.ContainsKey(newTile) || openSet.Contains(newTile))
                 return;
 
             openSet.Add(newTile);
+            heights.Add(newTile, spawnedRoom.Height + height);
+
             if (!generateInstantly)
                 CreateDebugCube(newTile);
         }
@@ -50,7 +56,7 @@ public class DungeonGenerator : MonoBehaviour {
                 break;
 
             Vector2Int currentPos = openSet[0];
-            DungeonRoomTile room = SpawnRoom(rooms, currentPos);
+            DungeonRoomTile room = SpawnRoom(new(roomList.Select(x => x.room).ToList()), currentPos, heights[currentPos]);
             roomsSpawned++;
 
             if (!generateInstantly) {
@@ -66,14 +72,14 @@ public class DungeonGenerator : MonoBehaviour {
                     Vector2Int tile = currentPos + new Vector2Int(x, y) + offset;
                     Vector4 connections = room.connections[index];
 
-                    if (connections.x > 0)
-                        AddNewTile(tile, new Vector2Int(1, 0));
-                    if (connections.y > 0)
-                        AddNewTile(tile, new Vector2Int(-1, 0));
-                    if (connections.z > 0)
-                        AddNewTile(tile, new Vector2Int(0, 1));
-                    if (connections.w > 0)
-                        AddNewTile(tile, new Vector2Int(0, -1));
+                    if (connections.x != GridStaticFunctions.CONST_INT)
+                        AddNewTile(tile, new Vector2Int(1, 0), room, connections.x);
+                    if (connections.y != GridStaticFunctions.CONST_INT)
+                        AddNewTile(tile, new Vector2Int(-1, 0), room, connections.y);
+                    if (connections.z != GridStaticFunctions.CONST_INT)
+                        AddNewTile(tile, new Vector2Int(0, 1), room, connections.z);
+                    if (connections.w != GridStaticFunctions.CONST_INT)
+                        AddNewTile(tile, new Vector2Int(0, -1), room, connections.w);
 
                     if (openSet.Contains(tile))
                         openSet.Remove(tile);
@@ -91,7 +97,7 @@ public class DungeonGenerator : MonoBehaviour {
         }
 
         foreach (var currentPos in openSet) {
-            DungeonRoomTile room = SpawnRoom(endRooms, currentPos, true);
+            DungeonRoomTile room = SpawnRoom(new(endRoomList.Select(x => x.room).ToList()), currentPos, heights[currentPos], true);
 
             if (!generateInstantly) {
                 if (debugObjects.ContainsKey(currentPos))
@@ -119,7 +125,7 @@ public class DungeonGenerator : MonoBehaviour {
         openSet.Clear();
     }
 
-    private DungeonRoomTile SpawnRoom(List<DungeonRoomTile> listToUse, Vector2Int position, bool spawnFirst = false) {
+    private DungeonRoomTile SpawnRoom(List<DungeonRoomTile> listToUse, Vector2Int position, float height, bool spawnFirst = false) {
         List<DungeonRoomTile> availableTiles = listToUse
         .SelectMany(item => Enumerable.Range(0, (item.size.x > 1 || item.size.y > 1) ? 1 : 4)
             .Select(i => {
@@ -147,24 +153,33 @@ public class DungeonGenerator : MonoBehaviour {
 
         int index = spawnFirst ? 0 : Mathf.RoundToInt(Mathf.Pow(Random.value, SKEWED_POWER) * (availableTiles.Count - 1) + 0);
         DungeonRoomTile room = availableTiles[index];
-
         bigRoomAmount -= (room.size.x > 1 || room.size.y > 1) ? 1 : 0;
+
+        Vector4 connection = room.connections[room.CurrentIndex];
+        if (connection.x != GridStaticFunctions.CONST_INT && dungeon.ContainsKey(position + new Vector2Int(1, 0)))
+            room.Height = height - connection.x;
+        else if (connection.y != GridStaticFunctions.CONST_INT && dungeon.ContainsKey(position + new Vector2Int(-1, 0)))
+            room.Height = height - connection.y;
+        else if (connection.z != GridStaticFunctions.CONST_INT && dungeon.ContainsKey(position + new Vector2Int(0, 1)))
+            room.Height = height - connection.z;
+        else if (connection.w != GridStaticFunctions.CONST_INT && dungeon.ContainsKey(position + new Vector2Int(0, -1)))
+            room.Height = height - connection.w;
 
         GameObject spawnedRoom = Instantiate(room.prefab);
         spawnedRoom.name = room.name;
-        spawnedRoom.transform.position = CalculateWorldPosition(position, room);
+        spawnedRoom.transform.position = CalculateWorldPosition(position, room.Height, room);
         spawnedRoom.transform.eulerAngles = new(0, room.RotationIndex * 90, 0);
 
         return room;
     }
 
-    private Vector3 CalculateWorldPosition(Vector2Int position, DungeonRoomTile room) {
+    private Vector3 CalculateWorldPosition(Vector2Int position, float height, DungeonRoomTile room) {
         Vector2Int offset = Vector2Int.zero - room.GridPositionsPerIndex[room.CurrentIndex];
 
         Vector3 worldPosition = new();
         for (int x = 0; x < room.size.x; x++) {
             for (int y = 0; y < room.size.y; y++)
-                worldPosition += new Vector3((position.x + x + offset.x) * tileSize, 0, (position.y + y + offset.y) * tileSize);
+                worldPosition += new Vector3((position.x + x + offset.x) * tileSize, height, (position.y + y + offset.y) * tileSize);
         }
 
         return worldPosition / (room.size.x * room.size.y);
@@ -180,10 +195,10 @@ public class DungeonGenerator : MonoBehaviour {
                 for (int j = 0; j < 4; j++) {
                     Vector2Int neighborTile = roomTile + (j == 0 ? Vector2Int.right : (j == 1 ? Vector2Int.left : (j == 2 ? Vector2Int.up : Vector2Int.down)));
                     if (dungeon.TryGetValue(neighborTile, out Vector4 neighborConnections)) {
-                        if ((j == 0 && Mathf.Abs(neighborConnections.y - connections.x) > 0.01f) ||
-                            (j == 1 && Mathf.Abs(neighborConnections.x - connections.y) > 0.01f) ||
-                            (j == 2 && Mathf.Abs(neighborConnections.w - connections.z) > 0.01f) ||
-                            (j == 3 && Mathf.Abs(neighborConnections.z - connections.w) > 0.01f))
+                        if ((j == 0 && ((neighborConnections.y != GridStaticFunctions.CONST_INT) ^ (connections.x != GridStaticFunctions.CONST_INT))) ||
+                            (j == 1 && ((neighborConnections.x != GridStaticFunctions.CONST_INT) ^ (connections.y != GridStaticFunctions.CONST_INT))) ||
+                            (j == 2 && ((neighborConnections.w != GridStaticFunctions.CONST_INT) ^ (connections.z != GridStaticFunctions.CONST_INT))) ||
+                            (j == 3 && ((neighborConnections.z != GridStaticFunctions.CONST_INT) ^ (connections.w != GridStaticFunctions.CONST_INT))))
                             return false;
                     }
                 }
