@@ -22,8 +22,6 @@ public abstract class UnitController : MonoBehaviour {
 
     private ActionQueue queue;
 
-    private bool didAttack;
-
     private void OnEnable() {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitHit, UnitHit);
@@ -40,6 +38,13 @@ public abstract class UnitController : MonoBehaviour {
         unitAnimator = GetComponentInChildren<Animator>();
     }
 
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Card")) {
+            EventManager<BattleEvents>.Invoke(BattleEvents.SpawnAbilityCard);
+            Destroy(other.gameObject);
+        }
+    }
+
     public virtual void SetUp(UnitData data, Vector2Int pos) {
         UnitBaseData = Instantiate(data);
         GameObject pawn = Instantiate(data.PawnPrefab, pawnParent.transform);
@@ -48,11 +53,11 @@ public abstract class UnitController : MonoBehaviour {
         unitMovement = new();
         attackModule = new(UnitBaseData.Attack);
         gridPosition = pos;
-        queue = new(() => IsDone = ShouldEndTurn());
+        queue = new(() => IsDone = HasPerformedAction);
     }
 
     public virtual void OnEnter() {
-        queue.Enqueue(new DoMethodAction(() => { EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "Right mouse button to cancel action"); }));
+        EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "Right mouse button to cancel action");
         IsDone = false;
         FindTiles();
     }
@@ -62,9 +67,8 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void OnExit() {
-        queue.Enqueue(new DoMethodAction(() => { EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, ""); }));
+        EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "");
         HasPerformedAction = false;
-        didAttack = false;
         IsDone = false;
     }
 
@@ -76,8 +80,6 @@ public abstract class UnitController : MonoBehaviour {
                 EnqueueMovement(standingPos_optional);
                 EnqueueAttack(pickedTile, standingPos_optional);
             }
-
-            didAttack = true;
         }
         else if (unitMovement.AccessableTiles.Contains(pickedTile))
             EnqueueMovement(pickedTile);
@@ -159,19 +161,5 @@ public abstract class UnitController : MonoBehaviour {
 
     public void AddEffect(Effect effect) {
         values.AddEffect(effect);
-    }
-
-    private bool ShouldEndTurn() {
-        bool speedDown = values.currentStats.Speed < 1;
-        bool noAttacks = attackModule.AttackableTiles.Count < 1;
-
-        return (speedDown && noAttacks) || didAttack;
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Card")) {
-            EventManager<BattleEvents>.Invoke(BattleEvents.SpawnAbilityCard);
-            Destroy(other.gameObject);
-        }
     }
 }

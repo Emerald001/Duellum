@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour {
+    [SerializeField] private Transform cardHoverPos;
+
     [SerializeField] private UnitController PlayerUnitPrefab;
     [SerializeField] private UnitController EnemyUnitPrefab;
 
@@ -56,7 +58,7 @@ public class TurnManager : MonoBehaviour {
             card.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos) + new Vector3(-3f, 0, (i - 1) * 2);
 
             CharacterCard cardScript = card.GetComponent<CharacterCard>();
-            cardScript.SetUp(PlayerUnitsToSpawn[i]);
+            cardScript.SetUp(PlayerUnitsToSpawn[i], cardHoverPos);
         }
         players.Add(new PlayerTurnController());
 
@@ -73,7 +75,7 @@ public class TurnManager : MonoBehaviour {
             card.transform.rotation = Quaternion.Euler(90, 0, 90);
 
             CharacterCard cardScript = card.GetComponent<CharacterCard>();
-            cardScript.SetUp(EnemyUnitsToSpawn[i]);
+            cardScript.SetUp(EnemyUnitsToSpawn[i], cardHoverPos);
         }
         players.Add(new EnemyTurnController());
     }
