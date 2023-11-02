@@ -1,12 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using System.Collections;
 
-public class TurnManager : MonoBehaviour
-{
-    [SerializeField] private TextMeshProUGUI infoText;
-
+public class TurnManager : MonoBehaviour {
     [SerializeField] private UnitController PlayerUnitPrefab;
     [SerializeField] private UnitController EnemyUnitPrefab;
 
@@ -36,14 +31,6 @@ public class TurnManager : MonoBehaviour
         NextPlayer();
     }
 
-    private void OnEnable() {
-        EventManager<BattleEvents, string>.Subscribe(BattleEvents.InfoTextUpdate, UpdateInfoUI);    
-    }
-
-    private void OnDisable() {
-        EventManager<BattleEvents, string>.Unsubscribe(BattleEvents.InfoTextUpdate, UpdateInfoUI);    
-    }
-
     private void Update() {
         if (currentPlayer == null)
             return;
@@ -66,72 +53,31 @@ public class TurnManager : MonoBehaviour
             UnitStaticManager.PlayerUnitsInPlay.Add(unit);
 
             GameObject card = Instantiate(unit.UnitBaseData.UnitCard, GameObject.Find("UnitCards").transform);
-            Canvas canvas = card.GetComponentInChildren<Canvas>();
-            Vector3 originalSpawnPos = GridStaticFunctions.CalcSquareWorldPos(spawnPos);
-            Vector3 cardPos = new Vector3(originalSpawnPos.x, originalSpawnPos.y, originalSpawnPos.z);
-            canvas.transform.position = cardPos;
-
-            float spaceToGrid = 12f;
-            Vector3 localOffset = new Vector3(0, spaceToGrid, 0);
-            canvas.transform.localPosition -= localOffset;
+            card.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos) + new Vector3(-3f, 0, (i - 1) * 2);
 
             CharacterCard cardScript = card.GetComponent<CharacterCard>();
-            cardScript.name = unit.UnitBaseData.name;
-            cardScript.descriptionText.SetText(unit.UnitBaseData.Description.ToString());
-            cardScript.defenseText.SetText(unit.UnitBaseData.BaseStatBlock.Defence.ToString());
-            cardScript.attackText.SetText(unit.UnitBaseData.BaseStatBlock.Attack.ToString());
-            cardScript.visuals.sprite = unit.UnitBaseData.Icon;
+            cardScript.SetUp(PlayerUnitsToSpawn[i]);
         }
         players.Add(new PlayerTurnController());
 
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
 
-            var unit = unitFactory.CreateUnit(EnemyUnitPrefab, EnemyUnitsToSpawn[i], spawnPos);
+            UnitController unit = unitFactory.CreateUnit(EnemyUnitPrefab, EnemyUnitsToSpawn[i], spawnPos);
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.EnemyUnitsInPlay.Add(unit);
 
             GameObject card = Instantiate(unit.UnitBaseData.UnitCard, GameObject.Find("UnitCards").transform);
-            Canvas canvas = card.GetComponentInChildren<Canvas>();
-            Vector3 originalSpawnPos = GridStaticFunctions.CalcSquareWorldPos(spawnPos);
-            Vector3 cardPos = new Vector3(originalSpawnPos.x, originalSpawnPos.y, originalSpawnPos.z);
-            canvas.transform.position = cardPos;
-
-            float spaceToGrid = 12f;
-            Vector3 localOffset = new Vector3(0, spaceToGrid, 0);
-            canvas.transform.localPosition += localOffset;
-            Quaternion oppositeRotation = Quaternion.Euler(0, 0, 180);
-            canvas.transform.localRotation = transform.localRotation * oppositeRotation;
+            card.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos) + new Vector3(3f, 0, -((i - 1) * 4f));
+            card.transform.rotation = Quaternion.Euler(90, 0, 90);
 
             CharacterCard cardScript = card.GetComponent<CharacterCard>();
-            cardScript.name = unit.UnitBaseData.name;
-            cardScript.descriptionText.SetText(unit.UnitBaseData.Description.ToString());
-            cardScript.defenseText.SetText(unit.UnitBaseData.BaseStatBlock.Defence.ToString());
-            cardScript.attackText.SetText(unit.UnitBaseData.BaseStatBlock.Attack.ToString());
-            cardScript.visuals.sprite = unit.UnitBaseData.Icon;
+            cardScript.SetUp(EnemyUnitsToSpawn[i]);
         }
         players.Add(new EnemyTurnController());
-
-        //GameObject unitGridParent = GridStaticFunctions.GetGameObjectAtPosition(pos);
-        //Canvas canvas = card.GetComponentInChildren<Canvas>();
-
-        //if (!GridStaticFunctions.EnemySpawnPos.Contains(gridPosition)) {
-        //    float padding = 12f;
-        //    Vector3 localOffset = new Vector3(0, padding, 0);
-        //    canvas.transform.localPosition -= localOffset;
-        //    return;
-        //}
-        //else {
-
-        //}
-
-
     }
 
-    private void UpdateInfoUI(string name) {
-        infoText.text = name;
-    }
     private void NextPlayer() {
         if (currentPlayerIndex > players.Count - 1) {
             EventManager<BattleEvents>.Invoke(BattleEvents.NewTurn);
@@ -154,6 +100,7 @@ public class UnitFactory {
         unit.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos);
 
         unit.SetUp(data, spawnPos);
+
         return unit;
     }
 }

@@ -42,6 +42,7 @@ public class OriginalMapGenerator : MonoBehaviour {
 
             tmp.SetHighlight(HighlightType.None);
             tmp.GridPos = item.Key;
+            tmp.transform.GetChild(0).eulerAngles = new Vector3(Random.Range(0, 4) * 90, Random.Range(0, 4) * 90, Random.Range(0, 4) * 90);
             tmp.StandardWorldPosition = GridStaticFunctions.CalcSquareWorldPos(item.Key);
             tmp.transform.position = GridStaticFunctions.CalcSquareWorldPos(item.Key);
             tmp.transform.SetParent(gridParent.transform);
@@ -81,14 +82,13 @@ public class OriginalMapGenerator : MonoBehaviour {
             },
             false);
 
-        GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2));
         GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2 - 1));
+        GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2));
         GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2 + 1));
 
-        GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2));
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 - 1));
+        GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2));
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 + 1));
-
         
         int totalTiles = height * width;
         int waterTileAmount = Mathf.RoundToInt(totalTiles * ((float)waterPercentage / 100));
