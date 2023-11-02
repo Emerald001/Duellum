@@ -13,10 +13,12 @@ public abstract class UnitController : MonoBehaviour {
     public UnitValues Values => values;
     protected UnitValues values;
 
+    public Vector2Int LookDirection => lookDirection;
+    protected Vector2Int lookDirection;
+
     protected UnitMovementComponent unitMovement;
     protected UnitAttackModule attackModule;
     protected Vector2Int gridPosition;
-    protected Vector2Int lookDirection;
 
     private ActionQueue queue;
 
@@ -127,7 +129,8 @@ public abstract class UnitController : MonoBehaviour {
             if (!hit)
                 throw new System.Exception("Something went Very wrong with getting the units attackable tiles");
 
-            DamageManager.DealDamage(values, unit);
+            this.lookDirection = lookDirection;
+            DamageManager.DealDamage(this, unit);
         }));
         HasPerformedAction = true;
     }

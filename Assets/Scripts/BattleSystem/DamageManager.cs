@@ -2,11 +2,11 @@ using UnityEngine;
 
 public static class DamageManager
 {
-    public static void DealDamage(UnitValues attackingUnit, params UnitController[] defendingUnits) {
+    public static void DealDamage(UnitController attackingUnit, params UnitController[] defendingUnits) {
         foreach (UnitController unit in defendingUnits) {
             EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitHit, unit);
             
-            if (attackingUnit.currentStats.Attack + RollDice() > unit.Values.currentStats.Defence) {
+            if (attackingUnit.Values.currentStats.Attack + CalculateDirectionalDamage(attackingUnit, unit) > unit.Values.currentStats.Defence) {
                 unit.AddEffect(new Effect(
                     EffectType.KnockedOut,
                     false,
@@ -20,9 +20,8 @@ public static class DamageManager
         }
     }
 
-    private static int RollDice() {
-        int roll = Random.Range(1, 7);
-        Debug.Log($"Rolled a {roll}");
-        return roll;
+    private static int CalculateDirectionalDamage(UnitController attackingUnit, UnitController defendingUnit) {
+        Vector2Int mod = attackingUnit.LookDirection + defendingUnit.LookDirection;
+        return Mathf.Max(Mathf.Abs(mod.x), Mathf.Abs(mod.y));
     }
 }
