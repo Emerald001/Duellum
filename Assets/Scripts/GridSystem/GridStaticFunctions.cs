@@ -57,6 +57,14 @@ public static class GridStaticFunctions {
     public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
     public static List<GameObject> SpawnCubes { get; set; } = new();
 
+    public static void Reset() {
+        CardPositions.Clear();
+        Grid.Clear();
+        PlayerSpawnPos.Clear();
+        EnemySpawnPos.Clear();
+        SpawnCubes.Clear();
+    }
+
     public static Vector3 CalcHexWorldPos(Vector2Int gridPos) {
         float offset = 0;
         if (gridPos.y % 2 != 0)

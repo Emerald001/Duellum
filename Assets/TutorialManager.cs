@@ -43,7 +43,9 @@ public class TutorialManager : MonoBehaviour {
     }
 
     public void NextVideo() {
-        currentVideoIndex += 1;
+        if (currentVideoIndex + 1 < videoClips.Count)
+            currentVideoIndex += 1;
+
         PlayVideo();
     }
 

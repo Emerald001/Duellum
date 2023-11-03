@@ -42,6 +42,8 @@ public class CardHand : MonoBehaviour {
 
     private void Start() {
         cardStack.ResetDeck();
+
+        Debug.Log(cards);
     }
 
     private void Update() {

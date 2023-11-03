@@ -24,7 +24,10 @@ public class TurnManager : MonoBehaviour {
     private TurnController currentPlayer;
     private int currentPlayerIndex;
 
-    private void Start() {
+    private void Awake() {
+        GridStaticFunctions.Reset();
+        UnitStaticManager.Reset();
+
         unitFactory = new();
 
         GridGenerator.SetUp();
