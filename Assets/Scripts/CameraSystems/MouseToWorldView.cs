@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MouseToWorldView : MonoBehaviour
-{
+public class MouseToWorldView : MonoBehaviour {
     public static Vector2Int HoverTileGridPos { get; set; } = GridStaticFunctions.CONST_EMPTY;
     public static Vector3 HoverPointPos { get; set; }
 
@@ -38,7 +37,11 @@ public class MouseToWorldView : MonoBehaviour
     private void UpdateTileColors(RaycastHit hit) {
         if (!hit.transform.CompareTag("WalkableTile")) {
             if (lastTiles.Count > 0) {
-                lastTiles.ForEach(x => x.SetHover(false));
+                for (int i = 0; i < lastTiles.Count; i++) {
+                    if (lastTiles[i] != null)
+                        lastTiles[i].SetHover(false);
+                }
+
                 HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(null);
             }
             return;
@@ -50,8 +53,10 @@ public class MouseToWorldView : MonoBehaviour
         if (newTiles.Contains(GridStaticFunctions.CONST_EMPTY))
             newTiles.Remove(GridStaticFunctions.CONST_EMPTY);
 
-        foreach (var lastTile in lastTiles)
-            lastTile.SetHover(newTiles.Contains(lastTile.GridPos));
+        foreach (var lastTile in lastTiles) {
+            if (lastTile != null)
+                lastTile.SetHover(newTiles.Contains(lastTile.GridPos));
+        }
 
         lastTiles.Clear();
         lastTiles.AddRange(newTiles.Select(x => GridStaticFunctions.Grid[x]));

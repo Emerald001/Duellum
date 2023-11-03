@@ -57,7 +57,6 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void OnEnter() {
-        EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "Right mouse button to cancel action");
         IsDone = false;
         FindTiles();
     }
@@ -67,7 +66,6 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void OnExit() {
-        EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "");
         HasPerformedAction = false;
         IsDone = false;
     }

@@ -173,6 +173,7 @@ public static class GridStaticFunctions {
         }
         return null;
     }
+
     public static Vector2Int GetVector2RotationFromDirection(Vector3 dir) {
         Vector2Int result = new(
             Mathf.Min(1, Mathf.Max(-1, Mathf.RoundToInt(dir.x))),

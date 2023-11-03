@@ -35,7 +35,7 @@ public class EnemyUnitInterface : UnitController {
             }
 
             Vector2Int pickedTile = UnitStaticManager.UnitPositions[lastEnemy];
-            PickedTile(pickedTile, attackModule.GetClosestTile(pickedTile, gridPosition, Vector3.zero, unitMovement.AccessableTiles));
+            PickedTile(pickedTile, attackModule.GetClosestTile(pickedTile, gridPosition, Vector3.zero));
         }
         else if (unitMovement.AccessableTiles.Count != 0) {
             Vector2Int pickedTile = GridStaticFunctions.CONST_EMPTY;

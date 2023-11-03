@@ -11,6 +11,7 @@ public class UnitAttack : ScriptableObject {
     public List<Effect> EffectsToApply;
     //public Selector AreaOfEffectSelector;
     public Selector ApplicableTilesSelector;
+    public bool isRanged;
 
     //public AbilityType Type;
     public DamageType damageType;

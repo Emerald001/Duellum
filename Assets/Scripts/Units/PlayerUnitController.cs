@@ -36,7 +36,7 @@ public class PlayerUnitController : UnitController {
         if (Input.GetKeyDown(KeyCode.Mouse0))
             PickedTile(
                 MouseToWorldView.HoverTileGridPos, 
-                attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos, gridPosition, MouseToWorldView.HoverPointPos, unitMovement.AccessableTiles)
+                attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos, gridPosition, MouseToWorldView.HoverPointPos)
             );
     }
 
@@ -45,6 +45,7 @@ public class PlayerUnitController : UnitController {
 
         Line.enabled = false;
 
+        EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "");
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
     }
 
@@ -78,12 +79,21 @@ public class PlayerUnitController : UnitController {
 
     private void CreatePathForLine() {
         Vector2Int endPos = MouseToWorldView.HoverTileGridPos;
+        // Should Not be here!
+        EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "Right mouse button to cancel action");
 
         if (unitMovement.AccessableTiles.Contains(endPos))
             CurrentPath = unitMovement.GetPath(endPos);
         else if (attackModule.AttackableTiles.Contains(endPos)) {
-            CurrentPath = unitMovement.GetPath(attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos, unitMovement.AccessableTiles));
+            EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "");
+            CurrentPath = unitMovement.GetPath(attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos));
             CurrentPath.Add(MouseToWorldView.HoverTileGridPos);
+
+            // Should not be here!
+            if (UnitStaticManager.TryGetUnitFromGridPos(endPos, out var unit)) {
+                int damage = DamageManager.CaluculateDamage(this, unit);
+                EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, $"Damage: {damage}");
+            }
         }
         else {
             Line.enabled = false;

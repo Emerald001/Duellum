@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public static class DamageManager
-{
+public static class DamageManager {
     public static void DealDamage(UnitController attackingUnit, params UnitController[] defendingUnits) {
         foreach (UnitController unit in defendingUnits) {
             EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitHit, unit);
-            
-            if (attackingUnit.Values.currentStats.Attack + CalculateDirectionalDamage(attackingUnit, unit) > unit.Values.currentStats.Defence) {
+
+            if (CaluculateDamage(attackingUnit, unit) > unit.Values.currentStats.Defence) {
                 unit.AddEffect(new Effect(
                     EffectType.KnockedOut,
                     false,
@@ -18,6 +17,10 @@ public static class DamageManager
                 UnitStaticManager.UnitDeath(unit);
             }
         }
+    }
+
+    public static int CaluculateDamage(UnitController attackingUnit, UnitController defendingUnit) {
+        return attackingUnit.Values.currentStats.Attack + CalculateDirectionalDamage(attackingUnit, defendingUnit);
     }
 
     private static int CalculateDirectionalDamage(UnitController attackingUnit, UnitController defendingUnit) {
