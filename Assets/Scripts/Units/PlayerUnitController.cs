@@ -8,6 +8,7 @@ public class PlayerUnitController : UnitController {
     private List<Vector2Int> lastHighlightedTiles = new();
 
     private List<Vector2Int> CurrentPath = new();
+    private bool isPerformingAction = false;
 
     public override void SetUp(UnitData data, Vector2Int pos) {
         base.SetUp(data, pos);
@@ -24,7 +25,7 @@ public class PlayerUnitController : UnitController {
     }
 
     public override void OnUpdate() {
-        if (Line != null)
+        if (Line != null && !isPerformingAction)
             CreatePathForLine();
 
         base.OnUpdate();
@@ -33,17 +34,18 @@ public class PlayerUnitController : UnitController {
     }
 
     private void RunAttack() {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-            PickedTile(
-                MouseToWorldView.HoverTileGridPos, 
-                attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos, gridPosition, MouseToWorldView.HoverPointPos)
-            );
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            PickedTile(MouseToWorldView.HoverTileGridPos, attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos, gridPosition, MouseToWorldView.HoverPointPos));
+
+            Line.enabled = false;
+            isPerformingAction = true;
+        }
     }
 
     public override void OnExit() {
         base.OnExit();
 
-        Line.enabled = false;
+        isPerformingAction = false;
 
         EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "");
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
