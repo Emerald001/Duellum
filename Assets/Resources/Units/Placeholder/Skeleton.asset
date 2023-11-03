@@ -30,6 +30,6 @@ MonoBehaviour:
     Attack: 1
     Defence: 3
     Initiative: 4
-    Speed: 1
+    Speed: 6
   Attack: {fileID: 11400000, guid: 30a598603e865a24097146ca25fb4322, type: 2}
   Properties: []

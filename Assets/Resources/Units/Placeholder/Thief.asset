@@ -27,9 +27,9 @@ MonoBehaviour:
   TileCoverage: 1
   BaseStatBlock:
     EnergyPoints: 1
-    Attack: 1
+    Attack: 3
     Defence: 4
     Initiative: 5
-    Speed: 1
+    Speed: 3
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
