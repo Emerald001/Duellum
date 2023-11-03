@@ -1,9 +1,7 @@
-using Microsoft.Unity.VisualStudio.Editor;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
-using UnityEngine.UI;
 
 [Serializable]
 [CreateAssetMenu(fileName = "New UnitData", menuName = "Unit/UnitData")]
