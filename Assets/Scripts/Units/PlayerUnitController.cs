@@ -85,13 +85,15 @@ public class PlayerUnitController : UnitController {
         if (unitMovement.AccessableTiles.Contains(endPos))
             CurrentPath = unitMovement.GetPath(endPos);
         else if (attackModule.AttackableTiles.Contains(endPos)) {
-            EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "");
             CurrentPath = unitMovement.GetPath(attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos));
             CurrentPath.Add(MouseToWorldView.HoverTileGridPos);
 
+            Vector2Int calculatedLookDir = endPos - attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos);
+            calculatedLookDir.Clamp(new(-1, -1), new(1, 1));
+
             // Should not be here!
             if (UnitStaticManager.TryGetUnitFromGridPos(endPos, out var unit)) {
-                int damage = DamageManager.CaluculateDamage(this, unit);
+                int damage = DamageManager.CaluculateDamage(this, unit, calculatedLookDir);
                 EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, $"Damage: {damage}");
             }
         }
