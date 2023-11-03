@@ -37,6 +37,7 @@ public class PlayerUnitController : UnitController {
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             PickedTile(MouseToWorldView.HoverTileGridPos, attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos, gridPosition, MouseToWorldView.HoverPointPos));
 
+            GridStaticFunctions.ResetTileColors();
             Line.enabled = false;
             isPerformingAction = true;
         }
