@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CardHand : MonoBehaviour
-{
+public class CardHand : MonoBehaviour {
     [Header("References")]
     [SerializeField] private Camera uiCam;
     [SerializeField] private CardAssetHolder cardPrefab;
@@ -34,36 +33,29 @@ public class CardHand : MonoBehaviour
         CardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
         CardBehaviour.OnMove += HandleCardDrag;
         CardBehaviour.OnMoveRelease += PerformRelease;
+
         EventManager<BattleEvents>.Subscribe(BattleEvents.GiveAbilityCard, GiveCard);
     }
     private void OnDisable() {
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.GiveAbilityCard, GiveCard);
-
     }
+
     private void Start() {
         cardStack.ResetDeck();
-
-        //AddCard(cardStack.GetCard());
-        //AddCard(cardStack.GetCard());
-        //AddCard(cardStack.GetCard());
-        ////nextCard = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
-        //nextCard.transform.parent = stackPos;
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.V)) {
-            AbilityCard card = cardStack.GetCard();
-            if (card != null) 
-                AddCard(card);
-        }
+        if (Input.GetKeyDown(KeyCode.V))
+            GiveCard();
     }
 
-    public void GiveCard() {
+    private void GiveCard() {
         AbilityCard card = cardStack.GetCard();
         if (card != null)
             AddCard(card);
     }
-    public void AddCard(AbilityCard card) {
+
+    private void AddCard(AbilityCard card) {
         CardAssetHolder cardObject = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
 
         cardObject.Name.text = card.Name;
@@ -77,7 +69,7 @@ public class CardHand : MonoBehaviour
         LineOutCards();
     }
 
-    public void RemoveCard(int index) {
+    private void RemoveCard(int index) {
         CardAssetHolder card = cards[index];
 
         cards.RemoveAt(index);
@@ -102,7 +94,7 @@ public class CardHand : MonoBehaviour
             float x = radius * Mathf.Sin(radianAngle);
             float y = radius * Mathf.Cos(radianAngle);
 
-            Vector3 position = transform.position + new Vector3(x, y,  i * .01f);
+            Vector3 position = transform.position + new Vector3(x, y, i * .01f);
             Quaternion rotation = Quaternion.LookRotation(Vector3.forward, position - transform.position);
 
             int index = i;
@@ -178,13 +170,13 @@ public class CardHand : MonoBehaviour
                 GridStaticFunctions.ResetTileColors();
 
                 GridStaticFunctions.HighlightTiles(GridStaticSelectors.GetPositions(
-                    abilityCards[card.Index].availabletilesSelector, 
+                    abilityCards[card.Index].availabletilesSelector,
                     GridStaticFunctions.CONST_EMPTY),
                     HighlightType.MovementHighlight);
             }
             else
                 GridStaticFunctions.ResetTileColors();
-            
+
             EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, hasCardFaded ? abilityCards[card.Index].areaOfEffectSelector : null);
             hasCardFadedCallRan = hasCardFaded;
         }

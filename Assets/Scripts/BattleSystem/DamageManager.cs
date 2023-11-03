@@ -28,6 +28,6 @@ public static class DamageManager {
 
     private static int CalculateDirectionalDamage(Vector2Int attackingLookDir, UnitController defendingUnit) {
         Vector2Int mod = attackingLookDir + defendingUnit.LookDirection;
-        return Mathf.Max(Mathf.Abs(mod.x), Mathf.Abs(mod.y));
+        return Mathf.Max(Mathf.Abs(mod.x), Mathf.Abs(mod.y)) + 1;
     }
 }
