@@ -165,6 +165,8 @@ public abstract class UnitController : MonoBehaviour {
         UnitStaticManager.SetUnitPosition(this, newPosition);
 
         transform.position = GridStaticFunctions.CalcSquareWorldPos(newPosition);
+
+        gridPosition = newPosition;
     }
 
     public void ChangeUnitRotation(Vector2Int newRotation) {

@@ -315,6 +315,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7232eb8ae6da7ba4a975ec3f8f9802ce, type: 2}
   - {fileID: 11400000, guid: 7232eb8ae6da7ba4a975ec3f8f9802ce, type: 2}
   - {fileID: 11400000, guid: 7232eb8ae6da7ba4a975ec3f8f9802ce, type: 2}
+  - {fileID: 11400000, guid: 1d84e6ebbac63244baa19e0f9553e8fd, type: 2}
+  - {fileID: 11400000, guid: 1d84e6ebbac63244baa19e0f9553e8fd, type: 2}
+  - {fileID: 11400000, guid: 1d84e6ebbac63244baa19e0f9553e8fd, type: 2}
 --- !u!1 &290912098
 GameObject:
   m_ObjectHideFlags: 0
@@ -1528,9 +1531,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56777d9f122c504ca80c9b739be328d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsToSpawn: 3
   pickupCardPrefab: {fileID: 8137534332355796912, guid: fd9df713b62d60d4c8c098e253df4157,
     type: 3}
+  cardsToSpawn: 3
 --- !u!114 &1036886699
 MonoBehaviour:
   m_ObjectHideFlags: 0

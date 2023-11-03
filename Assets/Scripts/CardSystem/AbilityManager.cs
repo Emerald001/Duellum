@@ -29,14 +29,15 @@ public static class AbilityManager {
                 break;
 
             case AbilityCardType.MoveUnit:
-
+                foreach (var unit in controllerList) {
+                    List<Vector2Int> openPositions = GridStaticFunctions.GetAllOpenGridPositions();
+                    unit.ChangeUnitPosition(openPositions[Random.Range(0, openPositions.Count)]);
+                }
                 break;
 
             case AbilityCardType.SpinUnit:
-                foreach (var unit in controllerList) {
-                    Debug.Log($"{unit.LookDirection} | {-unit.LookDirection}");
+                foreach (var unit in controllerList)
                     unit.ChangeUnitRotation(-unit.LookDirection);
-                }
                 break;
 
             default:
