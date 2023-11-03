@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 410087040}
-  m_IndirectSpecularColor: {r: 0.011578472, g: 0.000531481, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.011591937, g: 0.0005321832, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1912,7 +1912,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af95526346842f740bdc0f86926bfbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infoText: {fileID: 154591348}
+  cardHoverPos: {fileID: 0}
+  cardSpawnParent: {fileID: 1848291837}
   PlayerUnitPrefab: {fileID: 4147554668627666437, guid: 0064cf83475593d44b4283697c357888,
     type: 3}
   EnemyUnitPrefab: {fileID: 4145673499434279597, guid: 919b967ef4647eb4884630713477122d,
@@ -1965,9 +1966,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56777d9f122c504ca80c9b739be328d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsToSpawn: 3
   pickupCardPrefab: {fileID: 8137534332355796912, guid: fd9df713b62d60d4c8c098e253df4157,
     type: 3}
+  cardsToSpawn: 3
 --- !u!114 &1036886699
 MonoBehaviour:
   m_ObjectHideFlags: 0

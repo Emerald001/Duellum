@@ -34,7 +34,7 @@ public class TutorialManager : MonoBehaviour {
 
     public void OnVideoEnd(VideoPlayer vp) {
         // Video has ended, do something (e.g., automatically play the next video).
-        if (currentVideoIndex >= videoClips.Count) {
+        if (currentVideoIndex + 1 >= videoClips.Count) {
             SceneManager.LoadScene(1);
             return;
         }
