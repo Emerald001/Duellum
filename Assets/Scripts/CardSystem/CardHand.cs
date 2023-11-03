@@ -37,6 +37,11 @@ public class CardHand : MonoBehaviour {
         EventManager<BattleEvents>.Subscribe(BattleEvents.GiveAbilityCard, GiveCard);
     }
     private void OnDisable() {
+        CardBehaviour.OnHoverEnter -= SetCardsToMoveOver;
+        CardBehaviour.OnHoverExit -= SetCardsBackToStandardPos;
+        CardBehaviour.OnMove -= HandleCardDrag;
+        CardBehaviour.OnMoveRelease -= PerformRelease;
+
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.GiveAbilityCard, GiveCard);
     }
 
