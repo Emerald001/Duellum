@@ -50,7 +50,9 @@ public class TurnManager : MonoBehaviour {
         for (int i = 0; i < GridStaticFunctions.PlayerSpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPos[i];
 
-            var unit = unitFactory.CreateUnit(PlayerUnitPrefab, PlayerUnitsToSpawn[i], spawnPos);
+            UnitController unit = unitFactory.CreateUnit(PlayerUnitPrefab, PlayerUnitsToSpawn[i], spawnPos);
+            unit.ChangeUnitRotation(new(1, 0));
+
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.PlayerUnitsInPlay.Add(unit);
@@ -67,6 +69,8 @@ public class TurnManager : MonoBehaviour {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
 
             UnitController unit = unitFactory.CreateUnit(EnemyUnitPrefab, EnemyUnitsToSpawn[i], spawnPos);
+            unit.ChangeUnitRotation(new(-1, 0));
+
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.EnemyUnitsInPlay.Add(unit);

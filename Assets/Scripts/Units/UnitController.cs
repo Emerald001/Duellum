@@ -160,4 +160,16 @@ public abstract class UnitController : MonoBehaviour {
     public void AddEffect(Effect effect) {
         values.AddEffect(effect);
     }
+
+    public void ChangeUnitPosition(Vector2Int newPosition) {
+        UnitStaticManager.SetUnitPosition(this, newPosition);
+
+        transform.position = GridStaticFunctions.CalcSquareWorldPos(newPosition);
+    }
+
+    public void ChangeUnitRotation(Vector2Int newRotation) {
+        lookDirection = newRotation;
+
+        transform.rotation = Quaternion.Euler(new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0));
+    }
 }

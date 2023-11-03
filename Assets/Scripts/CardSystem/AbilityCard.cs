@@ -30,4 +30,6 @@ public enum AbilityCardType {
     PlaceBoulder,
     Revive,
     SkipOpponentsTurn,
+    MoveUnit,
+    SpinUnit,
 }
