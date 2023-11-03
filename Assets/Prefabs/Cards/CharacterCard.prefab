@@ -51,6 +51,7 @@ MonoBehaviour:
   descriptionText: {fileID: 2632573487962814550}
   visuals: {fileID: 2632573487880509870}
   hoverHeight: 0.1
+  moveSpeed: 50
 --- !u!1 &2632573487471200682
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +254,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6df9ab8c7a3556048b6acaa7a21c55dc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5166a7765f284494ba72ad7652ac7f95, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
