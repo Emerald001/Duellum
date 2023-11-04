@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Golem
   m_EditorClassIdentifier: 
   Name: Golem
-  Description: 'Golem fella '
+  Description: A tank. Backstab him!
   Rank: 4
   Catagory: 3
   Icon: {fileID: 21300000, guid: df5913b52f4057249893f078b0191cc0, type: 3}
@@ -26,10 +26,8 @@ MonoBehaviour:
   tileCover: 0
   TileCoverage: 1
   BaseStatBlock:
-    EnergyPoints: 1
-    Attack: 2
     Defence: 7
-    Initiative: 8
     Speed: 1
+    Attack: 2
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []

@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Skeleton
   m_EditorClassIdentifier: 
   Name: Skeleton
-  Description: Is a Skellie
+  Description: Has a bow and arrow, and can do ranged damage. However, it doesn't
+    do a lot of damage.
   Rank: 1
   Catagory: 1
   Icon: {fileID: 21300000, guid: 00ea5a40213a3e34abd093772d80b4e0, type: 3}
@@ -26,10 +27,8 @@ MonoBehaviour:
   tileCover: 1
   TileCoverage: 3
   BaseStatBlock:
-    EnergyPoints: 5
-    Attack: 1
     Defence: 3
-    Initiative: 4
     Speed: 6
+    Attack: 1
   Attack: {fileID: 11400000, guid: 30a598603e865a24097146ca25fb4322, type: 2}
   Properties: []

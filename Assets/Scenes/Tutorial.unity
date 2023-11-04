@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 410087040}
-  m_IndirectSpecularColor: {r: 0.011591937, g: 0.0005321832, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.011578472, g: 0.000531481, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -183,8 +183,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Next
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e68add5fe91356b4b927f45039946a43, type: 2}
+  m_sharedMaterial: {fileID: 1422858418505410003, guid: e68add5fe91356b4b927f45039946a43,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -732,7 +733,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 429.90515, y: -304}
+  m_AnchoredPosition: {x: 429.90515, y: -371.42957}
   m_SizeDelta: {x: 330.9346, y: 125.6988}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &769330413
@@ -829,82 +830,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 769330411}
   m_CullTransparentMesh: 1
---- !u!1 &784346609
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 784346610}
-  - component: {fileID: 784346612}
-  - component: {fileID: 784346611}
-  m_Layer: 5
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &784346610
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 784346609}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 903295080}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &784346611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 784346609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &784346612
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 784346609}
-  m_CullTransparentMesh: 1
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,7 +911,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 154591347}
-  - {fileID: 784346610}
   - {fileID: 1527369264}
   - {fileID: 1327085360}
   - {fileID: 1520987656}
@@ -1123,36 +1047,38 @@ MonoBehaviour:
   videoTitleText: {fileID: 1610376241}
   videoDescriptionText: {fileID: 1528793540}
   videoTitles:
-  - Welcome!
-  - Movement
+  - Welcome to Duellum!
+  - Camera rotation
   - Card Abilities
-  - Character Cards
+  - Unit attack/defense
   - Directional Attacking
   - Attack Direction Bonus
   - This bonus is crucial!
-  - Have fun!
   videoDescriptions:
-  - This tutorial will explain how combat works.
-  - Move a unit by pressing on it and clicking on an adjacent tile.
-  - Cards spawn all over the battlefield. Use them to get temporary special abilities.
-  - Every Unit has their own attack and defense stats. If the attack stat of an attacking
-    Unit is <b>higher</b> than the defense of the defending Unit, <b>the defending
-    unit is dead!</b>
-  - You can attack a unit from several sides. Front, side, and back. This gives you
-    a bonus to your attack score.
-  - Frontal assault adds <b>+1 to your attack score</b> , flanking <b>adds +2</b>,
-    and backstabbing a <b>whopping +3 bonus!</b>
-  - 'Try to flank or backstab as much as possible for bonus points! '
-  - Have fun playing!
+  - Move a unit by pressing on it and <color=red>clicking</color> on an <color=red>adjacent
+    tile</color>.
+  - Rotate the camera by pressing <color=red>Q</color> or <color=red>E</color>.
+  - <color=red>Cards</color> spawn all over the battlefield. <br><br>Use them to
+    get  temporary <color=red>special abilities</color>.
+  - Every Unit has their own attack and defense stats. <br><br> If the <color=red>attack
+    stat </color>of an attacking Unit is <color=red>higher</color> than the <color=red>defense
+    stat </color> of the defending Unit, the defending unit <color=red>dies!</color>
+  - You can attack a unit from several sides.<br> <br> Front, side, and back. <br>
+    A <color=red>frontal assault</color> adds <color=red>+1 </color>to your attack
+    score , <color=red>flanking </color>adds <color=red>+2</color>, and <color=red>backstabbing</color>
+    a whopping <color=red>+3 bonus!</color>
+  - Directional attacking gives you <color=red>a bonus</color> to your <color=red>attack
+    score</color>, so take advantage of it!
+  - 'Try to <color=red>flank</color> or <color=red>backstab</color> as much as possible
+    for <color=red>bonus points</color>! '
   videoClips:
-  - {fileID: 32900000, guid: bd0bbf8864db6b14ab588416ba19fcdf, type: 3}
   - {fileID: 32900000, guid: 9a041f5705b87bf459a25dbbe39ddf98, type: 3}
+  - {fileID: 32900000, guid: 47569645f2ba3d04d84112c518b1b384, type: 3}
   - {fileID: 32900000, guid: a83a3f947febbb84d95f42e2e08dc557, type: 3}
-  - {fileID: 32900000, guid: 9b896da3644f8584391691d65f8af9a6, type: 3}
+  - {fileID: 32900000, guid: e1d1850c337cfad4d94983264d562fe4, type: 3}
   - {fileID: 32900000, guid: 52e954337d391994b98d328125a81565, type: 3}
-  - {fileID: 32900000, guid: 6155096cd95e63e499f8da0e7d01802e, type: 3}
-  - {fileID: 32900000, guid: 617e811dc1ddf4342887f6033f6709c9, type: 3}
   - {fileID: 32900000, guid: 7facfd2da50edce40903d99cfddc7314, type: 3}
+  - {fileID: 32900000, guid: 617e811dc1ddf4342887f6033f6709c9, type: 3}
 --- !u!1 &1100824561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1251,11 +1177,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 903295080}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 210.5354, y: 29.429565}
+  m_AnchoredPosition: {x: 210.5354, y: -38}
   m_SizeDelta: {x: 462.2109, y: 312.799}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!328 &1327085361
@@ -1289,7 +1215,7 @@ VideoPlayer:
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
-  m_Looping: 0
+  m_Looping: 1
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
@@ -1324,11 +1250,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 903295080}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 229, y: 109}
+  m_AnchoredPosition: {x: 229, y: 41.570435}
   m_SizeDelta: {x: 1010.4956, y: 614.9}
   m_Pivot: {x: 0.50000006, y: 0.5}
 --- !u!114 &1520987657
@@ -1401,12 +1327,12 @@ RectTransform:
   - {fileID: 769330412}
   - {fileID: 2075130128}
   m_Father: {fileID: 903295080}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -354.6396, y: -170.0303}
+  m_AnchoredPosition: {x: 0, y: -42.508}
+  m_SizeDelta: {x: -354.6396, y: -85.015}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1527369265
 MonoBehaviour:
@@ -1481,7 +1407,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -504.02, y: -188}
+  m_AnchoredPosition: {x: -515, y: 23.25}
   m_SizeDelta: {x: 371.5438, y: 699.1346}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1528793540
@@ -1506,15 +1432,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5dff65c98d8a3c941b3ef6dfa2d82788, type: 2}
+  m_sharedMaterial: {fileID: 533379477658189249, guid: 5dff65c98d8a3c941b3ef6dfa2d82788,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4293060583
+  m_fontColor: {r: 0.90588236, g: 0.9067209, b: 0.8862745, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1714,8 +1641,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -504.02, y: 323.4798}
-  m_SizeDelta: {x: 371.55, y: 123.0405}
+  m_AnchoredPosition: {x: 26.1391, y: 429.82452}
+  m_SizeDelta: {x: 1461.147, y: 73.3914}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1610376241
 MonoBehaviour:
@@ -1739,15 +1666,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: Title
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e68add5fe91356b4b927f45039946a43, type: 2}
+  m_sharedMaterial: {fileID: 1422858418505410003, guid: e68add5fe91356b4b927f45039946a43,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4292995047
+  m_fontColor: {r: 0.9056604, g: 0.9056604, b: 0.8834461, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1770,7 +1698,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1874,8 +1802,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Previous
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e68add5fe91356b4b927f45039946a43, type: 2}
+  m_sharedMaterial: {fileID: 1422858418505410003, guid: e68add5fe91356b4b927f45039946a43,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1986,7 +1915,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 43, y: -304}
+  m_AnchoredPosition: {x: 43, y: -371.42957}
   m_SizeDelta: {x: 330.9346, y: 125.6988}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2075130129
