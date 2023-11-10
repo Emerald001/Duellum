@@ -27,8 +27,8 @@ public class GridEffects : MonoBehaviour {
             currentHex.ClearQueue();
             List<Action> queue = new() {
                     new WaitAction(Mathf.Pow(i, i / 70f) - Mathf.Pow(1, 1 / 70f)),
-                    new MoveObjectAction(currentHex.gameObject, 50 / Mathf.Pow(i, i / 70f), currentHex.StandardPosition - new Vector3(0, RippleSelector.range / rippleStrength / Mathf.Pow(i, i / 10f), 0)),
-                    new MoveObjectAction(currentHex.gameObject, 2 / Mathf.Pow(i, i / 10f), currentHex.StandardPosition),
+                    new MoveObjectAction(currentHex.gameObject, 50 / Mathf.Pow(i, i / 70f), currentHex.StandardWorldPosition - new Vector3(0, RippleSelector.range / rippleStrength / Mathf.Pow(i, i / 10f), 0)),
+                    new MoveObjectAction(currentHex.gameObject, 2 / Mathf.Pow(i, i / 10f), currentHex.StandardWorldPosition),
                 };
             currentHex.SetActionQueue(queue);
         });
@@ -44,8 +44,8 @@ public class GridEffects : MonoBehaviour {
             Hex currentHex = GridStaticFunctions.Grid[positions[i]];
             currentHex.ClearQueue();
             List<Action> queue = new() {
-                    new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardPosition + new Vector3(0, newHeight, 0)),
-                    new DoMethodAction(() => currentHex.StandardPosition = currentHex.transform.position),
+                    new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + new Vector3(0, newHeight, 0)),
+                    new DoMethodAction(() => currentHex.StandardWorldPosition = currentHex.transform.position),
                 };
             currentHex.SetActionQueue(queue);
         }

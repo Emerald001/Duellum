@@ -38,7 +38,7 @@ public class MouseToWorldView : MonoBehaviour
     private void UpdateTileColors(RaycastHit hit) {
         if (!hit.transform.CompareTag("WalkableTile")) {
             if (lastTiles.Count > 0) {
-                lastTiles.ForEach(x => x.SetColor());
+                lastTiles.ForEach(x => x.SetHover(false));
                 HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(null);
             }
             return;
@@ -47,12 +47,11 @@ public class MouseToWorldView : MonoBehaviour
         GameObject hitTile = hit.transform.parent.gameObject;
         List<Vector2Int> newTiles = GridStaticSelectors.GetPositions(displaySelector, GridStaticFunctions.GetGridPosFromHexGameObject(hitTile));
 
-        foreach (var lastTile in lastTiles) {
-            if (newTiles.Contains(lastTile.GridPos))
-                lastTile.SetColor(hovercolor);
-            else
-                lastTile.SetColor();
-        }
+        if (newTiles.Contains(GridStaticFunctions.CONST_EMPTY))
+            newTiles.Remove(GridStaticFunctions.CONST_EMPTY);
+
+        foreach (var lastTile in lastTiles)
+            lastTile.SetHover(newTiles.Contains(lastTile.GridPos));
 
         lastTiles.Clear();
         lastTiles.AddRange(newTiles.Select(x => GridStaticFunctions.Grid[x]));

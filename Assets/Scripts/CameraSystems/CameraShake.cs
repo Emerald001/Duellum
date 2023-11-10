@@ -4,7 +4,7 @@ public class CameraShake : MonoBehaviour
 {
     private ActionQueue queue;
 
-    private void Start() {
+    private void Awake() {
         queue = new();
     }
 

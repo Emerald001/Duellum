@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class OriginalMapGenerator : MonoBehaviour {
     [SerializeField] private Hex gridCubePrefab;
-    [SerializeField] private Hex gridSpawnCubePrefab;
     [SerializeField] private Hex gridWaterCubePrefab;
     [SerializeField] private Hex gridCardCubePrefab;
     [SerializeField] private Hex gridCoverCubePrefab;
@@ -22,7 +21,17 @@ public class OriginalMapGenerator : MonoBehaviour {
     private readonly Dictionary<Vector2Int, Hex> GridToSpawn = new();
     private readonly Dictionary<Vector2Int, Hex> Grid = new();
 
+    private GameObject gridParent;
+
     public void SetUp() {
+        GridStaticFunctions.GridWidth = width;
+        GridStaticFunctions.GridHeight = height;
+        GridStaticFunctions.GridGap = gap;
+
+        gridParent = new() {
+            name = "Grid"
+        };
+
         AllocateGrid();
         SpawnGrid();
     }
@@ -31,11 +40,11 @@ public class OriginalMapGenerator : MonoBehaviour {
         foreach (var item in GridToSpawn) {
             Hex tmp = Instantiate(item.Value);
 
-            Color color = tmp.GetComponentInChildren<Renderer>().material.color;
-            tmp.SetBaseColor(color);
+            tmp.SetHighlight(HighlightType.None);
             tmp.GridPos = item.Key;
-            tmp.StandardPosition = CalculateWorldPos(item.Key);
-            tmp.transform.position = CalculateWorldPos(item.Key);
+            tmp.StandardWorldPosition = GridStaticFunctions.CalcSquareWorldPos(item.Key);
+            tmp.transform.position = GridStaticFunctions.CalcSquareWorldPos(item.Key);
+            tmp.transform.SetParent(gridParent.transform);
 
             Grid.Add(item.Key, tmp);
         }
@@ -76,15 +85,9 @@ public class OriginalMapGenerator : MonoBehaviour {
         GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2 - 1));
         GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2 + 1));
 
-        foreach (var item in GridStaticFunctions.PlayerSpawnPos)
-            GridToSpawn[item] = gridSpawnCubePrefab;
-
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2));
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 - 1));
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 + 1));
-
-        foreach (var item in GridStaticFunctions.EnemySpawnPos)
-            GridToSpawn[item] = gridSpawnCubePrefab;
 
         int totalTiles = height * width;
         int waterTileAmount = Mathf.RoundToInt(totalTiles * ((float)waterPercentage / 100));
@@ -107,12 +110,5 @@ public class OriginalMapGenerator : MonoBehaviour {
                 counter--;
             }
         }
-    }
-
-    private Vector3 CalculateWorldPos(Vector2Int gridpos) {
-        return new Vector3(
-            gridpos.x - (width / 2 + (gap * width) / 2) + gap * gridpos.x, 
-            0, 
-            gridpos.y - (height / 2 + (gap * height) / 2) + gap * gridpos.y);
     }
 }

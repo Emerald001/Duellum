@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// TODO:
+// Create a custom Drawer For this!
 [CreateAssetMenu(menuName = "Abilty Card", fileName = "Card")]
 public class AbilityCard : ScriptableObject
 {
@@ -19,18 +21,13 @@ public class AbilityCard : ScriptableObject
     public Selector availabletilesSelector;
 
     public AbilityCardType abilityType;
+    public Effect effectToApply;
+    public Hex hexPrefab;
 }
 
 public enum AbilityCardType {
-    AttackBoost,
-    DefenceBoost,
-    SpeedBoost,
-    Climb,
-    Teleport,
-    Trap,
+    ApplyEffect,
     PlaceBoulder,
     Revive,
     SkipOpponentsTurn,
-    FuryEffect,
-    FearEffect,
 }

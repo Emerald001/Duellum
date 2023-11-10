@@ -94,6 +94,7 @@ public class CardBehaviour : MonoBehaviour,
 
         grabbed = true; 
         offset = transform.position - UICam.ScreenToWorldPoint(eventData.position);
+        EventManager<BattleEvents>.Invoke(BattleEvents.GrabbedAbilityCard);
 
         queue.Clear();
         resizeQueue.Clear();
@@ -104,12 +105,13 @@ public class CardBehaviour : MonoBehaviour,
             return;
 
         grabbed = false;
-
         OnMoveRelease.Invoke(this, () =>
         {
             queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));
             resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
         });
+
+        EventManager<BattleEvents>.Invoke(BattleEvents.ReleasedAbilityCard);
     }
 
     public void OnPointerMove(PointerEventData eventData) {

@@ -5,11 +5,10 @@ using UnityEngine;
 public class CardHand : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Camera UICam;
-    [SerializeField] private AbilityCard TMPCardToAdd;
-    [SerializeField] private CardAssetHolder CardPrefab;
-
-    [SerializeField] private Transform StackPos;
+    [SerializeField] private Camera uiCam;
+    [SerializeField] private CardAssetHolder cardPrefab;
+    [SerializeField] private CardStack cardStack;
+    [SerializeField] private Transform stackPos;
 
     [Header("Card Move Values")]
     [SerializeField] private float cardSpawnMoveSpeed;
@@ -26,7 +25,6 @@ public class CardHand : MonoBehaviour
 
     private readonly List<CardAssetHolder> cards = new();
     private readonly List<AbilityCard> abilityCards = new();
-    private CardAssetHolder nextCard;
 
     private bool hasCardFaded;
     private bool hasCardFadedCallRan;
@@ -39,30 +37,35 @@ public class CardHand : MonoBehaviour
     }
 
     private void Start() {
-        nextCard = Instantiate(CardPrefab, StackPos.position, StackPos.rotation);
-        nextCard.transform.parent = StackPos;
+        cardStack.ResetDeck();
+
+        AddCard(cardStack.GetCard());
+        AddCard(cardStack.GetCard());
+        AddCard(cardStack.GetCard());
+        //nextCard = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
+        //nextCard.transform.parent = stackPos;
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.V))
-            AddCard(TMPCardToAdd);
+        if (Input.GetKeyDown(KeyCode.V)) {
+            AbilityCard card = cardStack.GetCard();
+            if (card != null) 
+                AddCard(card);
+        }
     }
 
     public void AddCard(AbilityCard card) {
-        CardAssetHolder cardObject = Instantiate(CardPrefab, StackPos.position, StackPos.rotation);
+        CardAssetHolder cardObject = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
 
         cardObject.Name.text = card.Name;
         cardObject.Discription.text = card.Discription;
         cardObject.Icon.sprite = card.Icon;
-        cardObject.Background.sprite = card.Background;
+        //cardObject.Background.sprite = card.Background;
         cardObject.ManaCost.text = card.ManaCost.ToString();
 
-        nextCard.transform.parent = transform;
-        cards.Add(nextCard);
+        cards.Add(cardObject);
         abilityCards.Add(card);
         LineOutCards();
-
-        nextCard = cardObject;
     }
 
     public void RemoveCard(int index) {
@@ -90,7 +93,7 @@ public class CardHand : MonoBehaviour
             float x = radius * Mathf.Sin(radianAngle);
             float y = radius * Mathf.Cos(radianAngle);
 
-            Vector3 position = transform.position + new Vector3(x, y, 0f);
+            Vector3 position = transform.position + new Vector3(x, y,  i * .01f);
             Quaternion rotation = Quaternion.LookRotation(Vector3.forward, position - transform.position);
 
             int index = i;
@@ -101,7 +104,7 @@ public class CardHand : MonoBehaviour
                     new MoveObjectAction(card.gameObject, cardSpawnMoveSpeed, position + new Vector3(0, -radius, 0)),
                     new RotateAction(card.gameObject, rotation.eulerAngles, cardRotationSpeed, .01f)
                 ),
-                new DoMethodAction(() => card.cardBehaviour.SetValues(position + new Vector3(0, -radius, 0) + new Vector3(0, raisedAmount, 0), UICam, index))
+                new DoMethodAction(() => card.cardBehaviour.SetValues(position + new Vector3(0, -radius, 0) + new Vector3(0, raisedAmount, 0), uiCam, index))
             });
         }
     }
@@ -162,11 +165,18 @@ public class CardHand : MonoBehaviour
         hasCardFaded = newAlpha < .1f;
 
         if (hasCardFaded != hasCardFadedCallRan) {
-            if (hasCardFaded)
-                EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, abilityCards[card.Index].areaOfEffectSelector);
-            else
-                EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
+            if (hasCardFaded) {
+                GridStaticFunctions.ResetTileColors();
 
+                GridStaticFunctions.HighlightTiles(GridStaticSelectors.GetPositions(
+                    abilityCards[card.Index].availabletilesSelector, 
+                    GridStaticFunctions.CONST_EMPTY),
+                    HighlightType.MovementHighlight);
+            }
+            else
+                GridStaticFunctions.ResetTileColors();
+            
+            EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, hasCardFaded ? abilityCards[card.Index].areaOfEffectSelector : null);
             hasCardFadedCallRan = hasCardFaded;
         }
     }
@@ -182,7 +192,8 @@ public class CardHand : MonoBehaviour
             if (validTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
                 var affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos);
 
-                AbilityManager.PerformAbility(ability.abilityType, affectedTiles.ToArray());
+                GridStaticFunctions.ResetTileColors();
+                AbilityManager.PerformAbility(ability, affectedTiles.ToArray());
                 RemoveCard(card.Index);
                 return;
             }

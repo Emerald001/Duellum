@@ -12,25 +12,31 @@ public class SelectorDrawer : PropertyDrawer {
         totalHeight = EditorGUIUtility.singleLineHeight;
         position.height = EditorGUIUtility.singleLineHeight;
 
+        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+
         SerializedProperty enumProperty = property.FindPropertyRelative("type");
         EditorGUI.PropertyField(position, enumProperty, GUIContent.none);
+
+        position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
+        totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
+        EditorGUI.PropertyField(position, property.FindPropertyRelative("isHex"));
 
         SelectorType selectorOption = (SelectorType)enumProperty.enumValueIndex;
         switch (selectorOption) {
             case SelectorType.Circle:
                 DrawCircleFields(position, property);
-                break;
+            break;
 
             case SelectorType.Line:
                 DrawLineFields(position, property);
-                break;
+            break;
 
             case SelectorType.AllTiles:
                 DrawAllTilesFields(position, property);
-                break;
+            break;
 
             default:
-                break;
+            break;
         }
 
         EditorGUI.EndProperty();
@@ -40,6 +46,7 @@ public class SelectorDrawer : PropertyDrawer {
         position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         EditorGUI.PropertyField(position, property.FindPropertyRelative("includeCentreTile"));
+
         position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         EditorGUI.PropertyField(position, property.FindPropertyRelative("range"));
@@ -49,16 +56,21 @@ public class SelectorDrawer : PropertyDrawer {
         position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         EditorGUI.PropertyField(position, property.FindPropertyRelative("includeCentreTile"));
+
         position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         EditorGUI.PropertyField(position, property.FindPropertyRelative("range"));
+
         position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         EditorGUI.PropertyField(position, property.FindPropertyRelative("AllDirections"));
+
         if (!property.FindPropertyRelative("AllDirections").boolValue) {
             position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
             totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
-            EditorGUI.IntSlider(position, property.FindPropertyRelative("rotIndex"), 0, 5);
+
+            int amount = property.FindPropertyRelative("isHex").boolValue ? 5 : 3;
+            EditorGUI.IntSlider(position, property.FindPropertyRelative("rotIndex"), 0, amount);
         }
     }
 
@@ -66,9 +78,11 @@ public class SelectorDrawer : PropertyDrawer {
         position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         EditorGUI.PropertyField(position, property.FindPropertyRelative("includeWater"));
+
         position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         EditorGUI.PropertyField(position, property.FindPropertyRelative("includeCover"));
+
         position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
         EditorGUI.PropertyField(position, property.FindPropertyRelative("excludeUnits"));
