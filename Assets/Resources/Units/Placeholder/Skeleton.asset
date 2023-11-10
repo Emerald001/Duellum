@@ -23,12 +23,12 @@ MonoBehaviour:
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
     type: 3}
-  movementSpeed: 5
+  movementSpeed: 4
   tileCover: 1
   TileCoverage: 3
   BaseStatBlock:
     Defence: 3
     Speed: 6
-    Attack: 1
+    Attack: 2
   Attack: {fileID: 11400000, guid: 30a598603e865a24097146ca25fb4322, type: 2}
   Properties: []

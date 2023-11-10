@@ -22,7 +22,7 @@ MonoBehaviour:
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
     type: 3}
-  movementSpeed: 7
+  movementSpeed: 4
   tileCover: 0
   TileCoverage: 1
   BaseStatBlock:

@@ -44,6 +44,9 @@ public class PlayerUnitController : UnitController {
 
         isPerformingAction = false;
 
+        Line.enabled = false;
+        Tooltip.instance.HideTooltip();
+
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
     }
