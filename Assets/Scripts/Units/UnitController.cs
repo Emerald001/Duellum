@@ -15,7 +15,7 @@ public abstract class UnitController : MonoBehaviour {
     public Vector2Int LookDirection => lookDirection;
     protected Vector2Int lookDirection;
 
-    protected UnitMovementComponent unitMovement;
+    protected UnitMovementModule movementModule;
     protected UnitAttackModule attackModule;
     protected Vector2Int gridPosition;
 
@@ -49,7 +49,7 @@ public abstract class UnitController : MonoBehaviour {
         GameObject pawn = Instantiate(data.PawnPrefab, pawnParent.transform);
 
         values = new(UnitBaseData);
-        unitMovement = new();
+        movementModule = new();
         attackModule = new(UnitBaseData.Attack);
         gridPosition = pos;
         queue = new(() => IsDone = HasPerformedAction);
@@ -78,7 +78,7 @@ public abstract class UnitController : MonoBehaviour {
                 EnqueueAttack(pickedTile, standingPos_optional);
             }
         }
-        else if (unitMovement.AccessableTiles.Contains(pickedTile))
+        else if (movementModule.AccessableTiles.Contains(pickedTile))
             EnqueueMovement(pickedTile);
     }
 
@@ -89,7 +89,7 @@ public abstract class UnitController : MonoBehaviour {
         }));
 
         Vector2Int lastPos = gridPosition;
-        foreach (var newPos in unitMovement.GetPath(targetPosition)) {
+        foreach (var newPos in movementModule.GetPath(targetPosition)) {
             Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(newPos) - GridStaticFunctions.CalcSquareWorldPos(lastPos));
 
             queue.Enqueue(new ActionStack(
@@ -148,9 +148,9 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     public virtual void FindTiles() {
-        unitMovement.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
+        movementModule.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
 
-        List<Vector2Int> tiles = new(unitMovement.AccessableTiles) {
+        List<Vector2Int> tiles = new(movementModule.AccessableTiles) {
             gridPosition
         };
         attackModule.FindAttackableTiles(tiles, UnitStaticManager.GetEnemies(this));

@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class UnitMovementComponent {
+public class UnitMovementModule {
     public List<Vector2Int> AccessableTiles => currentAccessableTiles;
 
     private readonly Dictionary<Vector2Int, Vector2Int> parentDictionary = new();

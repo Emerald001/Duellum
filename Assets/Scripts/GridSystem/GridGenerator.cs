@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridGenerator : MonoBehaviour
-{
+public class GridGenerator : MonoBehaviour {
     [Header("References")]
     [SerializeField] private Tile HexPrefab;
     [SerializeField] private Tile CubePrefab;
@@ -51,7 +50,6 @@ public class GridGenerator : MonoBehaviour
     }
 
     private void GenerateGrid() {
-
         if (isHexagons) {
             GridStaticFunctions.RippleThroughGridPositions(new Vector2Int(0, 0), rings + extraRings, (currentPos, i) => {
                 Tile hex = Instantiate(i > rings ? ExtraHexPrefab : HexPrefab);

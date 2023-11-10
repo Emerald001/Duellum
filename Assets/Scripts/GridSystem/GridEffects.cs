@@ -21,8 +21,7 @@ public class GridEffects : MonoBehaviour {
     }
 
     private void Ripple(Vector2Int gridPos, float rippleStrength) {
-        GridStaticFunctions.RippleThroughGridPositions(gridPos, RippleSelector.range, (gridPos, i) =>
-        {
+        GridStaticFunctions.RippleThroughGridPositions(gridPos, RippleSelector.range, (gridPos, i) => {
             Tile currentHex = GridStaticFunctions.Grid[gridPos];
             currentHex.ClearQueue();
             List<Action> queue = new() {

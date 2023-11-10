@@ -19,7 +19,6 @@ public class TutorialManager : MonoBehaviour {
     private int currentVideoIndex = 0;
 
     private void Start() {
-        videoPlayer.loopPointReached += OnVideoEnd;
         PlayVideo();
     }
 
@@ -33,15 +32,12 @@ public class TutorialManager : MonoBehaviour {
         videoDescriptionText.text = videoDescriptions[currentVideoIndex];
     }
 
-    private void OnVideoEnd(VideoPlayer vp) {
-        // Video has ended, do something (e.g., automatically play the next video).
+    public void Btn_NextVideo() {
         if (currentVideoIndex + 1 >= videoClips.Count) {
             SceneManager.LoadScene(1);
             return;
         }
-    }
 
-    public void Btn_NextVideo() {
         if (currentVideoIndex + 1 < videoClips.Count)
             currentVideoIndex += 1;
 
