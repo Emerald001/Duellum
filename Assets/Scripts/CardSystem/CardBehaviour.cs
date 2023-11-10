@@ -67,6 +67,7 @@ public class CardBehaviour : MonoBehaviour,
     public void OnPointerEnter(PointerEventData eventData) {
         if (grabbed || !CanInvoke)
             return;
+
         OnHoverEnter.Invoke(this, () => {
             EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Hover);
 
