@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PlaceBoulder
   m_EditorClassIdentifier: 
   Name: The Goddess of Nature has decided to help you.
+  shortcutName: boulder
   Discription: Place a boulder at any position you want, only once.
   Icon: {fileID: 0}
   Background: {fileID: 21300000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}

@@ -2,7 +2,6 @@
 using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
-
     [SerializeField] private GameObject pawnParent;
 
     private Animator unitAnimator;
@@ -30,8 +29,8 @@ public abstract class UnitController : MonoBehaviour {
 
     private void OnDisable() {
         EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitDeath);
-        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitHit);
-        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitRevive);
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitHit, UnitHit);
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitRevive, UnitRevive);
     }
 
     private void Start() {

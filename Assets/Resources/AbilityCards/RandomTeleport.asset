@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RandomTeleport
   m_EditorClassIdentifier: 
   Name: The Goddess of Nature has decided to help you.
+  shortcutName: teleport
   Discription: Teleport a unit to a random tile.
   Icon: {fileID: 0}
   Background: {fileID: 0}

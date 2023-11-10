@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hex : MonoBehaviour {
+public class Tile : MonoBehaviour {
     [SerializeField] private new Renderer renderer;
 
     [Header("Colors")]
@@ -11,11 +11,11 @@ public class Hex : MonoBehaviour {
     [SerializeField] private Material attackColor;
     [SerializeField] private Material ownPositionColor;
 
-    [SerializeField] private HexType type;
+    [SerializeField] private TileType type;
 
     public Vector2Int GridPos { get; set; }
     public Vector3 StandardWorldPosition { get; set; }
-    public HexType Type => type;
+    public TileType Type => type;
 
     private HighlightType currentType = HighlightType.None;
     private readonly ActionQueue queue = new();
@@ -58,7 +58,7 @@ public enum HighlightType {
     OwnPositionHighlight,
 }
 
-public enum HexType {
+public enum TileType {
     Normal,
     Water,
     Cover,

@@ -6,15 +6,16 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class TutorialManager : MonoBehaviour {
-    public VideoPlayer videoPlayer;
-    public RawImage rawImage;
-    public TextMeshProUGUI videoTitleText;
-    public TextMeshProUGUI videoDescriptionText;
+    [SerializeField] private List<VideoClip> videoClips;
 
-    public string[] videoTitles;
-    public string[] videoDescriptions;
+    [SerializeField] private VideoPlayer videoPlayer;
+    [SerializeField] private RawImage rawImage;
+    [SerializeField] private TextMeshProUGUI videoTitleText;
+    [SerializeField] private TextMeshProUGUI videoDescriptionText;
+    
+    [SerializeField] private string[] videoTitles;
+    [SerializeField] private string[] videoDescriptions;
 
-    public List<VideoClip> videoClips;
     private int currentVideoIndex = 0;
 
     private void Start() {
@@ -22,7 +23,7 @@ public class TutorialManager : MonoBehaviour {
         PlayVideo();
     }
 
-    public void PlayVideo() {
+    private void PlayVideo() {
         videoPlayer.clip = videoClips[currentVideoIndex];
         videoPlayer.Prepare();
         videoPlayer.Play();
@@ -32,24 +33,22 @@ public class TutorialManager : MonoBehaviour {
         videoDescriptionText.text = videoDescriptions[currentVideoIndex];
     }
 
-    public void OnVideoEnd(VideoPlayer vp) {
+    private void OnVideoEnd(VideoPlayer vp) {
         // Video has ended, do something (e.g., automatically play the next video).
         if (currentVideoIndex + 1 >= videoClips.Count) {
             SceneManager.LoadScene(1);
             return;
         }
-
-        //NextVideo();
     }
 
-    public void NextVideo() {
+    public void Btn_NextVideo() {
         if (currentVideoIndex + 1 < videoClips.Count)
             currentVideoIndex += 1;
 
         PlayVideo();
     }
 
-    public void PreviousVideo() {
+    public void Btn_PreviousVideo() {
         if (currentVideoIndex > 0)
             currentVideoIndex -= 1;
 

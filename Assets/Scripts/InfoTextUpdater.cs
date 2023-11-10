@@ -5,10 +5,10 @@ public class InfoTextUpdater : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI infoText;
 
     private void OnEnable() {
-        EventManager<BattleEvents, string>.Subscribe(BattleEvents.InfoTextUpdate, UpdateInfoUI);
+        EventManager<UIEvents, string>.Subscribe(UIEvents.InfoTextUpdate, UpdateInfoUI);
     }
     private void OnDisable() {
-        EventManager<BattleEvents, string>.Unsubscribe(BattleEvents.InfoTextUpdate, UpdateInfoUI);
+        EventManager<UIEvents, string>.Unsubscribe(UIEvents.InfoTextUpdate, UpdateInfoUI);
     }
 
     private void UpdateInfoUI(string name) {

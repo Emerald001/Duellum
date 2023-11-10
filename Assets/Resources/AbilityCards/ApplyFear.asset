@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ApplyFear
   m_EditorClassIdentifier: 
   Name: The Goddess of Emotion has chosen to help you.
+  shortcutName: fear
   Discription: Strike one of your oponents with Fear.
   Icon: {fileID: 0}
   Background: {fileID: 21300000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}

@@ -4,9 +4,6 @@ using UnityEngine;
 public class PlayerUnitController : UnitController {
     public LineRenderer Line { get; set; }
 
-    private readonly List<Vector2Int> lastAbilityTiles = new();
-    private List<Vector2Int> lastHighlightedTiles = new();
-
     private List<Vector2Int> CurrentPath = new();
     private bool isPerformingAction = false;
 
@@ -18,7 +15,6 @@ public class PlayerUnitController : UnitController {
 
     public override void OnEnter() {
         base.OnEnter();
-
         EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
 
         HighlightTiles();
@@ -48,7 +44,7 @@ public class PlayerUnitController : UnitController {
 
         isPerformingAction = false;
 
-        EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "");
+        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
     }
 
@@ -58,35 +54,21 @@ public class PlayerUnitController : UnitController {
         GridStaticFunctions.Grid[gridPosition].SetHighlight(HighlightType.OwnPositionHighlight);
     }
 
-    public void ResetTiles() {
-        if (lastAbilityTiles.Count > 0)
-            ChangeHexColor(lastAbilityTiles, HighlightType.None);
-        lastAbilityTiles.Clear();
-
-        foreach (var pos in lastHighlightedTiles)
-            GridStaticFunctions.Grid[pos].SetHighlight(HighlightType.None);
-
-        GridStaticFunctions.Grid[gridPosition].SetHighlight(HighlightType.None);
-    }
-
     public override void FindTiles() {
         base.FindTiles();
 
         HighlightTiles();
     }
 
-    public void ChangeHexColor(List<Vector2Int> list, HighlightType type) {
-        for (int i = 0; i < list.Count; i++)
-            GridStaticFunctions.Grid[list[i]].SetHighlight(type);
-    }
-
     private void CreatePathForLine() {
         Vector2Int endPos = MouseToWorldView.HoverTileGridPos;
         // Should Not be here!
-        EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, "Right mouse button to cancel action");
+        EventManager<UIEvents, string>.Invoke(UIEvents.InfoTextUpdate, "Right mouse button to cancel action");
 
-        if (unitMovement.AccessableTiles.Contains(endPos))
+        if (unitMovement.AccessableTiles.Contains(endPos)) {
+            EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Move);
             CurrentPath = unitMovement.GetPath(endPos);
+        }
         else if (attackModule.AttackableTiles.Contains(endPos)) {
             CurrentPath = unitMovement.GetPath(attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos));
             CurrentPath.Add(MouseToWorldView.HoverTileGridPos);
@@ -95,12 +77,21 @@ public class PlayerUnitController : UnitController {
             calculatedLookDir.Clamp(new(-1, -1), new(1, 1));
 
             // Should not be here!
+            EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Attack);
             if (UnitStaticManager.TryGetUnitFromGridPos(endPos, out var unit)) {
-                int damage = DamageManager.CaluculateDamage(this, unit, calculatedLookDir);
-                EventManager<BattleEvents, string>.Invoke(BattleEvents.InfoTextUpdate, $"Damage: {damage}");
+                int bonus = DamageManager.CaluculateDamage(this, unit, calculatedLookDir);
+                int damage = DamageManager.CalculateRegularDamage(this, unit);
+
+                if (damage + bonus > unit.UnitBaseData.BaseStatBlock.Defence)
+                    Tooltip.instance.ShowTooltip($"<color=green> WIN <br> base damage: {damage}  bonus: + {bonus}</color>");
+                else
+                    Tooltip.instance.ShowTooltip($"<color=red> FAIL <br> base damage: {damage}  bonus: + {bonus}</color>");
             }
         }
         else {
+            Tooltip.instance.HideTooltip();
+
+            EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
             Line.enabled = false;
             return;
         }

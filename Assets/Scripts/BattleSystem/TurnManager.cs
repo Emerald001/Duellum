@@ -123,11 +123,16 @@ public enum BattleEvents {
     NewTurn,
     UnitHit,
     UnitDeath,
-    InfoTextUpdate,
     UnitRevive,
     GiveAbilityCard,
+    GiveCard,
     SpawnAbilityCard,
     GrabbedAbilityCard,
     ReleasedAbilityCard,
-    BattleEnd
+    BattleEnd,
+}
+
+public enum UIEvents {
+    InfoTextUpdate,
+    UpdateCursor,
 }

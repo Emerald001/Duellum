@@ -7,6 +7,7 @@ public class AbilityCard : ScriptableObject
 {
     [Header("Visuals")]
     public string Name;
+    public string shortcutName;
     public string Discription;
 
     public Sprite Icon;
@@ -22,7 +23,7 @@ public class AbilityCard : ScriptableObject
 
     public AbilityCardType abilityType;
     public Effect effectToApply;
-    public Hex hexPrefab;
+    public Tile hexPrefab;
 }
 
 public enum AbilityCardType {

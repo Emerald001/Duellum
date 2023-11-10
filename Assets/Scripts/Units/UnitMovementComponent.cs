@@ -35,7 +35,7 @@ public class UnitMovementComponent {
                             //Get all neighbours or add tile anyway
 
                     // Only applicable if no other thing is needed
-                    if (GridStaticFunctions.Grid[neighbour].Type != HexType.Normal)
+                    if (GridStaticFunctions.Grid[neighbour].Type != TileType.Normal)
                         return;
 
                     if (openList.Contains(neighbour) ||

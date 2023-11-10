@@ -11,7 +11,7 @@ public class MouseToWorldView : MonoBehaviour {
 
     private Selector displaySelector;
 
-    private readonly List<Hex> lastTiles = new();
+    private readonly List<Tile> lastTiles = new();
 
     private void Start() {
         displaySelector = standardSelector;

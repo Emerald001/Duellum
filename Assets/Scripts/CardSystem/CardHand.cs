@@ -61,6 +61,11 @@ public class CardHand : MonoBehaviour {
         if (card != null)
             AddCard(card);
     }
+    private void GiveSpecificCard(string name) {
+        AbilityCard card = cardStack.GetSpecificCard(name);
+        if (card != null)
+            AddCard(card);
+    }
 
     private void AddCard(AbilityCard card) {
         CardAssetHolder cardObject = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);

@@ -52,7 +52,7 @@ public static class GridStaticFunctions {
     public static Vector3 StartPos { get; set; }
 
     public static Dictionary<Vector2Int, GameObject> CardPositions { get; set; } = new();
-    public static Dictionary<Vector2Int, Hex> Grid { get; set; } = new();
+    public static Dictionary<Vector2Int, Tile> Grid { get; set; } = new();
     public static List<Vector2Int> PlayerSpawnPos { get; set; } = new();
     public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
     public static List<GameObject> SpawnCubes { get; set; } = new();
@@ -163,7 +163,7 @@ public static class GridStaticFunctions {
             tile.SetHighlight(HighlightType.None);
     }
 
-    public static void ReplaceHex(Hex hexPrefab, params Vector2Int[] hexPositions) {
+    public static void ReplaceHex(Tile hexPrefab, params Vector2Int[] hexPositions) {
         foreach (var hex in hexPositions) {
             UnityEngine.Object.Destroy(Grid[hex].gameObject);
 
@@ -172,13 +172,10 @@ public static class GridStaticFunctions {
         }
     }
 
-    public static GameObject GetGameObjectAtPosition(Vector2Int position) {
-        if (Grid.ContainsKey(position)) {
-            Hex hex = Grid[position];
-            if (hex != null) {
-                return hex.gameObject;
-            }
-        }
+    public static Tile GetTileFromPosition(Vector2Int position) {
+        if (Grid.ContainsKey(position))
+            return Grid[position];
+
         return null;
     }
 
@@ -191,7 +188,7 @@ public static class GridStaticFunctions {
     }
 
     public static List<Vector2Int> GetAllOpenGridPositions() {
-        var result = Grid.Keys.Where(hex => Grid[hex].Type == HexType.Normal).ToList();
+        var result = Grid.Keys.Where(hex => Grid[hex].Type == TileType.Normal).ToList();
         var unitPositions = UnitStaticManager.UnitPositions.Values.ToList();
 
         for (int i = result.Count - 1; i >= 0; i--) {
@@ -216,7 +213,7 @@ public static class GridStaticFunctions {
 
     public static bool TryGetHexNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {
         Vector2Int[] listToUse = startPos.y % 2 != 0 ? unevenNeighbours : evenNeighbours;
-        if (Grid.TryGetValue(startPos + listToUse[dirIndex], out Hex hex)) {
+        if (Grid.TryGetValue(startPos + listToUse[dirIndex], out Tile hex)) {
             result = hex.GridPos;
             return true;
         }
@@ -226,7 +223,7 @@ public static class GridStaticFunctions {
     }
 
     public static bool TryGetSquareNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {
-        if (Grid.TryGetValue(startPos + directCubeNeighbours[dirIndex], out Hex hex)) {
+        if (Grid.TryGetValue(startPos + directCubeNeighbours[dirIndex], out Tile hex)) {
             result = hex.GridPos;
             return true;
         }

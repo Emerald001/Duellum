@@ -1,16 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Tooltip : MonoBehaviour {
     public static Tooltip instance;
 
-    private Text tooltipText;
+    private TextMeshProUGUI tooltipText;
     private RectTransform backgroundRectTransform;
 
     private void Awake() {
         instance = this;
 
-        tooltipText = GetComponentInChildren<Text>();
+        tooltipText = GetComponentInChildren<TextMeshProUGUI>();
         backgroundRectTransform = transform.GetChild(0).GetComponent<RectTransform>();
     }
 
@@ -23,7 +24,8 @@ public class Tooltip : MonoBehaviour {
         if (localPoint.y + backgroundRectTransform.rect.height > parentRect.rect.height / 2)
             localPoint.y = parentRect.rect.height / 2 - backgroundRectTransform.rect.height;
 
-        transform.localPosition = localPoint;
+        Vector2 editedPos = new Vector2(localPoint.x, localPoint.y - 90f);
+        transform.localPosition = editedPos;
     }
 
     public void ShowTooltip(string tooltipString) {
