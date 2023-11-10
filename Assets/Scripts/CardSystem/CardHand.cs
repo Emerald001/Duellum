@@ -47,8 +47,6 @@ public class CardHand : MonoBehaviour {
 
     private void Start() {
         cardStack.ResetDeck();
-
-        Debug.Log(cards);
     }
 
     private void Update() {
@@ -61,6 +59,7 @@ public class CardHand : MonoBehaviour {
         if (card != null)
             AddCard(card);
     }
+
     private void GiveSpecificCard(string name) {
         AbilityCard card = cardStack.GetSpecificCard(name);
         if (card != null)
@@ -196,14 +195,14 @@ public class CardHand : MonoBehaviour {
 
     private void PerformRelease(CardBehaviour card, System.Action actionForRaisedCard) {
         CanvasGroup canvasGroup = cards[card.Index].Fader;
-        var ability = abilityCards[card.Index];
+        AbilityCard ability = abilityCards[card.Index];
 
         EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
 
         if (hasCardFaded) {
             List<Vector2Int> validTiles = GridStaticSelectors.GetPositions(ability.availabletilesSelector, MouseToWorldView.HoverTileGridPos);
             if (validTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
-                var affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos);
+                List<Vector2Int> affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos);
 
                 GridStaticFunctions.ResetTileColors();
                 AbilityManager.PerformAbility(ability, affectedTiles.ToArray());

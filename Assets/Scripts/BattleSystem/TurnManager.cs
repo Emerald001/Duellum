@@ -115,7 +115,6 @@ public class UnitFactory {
     }
 }
 
-//I don't know how to add new enum for events and link them to the eventmanager, so for now I'm gonna put them in battle events.
 public enum BattleEvents {
     SetupBattle,
     StartBattle,

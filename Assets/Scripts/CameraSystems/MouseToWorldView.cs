@@ -13,7 +13,7 @@ public class MouseToWorldView : MonoBehaviour {
 
     private readonly List<Tile> lastTiles = new();
 
-    private void Start() {
+    private void Awake() {
         displaySelector = standardSelector;
     }
 
@@ -25,25 +25,18 @@ public class MouseToWorldView : MonoBehaviour {
         EventManager<CameraEventType, Selector>.Unsubscribe(CameraEventType.CHANGE_CAM_SELECTOR, GiveSelector);
     }
 
-    void Update() {
-        if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 10000))
-            return;
-
-        UpdateTileColors(hit);
-
-        HoverPointPos = hit.point;
+    private void Update() {
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 10000))
+            UpdateTileColors(hit);
+        else
+            ResetTiles();
     }
 
     private void UpdateTileColors(RaycastHit hit) {
-        if (!hit.transform.CompareTag("WalkableTile")) {
-            if (lastTiles.Count > 0) {
-                for (int i = 0; i < lastTiles.Count; i++) {
-                    if (lastTiles[i] != null)
-                        lastTiles[i].SetHover(false);
-                }
+        HoverPointPos = hit.point;
 
-                HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(null);
-            }
+        if (!hit.transform.CompareTag("WalkableTile")) {
+            ResetTiles();
             return;
         }
 
@@ -63,10 +56,19 @@ public class MouseToWorldView : MonoBehaviour {
         HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(hitTile);
     }
 
+    private void ResetTiles() {
+        if (lastTiles.Count > 0) {
+            for (int i = 0; i < lastTiles.Count; i++) {
+                if (lastTiles[i] != null)
+                    lastTiles[i].SetHover(false);
+            }
+
+            HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(null);
+            lastTiles.Clear();
+        }
+    }
+
     private void GiveSelector(Selector selector = null) {
-        if (selector == null)
-            displaySelector = standardSelector;
-        else
-            displaySelector = selector;
+        displaySelector = selector ?? standardSelector;
     }
 }

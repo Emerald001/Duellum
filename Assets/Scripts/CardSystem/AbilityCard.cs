@@ -3,11 +3,10 @@ using UnityEngine;
 // TODO:
 // Create a custom Drawer For this!
 [CreateAssetMenu(menuName = "Abilty Card", fileName = "Card")]
-public class AbilityCard : ScriptableObject
-{
+public class AbilityCard : ScriptableObject {
     [Header("Visuals")]
     public string Name;
-    public string shortcutName;
+    public string ShortcutName;
     public string Discription;
 
     public Sprite Icon;

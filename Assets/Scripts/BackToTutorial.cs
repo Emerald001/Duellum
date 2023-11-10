@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class BackToTutorial : MonoBehaviour {
-    void Update() {
+    private void Update() {
         if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene(0);
     }

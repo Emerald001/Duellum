@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CardStack : MonoBehaviour {
@@ -24,16 +23,12 @@ public class CardStack : MonoBehaviour {
     }
 
     public AbilityCard GetSpecificCard(string name) {
-        AbilityCard card;
-        // Check if the typeName is a shortcut name in the dictionary
-        if (cardShortcuts.TryGetValue(name, out card)) {
+        if (cardShortcuts.TryGetValue(name, out AbilityCard card)) {
             Debug.Log(name, card);
             currentCards.Remove(card);
             return card;
         }
-        else {
-            // Handle the case where the typeName doesn't match any shortcut name
+        else
             return null;
-        }
     }
 }
