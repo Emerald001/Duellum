@@ -13,7 +13,6 @@ public static class DamageManager {
                     1000,
                     100));
 
-                Debug.Log($"UNIT DIED");
                 EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitDeath, unit);
                 UnitStaticManager.UnitDeath(unit);
             }
@@ -25,7 +24,6 @@ public static class DamageManager {
             return attackingUnit.Values.currentStats.Attack + CalculateDirectionalDamage(attackingUnit.LookDirection, defendingUnit);
 
         return CalculateDirectionalDamage(lookdir, defendingUnit);
-
     }
     
     public static int CalculateDirectionalDamage(Vector2Int attackingLookDir, UnitController defendingUnit) {
