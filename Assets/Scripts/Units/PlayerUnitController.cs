@@ -49,7 +49,7 @@ public class PlayerUnitController : UnitController {
         isPerformingAction = false;
 
         Line.enabled = false;
-        Tooltip.instance.HideTooltip();
+        Tooltip.HideTooltip_Static();
 
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
@@ -90,13 +90,13 @@ public class PlayerUnitController : UnitController {
                 int damage = Values.currentStats.Attack;
 
                 if (damage + bonus > unit.UnitBaseData.BaseStatBlock.Defence)
-                    Tooltip.instance.ShowTooltip($"<color=green> WIN <br> base damage: {damage}  bonus: + {bonus}</color>");
+                    Tooltip.ShowTooltip_Static($"<color=green> WIN <br> base damage: {damage}  bonus: + {bonus}</color>");
                 else
-                    Tooltip.instance.ShowTooltip($"<color=red> FAIL <br> base damage: {damage}  bonus: + {bonus}</color>");
+                    Tooltip.ShowTooltip_Static($"<color=red> FAIL <br> base damage: {damage}  bonus: + {bonus}</color>");
             }
         }
         else {
-            Tooltip.instance.HideTooltip();
+            Tooltip.HideTooltip_Static();
 
             EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
             Line.enabled = false;
