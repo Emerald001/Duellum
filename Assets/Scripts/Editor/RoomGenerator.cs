@@ -8,14 +8,14 @@ public partial class RoomGeneratorEditor : EditorWindow {
     private Vector2Int size = new(1, 1);
 
     private Dictionary<Vector2Int, HexType> grid = new();
-    private Dictionary<Vector2Int, int> heightGrid = new();
+    private Dictionary<Vector2Int, float> heightGrid = new();
     private Dictionary<Vector2Int, Vector4> connectionGrid = new();
 
     private string tileName = "New Room";
 
     private Vector2Int lastSize = new();
     private Vector2 scrollPosition = Vector2.zero;
-    private readonly int tilesPerRoom = 11;
+    private readonly int tilesPerRoom = 13;
 
     private DungeonRoomSO currentRoom;
     private bool isHeight = true;
@@ -138,19 +138,16 @@ public partial class RoomGeneratorEditor : EditorWindow {
         Dictionary<Vector2Int, Hex> result = new();
         Dictionary<HexType, Hex> prefabs = LoadPrefabs();
 
-        for (int y = -1; y < size.y * tilesPerRoom + 1; y++) {
-            for (int x = -1; x < size.x * tilesPerRoom + 1; x++) {
+        for (int y = 0; y < size.y * tilesPerRoom; y++) {
+            for (int x = 0; x < size.x * tilesPerRoom; x++) {
                 Vector2Int gridPos = new(x, y);
                 Vector2Int connectionPos = new(Mathf.Min(Mathf.FloorToInt(x / tilesPerRoom), size.x - 1), Mathf.Min(Mathf.FloorToInt(y / tilesPerRoom), size.y - 1));
 
-                Hex pref = y < 0 || x < 0 || y == size.y * tilesPerRoom || x == size.x * tilesPerRoom
-                    ? prefabs[HexType.Cover]
-                    : prefabs[grid[new(x, y)]];
-
-                if ((y == -1 && connectionGrid[connectionPos].w != GridStaticFunctions.CONST_INT) ||
-                    (y == size.y * tilesPerRoom && connectionGrid[connectionPos].z != GridStaticFunctions.CONST_INT) ||
-                    (x == -1 && connectionGrid[connectionPos].y != GridStaticFunctions.CONST_INT) ||
-                    (x == size.x * tilesPerRoom && connectionGrid[connectionPos].x != GridStaticFunctions.CONST_INT)) {
+                Hex pref = prefabs[grid[new(x, y)]];
+                if ((y == 0 && connectionGrid[connectionPos].w != GridStaticFunctions.CONST_INT) ||
+                    (y == ((size.y * tilesPerRoom) - 1) && connectionGrid[connectionPos].z != GridStaticFunctions.CONST_INT) ||
+                    (x == 0 && connectionGrid[connectionPos].y != GridStaticFunctions.CONST_INT) ||
+                    (x == ((size.x * tilesPerRoom) - 1) && connectionGrid[connectionPos].x != GridStaticFunctions.CONST_INT)) {
                     if (x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) ||
                         x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) + 1 ||
                         x % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) - 1 ||
@@ -162,7 +159,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
                 }
 
                 Hex tmp = Instantiate(pref, parent);
-                if (y >= 0 && x >= 0 && y != size.y * tilesPerRoom && x != size.x * tilesPerRoom && grid[new(x, y)] == HexType.Normal)
+                if (y >= 1 && x >= 1 && y != size.y * tilesPerRoom - 1 && x != size.x * tilesPerRoom - 1 && grid[new(x, y)] == HexType.Normal)
                     tmp.transform.GetChild(0).eulerAngles = new Vector3(Random.Range(0, 4), Random.Range(0, 4), Random.Range(0, 4)) * 90;
 
                 tmp.name = $"{gridPos} | {tmp.name}";
@@ -239,9 +236,9 @@ public partial class RoomGeneratorEditor : EditorWindow {
             if (heightPos.y < 0)
                 heightPos.y = 0;
             if (heightPos.x >= size.x * tilesPerRoom)
-                heightPos.x = size.x * tilesPerRoom - 1;
+                heightPos.x = (size.x * tilesPerRoom) - 1;
             if (heightPos.y >= size.y * tilesPerRoom)
-                heightPos.y = size.y * tilesPerRoom - 1;
+                heightPos.y = (size.y * tilesPerRoom) - 1;
         }
 
         float x = gridpos.x - (((float)(size.x * tilesPerRoom) - 1) / 2);
@@ -312,16 +309,16 @@ public partial class RoomGeneratorEditor {
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         EditorGUILayout.BeginVertical();
-        for (int y = size.y * tilesPerRoom - 1; y >= 0; y--) {
+        for (int y = (size.y * tilesPerRoom) - 2; y >= 1; y--) {
             EditorGUILayout.BeginHorizontal();
 
-            for (int x = 0; x < size.x * tilesPerRoom; x++) {
+            for (int x = 1; x < (size.x * tilesPerRoom) - 1; x++) {
                 HexTypeColor(grid[new(x, y)]);
 
                 if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                     ToggleTileState(x, y);
 
-                if (x % tilesPerRoom == tilesPerRoom - 1 && x < size.x * tilesPerRoom - 1)
+                if (x % tilesPerRoom == tilesPerRoom - 1 && x < (size.x * tilesPerRoom) - 1)
                     EditorGUILayout.Space(.1f, false);
             }
 
@@ -337,19 +334,19 @@ public partial class RoomGeneratorEditor {
     }
 
     private void DrawHeight() {
-        GUILayout.Label("Click on the buttons to identify blockades");
+        GUILayout.Label("Click on the buttons to identify Heights");
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         EditorGUILayout.BeginVertical();
-        for (int y = size.y * tilesPerRoom - 1; y >= 0; y--) {
+        for (int y = (size.y * tilesPerRoom) - 1; y >= 0; y--) {
             EditorGUILayout.BeginHorizontal();
 
             for (int x = 0; x < size.x * tilesPerRoom; x++) {
                 HexTypeColor(grid[new(x, y)]);
 
-                heightGrid[new(x, y)] = EditorGUILayout.IntField(heightGrid[new(x, y)], GUILayout.Width(18f), GUILayout.ExpandHeight(false));
+                heightGrid[new(x, y)] = EditorGUILayout.FloatField(heightGrid[new(x, y)], GUILayout.Width(18f), GUILayout.ExpandHeight(false));
 
-                if (x % tilesPerRoom == tilesPerRoom - 1 && x < size.x * tilesPerRoom - 1)
+                if (x % tilesPerRoom == tilesPerRoom - 1 && x < (size.x * tilesPerRoom) - 1)
                     EditorGUILayout.Space(.1f, false);
             }
 
@@ -379,8 +376,12 @@ public partial class RoomGeneratorEditor {
         heightGrid.Clear();
 
         for (int y = 0; y < size.y * tilesPerRoom; y++) {
-            for (int x = 0; x < size.x * tilesPerRoom; x++)
-                grid.Add(new(x, y), HexType.Normal);
+            for (int x = 0; x < size.x * tilesPerRoom; x++) {
+                if (x == 0 || y == 0 || x == (size.x * tilesPerRoom) - 1 || y == (size.y * tilesPerRoom) - 1)
+                    grid.Add(new(x, y), HexType.Cover);
+                else
+                    grid.Add(new(x, y), HexType.Normal);
+            }
         }
 
         for (int y = 0; y < size.y * tilesPerRoom; y++) {
@@ -460,9 +461,9 @@ public partial class RoomGeneratorEditor {
                     if (heightPos.y < 0)
                         heightPos.y = 0;
                     if (heightPos.x >= size.x * tilesPerRoom)
-                        heightPos.x = size.x * tilesPerRoom - 1;
+                        heightPos.x = (size.x * tilesPerRoom) - 1;
                     if (heightPos.y >= size.y * tilesPerRoom)
-                        heightPos.y = size.y * tilesPerRoom - 1;
+                        heightPos.y = (size.y * tilesPerRoom) - 1;
                 }
 
                 if (x == size.x * tilesPerRoom && connectionGrid[connectionPos].x != GridStaticFunctions.CONST_INT) {

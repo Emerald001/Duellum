@@ -14,5 +14,5 @@ public class DungeonRoomSO : ScriptableObject {
     public List<Vector4> connectionValues;
 
     public List<Vector2Int> heightPositions;
-    public List<int> heightValues;
+    public List<float> heightValues;
 }
