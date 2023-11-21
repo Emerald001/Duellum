@@ -19,7 +19,8 @@ public class DungeonGenerator : MonoBehaviour {
     [SerializeField] private bool generateInstantly;
     [SerializeField] private float generationSpeed;
 
-    private readonly Dictionary<Vector2Int, Vector4> dungeon = new();
+    private readonly Dictionary<Vector2Int, Vector4> dungeonConnections = new();
+    private readonly Dictionary<Vector2Int, DungeonRoomSO> dungeonRooms = new();
 
     private void Awake() {
         StartCoroutine(SpawnRooms());
@@ -32,7 +33,7 @@ public class DungeonGenerator : MonoBehaviour {
 
         void AddNewTile(Vector2Int currentPos, Vector2Int direction, DungeonRoomTile spawnedRoom, float height) {
             Vector2Int newTile = currentPos + direction;
-            if (dungeon.ContainsKey(newTile) || openSet.Contains(newTile))
+            if (dungeonConnections.ContainsKey(newTile) || openSet.Contains(newTile))
                 return;
 
             openSet.Add(newTile);
@@ -90,7 +91,7 @@ public class DungeonGenerator : MonoBehaviour {
                         yield return new WaitForSeconds(generationSpeed);
                     }
 
-                    dungeon.Add(tile, connections);
+                    dungeonConnections.Add(tile, connections);
                     index++;
                 }
             }
@@ -110,7 +111,7 @@ public class DungeonGenerator : MonoBehaviour {
             for (int x = 0; x < room.size.x; x++) {
                 for (int y = 0; y < room.size.y; y++) {
                     Vector2Int tile = currentPos + new Vector2Int(x, y) + offset;
-                    dungeon.Add(tile, room.connections[index]);
+                    dungeonConnections.Add(tile, room.connections[index]);
 
                     if (!generateInstantly) {
                         if (debugObjects.ContainsKey(tile))
@@ -156,13 +157,13 @@ public class DungeonGenerator : MonoBehaviour {
         bigRoomAmount -= (room.size.x > 1 || room.size.y > 1) ? 1 : 0;
 
         Vector4 connection = room.connections[room.CurrentIndex];
-        if (connection.x != GridStaticFunctions.CONST_INT && dungeon.ContainsKey(position + new Vector2Int(1, 0)))
+        if (connection.x != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(1, 0)))
             room.Height = height - connection.x;
-        else if (connection.y != GridStaticFunctions.CONST_INT && dungeon.ContainsKey(position + new Vector2Int(-1, 0)))
+        else if (connection.y != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(-1, 0)))
             room.Height = height - connection.y;
-        else if (connection.z != GridStaticFunctions.CONST_INT && dungeon.ContainsKey(position + new Vector2Int(0, 1)))
+        else if (connection.z != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(0, 1)))
             room.Height = height - connection.z;
-        else if (connection.w != GridStaticFunctions.CONST_INT && dungeon.ContainsKey(position + new Vector2Int(0, -1)))
+        else if (connection.w != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(0, -1)))
             room.Height = height - connection.w;
 
         GameObject spawnedRoom = Instantiate(room.prefab);
@@ -194,7 +195,7 @@ public class DungeonGenerator : MonoBehaviour {
 
                 for (int j = 0; j < 4; j++) {
                     Vector2Int neighborTile = roomTile + (j == 0 ? Vector2Int.right : (j == 1 ? Vector2Int.left : (j == 2 ? Vector2Int.up : Vector2Int.down)));
-                    if (dungeon.TryGetValue(neighborTile, out Vector4 neighborConnections)) {
+                    if (dungeonConnections.TryGetValue(neighborTile, out Vector4 neighborConnections)) {
                         if ((j == 0 && ((neighborConnections.y != GridStaticFunctions.CONST_INT) ^ (connections.x != GridStaticFunctions.CONST_INT))) ||
                             (j == 1 && ((neighborConnections.x != GridStaticFunctions.CONST_INT) ^ (connections.y != GridStaticFunctions.CONST_INT))) ||
                             (j == 2 && ((neighborConnections.w != GridStaticFunctions.CONST_INT) ^ (connections.z != GridStaticFunctions.CONST_INT))) ||
@@ -210,6 +211,6 @@ public class DungeonGenerator : MonoBehaviour {
         return !Enumerable.Range(0, room.size.x)
                 .SelectMany(x => Enumerable.Range(0, room.size.y)
                 .Select(y => spawnPos + new Vector2Int(x, y) - room.GridPositionsPerIndex[index]))
-                .Any(tile => dungeon.ContainsKey(tile));
+                .Any(tile => dungeonConnections.ContainsKey(tile));
     }
 }
