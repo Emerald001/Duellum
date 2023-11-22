@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: 1x2 Room
     size: {x: 2, y: 1}
-    prefab: {fileID: 921199756698232919, guid: ef9a810de99dfdd45a9729cc7a3325a6, type: 3}
+    prefab: {fileID: 921199756698232916, guid: ef9a810de99dfdd45a9729cc7a3325a6, type: 3}
     connections:
     - {x: -999, y: -999, z: 0, w: 0}
     - {x: 0, y: -999, z: -999, w: -999}
