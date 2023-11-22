@@ -7,6 +7,7 @@ public static class GridStaticFunctions {
     public static int CONST_INT = -999;
     public static Vector2Int CONST_EMPTY = new(12345, 12345);
     public static Color CONST_HIGHLIGHT_COLOR = new(50, 50, 50);
+    public static int TilesPerRoom = 13;
 
     private static readonly Vector2Int[] evenNeighbours = {
         new Vector2Int(-1, -1),

@@ -15,11 +15,12 @@ public partial class RoomGeneratorEditor : EditorWindow {
 
     private Vector2Int lastSize = new();
     private Vector2 scrollPosition = Vector2.zero;
-    private readonly int tilesPerRoom = 13;
 
     private DungeonRoomSO currentRoom;
     private bool isHeight = true;
     private bool shouldDrawHeight = true;
+
+    private int tilesPerRoom => GridStaticFunctions.TilesPerRoom;
 
     private enum Directions {
         North,

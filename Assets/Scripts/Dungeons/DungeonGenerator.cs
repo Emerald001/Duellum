@@ -72,6 +72,9 @@ public class DungeonGenerator : MonoBehaviour {
                     Vector2Int tile = currentPos + new Vector2Int(x, y) + offset;
                     Vector4 connections = roomData.Item1.connections[index];
 
+                    if (x == 0 && y == 0)
+                        roomData.Item2.indexZeroGridPos = tile;
+
                     if (connections.x != GridStaticFunctions.CONST_INT)
                         AddNewTile(tile, new Vector2Int(1, 0), roomData.Item1, connections.x);
                     if (connections.y != GridStaticFunctions.CONST_INT)
@@ -113,17 +116,23 @@ public class DungeonGenerator : MonoBehaviour {
                     Vector2Int tile = currentPos + new Vector2Int(x, y) + offset;
                     dungeonConnections.Add(tile, roomData.Item1.connections[index]);
 
+                    if (x == 0 && y == 0)
+                        roomData.Item2.indexZeroGridPos = tile;
+
                     if (!generateInstantly) {
                         if (debugObjects.ContainsKey(tile))
                             debugObjects[tile].GetComponent<Renderer>().material.color = Color.red;
                         yield return new WaitForSeconds(generationSpeed);
                     }
+
+                    GridStaticFunctions.Dungeon.Add(tile, roomData.Item2);
                     index++;
                 }
             }
         }
 
         openSet.Clear();
+        EventManager<DungeonEvents>.Invoke(DungeonEvents.GenerationDone);
     }
 
     private System.Tuple<DungeonRoomTile, RoomComponent> SpawnRoom(List<DungeonRoomTile> listToUse, Vector2Int position, float height, bool spawnFirst = false) {
@@ -170,6 +179,8 @@ public class DungeonGenerator : MonoBehaviour {
         spawnedRoom.name = room.name;
         spawnedRoom.transform.position = CalculateWorldPosition(position, room.Height, room);
         spawnedRoom.transform.eulerAngles = new(0, room.RotationIndex * 90, 0);
+        spawnedRoom.size = room.size;
+        spawnedRoom.rotationIndex = room.RotationIndex;
 
         return new(room, spawnedRoom);
     }
@@ -213,4 +224,8 @@ public class DungeonGenerator : MonoBehaviour {
                 .Select(y => spawnPos + new Vector2Int(x, y) - room.GridPositionsPerIndex[index]))
                 .Any(tile => dungeonConnections.ContainsKey(tile));
     }
+}
+
+public enum DungeonEvents { 
+    GenerationDone,
 }
