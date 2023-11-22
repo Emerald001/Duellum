@@ -53,6 +53,7 @@ public static class GridStaticFunctions {
     public static Vector3 StartPos { get; set; }
 
     public static Dictionary<Vector2Int, Tile> Grid { get; set; } = new();
+    public static Dictionary<Vector2Int, RoomComponent> Dungeon { get; set; } = new();
     public static List<Vector2Int> PlayerSpawnPos { get; set; } = new();
     public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
     public static Dictionary<Vector2Int, GameObject> CardPositions { get; set; } = new();

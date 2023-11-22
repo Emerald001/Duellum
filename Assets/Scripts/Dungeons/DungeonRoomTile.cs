@@ -6,10 +6,10 @@ using UnityEngine;
 public class DungeonRoomTile {
     public string name;
     public Vector2Int size;
-    public GameObject prefab;
+    public RoomComponent prefab;
     public List<Vector4> connections;
 
-    public DungeonRoomTile(string name, Vector2Int size, GameObject prefab, List<Vector4> connections) {
+    public DungeonRoomTile(string name, Vector2Int size, RoomComponent prefab, List<Vector4> connections) {
         this.name = name;
         this.size = size;
         this.prefab = prefab;

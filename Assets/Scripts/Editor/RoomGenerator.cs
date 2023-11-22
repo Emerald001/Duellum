@@ -131,7 +131,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
         RoomComponent roomComp = room.GetComponent<RoomComponent>();
 
         Dictionary<Vector2Int, Hex> dict = GenerateGrid(parent);
-        roomComp.SetUp(dict.Keys.ToList(), dict.Values.ToList());
+        roomComp.Editor_SetUp(dict.Keys.ToList(), dict.Values.ToList(), heightGrid.Values.ToList());
     }
 
     private Dictionary<Vector2Int, Hex> GenerateGrid(Transform parent) {
