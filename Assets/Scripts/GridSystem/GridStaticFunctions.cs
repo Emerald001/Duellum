@@ -87,8 +87,8 @@ public static class GridStaticFunctions {
     }
 
     public static Vector3 CalcDungeonTileWorldPos(Vector2Int gridPos) {
-        float x = gridPos.x;
-        float z = gridPos.y;
+        float x = gridPos.x - 6;
+        float z = gridPos.y - 6;
 
         return new Vector3(x, 0, z);
     }

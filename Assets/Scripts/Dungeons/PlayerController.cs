@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
 
     private readonly Dictionary<Vector2Int, Vector2Int> parentDictionary = new();
     private readonly List<Vector2Int> currentAccessableTiles = new();
-    private Vector2Int playerPosition;
+    private Vector2Int playerPosition = new(6, 6);
     private bool isWalking;
 
     private void Start() {
@@ -20,18 +20,21 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
+        actionQueue.OnUpdate();
+
         if (MouseToWorldView.HoverTileGridPos == GridStaticFunctions.CONST_EMPTY ||
             !currentAccessableTiles.Contains(MouseToWorldView.HoverTileGridPos))
             return;
 
-        if (isWalking)
+        if (isWalking) {
             line.enabled = false;
-        else
+            return;
+        }
+        else {
             DrawPathWithLine(GetPath(MouseToWorldView.HoverTileGridPos));
-
-        actionQueue.OnUpdate();
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-            Move();
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+                Move();
+        }
     }
 
     private void Move() {
@@ -53,11 +56,7 @@ public class PlayerController : MonoBehaviour {
         foreach (var newPos in GetPath(targetPosition)) {
             Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(newPos) - GridStaticFunctions.CalcSquareWorldPos(lastPos));
 
-            actionQueue.Enqueue(new ActionStack(
-                new MoveObjectAction(gameObject, moveSpeed, GridStaticFunctions.CalcDungeonTileWorldPos(newPos))
-                //new RotateAction(gameObject, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0), 360f, .01f)
-                ));
-
+            actionQueue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, GridStaticFunctions.CalcDungeonTileWorldPos(newPos)));
             actionQueue.Enqueue(new DoMethodAction(() => {
                 playerPosition = newPos;
             }));
@@ -89,9 +88,6 @@ public class PlayerController : MonoBehaviour {
             foreach (var currentPos in openList.ToList()) {
                 GridStaticFunctions.RippleThroughSquareGridPositions(currentPos, 2, (neighbour, count) => {
                     if (neighbour == currentPos)
-                        return;
-
-                    if (UnitStaticManager.TryGetUnitFromGridPos(neighbour, out var tmp))
                         return;
 
                     // Only applicable if no other thing is needed
