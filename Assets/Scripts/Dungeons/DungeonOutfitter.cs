@@ -6,12 +6,11 @@ public class DungeonOutfitter : MonoBehaviour {
             Vector2Int gridpos = room.Key;
             RoomComponent roomComp = room.Value;
 
-            OverwriteGridPositions(roomComp);
-            if (gridpos == roomComp.indexZeroGridPos)
+            if (gridpos == roomComp.indexZeroGridPos) {
+                OverwriteGridPositions(roomComp);
                 roomComp.SetUp(gridpos * GridStaticFunctions.TilesPerRoom);
+            }
         }
-
-        Debug.Log(2);
     }
 
     private void OverwriteGridPositions(RoomComponent room) {
@@ -29,7 +28,6 @@ public class DungeonOutfitter : MonoBehaviour {
                 int index2 = 0;
                 for (int y = (room.size.y * GridStaticFunctions.TilesPerRoom) - 1; y >= 0; y--) {
                     for (int x = (room.size.x * GridStaticFunctions.TilesPerRoom) - 1; x >= 0; x--) {
-                        Debug.Log($"{room.gridPositions[index2]} | {new Vector2Int(x, y)}");
                         room.gridPositions[index2] = new(x, y);
                         index2++;
                     }

@@ -20,7 +20,6 @@ public class MouseToWorldView : MonoBehaviour {
     private void OnEnable() {
         EventManager<CameraEventType, Selector>.Subscribe(CameraEventType.CHANGE_CAM_SELECTOR, GiveSelector);
     }
-
     private void OnDisable() {
         EventManager<CameraEventType, Selector>.Unsubscribe(CameraEventType.CHANGE_CAM_SELECTOR, GiveSelector);
     }

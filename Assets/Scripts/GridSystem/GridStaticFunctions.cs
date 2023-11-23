@@ -86,6 +86,13 @@ public static class GridStaticFunctions {
         return new Vector3(x, 0, z);
     }
 
+    public static Vector3 CalcDungeonTileWorldPos(Vector2Int gridPos) {
+        float x = gridPos.x;
+        float z = gridPos.y;
+
+        return new Vector3(x, 0, z);
+    }
+
     public static Vector2Int GetGridPosFromHexGameObject(GameObject valueVar) {
         foreach (Vector2Int keyVar in Grid.Keys) {
             if (Grid[keyVar].gameObject != valueVar)
