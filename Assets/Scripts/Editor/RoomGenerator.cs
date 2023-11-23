@@ -131,20 +131,20 @@ public partial class RoomGeneratorEditor : EditorWindow {
         Transform parent = room.transform;
         RoomComponent roomComp = room.GetComponent<RoomComponent>();
 
-        Dictionary<Vector2Int, Hex> dict = GenerateGrid(parent);
+        Dictionary<Vector2Int, Tile> dict = GenerateGrid(parent);
         roomComp.Editor_SetUp(dict.Keys.ToList(), dict.Values.ToList(), heightGrid.Values.ToList());
     }
 
-    private Dictionary<Vector2Int, Hex> GenerateGrid(Transform parent) {
-        Dictionary<Vector2Int, Hex> result = new();
-        Dictionary<HexType, Hex> prefabs = LoadPrefabs();
+    private Dictionary<Vector2Int, Tile> GenerateGrid(Transform parent) {
+        Dictionary<Vector2Int, Tile> result = new();
+        Dictionary<HexType, Tile> prefabs = LoadPrefabs();
 
         for (int y = 0; y < size.y * tilesPerRoom; y++) {
             for (int x = 0; x < size.x * tilesPerRoom; x++) {
                 Vector2Int gridPos = new(x, y);
                 Vector2Int connectionPos = new(Mathf.Min(Mathf.FloorToInt(x / tilesPerRoom), size.x - 1), Mathf.Min(Mathf.FloorToInt(y / tilesPerRoom), size.y - 1));
 
-                Hex pref = prefabs[grid[new(x, y)]];
+                Tile pref = prefabs[grid[new(x, y)]];
                 if ((y == 0 && connectionGrid[connectionPos].w != GridStaticFunctions.CONST_INT) ||
                     (y == ((size.y * tilesPerRoom) - 1) && connectionGrid[connectionPos].z != GridStaticFunctions.CONST_INT) ||
                     (x == 0 && connectionGrid[connectionPos].y != GridStaticFunctions.CONST_INT) ||
@@ -159,7 +159,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
                     }
                 }
 
-                Hex tmp = Instantiate(pref, parent);
+                Tile tmp = Instantiate(pref, parent);
                 if (y >= 1 && x >= 1 && y != size.y * tilesPerRoom - 1 && x != size.x * tilesPerRoom - 1 && grid[new(x, y)] == HexType.Normal)
                     tmp.transform.GetChild(0).eulerAngles = new Vector3(Random.Range(0, 4), Random.Range(0, 4), Random.Range(0, 4)) * 90;
 
@@ -177,8 +177,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
         return result;
     }
 
-    private Dictionary<HexType, Hex> LoadPrefabs() {
-        Dictionary<HexType, Hex> result = new();
+    private Dictionary<HexType, Tile> LoadPrefabs() {
+        Dictionary<HexType, Tile> result = new();
 
         GameObject hexGO = Resources.Load("GridBlocks/GridBlock") as GameObject;
         GameObject coverGO = Resources.Load("GridBlocks/GridCoverBlock") as GameObject;
@@ -187,12 +187,12 @@ public partial class RoomGeneratorEditor : EditorWindow {
         GameObject spawnGO = Resources.Load("GridBlocks/GridSpawnBlock") as GameObject;
         GameObject specialGO = Resources.Load("GridBlocks/GridCardBlock") as GameObject;
 
-        Hex hex = hexGO.GetComponent<Hex>();
-        Hex coverHex = coverGO.GetComponent<Hex>();
-        Hex halfCoverHex = halfCoverGO.GetComponent<Hex>();
-        Hex waterHex = waterGO.GetComponent<Hex>();
-        Hex spawnHex = spawnGO.GetComponent<Hex>();
-        Hex specialHex = specialGO.GetComponent<Hex>();
+        Tile hex = hexGO.GetComponent<Tile>();
+        Tile coverHex = coverGO.GetComponent<Tile>();
+        Tile halfCoverHex = halfCoverGO.GetComponent<Tile>();
+        Tile waterHex = waterGO.GetComponent<Tile>();
+        Tile spawnHex = spawnGO.GetComponent<Tile>();
+        Tile specialHex = specialGO.GetComponent<Tile>();
 
         result.Add(HexType.Normal, hex);
         result.Add(HexType.Cover, coverHex);

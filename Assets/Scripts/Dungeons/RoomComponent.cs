@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class RoomComponent : MonoBehaviour {
     public List<Vector2Int> gridPositions;
-    public List<Hex> gridValues;
+    public List<Tile> gridValues;
     public List<float> gridHeights;
 
     public Vector2Int size;
     public Vector2Int indexZeroGridPos;
     public int rotationIndex;
 
-    public void Editor_SetUp(List<Vector2Int> gridPositions, List<Hex> gridValues, List<float> gridHeights) {
+    public void Editor_SetUp(List<Vector2Int> gridPositions, List<Tile> gridValues, List<float> gridHeights) {
         this.gridPositions = gridPositions;
         this.gridValues = gridValues;
         this.gridHeights = gridHeights;

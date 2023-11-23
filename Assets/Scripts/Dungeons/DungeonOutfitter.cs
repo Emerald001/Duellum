@@ -1,14 +1,7 @@
 using UnityEngine;
 
 public class DungeonOutfitter : MonoBehaviour {
-    private void OnEnable() {
-        EventManager<DungeonEvents>.Subscribe(DungeonEvents.GenerationDone, OutfitDungeon);
-    }
-    private void OnDisable() {
-        EventManager<DungeonEvents>.Unsubscribe(DungeonEvents.GenerationDone, OutfitDungeon);
-    }
-
-    private void OutfitDungeon() {
+    public void OutfitDungeon() {
         foreach (var room in GridStaticFunctions.Dungeon) {
             Vector2Int gridpos = room.Key;
             RoomComponent roomComp = room.Value;
@@ -17,6 +10,8 @@ public class DungeonOutfitter : MonoBehaviour {
             if (gridpos == roomComp.indexZeroGridPos)
                 roomComp.SetUp(gridpos * GridStaticFunctions.TilesPerRoom);
         }
+
+        Debug.Log(2);
     }
 
     private void OverwriteGridPositions(RoomComponent room) {

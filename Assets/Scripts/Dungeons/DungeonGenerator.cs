@@ -8,7 +8,6 @@ public class DungeonGenerator : MonoBehaviour {
 
     [SerializeField] private int roomAmount;
     [SerializeField] private int bigRoomAmount;
-    [SerializeField] private int tileSize;
 
     [SerializeField] private List<DungeonRoomSO> roomList;
     [SerializeField] private List<DungeonRoomSO> endRoomList;
@@ -19,7 +18,10 @@ public class DungeonGenerator : MonoBehaviour {
     [SerializeField] private bool generateInstantly;
     [SerializeField] private float generationSpeed;
 
+    [SerializeField] private DungeonOutfitter outfitter;
+
     private readonly Dictionary<Vector2Int, Vector4> dungeonConnections = new();
+    private int tileSize => GridStaticFunctions.TilesPerRoom;
 
     private void Awake() {
         StartCoroutine(SpawnRooms());
@@ -132,7 +134,7 @@ public class DungeonGenerator : MonoBehaviour {
         }
 
         openSet.Clear();
-        EventManager<DungeonEvents>.Invoke(DungeonEvents.GenerationDone);
+        outfitter.OutfitDungeon();
     }
 
     private System.Tuple<DungeonRoomTile, RoomComponent> SpawnRoom(List<DungeonRoomTile> listToUse, Vector2Int position, float height, bool spawnFirst = false) {
