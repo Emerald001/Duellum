@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour {
     [SerializeField] private Material movementColor;
     [SerializeField] private Material attackColor;
     [SerializeField] private Material ownPositionColor;
+    [SerializeField] private Material transparent;
 
     [SerializeField] private TileType type;
     [SerializeField] private float height;
@@ -32,6 +33,7 @@ public class Tile : MonoBehaviour {
             HighlightType.MovementHighlight => movementColor,
             HighlightType.AttackHighlight => attackColor,
             HighlightType.OwnPositionHighlight => ownPositionColor,
+            HighlightType.Transparent => transparent,
             _ => throw new System.NotImplementedException(),
         };
 
@@ -58,6 +60,7 @@ public enum HighlightType {
     MovementHighlight,
     AttackHighlight,
     OwnPositionHighlight,
+    Transparent,
 }
 
 public enum TileType {

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     [SerializeField] private LineRenderer line;
+    [SerializeField] private GameObject visuals;
     [SerializeField] private float moveSpeed;
 
     private ActionQueue actionQueue;
@@ -11,7 +12,20 @@ public class PlayerController : MonoBehaviour {
     private readonly Dictionary<Vector2Int, Vector2Int> parentDictionary = new();
     private readonly List<Vector2Int> currentAccessableTiles = new();
     private Vector2Int playerPosition = new(6, 6);
+
+    private Vector2Int preBattlePos;
+
     private bool isWalking;
+    private bool inBattle;
+
+    private void OnEnable() {
+        EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartBattle, OnBattleStart);
+        EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, OnBattleEnd);
+    }
+    private void OnDisable() {
+        EventManager<BattleEvents, BattleData>.Unsubscribe(BattleEvents.StartBattle, OnBattleStart);
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, OnBattleEnd);
+    }
 
     private void Start() {
         actionQueue = new(() => isWalking = false);
@@ -20,6 +34,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
+        if (inBattle)
+            return;
+
         actionQueue.OnUpdate();
 
         if (MouseToWorldView.HoverTileGridPos == GridStaticFunctions.CONST_EMPTY ||
@@ -35,6 +52,33 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.Mouse0))
                 Move();
         }
+    }
+
+    private void OnBattleStart(BattleData data) {
+        if (isWalking)
+            actionQueue.Clear();
+
+        preBattlePos = playerPosition;
+
+        Vector2Int difference = data.PlayerPos - data.EnemyPos;
+        Vector2Int middlePoint = data.PlayerPos + difference / 2;
+
+        transform.position = GridStaticFunctions.CalcDungeonTileWorldPos(middlePoint);
+
+        visuals.SetActive(false);
+        line.enabled = false;
+
+        inBattle = true;
+    }
+
+    private void OnBattleEnd() {
+        transform.position = GridStaticFunctions.CalcDungeonTileWorldPos(preBattlePos);
+        playerPosition = preBattlePos;
+
+        visuals.SetActive(false);
+        inBattle = false;
+
+        FindAccessibleTiles(playerPosition, 30);
     }
 
     private void Move() {

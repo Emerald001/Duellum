@@ -42,8 +42,8 @@ public class UnitAttackModule {
         Vector2Int closestTile = GridStaticFunctions.CONST_EMPTY;
 
         foreach (var tile in availableTiles) {
-            if (Vector3.Distance(GridStaticFunctions.CalcSquareWorldPos(tile), target) < smallestDistance) {
-                smallestDistance = Vector3.Distance(GridStaticFunctions.CalcSquareWorldPos(tile), target);
+            if (Vector3.Distance(GridStaticFunctions.CalcDungeonTileWorldPos(tile), target) < smallestDistance) {
+                smallestDistance = Vector3.Distance(GridStaticFunctions.CalcDungeonTileWorldPos(tile), target);
                 closestTile = tile;
             }
         }

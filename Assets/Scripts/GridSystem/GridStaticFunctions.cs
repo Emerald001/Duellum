@@ -189,7 +189,17 @@ public static class GridStaticFunctions {
         CurrentBattleGrid.Clear();
 
         foreach(var position in positions) {
+            if (!Grid.ContainsKey(position))
+                return;
+
             CurrentBattleGrid.Add(position, Grid[position]);
+        }
+        
+        foreach (var item in Grid) {
+            if (positions.Contains(item.Key))
+                continue;
+
+            item.Value.SetHighlight(HighlightType.Transparent);
         }
     }
 

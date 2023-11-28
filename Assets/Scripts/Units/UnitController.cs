@@ -39,7 +39,7 @@ public abstract class UnitController : MonoBehaviour {
 
     public virtual void SetUp(UnitData data, Vector2Int pos) {
         UnitBaseData = Instantiate(data);
-        GameObject pawn = Instantiate(data.PawnPrefab, pawnParent.transform);
+        GameObject pawn = Instantiate(data.PawnPrefab, transform);
 
         values = new(UnitBaseData);
         movementModule = new();
@@ -83,10 +83,10 @@ public abstract class UnitController : MonoBehaviour {
 
         Vector2Int lastPos = gridPosition;
         foreach (var newPos in movementModule.GetPath(targetPosition)) {
-            Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(newPos) - GridStaticFunctions.CalcSquareWorldPos(lastPos));
+            Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcDungeonTileWorldPos(newPos) - GridStaticFunctions.CalcDungeonTileWorldPos(lastPos));
 
             queue.Enqueue(new ActionStack(
-                new MoveObjectAction(gameObject, UnitBaseData.movementSpeed, GridStaticFunctions.CalcSquareWorldPos(newPos)),
+                new MoveObjectAction(gameObject, UnitBaseData.movementSpeed, GridStaticFunctions.CalcDungeonTileWorldPos(newPos)),
                 new RotateAction(gameObject, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0), 360f, .01f)
                 ));
 
@@ -118,7 +118,7 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     private void EnqueueAttack(Vector2Int targetPosition, Vector2Int standingPos) {
-        Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(targetPosition) - GridStaticFunctions.CalcSquareWorldPos(standingPos));
+        Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcDungeonTileWorldPos(targetPosition) - GridStaticFunctions.CalcDungeonTileWorldPos(standingPos));
 
         queue.Enqueue(new RotateAction(gameObject, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0), 360f, .01f));
         queue.Enqueue(new DoMethodAction(() => unitAnimator.SetTrigger("Attacking")));
@@ -163,7 +163,7 @@ public abstract class UnitController : MonoBehaviour {
     public void ChangeUnitPosition(Vector2Int newPosition) {
         UnitStaticManager.SetUnitPosition(this, newPosition);
 
-        transform.position = GridStaticFunctions.CalcSquareWorldPos(newPosition);
+        transform.position = GridStaticFunctions.CalcDungeonTileWorldPos(newPosition);
 
         gridPosition = newPosition;
     }

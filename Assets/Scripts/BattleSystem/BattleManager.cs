@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,7 +44,7 @@ public class BattleManager : MonoBehaviour {
 
     private void SetBattlefield(Vector2Int playerPos, Vector2Int enemyPos) {
         Vector2Int difference = playerPos - enemyPos;
-        Vector2Int middlePoint = difference / 2;
+        Vector2Int middlePoint = playerPos + difference / 2;
 
         List<Vector2Int> points = new();
         for (int x = -((BattleMapSize - 1) / 2); x <= ((BattleMapSize - 1) / 2); x++) {
@@ -109,7 +110,7 @@ public class UnitFactory {
     public UnitController CreateUnit(UnitData data, Vector2Int spawnPos, bool isPlayer) {
         UnitController unit = isPlayer ? new GameObject().AddComponent<PlayerUnitController>() : new GameObject().AddComponent<EnemyUnitController>();
 
-        unit.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos);
+        unit.transform.position = GridStaticFunctions.CalcDungeonTileWorldPos(spawnPos);
         unit.SetUp(data, spawnPos);
 
         return unit;
@@ -132,6 +133,7 @@ public enum BattleEvents {
     BattleEnd,
 }
 
+[Serializable]
 public class BattleData {
     public Vector2Int PlayerPos;
     public Vector2Int EnemyPos;

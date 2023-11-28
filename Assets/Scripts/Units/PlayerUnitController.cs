@@ -113,8 +113,8 @@ public class PlayerUnitController : UnitController {
         Line.enabled = true;
         Line.positionCount = CurrentPath.Count + 1;
 
-        Line.SetPosition(0, GridStaticFunctions.CalcSquareWorldPos(gridPosition));
+        Line.SetPosition(0, GridStaticFunctions.CalcDungeonTileWorldPos(gridPosition));
         for (int i = 1; i < CurrentPath.Count + 1; i++)
-            Line.SetPosition(i, GridStaticFunctions.CalcSquareWorldPos(CurrentPath[i - 1]));
+            Line.SetPosition(i, GridStaticFunctions.CalcDungeonTileWorldPos(CurrentPath[i - 1]));
     }
 }
