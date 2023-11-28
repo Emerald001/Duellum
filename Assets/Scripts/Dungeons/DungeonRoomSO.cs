@@ -9,7 +9,7 @@ public class DungeonRoomSO : ScriptableObject {
     public int id;
 
     public List<Vector2Int> gridPositions;
-    public List<HexType> gridValues;
+    public List<TileType> gridValues;
 
     public List<Vector2Int> connectionPositions;
     public List<Vector4> connectionValues;

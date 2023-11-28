@@ -11,12 +11,12 @@ public class Tile : MonoBehaviour {
     [SerializeField] private Material attackColor;
     [SerializeField] private Material ownPositionColor;
 
-    [SerializeField] private HexType type;
+    [SerializeField] private TileType type;
     [SerializeField] private float height;
 
     public Vector2Int GridPos { get; set; }
     public Vector3 StandardWorldPosition { get; set; }
-    public HexType Type => type;
+    public TileType Type => type;
     public float Height => height;
 
     private HighlightType currentType = HighlightType.None;

@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour {
                         return;
 
                     // Only applicable if no other thing is needed
-                    if (GridStaticFunctions.Grid[neighbour].Type != HexType.Normal)
+                    if (GridStaticFunctions.Grid[neighbour].Type != TileType.Normal)
                         return;
 
                     if (openList.Contains(neighbour) ||

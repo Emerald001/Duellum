@@ -7,7 +7,7 @@ using UnityEngine;
 public partial class RoomGeneratorEditor : EditorWindow {
     private Vector2Int size = new(1, 1);
 
-    private Dictionary<Vector2Int, HexType> grid = new();
+    private Dictionary<Vector2Int, TileType> grid = new();
     private Dictionary<Vector2Int, float> heightGrid = new();
     private Dictionary<Vector2Int, Vector4> connectionGrid = new();
 
@@ -137,7 +137,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
 
     private Dictionary<Vector2Int, Tile> GenerateGrid(Transform parent) {
         Dictionary<Vector2Int, Tile> result = new();
-        Dictionary<HexType, Tile> prefabs = LoadPrefabs();
+        Dictionary<TileType, Tile> prefabs = LoadPrefabs();
 
         for (int y = 0; y < size.y * tilesPerRoom; y++) {
             for (int x = 0; x < size.x * tilesPerRoom; x++) {
@@ -155,12 +155,12 @@ public partial class RoomGeneratorEditor : EditorWindow {
                         y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) ||
                         y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) + 1 ||
                         y % tilesPerRoom == Mathf.RoundToInt((tilesPerRoom - 1) / 2) - 1) {
-                        pref = prefabs[HexType.Normal];
+                        pref = prefabs[TileType.Normal];
                     }
                 }
 
                 Tile tmp = Instantiate(pref, parent);
-                if (y >= 1 && x >= 1 && y != size.y * tilesPerRoom - 1 && x != size.x * tilesPerRoom - 1 && grid[new(x, y)] == HexType.Normal)
+                if (y >= 1 && x >= 1 && y != size.y * tilesPerRoom - 1 && x != size.x * tilesPerRoom - 1 && grid[new(x, y)] == TileType.Normal)
                     tmp.transform.GetChild(0).eulerAngles = new Vector3(Random.Range(0, 4), Random.Range(0, 4), Random.Range(0, 4)) * 90;
 
                 tmp.name = $"{gridPos} | {tmp.name}";
@@ -177,8 +177,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
         return result;
     }
 
-    private Dictionary<HexType, Tile> LoadPrefabs() {
-        Dictionary<HexType, Tile> result = new();
+    private Dictionary<TileType, Tile> LoadPrefabs() {
+        Dictionary<TileType, Tile> result = new();
 
         GameObject hexGO = Resources.Load("GridBlocks/GridBlock") as GameObject;
         GameObject coverGO = Resources.Load("GridBlocks/GridCoverBlock") as GameObject;
@@ -194,12 +194,12 @@ public partial class RoomGeneratorEditor : EditorWindow {
         Tile spawnHex = spawnGO.GetComponent<Tile>();
         Tile specialHex = specialGO.GetComponent<Tile>();
 
-        result.Add(HexType.Normal, hex);
-        result.Add(HexType.Cover, coverHex);
-        result.Add(HexType.HalfCover, halfCoverHex);
-        result.Add(HexType.Water, waterHex);
-        result.Add(HexType.Spawn, spawnHex);
-        result.Add(HexType.Special, specialHex);
+        result.Add(TileType.Normal, hex);
+        result.Add(TileType.Cover, coverHex);
+        result.Add(TileType.HalfCover, halfCoverHex);
+        result.Add(TileType.Water, waterHex);
+        result.Add(TileType.Spawn, spawnHex);
+        result.Add(TileType.Special, specialHex);
 
         return result;
     }
@@ -379,9 +379,9 @@ public partial class RoomGeneratorEditor {
         for (int y = 0; y < size.y * tilesPerRoom; y++) {
             for (int x = 0; x < size.x * tilesPerRoom; x++) {
                 if (x == 0 || y == 0 || x == (size.x * tilesPerRoom) - 1 || y == (size.y * tilesPerRoom) - 1)
-                    grid.Add(new(x, y), HexType.Cover);
+                    grid.Add(new(x, y), TileType.Cover);
                 else
-                    grid.Add(new(x, y), HexType.Normal);
+                    grid.Add(new(x, y), TileType.Normal);
             }
         }
 
@@ -402,23 +402,23 @@ public partial class RoomGeneratorEditor {
 
     private void ToggleTileState(int x, int y) {
         switch (grid[new(x, y)]) {
-            case HexType.Normal:
-                grid[new(x, y)] = HexType.HalfCover;
+            case TileType.Normal:
+                grid[new(x, y)] = TileType.HalfCover;
                 break;
-            case HexType.Water:
-                grid[new(x, y)] = HexType.Spawn;
+            case TileType.Water:
+                grid[new(x, y)] = TileType.Spawn;
                 break;
-            case HexType.Cover:
-                grid[new(x, y)] = HexType.Water;
+            case TileType.Cover:
+                grid[new(x, y)] = TileType.Water;
                 break;
-            case HexType.HalfCover:
-                grid[new(x, y)] = HexType.Cover;
+            case TileType.HalfCover:
+                grid[new(x, y)] = TileType.Cover;
                 break;
-            case HexType.Spawn:
-                grid[new(x, y)] = HexType.Special;
+            case TileType.Spawn:
+                grid[new(x, y)] = TileType.Special;
                 break;
-            case HexType.Special:
-                grid[new(x, y)] = HexType.Normal;
+            case TileType.Special:
+                grid[new(x, y)] = TileType.Normal;
                 break;
 
             default:
@@ -488,24 +488,24 @@ public partial class RoomGeneratorEditor {
         }
     }
 
-    private void HexTypeColor(HexType type) {
+    private void HexTypeColor(TileType type) {
         switch (type) {
-            case HexType.Normal:
+            case TileType.Normal:
                 GUI.backgroundColor = Color.white;
                 break;
-            case HexType.Water:
+            case TileType.Water:
                 GUI.backgroundColor = Color.blue;
                 break;
-            case HexType.Cover:
+            case TileType.Cover:
                 GUI.backgroundColor = Color.black;
                 break;
-            case HexType.HalfCover:
+            case TileType.HalfCover:
                 GUI.backgroundColor = Color.gray;
                 break;
-            case HexType.Spawn:
+            case TileType.Spawn:
                 GUI.backgroundColor = Color.green;
                 break;
-            case HexType.Special:
+            case TileType.Special:
                 GUI.backgroundColor = Color.yellow;
                 break;
 
