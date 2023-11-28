@@ -288,6 +288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   line: {fileID: 8942870494923566388}
+  visuals: {fileID: 147816839843029376}
   moveSpeed: 10
 --- !u!120 &8942870494923566388
 LineRenderer:
