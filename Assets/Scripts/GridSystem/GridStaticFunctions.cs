@@ -7,7 +7,9 @@ public static class GridStaticFunctions {
     public static int CONST_INT = -999;
     public static Vector2Int CONST_EMPTY = new(12345, 12345);
     public static Color CONST_HIGHLIGHT_COLOR = new(50, 50, 50);
+
     public static int TilesPerRoom = 13;
+    public static int BattleMapSize = 11;
 
     private static readonly Vector2Int[] evenNeighbours = {
         new Vector2Int(-1, -1),
@@ -54,6 +56,7 @@ public static class GridStaticFunctions {
     public static Vector3 StartPos { get; set; }
 
     public static Dictionary<Vector2Int, Tile> Grid { get; set; } = new();
+    public static Dictionary<Vector2Int, Tile> CurrentBattleGrid { get; set; } = new();
     public static Dictionary<Vector2Int, RoomComponent> Dungeon { get; set; } = new();
     public static List<Vector2Int> PlayerSpawnPos { get; set; } = new();
     public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
@@ -179,6 +182,14 @@ public static class GridStaticFunctions {
 
             Grid[hex] = UnityEngine.Object.Instantiate(hexPrefab);
             Grid[hex].transform.position = CalcSquareWorldPos(hex);
+        }
+    }
+
+    public static void SetBattleGrid(List<Vector2Int> positions) {
+        CurrentBattleGrid.Clear();
+
+        foreach(var position in positions) {
+            CurrentBattleGrid.Add(position, Grid[position]);
         }
     }
 
