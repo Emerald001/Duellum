@@ -50,42 +50,42 @@ public class TurnManager : MonoBehaviour {
     }
 
     private void SpawnUnits() {
-        for (int i = 0; i < GridStaticFunctions.PlayerSpawnPos.Count; i++) {
-            Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPos[i];
+        //for (int i = 0; i < GridStaticFunctions.PlayerSpawnPos.Count; i++) {
+        //    Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPos[i];
 
-            UnitController unit = unitFactory.CreateUnit(PlayerUnitPrefab, PlayerUnitsToSpawn[i], spawnPos);
-            unit.ChangeUnitRotation(new(1, 0));
+        //    UnitController unit = unitFactory.CreateUnit(PlayerUnitPrefab, PlayerUnitsToSpawn[i], spawnPos);
+        //    unit.ChangeUnitRotation(new(1, 0));
 
-            UnitStaticManager.SetUnitPosition(unit, spawnPos);
-            UnitStaticManager.LivingUnitsInPlay.Add(unit);
-            UnitStaticManager.PlayerUnitsInPlay.Add(unit);
+        //    UnitStaticManager.SetUnitPosition(unit, spawnPos);
+        //    UnitStaticManager.LivingUnitsInPlay.Add(unit);
+        //    UnitStaticManager.PlayerUnitsInPlay.Add(unit);
 
-            GameObject card = Instantiate(unit.UnitBaseData.UnitCard, cardSpawnParent);
-            card.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos) + new Vector3(-3f, 0, (i - 1) * 2);
+        //    GameObject card = Instantiate(unit.UnitBaseData.UnitCard, cardSpawnParent);
+        //    card.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos) + new Vector3(-3f, 0, (i - 1) * 2);
 
-            CharacterCard cardScript = card.GetComponent<CharacterCard>();
-            cardScript.SetUp(PlayerUnitsToSpawn[i], cardHoverPos);
-        }
-        players.Add(new PlayerTurnController());
+        //    CharacterCard cardScript = card.GetComponent<CharacterCard>();
+        //    cardScript.SetUp(PlayerUnitsToSpawn[i], cardHoverPos);
+        //}
+        //players.Add(new PlayerTurnController());
 
-        for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
-            Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
+        //for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
+        //    Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
 
-            UnitController unit = unitFactory.CreateUnit(EnemyUnitPrefab, EnemyUnitsToSpawn[i], spawnPos);
-            unit.ChangeUnitRotation(new(-1, 0));
+        //    UnitController unit = unitFactory.CreateUnit(EnemyUnitPrefab, EnemyUnitsToSpawn[i], spawnPos);
+        //    unit.ChangeUnitRotation(new(-1, 0));
 
-            UnitStaticManager.SetUnitPosition(unit, spawnPos);
-            UnitStaticManager.LivingUnitsInPlay.Add(unit);
-            UnitStaticManager.EnemyUnitsInPlay.Add(unit);
+        //    UnitStaticManager.SetUnitPosition(unit, spawnPos);
+        //    UnitStaticManager.LivingUnitsInPlay.Add(unit);
+        //    UnitStaticManager.EnemyUnitsInPlay.Add(unit);
 
-            GameObject card = Instantiate(unit.UnitBaseData.UnitCard, cardSpawnParent);
-            card.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos) + new Vector3(3f, 0, -((i - 1) * 4f));
-            card.transform.rotation = Quaternion.Euler(90, 0, 90);
+        //    GameObject card = Instantiate(unit.UnitBaseData.UnitCard, cardSpawnParent);
+        //    card.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos) + new Vector3(3f, 0, -((i - 1) * 4f));
+        //    card.transform.rotation = Quaternion.Euler(90, 0, 90);
 
-            CharacterCard cardScript = card.GetComponent<CharacterCard>();
-            cardScript.SetUp(EnemyUnitsToSpawn[i], cardHoverPos);
-        }
-        players.Add(new EnemyTurnController());
+        //    CharacterCard cardScript = card.GetComponent<CharacterCard>();
+        //    cardScript.SetUp(EnemyUnitsToSpawn[i], cardHoverPos);
+        //}
+        //players.Add(new EnemyTurnController());
     }
 
     private void NextPlayer() {
@@ -103,33 +103,6 @@ public class TurnManager : MonoBehaviour {
     }
 }
 
-public class UnitFactory {
-    public UnitController CreateUnit(UnitController prefab, UnitData data, Vector2Int spawnPos) {
-        UnitController unit = Object.Instantiate(prefab);
-
-        unit.transform.position = GridStaticFunctions.CalcSquareWorldPos(spawnPos);
-
-        unit.SetUp(data, spawnPos);
-
-        return unit;
-    }
-}
-
-public enum BattleEvents {
-    SetupBattle,
-    StartBattle,
-    EndUnitTurn,
-    NewTurn,
-    UnitHit,
-    UnitDeath,
-    UnitRevive,
-    GiveAbilityCard,
-    GiveCard,
-    PickUpAbilityCard,
-    GrabbedAbilityCard,
-    ReleasedAbilityCard,
-    BattleEnd,
-}
 
 public enum UIEvents {
     InfoTextUpdate,

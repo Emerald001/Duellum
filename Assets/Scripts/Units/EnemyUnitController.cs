@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyUnitInterface : UnitController {
+public class EnemyUnitController : UnitController {
     private float timer;
     private bool pickedAction;
 
