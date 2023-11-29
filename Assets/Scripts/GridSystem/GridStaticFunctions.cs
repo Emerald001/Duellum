@@ -36,6 +36,14 @@ public static class GridStaticFunctions {
         new Vector2Int(0, -1),
     };
 
+
+    private static readonly Vector2Int[] diagonalCubeNeighbours = {
+        new Vector2Int(1, 1),
+        new Vector2Int(1, -1),
+        new Vector2Int(-1, 1),
+        new Vector2Int(-1, -1),
+    };
+
     private static readonly float[] lookDirections = {
         90,
         0,
@@ -148,6 +156,41 @@ public static class GridStaticFunctions {
                 if (i < range - 1) {
                     for (int k = 0; k < directCubeNeighbours.Length; k++) {
                         Vector2Int neighbour = currentPos + directCubeNeighbours[k];
+                        if (openList.Contains(neighbour) || closedList.Contains(neighbour) || layerList.Contains(neighbour) || (hasCreatedGrid && !Grid.ContainsKey(neighbour)))
+                            continue;
+
+                        layerList.Add(neighbour);
+                    }
+                }
+
+                // Invokes on every tile found
+                action.Invoke(currentPos, i);
+                closedList.Add(openList[j]);
+            }
+
+            openList.Clear();
+            openList.AddRange(layerList);
+            layerList.Clear();
+        }
+    }
+
+    public static void RippleThroughFullSquareGridPositions(Vector2Int spawnPos, float range, Action<Vector2Int, int> action, bool hasCreatedGrid = true) {
+        List<Vector2Int> openList = new();
+        List<Vector2Int> layerList = new();
+        List<Vector2Int> closedList = new();
+
+        openList.Add(spawnPos);
+        for (int i = 0; i < range; i++) {
+            for (int j = 0; j < openList.Count; j++) {
+                Vector2Int currentPos = openList[j];
+
+                List<Vector2Int> neighbours = new();
+                neighbours.AddRange(directCubeNeighbours);
+                neighbours.AddRange(diagonalCubeNeighbours);
+
+                if (i < range - 1) {
+                    for (int k = 0; k < neighbours.Count; k++) {
+                        Vector2Int neighbour = currentPos + neighbours[k];
                         if (openList.Contains(neighbour) || closedList.Contains(neighbour) || layerList.Contains(neighbour) || (hasCreatedGrid && !Grid.ContainsKey(neighbour)))
                             continue;
 

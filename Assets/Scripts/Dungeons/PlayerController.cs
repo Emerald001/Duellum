@@ -40,8 +40,10 @@ public class PlayerController : MonoBehaviour {
         actionQueue.OnUpdate();
 
         if (MouseToWorldView.HoverTileGridPos == GridStaticFunctions.CONST_EMPTY ||
-            !currentAccessableTiles.Contains(MouseToWorldView.HoverTileGridPos))
+            !currentAccessableTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
+            line.enabled = false;
             return;
+        }
 
         if (isWalking) {
             line.enabled = false;
@@ -130,7 +132,7 @@ public class PlayerController : MonoBehaviour {
         openList.Add(gridPos);
         for (int i = 0; i < speedValue; i++) {
             foreach (var currentPos in openList.ToList()) {
-                GridStaticFunctions.RippleThroughSquareGridPositions(currentPos, 2, (neighbour, count) => {
+                GridStaticFunctions.RippleThroughFullSquareGridPositions(currentPos, 2, (neighbour, count) => {
                     if (neighbour == currentPos)
                         return;
 

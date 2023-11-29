@@ -1,8 +1,10 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour {
+    [SerializeField] private UnitController PlayerUnitPrefab;
+    [SerializeField] private UnitController EnemyUnitPrefab;
+
     public TurnController CurrentPlayer => currentPlayer;
     public bool IsDone { get; private set; }
 
@@ -67,7 +69,7 @@ public class BattleManager : MonoBehaviour {
         for (int i = 0; i < GridStaticFunctions.PlayerSpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPos[i];
 
-            UnitController unit = unitFactory.CreateUnit(playerUnitsToSpawn[i], spawnPos, true);
+            UnitController unit = unitFactory.CreateUnit(playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab);
             unit.ChangeUnitRotation(new(1, 0));
 
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
@@ -79,7 +81,7 @@ public class BattleManager : MonoBehaviour {
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
 
-            UnitController unit = unitFactory.CreateUnit(enemyUnitsToSpawn[i], spawnPos, false);
+            UnitController unit = unitFactory.CreateUnit(enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab);
             unit.ChangeUnitRotation(new(-1, 0));
 
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
@@ -106,17 +108,6 @@ public class BattleManager : MonoBehaviour {
     private int BattleMapSize => GridStaticFunctions.BattleMapSize;
 }
 
-public class UnitFactory {
-    public UnitController CreateUnit(UnitData data, Vector2Int spawnPos, bool isPlayer) {
-        UnitController unit = isPlayer ? new GameObject().AddComponent<PlayerUnitController>() : new GameObject().AddComponent<EnemyUnitController>();
-
-        unit.transform.position = GridStaticFunctions.CalcDungeonTileWorldPos(spawnPos);
-        unit.SetUp(data, spawnPos);
-
-        return unit;
-    }
-}
-
 public enum BattleEvents {
     SetupBattle,
     StartBattle,
@@ -131,13 +122,4 @@ public enum BattleEvents {
     GrabbedAbilityCard,
     ReleasedAbilityCard,
     BattleEnd,
-}
-
-[Serializable]
-public class BattleData {
-    public Vector2Int PlayerPos;
-    public Vector2Int EnemyPos;
-
-    public List<UnitData> PlayerUnits;
-    public List<UnitData> EnemyUnits;
 }
