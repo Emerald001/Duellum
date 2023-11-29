@@ -119,3 +119,8 @@ public class PlayerUnitController : UnitController {
             Line.SetPosition(i, GridStaticFunctions.CalcWorldPos(CurrentPath[i - 1]));
     }
 }
+
+public enum UIEvents {
+    InfoTextUpdate,
+    UpdateCursor,
+}
