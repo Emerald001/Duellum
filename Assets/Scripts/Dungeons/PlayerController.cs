@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour {
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
         Vector2Int middlePoint = data.PlayerPos + difference / 2;
 
-        transform.position = GridStaticFunctions.CalcDungeonTileWorldPos(middlePoint);
+        transform.position = GridStaticFunctions.CalcWorldPos(middlePoint);
 
         visuals.SetActive(false);
         line.enabled = false;
@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnBattleEnd() {
-        transform.position = GridStaticFunctions.CalcDungeonTileWorldPos(preBattlePos);
+        transform.position = GridStaticFunctions.CalcWorldPos(preBattlePos);
         playerPosition = preBattlePos;
 
         visuals.SetActive(false);
@@ -100,9 +100,9 @@ public class PlayerController : MonoBehaviour {
 
         Vector2Int lastPos = playerPosition;
         foreach (var newPos in GetPath(targetPosition)) {
-            Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(newPos) - GridStaticFunctions.CalcSquareWorldPos(lastPos));
+            Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcWorldPos(newPos) - GridStaticFunctions.CalcWorldPos(lastPos));
 
-            actionQueue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, GridStaticFunctions.CalcDungeonTileWorldPos(newPos)));
+            actionQueue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, GridStaticFunctions.CalcWorldPos(newPos)));
             actionQueue.Enqueue(new DoMethodAction(() => {
                 playerPosition = newPos;
             }));
@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviour {
         openList.Add(gridPos);
         for (int i = 0; i < speedValue; i++) {
             foreach (var currentPos in openList.ToList()) {
-                GridStaticFunctions.RippleThroughFullSquareGridPositions(currentPos, 2, (neighbour, count) => {
+                GridStaticFunctions.RippleThroughFullGridPositions(currentPos, 2, (neighbour, count) => {
                     if (neighbour == currentPos)
                         return;
 
@@ -181,10 +181,10 @@ public class PlayerController : MonoBehaviour {
             line.positionCount = currentPath.Count + 1;
             for (int i = 0; i < currentPath.Count + 1; i++) {
                 if (i == 0) {
-                    line.SetPosition(0, GridStaticFunctions.CalcDungeonTileWorldPos(playerPosition));
+                    line.SetPosition(0, GridStaticFunctions.CalcWorldPos(playerPosition));
                     continue;
                 }
-                line.SetPosition(i, GridStaticFunctions.CalcDungeonTileWorldPos(currentPath[i - 1]));
+                line.SetPosition(i, GridStaticFunctions.CalcWorldPos(currentPath[i - 1]));
             }
         }
     }

@@ -16,7 +16,7 @@ public static class AbilityManager {
                 break;
 
             case AbilityCardType.PlaceBoulder:
-                GridStaticFunctions.ReplaceHex(card.hexPrefab, positions);
+                GridStaticFunctions.ReplaceTile(card.hexPrefab, positions);
                 break;
 
             case AbilityCardType.Revive:

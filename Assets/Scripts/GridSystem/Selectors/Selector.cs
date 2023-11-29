@@ -3,7 +3,6 @@ using System;
 [Serializable]
 public class Selector {
     public SelectorType type;
-    public bool isHex;
 
     public bool includeCentreTile;
     public bool AllDirections;

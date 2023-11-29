@@ -22,7 +22,7 @@ public class UnitMovementModule {
         openList.Add(gridPos);
         for (int i = 0; i < speedValue; i++) {
             foreach (var currentPos in openList.ToList()) {
-                GridStaticFunctions.RippleThroughSquareGridPositions(currentPos, 2, (neighbour, count) => {
+                GridStaticFunctions.RippleThroughGridPositions(currentPos, 2, (neighbour, count) => {
                     if (neighbour == currentPos)
                         return;
 

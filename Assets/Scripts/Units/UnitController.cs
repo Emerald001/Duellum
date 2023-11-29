@@ -83,10 +83,10 @@ public abstract class UnitController : MonoBehaviour {
 
         Vector2Int lastPos = gridPosition;
         foreach (var newPos in movementModule.GetPath(targetPosition)) {
-            Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcDungeonTileWorldPos(newPos) - GridStaticFunctions.CalcDungeonTileWorldPos(lastPos));
+            Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcWorldPos(newPos) - GridStaticFunctions.CalcWorldPos(lastPos));
 
             queue.Enqueue(new ActionStack(
-                new MoveObjectAction(gameObject, UnitBaseData.movementSpeed, GridStaticFunctions.CalcDungeonTileWorldPos(newPos)),
+                new MoveObjectAction(gameObject, UnitBaseData.movementSpeed, GridStaticFunctions.CalcWorldPos(newPos)),
                 new RotateAction(gameObject, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0), 360f, .01f)
                 ));
 
@@ -118,7 +118,7 @@ public abstract class UnitController : MonoBehaviour {
     }
 
     private void EnqueueAttack(Vector2Int targetPosition, Vector2Int standingPos) {
-        Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcDungeonTileWorldPos(targetPosition) - GridStaticFunctions.CalcDungeonTileWorldPos(standingPos));
+        Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcWorldPos(targetPosition) - GridStaticFunctions.CalcWorldPos(standingPos));
 
         queue.Enqueue(new RotateAction(gameObject, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0), 360f, .01f));
         queue.Enqueue(new DoMethodAction(() => unitAnimator.SetTrigger("Attacking")));
@@ -163,7 +163,7 @@ public abstract class UnitController : MonoBehaviour {
     public void ChangeUnitPosition(Vector2Int newPosition) {
         UnitStaticManager.SetUnitPosition(this, newPosition);
 
-        transform.position = GridStaticFunctions.CalcDungeonTileWorldPos(newPosition);
+        transform.position = GridStaticFunctions.CalcWorldPos(newPosition);
 
         gridPosition = newPosition;
     }

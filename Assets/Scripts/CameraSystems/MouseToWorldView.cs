@@ -40,7 +40,7 @@ public class MouseToWorldView : MonoBehaviour {
         }
 
         GameObject hitTile = hit.transform.parent.gameObject;
-        List<Vector2Int> newTiles = GridStaticSelectors.GetPositions(displaySelector, GridStaticFunctions.GetGridPosFromHexGameObject(hitTile));
+        List<Vector2Int> newTiles = GridStaticSelectors.GetPositions(displaySelector, GridStaticFunctions.GetGridPosFromTileGameObject(hitTile));
 
         if (newTiles.Contains(GridStaticFunctions.CONST_EMPTY))
             newTiles.Remove(GridStaticFunctions.CONST_EMPTY);
@@ -52,7 +52,7 @@ public class MouseToWorldView : MonoBehaviour {
 
         lastTiles.Clear();
         lastTiles.AddRange(newTiles.Select(x => GridStaticFunctions.Grid[x]));
-        HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(hitTile);
+        HoverTileGridPos = GridStaticFunctions.GetGridPosFromTileGameObject(hitTile);
     }
 
     private void ResetTiles() {
@@ -62,7 +62,7 @@ public class MouseToWorldView : MonoBehaviour {
                     lastTiles[i].SetHover(false);
             }
 
-            HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(null);
+            HoverTileGridPos = GridStaticFunctions.GetGridPosFromTileGameObject(null);
             lastTiles.Clear();
         }
     }

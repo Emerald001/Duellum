@@ -113,8 +113,13 @@ public class PlayerUnitController : UnitController {
         Line.enabled = true;
         Line.positionCount = CurrentPath.Count + 1;
 
-        Line.SetPosition(0, GridStaticFunctions.CalcDungeonTileWorldPos(gridPosition));
+        Line.SetPosition(0, GridStaticFunctions.CalcWorldPos(gridPosition));
         for (int i = 1; i < CurrentPath.Count + 1; i++)
-            Line.SetPosition(i, GridStaticFunctions.CalcDungeonTileWorldPos(CurrentPath[i - 1]));
+            Line.SetPosition(i, GridStaticFunctions.CalcWorldPos(CurrentPath[i - 1]));
     }
+}
+
+public enum UIEvents {
+    InfoTextUpdate,
+    UpdateCursor,
 }
