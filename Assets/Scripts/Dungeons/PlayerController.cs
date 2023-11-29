@@ -63,9 +63,9 @@ public class PlayerController : MonoBehaviour {
         preBattlePos = playerPosition;
 
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
-        Vector2Int middlePoint = data.PlayerPos + difference / 2;
+        Vector2Int middlePoint = data.PlayerPos + -difference / 2;
 
-        transform.position = GridStaticFunctions.CalcWorldPos(middlePoint);
+        transform.position = GridStaticFunctions.CalcWorldPos(middlePoint) + new Vector3(0, -2, 0);
 
         visuals.SetActive(false);
         line.enabled = false;
@@ -181,10 +181,10 @@ public class PlayerController : MonoBehaviour {
             line.positionCount = currentPath.Count + 1;
             for (int i = 0; i < currentPath.Count + 1; i++) {
                 if (i == 0) {
-                    line.SetPosition(0, GridStaticFunctions.CalcWorldPos(playerPosition));
+                    line.SetPosition(0, GridStaticFunctions.CalcWorldPos(playerPosition) + new Vector3(0, .05f, 0));
                     continue;
                 }
-                line.SetPosition(i, GridStaticFunctions.CalcWorldPos(currentPath[i - 1]));
+                line.SetPosition(i, GridStaticFunctions.CalcWorldPos(currentPath[i - 1]) + new Vector3(0, .05f, 0));
             }
         }
     }

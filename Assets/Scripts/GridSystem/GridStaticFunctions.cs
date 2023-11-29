@@ -36,16 +36,14 @@ public static class GridStaticFunctions {
     public static Dictionary<Vector2Int, Tile> CurrentBattleGrid { get; set; } = new();
     public static Dictionary<Vector2Int, RoomComponent> Dungeon { get; set; } = new();
 
-    public static List<Vector2Int> PlayerSpawnPos { get; set; } = new();
-    public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
-    public static List<GameObject> SpawnCubes { get; set; } = new();
+    public static List<Vector2Int> PlayerSpawnPositions { get; set; } = new();
+    public static List<Vector2Int> EnemySpawnPositions { get; set; } = new();
 
     public static void Reset() {
         CardPositions.Clear();
         Grid.Clear();
-        PlayerSpawnPos.Clear();
-        EnemySpawnPos.Clear();
-        SpawnCubes.Clear();
+        PlayerSpawnPositions.Clear();
+        EnemySpawnPositions.Clear();
     }
 
     public static Vector3 CalcWorldPos(Vector2Int gridPos) {

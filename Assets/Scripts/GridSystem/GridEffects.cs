@@ -14,7 +14,7 @@ public class GridEffects : MonoBehaviour {
         if (MouseToWorldView.HoverTileGridPos == GridStaticFunctions.CONST_EMPTY)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.K))
             Ripple(MouseToWorldView.HoverTileGridPos, rippleStrength);
         if (Input.GetKeyDown(KeyCode.Mouse1))
             Raise(MouseToWorldView.HoverTileGridPos, Input.GetKey(KeyCode.LeftShift), height);

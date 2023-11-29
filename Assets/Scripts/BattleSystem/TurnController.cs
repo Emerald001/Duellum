@@ -3,23 +3,18 @@ using UnityEngine;
 
 public abstract class TurnController {
     public bool IsDone { get; protected set; }
+    public List<UnitController> Units => units;
 
     protected List<UnitController> units = new();
     protected UnitController currentUnit;
     protected bool isPicking = true;
 
+    public void SetUp(List<UnitController> units) {
+        this.units = units;
+    }
+
     public virtual void OnEnter() {
         IsDone = false;
-
-        bool hasUnitsLeft = false;
-        foreach (var unit in units) {
-            if (!UnitStaticManager.DeadUnitsInPlay.Contains(unit))
-                hasUnitsLeft = true;
-        }
-
-        if (hasUnitsLeft) {
-            EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
-        }
     }
 
     public virtual void OnUpdate() {
@@ -47,8 +42,6 @@ public abstract class TurnController {
             return;
 
         if (units.Contains(unit)) {
-            //GridStaticFunctions.ResetBattleTileColors();
-
             currentUnit = unit;
             currentUnit.OnEnter();
             isPicking = false;

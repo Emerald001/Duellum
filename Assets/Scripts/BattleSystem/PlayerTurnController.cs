@@ -6,8 +6,6 @@ public class PlayerTurnController : TurnController {
     public override void OnEnter() {
         base.OnEnter();
 
-        units = UnitStaticManager.PlayerUnitsInPlay;
-
         HighlightUnits();
         isPicking = true;
         EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, HighlightUnits);

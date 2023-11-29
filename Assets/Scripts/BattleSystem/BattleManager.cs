@@ -49,8 +49,63 @@ public class BattleManager : MonoBehaviour {
     }
 
     private void SetBattlefield(Vector2Int playerPos, Vector2Int enemyPos) {
+        List<Vector2Int> GetSpawnPositions(int unitAmount, Vector2Int startPos, Vector2Int direction) {
+            List<Vector2Int> result = new() {
+                startPos
+            };
+
+            int positionModifier = 1;
+            while (result.Count < unitAmount) {
+                Vector2Int calculatedPos = startPos + direction * positionModifier;
+
+                if (GridStaticFunctions.CurrentBattleGrid.ContainsKey(calculatedPos)) {
+                    if (GridStaticFunctions.Grid[calculatedPos].Type != TileType.Normal)
+                        continue;
+
+                    result.Add(calculatedPos);
+                    direction = -direction;
+
+                    if (direction.x + direction.y > 0)
+                        positionModifier++;
+                }
+                else {
+                    bool hasFoundPos = false;
+                    List<Vector2Int> tilesToCheck = new() {
+                        calculatedPos
+                    };
+                    List<Vector2Int> checkedTiles = new();
+
+                    while (!hasFoundPos) {
+                        GridStaticFunctions.RippleThroughFullGridPositions(tilesToCheck[0], 2, (tile, i) => {
+                            if (!tilesToCheck.Contains(tile) && !checkedTiles.Contains(tile))
+                                tilesToCheck.Add(tile);
+
+                            if (!GridStaticFunctions.CurrentBattleGrid.ContainsKey(tile))
+                                return;
+
+                            if (result.Contains(tile))
+                                return;
+
+                            if (GridStaticFunctions.Grid[tile].Type == TileType.Normal) {
+                                hasFoundPos = true;
+
+                                result.Add(tile);
+                                direction = -direction;
+                            }
+                        }, false);
+
+                        checkedTiles.Add(tilesToCheck[0]);
+                        tilesToCheck.RemoveAt(0);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         Vector2Int difference = playerPos - enemyPos;
-        Vector2Int middlePoint = playerPos + difference / 2;
+        Vector2Int middlePoint = playerPos + -difference / 2;
+        Vector2Int direction = Mathf.Abs(difference.x) > Mathf.Abs(difference.y) ? new(0, 1) : new(1, 0);
 
         List<Vector2Int> points = new();
         for (int x = -((BattleMapSize - 1) / 2); x <= ((BattleMapSize - 1) / 2); x++) {
@@ -58,22 +113,18 @@ public class BattleManager : MonoBehaviour {
                 points.Add(middlePoint + new Vector2Int(x, y));
         }
 
-        GridStaticFunctions.PlayerSpawnPos.Add(middlePoint + new Vector2Int(-((BattleMapSize - 1) / 2), -1));
-        GridStaticFunctions.PlayerSpawnPos.Add(middlePoint + new Vector2Int(-((BattleMapSize - 1) / 2), 0));
-        GridStaticFunctions.PlayerSpawnPos.Add(middlePoint + new Vector2Int(-((BattleMapSize - 1) / 2), 1));
-
-        GridStaticFunctions.EnemySpawnPos.Add(middlePoint + new Vector2Int(((BattleMapSize - 1) / 2), -1));
-        GridStaticFunctions.EnemySpawnPos.Add(middlePoint + new Vector2Int(((BattleMapSize - 1) / 2), 0));
-        GridStaticFunctions.EnemySpawnPos.Add(middlePoint + new Vector2Int(((BattleMapSize - 1) / 2), 1));
-
         GridStaticFunctions.SetBattleGrid(points);
+
+        GridStaticFunctions.PlayerSpawnPositions.AddRange(GetSpawnPositions(3, playerPos, direction));
+        GridStaticFunctions.EnemySpawnPositions.AddRange(GetSpawnPositions(5, enemyPos, direction));
     }
 
     private void SpawnUnits(List<UnitData> playerUnitsToSpawn, List<UnitData> enemyUnitsToSpawn) {
         unitHolder = new GameObject("UnitHolder").transform;
 
-        for (int i = 0; i < GridStaticFunctions.PlayerSpawnPos.Count; i++) {
-            Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPos[i];
+        PlayerTurnController playerTurnController = new();
+        for (int i = 0; i < GridStaticFunctions.PlayerSpawnPositions.Count; i++) {
+            Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPositions[i];
 
             UnitController unit = unitFactory.CreateUnit(playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab, unitHolder);
             unit.ChangeUnitRotation(new(1, 0));
@@ -82,10 +133,12 @@ public class BattleManager : MonoBehaviour {
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.PlayerUnitsInPlay.Add(unit);
         }
-        players.Add(new PlayerTurnController());
+        playerTurnController.SetUp(new(UnitStaticManager.PlayerUnitsInPlay));
+        players.Add(playerTurnController);
 
-        for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
-            Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
+        EnemyTurnController enemyTurnController = new();
+        for (int i = 0; i < GridStaticFunctions.EnemySpawnPositions.Count; i++) {
+            Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPositions[i];
 
             UnitController unit = unitFactory.CreateUnit(enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab, unitHolder);
             unit.ChangeUnitRotation(new(-1, 0));
@@ -94,7 +147,8 @@ public class BattleManager : MonoBehaviour {
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.EnemyUnitsInPlay.Add(unit);
         }
-        players.Add(new EnemyTurnController());
+        enemyTurnController.SetUp(new(UnitStaticManager.EnemyUnitsInPlay));
+        players.Add(enemyTurnController);
     }
 
     private void NextPlayer() {
@@ -106,8 +160,19 @@ public class BattleManager : MonoBehaviour {
 
         currentPlayer?.OnExit();
         currentPlayer = players[currentPlayerIndex];
-        currentPlayer.OnEnter();
 
+        bool hasUnitsLeft = false;
+        foreach (var unit in CurrentPlayer.Units) {
+            if (!UnitStaticManager.DeadUnitsInPlay.Contains(unit))
+                hasUnitsLeft = true;
+        }
+
+        if (!hasUnitsLeft) {
+            EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
+            return;
+        }
+
+        currentPlayer.OnEnter();
         currentPlayerIndex++;
     }
 
@@ -118,6 +183,8 @@ public class BattleManager : MonoBehaviour {
 
         Destroy(unitHolder.gameObject);
         GridStaticFunctions.ResetAllTileColors();
+        GridStaticFunctions.PlayerSpawnPositions.Clear();
+        GridStaticFunctions.EnemySpawnPositions.Clear();
 
         UnitStaticManager.Reset();
     }
