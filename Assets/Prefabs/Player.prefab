@@ -66,7 +66,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 23
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -102,7 +102,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 0}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -134,7 +135,6 @@ MonoBehaviour:
   hovercolor: {fileID: 2100000, guid: 60e4fff2b4acfcc45879b86ca25abb71, type: 2}
   standardSelector:
     type: 0
-    isHex: 0
     includeCentreTile: 0
     AllDirections: 0
     range: 1
@@ -310,7 +310,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7492275243852492049, guid: 3817051949a40d640a67a5b3efd1cdd3, type: 3}
+  - {fileID: 2100000, guid: 2ac09b58a2f793b4ab42454033249313, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

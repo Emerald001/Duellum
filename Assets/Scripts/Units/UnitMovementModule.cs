@@ -26,6 +26,9 @@ public class UnitMovementModule {
                     if (neighbour == currentPos)
                         return;
 
+                    if (!GridStaticFunctions.CurrentBattleGrid.ContainsKey(neighbour))
+                        return;
+
                     if (UnitStaticManager.TryGetUnitFromGridPos(neighbour, out var tmp))
                         return;
 
@@ -35,7 +38,7 @@ public class UnitMovementModule {
                             //Get all neighbours or add tile anyway
 
                     // Only applicable if no other thing is needed
-                    if (GridStaticFunctions.Grid[neighbour].Type != TileType.Normal)
+                    if (GridStaticFunctions.CurrentBattleGrid[neighbour].Type != TileType.Normal)
                         return;
 
                     if (openList.Contains(neighbour) ||

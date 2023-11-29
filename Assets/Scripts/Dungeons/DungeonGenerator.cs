@@ -23,7 +23,11 @@ public class DungeonGenerator : MonoBehaviour {
     private readonly Dictionary<Vector2Int, Vector4> dungeonConnections = new();
     private int tileSize => GridStaticFunctions.TilesPerRoom;
 
+    private Transform dungeonParent;
+
     private void Awake() {
+        dungeonParent = new GameObject("DungeonRooms").transform;
+
         StartCoroutine(SpawnRooms());
     }
 
@@ -177,7 +181,7 @@ public class DungeonGenerator : MonoBehaviour {
         else if (connection.w != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(0, -1)))
             room.Height = height - connection.w;
 
-        RoomComponent spawnedRoom = Instantiate(room.prefab);
+        RoomComponent spawnedRoom = Instantiate(room.prefab, dungeonParent);
         spawnedRoom.name = room.name;
         spawnedRoom.transform.position = CalculateWorldPosition(position, room.Height, room);
         spawnedRoom.transform.eulerAngles = new(0, room.RotationIndex * 90, 0);

@@ -109,9 +109,6 @@ public abstract class UnitController : MonoBehaviour {
 
         queue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", false);
-
-            FindTiles();
-            GridStaticFunctions.ResetTileColors();
         }));
 
         HasPerformedAction = true;

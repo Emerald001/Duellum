@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour {
         transform.position = GridStaticFunctions.CalcWorldPos(preBattlePos);
         playerPosition = preBattlePos;
 
-        visuals.SetActive(false);
+        visuals.SetActive(true);
         inBattle = false;
 
         FindAccessibleTiles(playerPosition, 30);
@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour {
             //UnitAudio.PlayLoopedAudio("Walking", false);
 
             FindAccessibleTiles(playerPosition, 30);
-            GridStaticFunctions.ResetTileColors();
+            GridStaticFunctions.ResetAllTileColors();
         }));
     }
 

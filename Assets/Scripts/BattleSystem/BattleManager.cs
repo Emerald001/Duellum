@@ -10,9 +10,11 @@ public class BattleManager : MonoBehaviour {
 
     private UnitFactory unitFactory;
 
-    private List<TurnController> players = new();
+    private readonly List<TurnController> players = new();
     private TurnController currentPlayer;
     private int currentPlayerIndex;
+
+    private Transform unitHolder;
 
     private void Awake() {
         unitFactory = new();
@@ -20,9 +22,11 @@ public class BattleManager : MonoBehaviour {
 
     private void OnEnable() {
         EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartBattle, StartBattle);
+        EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, CleanupAfterBattle);
     }
     private void OnDisable() {
         EventManager<BattleEvents, BattleData>.Unsubscribe(BattleEvents.StartBattle, StartBattle);
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, CleanupAfterBattle);
     }
 
     private void StartBattle(BattleData data) {
@@ -54,22 +58,24 @@ public class BattleManager : MonoBehaviour {
                 points.Add(middlePoint + new Vector2Int(x, y));
         }
 
-        GridStaticFunctions.PlayerSpawnPos.Add(middlePoint + new Vector2Int(-((BattleMapSize - 1) / 2), BattleMapSize / 2 - 1));
-        GridStaticFunctions.PlayerSpawnPos.Add(middlePoint + new Vector2Int(-((BattleMapSize - 1) / 2), BattleMapSize / 2));
-        GridStaticFunctions.PlayerSpawnPos.Add(middlePoint + new Vector2Int(-((BattleMapSize - 1) / 2), BattleMapSize / 2 + 1));
+        GridStaticFunctions.PlayerSpawnPos.Add(middlePoint + new Vector2Int(-((BattleMapSize - 1) / 2), -1));
+        GridStaticFunctions.PlayerSpawnPos.Add(middlePoint + new Vector2Int(-((BattleMapSize - 1) / 2), 0));
+        GridStaticFunctions.PlayerSpawnPos.Add(middlePoint + new Vector2Int(-((BattleMapSize - 1) / 2), 1));
 
-        GridStaticFunctions.EnemySpawnPos.Add(middlePoint + new Vector2Int(((BattleMapSize - 1) / 2), BattleMapSize / 2 - 1));
-        GridStaticFunctions.EnemySpawnPos.Add(middlePoint + new Vector2Int(((BattleMapSize - 1) / 2), BattleMapSize / 2));
-        GridStaticFunctions.EnemySpawnPos.Add(middlePoint + new Vector2Int(((BattleMapSize - 1) / 2), BattleMapSize / 2 + 1));
+        GridStaticFunctions.EnemySpawnPos.Add(middlePoint + new Vector2Int(((BattleMapSize - 1) / 2), -1));
+        GridStaticFunctions.EnemySpawnPos.Add(middlePoint + new Vector2Int(((BattleMapSize - 1) / 2), 0));
+        GridStaticFunctions.EnemySpawnPos.Add(middlePoint + new Vector2Int(((BattleMapSize - 1) / 2), 1));
 
         GridStaticFunctions.SetBattleGrid(points);
     }
 
     private void SpawnUnits(List<UnitData> playerUnitsToSpawn, List<UnitData> enemyUnitsToSpawn) {
+        unitHolder = new GameObject("UnitHolder").transform;
+
         for (int i = 0; i < GridStaticFunctions.PlayerSpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPos[i];
 
-            UnitController unit = unitFactory.CreateUnit(playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab);
+            UnitController unit = unitFactory.CreateUnit(playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab, unitHolder);
             unit.ChangeUnitRotation(new(1, 0));
 
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
@@ -81,7 +87,7 @@ public class BattleManager : MonoBehaviour {
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPos.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPos[i];
 
-            UnitController unit = unitFactory.CreateUnit(enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab);
+            UnitController unit = unitFactory.CreateUnit(enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab, unitHolder);
             unit.ChangeUnitRotation(new(-1, 0));
 
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
@@ -103,6 +109,17 @@ public class BattleManager : MonoBehaviour {
         currentPlayer.OnEnter();
 
         currentPlayerIndex++;
+    }
+
+    private void CleanupAfterBattle() {
+        currentPlayer = null;
+        players.Clear();
+        currentPlayerIndex = 0;
+
+        Destroy(unitHolder.gameObject);
+        GridStaticFunctions.ResetAllTileColors();
+
+        UnitStaticManager.Reset();
     }
 
     private int BattleMapSize => GridStaticFunctions.BattleMapSize;

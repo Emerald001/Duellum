@@ -135,8 +135,18 @@ public static class GridStaticFunctions {
             Grid[tile].SetHighlight(type);
     }
 
-    public static void ResetTileColors() {
+    public static void HighlightBattleTiles(List<Vector2Int> tiles, HighlightType type) {
+        foreach (var tile in tiles)
+            CurrentBattleGrid[tile].SetHighlight(type);
+    }
+
+    public static void ResetAllTileColors() {
         foreach (var tile in Grid.Values)
+            tile.SetHighlight(HighlightType.None);
+    }
+
+    public static void ResetBattleTileColors() {
+        foreach (var tile in CurrentBattleGrid.Values)
             tile.SetHighlight(HighlightType.None);
     }
 
@@ -154,7 +164,7 @@ public static class GridStaticFunctions {
 
         foreach(var position in positions) {
             if (!Grid.ContainsKey(position))
-                return;
+                continue;
 
             CurrentBattleGrid.Add(position, Grid[position]);
         }

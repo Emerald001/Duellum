@@ -17,10 +17,6 @@ public class SelectorDrawer : PropertyDrawer {
         SerializedProperty enumProperty = property.FindPropertyRelative("type");
         EditorGUI.PropertyField(position, enumProperty, GUIContent.none);
 
-        position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
-        totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
-        EditorGUI.PropertyField(position, property.FindPropertyRelative("isHex"));
-
         SelectorType selectorOption = (SelectorType)enumProperty.enumValueIndex;
         switch (selectorOption) {
             case SelectorType.Circle:

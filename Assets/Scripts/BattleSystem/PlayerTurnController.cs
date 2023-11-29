@@ -39,7 +39,7 @@ public class PlayerTurnController : TurnController {
     }
 
     private void HighlightUnits() {
-        GridStaticFunctions.ResetTileColors();
+        GridStaticFunctions.ResetBattleTileColors();
         List<Vector2Int> positions = units.Select(unit => UnitStaticManager.UnitPositions[unit]).ToList();
         GridStaticFunctions.HighlightTiles(positions, HighlightType.OwnPositionHighlight);
     }
