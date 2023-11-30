@@ -55,7 +55,9 @@ public class BattleManager : MonoBehaviour {
             };
 
             int positionModifier = 1;
-            while (result.Count < unitAmount) {
+
+            int breakout = 0;
+            while (result.Count < unitAmount && breakout < 50) {
                 Vector2Int calculatedPos = startPos + direction * positionModifier;
 
                 if (GridStaticFunctions.CurrentBattleGrid.ContainsKey(calculatedPos)) {
@@ -75,7 +77,8 @@ public class BattleManager : MonoBehaviour {
                     };
                     List<Vector2Int> checkedTiles = new();
 
-                    while (!hasFoundPos) {
+                    int breakout2 = 0;
+                    while (!hasFoundPos && breakout2 < 50) {
                         GridStaticFunctions.RippleThroughFullGridPositions(tilesToCheck[0], 2, (tile, i) => {
                             if (!tilesToCheck.Contains(tile) && !checkedTiles.Contains(tile))
                                 tilesToCheck.Add(tile);
@@ -96,9 +99,18 @@ public class BattleManager : MonoBehaviour {
 
                         checkedTiles.Add(tilesToCheck[0]);
                         tilesToCheck.RemoveAt(0);
+                        breakout2++;
                     }
+
+                    if (breakout2 > 49)
+                        Debug.Log("Broke out at loop 2");
                 }
+
+                breakout++;
             }
+
+            if (breakout > 49)
+                Debug.Log("Broke out at Loop 1");
 
             return result;
         }
@@ -161,16 +173,16 @@ public class BattleManager : MonoBehaviour {
         currentPlayer?.OnExit();
         currentPlayer = players[currentPlayerIndex];
 
-        bool hasUnitsLeft = false;
-        foreach (var unit in CurrentPlayer.Units) {
-            if (!UnitStaticManager.DeadUnitsInPlay.Contains(unit))
-                hasUnitsLeft = true;
-        }
+        //bool hasUnitsLeft = false;
+        //foreach (var unit in CurrentPlayer.Units) {
+        //    if (!UnitStaticManager.DeadUnitsInPlay.Contains(unit))
+        //        hasUnitsLeft = true;
+        //}
 
-        if (!hasUnitsLeft) {
-            EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
-            return;
-        }
+        //if (!hasUnitsLeft) {
+        //    EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
+        //    return;
+        //}
 
         currentPlayer.OnEnter();
         currentPlayerIndex++;

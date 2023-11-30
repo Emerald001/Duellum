@@ -60,6 +60,8 @@ public abstract class UnitController : MonoBehaviour {
     public virtual void OnExit() {
         HasPerformedAction = false;
         IsDone = false;
+
+        Debug.Log(3);
     }
 
     public virtual void PickedTile(Vector2Int pickedTile, Vector2Int standingPos_optional) {
