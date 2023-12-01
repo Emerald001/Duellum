@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{fc8c93a6-f7cf-409c-9e7e-20b7e2626fd6}">
+		<property name="name">
+			<value>Tension</value>
+		</property>
+		<relationship name="folder">
+			<destination>{b3cbbfcc-c573-4549-bb68-ca0ebc2401cd}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{7834757b-361d-4636-a34b-25fe30dc6408}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{7834757b-361d-4636-a34b-25fe30dc6408}">
+		<property name="maximum">
+			<value>100</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>11</value>
+		</property>
+	</object>
+</objects>

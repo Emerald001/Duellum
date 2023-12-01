@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{f5ccfd98-e244-4909-9235-28de0a239b43}">
+		<property name="assetPath">
+			<value>Attack_Fail_Block_v4.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.0800000000000001</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{62c68928-0780-482f-81ec-777d3743bee1}</destination>
+		</relationship>
+	</object>
+</objects>
