@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class DungeonOutfitter : MonoBehaviour {
-    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private GameObject LinePrefab; 
 
     public void OutfitDungeon() {
         foreach (var room in GridStaticFunctions.Dungeon) {
@@ -56,75 +57,124 @@ public class DungeonOutfitter : MonoBehaviour {
     }
 
     private void CreatePathThroughDungeon() {
-        // ordering the rooms
         List<Tuple<int, RoomComponent>> rooms = new();
         foreach (KeyValuePair<Vector2Int, RoomComponent> room in GridStaticFunctions.Dungeon) {
-            Vector2Int gridPosition = room.Value.indexZeroGridPos;
-
-            if (room.Value.size.x > 0 || room.Value.size.y > 0)
+            if (room.Value.size.x > 1 || room.Value.size.y > 1)
                 continue;
 
+            Vector4 connections = room.Value.connections[0];
+            if (connections.x + connections.y + connections.z + connections.w > -2500)
+                continue;
+
+            Vector2Int gridPosition = room.Value.indexZeroGridPos;
             int amount = gridPosition.x + gridPosition.y;
             rooms.Add(new(amount, room.Value));
         }
         rooms = rooms.OrderBy(obj => obj.Item1).ToList();
 
-        // Get next rooms
-        Dictionary<Vector2Int, Vector2Int> parentDictionary = new();
+        Dictionary<RoomComponent, RoomComponent> parentDictionary = new();
 
-        List<Vector2Int> openList = new();
-        List<Vector2Int> closedList = new();
+        List<RoomComponent> openSet = new();
+        List<RoomComponent> closedSet = new();
 
-        openList.Add(rooms[0].Item2.indexZeroGridPos);
-        Vector2Int currentPosition = openList[0];
+        openSet.Add(rooms[0].Item2);
+        RoomComponent currentRoom = openSet[0];
 
-        void AddRooms(Vector2Int newRoomPos, Vector2Int parentPos) {
+        void AddRooms(Vector2Int newRoomPos, RoomComponent parentRoom) {
             RoomComponent room = GridStaticFunctions.Dungeon[newRoomPos];
-            openList.Add(newRoomPos);
 
-            // Do a manual Ripple instead!
-            GridStaticFunctions.RippleThroughGridPositions(newRoomPos, 20, (gridPos, i) => {
-                if (GridStaticFunctions.Dungeon[newRoomPos] != room)
-                    return;
+            if (openSet.Contains(room) || closedSet.Contains(room))
+                return;
 
-                parentDictionary.Add(currentPosition, gridpos);
-            }, false);
-
-            //for (int x = 0; x < room.size.x; x++) {
-            //    for (int y = 0; y < room.size.y; y++)
-            //        openList.Add(offset + new Vector2Int(x, y));
-            //}
-}
-
-        int breakout = 0;
-        while (currentPosition != rooms[^1].Item2.indexZeroGridPos && breakout < 30) {
-            currentPosition = openList[0];
-            Vector4 connections = GridStaticFunctions.DungeonConnections[currentPosition];
-
-            if (connections.x != GridStaticFunctions.CONST_INT) 
-                AddRooms(currentPosition + new Vector2Int(1, 0), currentPosition);
-            if (connections.y != GridStaticFunctions.CONST_INT) 
-                AddRooms(currentPosition + new Vector2Int(-1, 0), currentPosition);
-            if (connections.z != GridStaticFunctions.CONST_INT) 
-                AddRooms(currentPosition + new Vector2Int(0, 1), currentPosition);
-            if (connections.w != GridStaticFunctions.CONST_INT) 
-                AddRooms(currentPosition + new Vector2Int(0, -1), currentPosition);
-
-            closedList.Add(openList[0]);
-            openList.RemoveAt(0);
-
-            // We add all the positions in it, based on its IndexZeroGridPos and their size. 
-            // All found positions we add to the open set.
-            // We loop through the open set to with the connections from the dungeon generator.
-            // Once we find a room with multiple tiles, we add all the tiles with their grid positions linked to the last. 
-
-            breakout++;
+            openSet.Add(room);
+            parentDictionary.Add(room, parentRoom);
         }
 
-        Debug.Log($"Breakout at {breakout}");
+        while (openSet.Count > 0) {
+            currentRoom = openSet[0];
 
-        lineRenderer.enabled = true;
-        lineRenderer.SetPosition(0, new(rooms[0].Item2.indexZeroGridPos.x * 13, 20, rooms[0].Item2.indexZeroGridPos.y * 13));
-        lineRenderer.SetPosition(1, new(rooms[^1].Item2.indexZeroGridPos.x * 13, 20, rooms[^1].Item2.indexZeroGridPos.y * 13));
+            int index = 0;
+            for (int x = 0; x < currentRoom.size.x; x++) {
+                for (int y = 0; y < currentRoom.size.y; y++) {
+                    Vector2Int tile = currentRoom.indexZeroGridPos + new Vector2Int(x, y);
+                    Vector4 connections = currentRoom.connections[index];
+
+                    if (connections.x != GridStaticFunctions.CONST_INT)
+                        AddRooms(tile + new Vector2Int(1, 0), currentRoom);
+                    if (connections.y != GridStaticFunctions.CONST_INT)
+                        AddRooms(tile + new Vector2Int(-1, 0), currentRoom);
+                    if (connections.z != GridStaticFunctions.CONST_INT)
+                        AddRooms(tile + new Vector2Int(0, 1), currentRoom);
+                    if (connections.w != GridStaticFunctions.CONST_INT)
+                        AddRooms(tile + new Vector2Int(0, -1), currentRoom);
+
+                    index++;
+                }
+            }
+
+            closedSet.Add(currentRoom);
+            openSet.RemoveAt(0);
+        }
+
+        DrawLines(rooms.Select(x => x.Item2).ToList(), parentDictionary);
+    }
+
+    private void DrawLines(List<RoomComponent> rooms, Dictionary<RoomComponent, RoomComponent> parentDictionary) {
+        List<RoomComponent> path = new();
+        List<RoomComponent> checkedRooms = new();
+
+        RoomComponent currentRoom = rooms[^1];
+        while (currentRoom != rooms[0]) {
+            path.Add(currentRoom);
+            currentRoom = parentDictionary[currentRoom];
+        }
+
+        path.Add(currentRoom);
+        path.Reverse();
+
+        LineRenderer line = Instantiate(LinePrefab, transform).GetComponent<LineRenderer>();
+        line.material.color = new(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
+        line.positionCount = path.Count;
+
+        for (int i = 0; i < path.Count; i++) {
+            line.SetPosition(i, CalculateWorldPosition(path[i]));
+            checkedRooms.Add(path[i]);
+        }
+
+        List<RoomComponent> endCaps = rooms
+            .Where(x => !path.Contains(x) && !checkedRooms.Contains(x))
+            .Where(x => x.connections[0].x + x.connections[0].y + x.connections[0].z + x.connections[0].w < -2500)
+            .ToList();
+        foreach (var room in endCaps) {
+            line = Instantiate(LinePrefab, transform).GetComponent<LineRenderer>();
+            line.material.color = new(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
+            line.positionCount = 1;
+
+            currentRoom = room;
+            line.SetPosition(0, CalculateWorldPosition(currentRoom));
+
+            int index = 1;
+            while (!checkedRooms.Contains(currentRoom)) {
+                line.positionCount++;
+
+                checkedRooms.Add(currentRoom);
+                currentRoom = parentDictionary[currentRoom];
+                line.SetPosition(index, CalculateWorldPosition(currentRoom));
+
+                index++;
+                if (index > 20)
+                    break;
+            }
+        }
+    }
+
+    private Vector3 CalculateWorldPosition(RoomComponent room) {
+        Vector3 worldPosition = new();
+        for (int x = 0; x < room.size.x; x++) {
+            for (int y = 0; y < room.size.y; y++)
+                worldPosition += new Vector3((room.indexZeroGridPos.x + x) * GridStaticFunctions.TilesPerRoom, 5, (room.indexZeroGridPos.y + y) * GridStaticFunctions.TilesPerRoom);
+        }
+
+        return worldPosition / (room.size.x * room.size.y);
     }
 }

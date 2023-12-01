@@ -11,6 +11,7 @@ public class RoomComponent : MonoBehaviour {
     public int rotationIndex;
 
     public Dictionary<int, Vector2Int> gridPositionsPerIndex;
+    public List<Vector4> connections;
 
     public void Editor_SetUp(List<Vector2Int> gridPositions, List<Tile> gridValues, List<float> gridHeights) {
         this.gridPositions = gridPositions;
