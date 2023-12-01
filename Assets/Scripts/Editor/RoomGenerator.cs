@@ -335,7 +335,7 @@ public partial class RoomGeneratorEditor {
     }
 
     private void DrawHeight() {
-        GUILayout.Label("Click on the buttons to identify Heights");
+        GUILayout.Label("Click on the butwtons to identify Heights");
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         EditorGUILayout.BeginVertical();
@@ -418,6 +418,9 @@ public partial class RoomGeneratorEditor {
                 grid[new(x, y)] = TileType.Special;
                 break;
             case TileType.Special:
+                grid[new(x, y)] = TileType.EnemySpawn;
+                break;
+            case TileType.EnemySpawn:
                 grid[new(x, y)] = TileType.Normal;
                 break;
 
@@ -507,6 +510,9 @@ public partial class RoomGeneratorEditor {
                 break;
             case TileType.Special:
                 GUI.backgroundColor = Color.yellow;
+                break;
+            case TileType.EnemySpawn: 
+                GUI.backgroundColor = Color.red;
                 break;
 
             default:

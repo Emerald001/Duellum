@@ -70,4 +70,5 @@ public enum TileType {
     HalfCover,
     Spawn,
     Special,
+    EnemySpawn,
 }
