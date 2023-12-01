@@ -186,7 +186,9 @@ public class DungeonGenerator : MonoBehaviour {
         spawnedRoom.transform.eulerAngles = new(0, room.RotationIndex * 90, 0);
         spawnedRoom.size = room.size;
         spawnedRoom.rotationIndex = room.RotationIndex;
+
         spawnedRoom.gridPositionsPerIndex = new(room.GridPositionsPerIndex);
+        spawnedRoom.connections = new(room.connections);
 
         spawnedRoom.gridPositionsPerIndex = new(room.GridPositionsPerIndex);
         spawnedRoom.connections = new(room.connections);
