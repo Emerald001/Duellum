@@ -35,6 +35,7 @@ public static class GridStaticFunctions {
     public static Dictionary<Vector2Int, Tile> Grid { get; set; } = new();
     public static Dictionary<Vector2Int, Tile> CurrentBattleGrid { get; set; } = new();
     public static Dictionary<Vector2Int, RoomComponent> Dungeon { get; set; } = new();
+    public static Dictionary<Vector2Int, Vector4> DungeonConnections { get; set; } = new();
 
     public static List<Vector2Int> PlayerSpawnPositions { get; set; } = new();
     public static List<Vector2Int> EnemySpawnPositions { get; set; } = new();

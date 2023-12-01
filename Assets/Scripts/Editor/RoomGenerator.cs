@@ -11,6 +11,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
     private Dictionary<Vector2Int, float> heightGrid = new();
     private Dictionary<Vector2Int, Vector4> connectionGrid = new();
 
+    private List<EnemyTeamSO> enemyTeams = new();
+
     private string tileName = "New Room";
 
     private Vector2Int lastSize = new();
@@ -53,6 +55,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
               .ToDictionary(x => x.k, x => x.v);
             heightGrid = currentRoom.heightPositions.Zip(currentRoom.heightValues, (k, v) => new { k, v })
               .ToDictionary(x => x.k, x => x.v);
+
+            enemyTeams = currentRoom.enemyTeams;
         }
 
         DrawUILine(Color.gray);
@@ -113,6 +117,9 @@ public partial class RoomGeneratorEditor : EditorWindow {
             else
                 DrawTiles();
         }
+
+        if (grid.Select(x => x.Value).Where(x => x == TileType.EnemySpawn).Any())
+            DrawEnemySelection();
     }
 
     private void GenerateRoom() {
@@ -222,6 +229,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
 
         newScriptableObject.heightPositions = new(heightGrid.Keys);
         newScriptableObject.heightValues = new(heightGrid.Values);
+
+        newScriptableObject.enemyTeams = new(enemyTeams);
 
         AssetDatabase.CreateAsset(newScriptableObject, $"Assets/Resources/Rooms/{tileName}.asset");
         AssetDatabase.SaveAssets();
@@ -335,7 +344,7 @@ public partial class RoomGeneratorEditor {
     }
 
     private void DrawHeight() {
-        GUILayout.Label("Click on the butwtons to identify Heights");
+        GUILayout.Label("Click on the buttons to identify Heights");
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         EditorGUILayout.BeginVertical();
@@ -361,6 +370,24 @@ public partial class RoomGeneratorEditor {
 
         DrawUILine(Color.gray);
         UpdateHeightForConnections();
+    }
+
+    private void DrawEnemySelection() {
+        EditorGUILayout.BeginVertical();
+
+        int enemyAmount = grid.Select(x => x.Value).Where(x => x == TileType.EnemySpawn).Count();
+        if (enemyAmount != enemyTeams.Count) {
+            List<EnemyTeamSO> tmpEnemies = new(enemyTeams);
+
+            enemyTeams.Clear();
+            for (int i = 0; i < enemyAmount; i++)
+                enemyTeams.Add(i < tmpEnemies.Count - 1 ? tmpEnemies[i] : null);
+        }
+
+        for (int i = 0; i < enemyAmount; i++)
+            enemyTeams[i] = (EnemyTeamSO)EditorGUILayout.ObjectField($"Enemy team {i}", enemyTeams[i], typeof(EnemyTeamSO), false);
+
+        EditorGUILayout.EndVertical();
     }
 
     private void DrawUILine(Color color, int thickness = 1, int padding = 10) {
@@ -511,7 +538,7 @@ public partial class RoomGeneratorEditor {
             case TileType.Special:
                 GUI.backgroundColor = Color.yellow;
                 break;
-            case TileType.EnemySpawn: 
+            case TileType.EnemySpawn:
                 GUI.backgroundColor = Color.red;
                 break;
 

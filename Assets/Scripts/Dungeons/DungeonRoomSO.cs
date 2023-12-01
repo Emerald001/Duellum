@@ -16,4 +16,6 @@ public class DungeonRoomSO : ScriptableObject {
 
     public List<Vector2Int> heightPositions;
     public List<float> heightValues;
+
+    public List<EnemyTeamSO> enemyTeams;
 }
