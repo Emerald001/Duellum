@@ -6,7 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Rooms/New Room")]
 public class DungeonRoomSO : ScriptableObject {
     public DungeonRoomTile room;
-    public int id;
 
     public List<Vector2Int> gridPositions;
     public List<TileType> gridValues;

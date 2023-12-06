@@ -26,7 +26,6 @@ public abstract class UnitController : MonoBehaviour {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitHit, UnitHit);
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitRevive, UnitRevive);
     }
-
     private void OnDisable() {
         EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitDeath);
         EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitHit, UnitHit);
@@ -64,7 +63,7 @@ public abstract class UnitController : MonoBehaviour {
         Debug.Log(3);
     }
 
-    public virtual void PickedTile(Vector2Int pickedTile, Vector2Int standingPos_optional) {
+    protected virtual void PickedTile(Vector2Int pickedTile, Vector2Int standingPos_optional) {
         if (attackModule.AttackableTiles.Contains(pickedTile)) {
             if (gridPosition == standingPos_optional)
                 EnqueueAttack(pickedTile, standingPos_optional);

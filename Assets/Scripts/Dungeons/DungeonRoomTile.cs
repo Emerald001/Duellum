@@ -8,6 +8,7 @@ public class DungeonRoomTile {
     public Vector2Int size;
     public RoomComponent prefab;
     public List<Vector4> connections;
+    public int Id;
 
     public DungeonRoomTile(string name, Vector2Int size, RoomComponent prefab, List<Vector4> connections) {
         this.name = name;
