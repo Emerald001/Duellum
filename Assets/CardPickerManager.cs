@@ -92,6 +92,7 @@ public class CardPickerManager : MonoBehaviour {
             return;
 
         gameObject.SetActive(false);
+        UnitStaticManager.PlayerPickedUnits = new(pickedCards);
         EventManager<DungeonEvents>.Invoke(DungeonEvents.StartGeneration);
     }
 }
