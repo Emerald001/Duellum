@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleEvaluator : MonoBehaviour {
     [SerializeField] private PlayerController player;
-    [SerializeField] private List<UnitData> playerTeam;
 
     private void OnEnable() {
         EventManager<BattleEvents, EnemyBehaviour>.Subscribe(BattleEvents.EnemyViewedPlayer, OnEnemyViewPlayer);
@@ -13,13 +11,7 @@ public class BattleEvaluator : MonoBehaviour {
     }
 
     private void OnEnemyViewPlayer(EnemyBehaviour behaviour) {
-        BattleData data = new(player.PlayerPosition, behaviour.GridPosition, playerTeam, behaviour.EnemyTeam);
-
-        Debug.Log($"Player position: {player.PlayerPosition}");
-        Debug.Log($"Enemy position: {behaviour.GridPosition}");
-        Debug.Log($"Player unit Amount: {playerTeam.Count}");
-        Debug.Log($"Enemy unit Amount: {behaviour.EnemyTeam.Count}");
-
+        BattleData data = new(player.PlayerPosition, behaviour.GridPosition, UnitStaticManager.PlayerPickedUnits, behaviour.EnemyTeam);
         EventManager<BattleEvents, BattleData>.Invoke(BattleEvents.StartBattle, data);
     }
 }
