@@ -138,6 +138,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
         Transform parent = room.transform;
         RoomComponent roomComp = room.GetComponent<RoomComponent>();
 
+        roomComp.EnemyTeams = enemyTeams;
+
         Dictionary<Vector2Int, Tile> dict = GenerateGrid(parent);
         roomComp.Editor_SetUp(dict.Keys.ToList(), dict.Values.ToList(), heightGrid.Values.ToList());
     }
@@ -193,6 +195,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
         GameObject waterGO = Resources.Load("GridBlocks/GridWaterBlock") as GameObject;
         GameObject spawnGO = Resources.Load("GridBlocks/GridSpawnBlock") as GameObject;
         GameObject specialGO = Resources.Load("GridBlocks/GridCardBlock") as GameObject;
+        GameObject enemyGO = Resources.Load("GridBlocks/GridEnemySpawnBlock") as GameObject;
 
         Tile hex = hexGO.GetComponent<Tile>();
         Tile coverHex = coverGO.GetComponent<Tile>();
@@ -200,6 +203,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
         Tile waterHex = waterGO.GetComponent<Tile>();
         Tile spawnHex = spawnGO.GetComponent<Tile>();
         Tile specialHex = specialGO.GetComponent<Tile>();
+        Tile enemyHex = enemyGO.GetComponent<Tile>();
 
         result.Add(TileType.Normal, hex);
         result.Add(TileType.Cover, coverHex);
@@ -207,6 +211,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
         result.Add(TileType.Water, waterHex);
         result.Add(TileType.Spawn, spawnHex);
         result.Add(TileType.Special, specialHex);
+        result.Add(TileType.EnemySpawn, enemyHex);
 
         return result;
     }

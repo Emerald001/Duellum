@@ -13,6 +13,8 @@ public class RoomComponent : MonoBehaviour {
     public Dictionary<int, Vector2Int> gridPositionsPerIndex;
     public List<Vector4> connections;
 
+    public List<EnemyTeamSO> EnemyTeams;
+
     public void Editor_SetUp(List<Vector2Int> gridPositions, List<Tile> gridValues, List<float> gridHeights) {
         this.gridPositions = gridPositions;
         this.gridValues = gridValues;

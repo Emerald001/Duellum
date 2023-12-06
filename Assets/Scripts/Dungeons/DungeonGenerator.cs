@@ -25,7 +25,7 @@ public class DungeonGenerator : MonoBehaviour {
 
     private Transform dungeonParent;
 
-    private void Awake() {
+    private void Start() {
         dungeonParent = new GameObject("DungeonRooms").transform;
 
         StartCoroutine(SpawnRooms());
@@ -62,7 +62,7 @@ public class DungeonGenerator : MonoBehaviour {
                 break;
 
             Vector2Int currentPos = openSet[0];
-            System.Tuple<DungeonRoomTile, RoomComponent> roomData = SpawnRoom(new(roomList.Select(x => x.room).ToList()), currentPos, heights[currentPos]);
+            System.Tuple<DungeonRoomTile, RoomComponent> roomData = SpawnRoom(new(roomList), currentPos, heights[currentPos]);
             roomsSpawned++;
 
             if (!generateInstantly) {
@@ -107,7 +107,7 @@ public class DungeonGenerator : MonoBehaviour {
         }
 
         foreach (var currentPos in openSet) {
-            System.Tuple<DungeonRoomTile, RoomComponent> roomData = SpawnRoom(new(endRoomList.Select(x => x.room).ToList()), currentPos, heights[currentPos], true);
+            System.Tuple<DungeonRoomTile, RoomComponent> roomData = SpawnRoom(new(endRoomList), currentPos, heights[currentPos], true);
 
             if (!generateInstantly) {
                 if (debugObjects.ContainsKey(currentPos))
@@ -143,8 +143,8 @@ public class DungeonGenerator : MonoBehaviour {
         outfitter.OutfitDungeon();
     }
 
-    private System.Tuple<DungeonRoomTile, RoomComponent> SpawnRoom(List<DungeonRoomTile> listToUse, Vector2Int position, float height, bool spawnFirst = false) {
-        List<DungeonRoomTile> availableTiles = listToUse
+    private System.Tuple<DungeonRoomTile, RoomComponent> SpawnRoom(List<DungeonRoomSO> listToUse, Vector2Int position, float height, bool spawnFirst = false) {
+        List<DungeonRoomTile> availableTiles = listToUse.Select(x => x.room).ToList()
         .SelectMany(item => Enumerable.Range(0, (item.size.x > 1 || item.size.y > 1) ? 1 : 4)
             .Select(i => {
                 DungeonRoomTile roomTile = new(item.name, item.size, item.prefab, item.connections);

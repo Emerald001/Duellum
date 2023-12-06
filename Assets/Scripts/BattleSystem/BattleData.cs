@@ -9,4 +9,11 @@ public class BattleData {
 
     public List<UnitData> PlayerUnits;
     public List<UnitData> EnemyUnits;
+
+    public BattleData(Vector2Int playerPos, Vector2Int enemyPos, List<UnitData> playerUnits, List<UnitData> enemyUnits) {
+        PlayerPos = playerPos;
+        EnemyPos = enemyPos;
+        PlayerUnits = playerUnits;
+        EnemyUnits = enemyUnits;
+    }
 }

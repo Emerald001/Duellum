@@ -5,7 +5,14 @@ using UnityEditor;
 using UnityEngine;
 
 public class DungeonOutfitter : MonoBehaviour {
-    [SerializeField] private GameObject LinePrefab; 
+    [SerializeField] private GameObject LinePrefab;
+    [SerializeField] private EnemyBehaviour EnemyPrefab;
+    [SerializeField] private PlayerController PlayerPrefab;
+
+    private List<RoomComponent> mainRoomSequence = new();
+    private List<List<RoomComponent>> roomsInProgression = new();
+
+    private PlayerController playerController;
 
     public void OutfitDungeon() {
         foreach (var room in GridStaticFunctions.Dungeon) {
@@ -19,6 +26,9 @@ public class DungeonOutfitter : MonoBehaviour {
         }
 
         CreatePathThroughDungeon();
+
+        SpawnPlayer();
+        SpawnEnemies();
     }
 
     private void OverwriteGridPositions(RoomComponent room) {
@@ -139,6 +149,7 @@ public class DungeonOutfitter : MonoBehaviour {
         for (int i = 0; i < path.Count; i++) {
             line.SetPosition(i, CalculateWorldPosition(path[i]));
             checkedRooms.Add(path[i]);
+            mainRoomSequence.Add(path[i]);
         }
 
         List<RoomComponent> endCaps = rooms
@@ -146,6 +157,8 @@ public class DungeonOutfitter : MonoBehaviour {
             .Where(x => x.connections[0].x + x.connections[0].y + x.connections[0].z + x.connections[0].w < -2500)
             .ToList();
         foreach (var room in endCaps) {
+            List<RoomComponent> smallPath = new();
+
             line = Instantiate(LinePrefab, transform).GetComponent<LineRenderer>();
             line.material.color = new(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
             line.positionCount = 1;
@@ -156,6 +169,7 @@ public class DungeonOutfitter : MonoBehaviour {
             int index = 1;
             while (!checkedRooms.Contains(currentRoom)) {
                 line.positionCount++;
+                smallPath.Add(currentRoom);
 
                 checkedRooms.Add(currentRoom);
                 currentRoom = parentDictionary[currentRoom];
@@ -165,6 +179,8 @@ public class DungeonOutfitter : MonoBehaviour {
                 if (index > 20)
                     break;
             }
+
+            roomsInProgression.Add(new(smallPath));
         }
     }
 
@@ -176,5 +192,36 @@ public class DungeonOutfitter : MonoBehaviour {
         }
 
         return worldPosition / (room.size.x * room.size.y);
+    }
+
+    private void SpawnEnemies() {
+        foreach (RoomComponent room in mainRoomSequence) {
+            int enemyIndex = 0;
+            foreach (var position in room.gridValues.Where(x => x.Type == TileType.EnemySpawn)) {
+                int index = room.gridValues.IndexOf(position);
+                Vector2Int spawnGridPosition = GridStaticFunctions.GetGridPosFromTileGameObject(position.gameObject);
+                Vector3 worldPosition = GridStaticFunctions.CalcWorldPos(spawnGridPosition);
+
+                EnemyBehaviour enemy = Instantiate(EnemyPrefab);
+                enemy.Setup(playerController.transform, room.EnemyTeams[enemyIndex].Enemies, spawnGridPosition);
+
+                enemy.transform.position = worldPosition;
+                enemyIndex++;
+            }
+        }
+    }
+
+    private void SpawnPlayer() {
+        RoomComponent spawnRoom = mainRoomSequence[0];
+
+        List<Tile> allSpawnableTiles = spawnRoom.gridValues.Where(x => x.Type == TileType.Normal).ToList();
+        Vector2Int spawnGridPosition = GridStaticFunctions.GetGridPosFromTileGameObject(allSpawnableTiles[UnityEngine.Random.Range(0, allSpawnableTiles.Count())].gameObject);
+        Vector3 worldPosition = GridStaticFunctions.CalcWorldPos(spawnGridPosition);
+
+        PlayerController player = Instantiate(PlayerPrefab, worldPosition, Quaternion.identity);
+        player.SetUp(spawnGridPosition);
+        playerController = player;
+
+        EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, player.transform);
     }
 }

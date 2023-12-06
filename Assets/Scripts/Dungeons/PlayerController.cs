@@ -7,12 +7,14 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private GameObject visuals;
     [SerializeField] private float moveSpeed;
 
+    public Vector2Int PlayerPosition => playerPosition;
+
     private ActionQueue actionQueue;
 
     private readonly Dictionary<Vector2Int, Vector2Int> parentDictionary = new();
     private readonly List<Vector2Int> currentAccessableTiles = new();
-    private Vector2Int playerPosition = new(6, 6);
 
+    private Vector2Int playerPosition;
     private Vector2Int preBattlePos;
 
     private bool isWalking;
@@ -27,8 +29,9 @@ public class PlayerController : MonoBehaviour {
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, OnBattleEnd);
     }
 
-    private void Start() {
+    public void SetUp(Vector2Int gridPosition) {
         actionQueue = new(() => isWalking = false);
+        playerPosition = gridPosition;
 
         FindAccessibleTiles(playerPosition, 30);
     }
@@ -57,6 +60,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void OnBattleStart(BattleData data) {
+        Debug.Log(1);
+
         if (isWalking)
             actionQueue.Clear();
 
