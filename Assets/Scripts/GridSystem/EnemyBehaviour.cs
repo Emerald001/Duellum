@@ -20,19 +20,13 @@ public class EnemyBehaviour : MonoBehaviour {
     }
 
     private void Update() {
-        if (Running)
-            return;
-
         Vector3 direction = (player.position - transform.position).normalized;
-
-        Debug.DrawLine(transform.position + new Vector3(0, .2f, 0), direction);
 
         if (Physics.Raycast(transform.position + new Vector3(0, .2f, 0), direction, out var hit, viewRange)) {
             if (hit.collider.CompareTag("Player")) {
-                Debug.Log("FOUND PLAYER");
-                Running = true;
-
                 EventManager<BattleEvents, EnemyBehaviour>.Invoke(BattleEvents.EnemyViewedPlayer, this);
+
+                Destroy(gameObject);
             }
         }
     }

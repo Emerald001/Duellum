@@ -175,4 +175,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50cd33eb34dcf784c9bf33378d200523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRange: 10
+  viewRange: 9

@@ -131,7 +131,6 @@ public class BattleManager : MonoBehaviour {
         GridStaticFunctions.SetBattleGrid(points);
 
         GridStaticFunctions.PlayerSpawnPositions.AddRange(GetSpawnPositions(data.PlayerUnits.Count, data.PlayerPos, direction));
-        Debug.Log(GetSpawnPositions(data.EnemyUnits.Count, data.EnemyPos, direction).Count);
         GridStaticFunctions.EnemySpawnPositions.AddRange(GetSpawnPositions(data.EnemyUnits.Count, data.EnemyPos, direction));
     }
 
@@ -153,8 +152,6 @@ public class BattleManager : MonoBehaviour {
         players.Add(playerTurnController);
 
         EnemyTurnController enemyTurnController = new();
-
-        Debug.Log($"Enemy spawn pos {GridStaticFunctions.EnemySpawnPositions.Count}");
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPositions.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPositions[i];
 

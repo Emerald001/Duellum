@@ -25,7 +25,14 @@ public class DungeonGenerator : MonoBehaviour {
 
     private Transform dungeonParent;
 
-    private void Start() {
+    private void OnEnable() {
+        EventManager<DungeonEvents>.Subscribe(DungeonEvents.StartGeneration, GenerateDungeon);
+    }
+    private void OnDisable() {
+        EventManager<DungeonEvents>.Unsubscribe(DungeonEvents.StartGeneration, GenerateDungeon);
+    }
+
+    private void GenerateDungeon() {
         dungeonParent = new GameObject("DungeonRooms").transform;
 
         StartCoroutine(SpawnRooms());
@@ -238,5 +245,6 @@ public class DungeonGenerator : MonoBehaviour {
 }
 
 public enum DungeonEvents { 
+    StartGeneration,
     GenerationDone,
 }
