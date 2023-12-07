@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class CardPickerManager : MonoBehaviour {
     [SerializeField] private UICard cardPrefab;
@@ -32,8 +31,6 @@ public class CardPickerManager : MonoBehaviour {
     }
 
     public void PickCard(UnitData data) {
-        Debug.Log(1);
-
         if (pickedCards.Contains(data)) {
             pickedCards.Remove(data);
 

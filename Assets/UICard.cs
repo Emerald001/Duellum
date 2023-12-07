@@ -13,8 +13,6 @@ public class UICard : MonoBehaviour {
     private UnitData unitData;
 
     public void SetCardData(UnitData data) {
-        Debug.Log(data);
-
         unitData = data;
 
         unitName.text = data ? data.name : "";

@@ -224,7 +224,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
             for (int y = 0; y < size.y; y++)
                 list.Add(connectionGrid[new(x, y)]);
         }
-        newScriptableObject.room = new(tileName, size, null, list);
+        newScriptableObject.room = new(tileName, size, null, list, 0);
 
         newScriptableObject.gridPositions = new(grid.Keys);
         newScriptableObject.gridValues = new(grid.Values);

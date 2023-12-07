@@ -10,11 +10,12 @@ public class DungeonRoomTile {
     public List<Vector4> connections;
     public int Id;
 
-    public DungeonRoomTile(string name, Vector2Int size, RoomComponent prefab, List<Vector4> connections) {
+    public DungeonRoomTile(string name, Vector2Int size, RoomComponent prefab, List<Vector4> connections, int Id) {
         this.name = name;
         this.size = size;
         this.prefab = prefab;
         this.connections = new(connections);
+        this.Id = Id;
     }
 
     public Dictionary<int, Vector2Int> GridPositionsPerIndex { get; private set; }
