@@ -26,6 +26,8 @@ public class CardPickerManager : MonoBehaviour {
 
         for (int i = 0; i < 3; i++) {
             UICard card = Instantiate(cardPrefab, pickedcardTransform);
+            card.SetCardData(null);
+
             pickedCardsUI.Add(card);
         }
     }
