@@ -19,7 +19,7 @@ MonoBehaviour:
     connections:
     - {x: -999, y: -999, z: 0, w: 0}
     - {x: 0, y: -999, z: -999, w: -999}
-  id: 0
+    Id: 1
   gridPositions:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
@@ -1044,3 +1044,4 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  enemyTeams: []
