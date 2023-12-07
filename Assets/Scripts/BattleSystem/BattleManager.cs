@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour {
+    [SerializeField] private GridCardManager cardManager;
+
     [SerializeField] private UnitController PlayerUnitPrefab;
     [SerializeField] private UnitController EnemyUnitPrefab;
 
@@ -32,6 +34,7 @@ public class BattleManager : MonoBehaviour {
     private void StartBattle(BattleData data) {
         SetBattlefield(data);
         SpawnUnits(data.PlayerUnits, data.EnemyUnits);
+        cardManager.SetUp();
 
         NextPlayer();
     }

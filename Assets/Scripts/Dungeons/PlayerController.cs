@@ -44,23 +44,27 @@ public class PlayerController : MonoBehaviour {
 
         if (MouseToWorldView.HoverTileGridPos == GridStaticFunctions.CONST_EMPTY ||
             !currentAccessableTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
+            EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
             line.enabled = false;
             return;
         }
 
         if (isWalking) {
             line.enabled = false;
+            EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
             return;
         }
         else {
             DrawPathWithLine(GetPath(MouseToWorldView.HoverTileGridPos));
+            EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Move);
+
             if (Input.GetKeyDown(KeyCode.Mouse0))
                 Move();
         }
     }
 
     private void OnBattleStart(BattleData data) {
-        Debug.Log(1);
+        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
 
         if (isWalking)
             actionQueue.Clear();

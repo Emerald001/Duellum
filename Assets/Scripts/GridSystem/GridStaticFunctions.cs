@@ -192,7 +192,7 @@ public static class GridStaticFunctions {
     }
 
     public static List<Vector2Int> GetAllOpenGridPositions() {
-        var result = Grid.Keys.Where(hex => Grid[hex].Type == TileType.Normal).ToList();
+        var result = CurrentBattleGrid.Keys.Where(hex => Grid[hex].Type == TileType.Normal).ToList();
         var unitPositions = UnitStaticManager.UnitPositions.Values.ToList();
 
         for (int i = result.Count - 1; i >= 0; i--) {
