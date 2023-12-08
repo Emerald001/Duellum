@@ -167,13 +167,6 @@ public static class GridStaticFunctions {
 
             CurrentBattleGrid.Add(position, Grid[position]);
         }
-        
-        foreach (var item in Grid) {
-            if (positions.Contains(item.Key))
-                continue;
-
-            item.Value.SetHighlight(HighlightType.Transparent);
-        }
     }
 
     public static Tile GetTileFromPosition(Vector2Int position) {
