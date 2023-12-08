@@ -10,14 +10,14 @@ public static class GridStaticFunctions {
     public static int TilesPerRoom = 13;
     public static int BattleMapSize = 11;
 
-    private static readonly Vector2Int[] directCubeNeighbours = {
+    public static readonly Vector2Int[] directCubeNeighbours = {
         new Vector2Int(1, 0),
         new Vector2Int(0, 1),
         new Vector2Int(-1, 0),
         new Vector2Int(0, -1),
     };
 
-    private static readonly Vector2Int[] diagonalCubeNeighbours = {
+    public static readonly Vector2Int[] diagonalCubeNeighbours = {
         new Vector2Int(1, 1),
         new Vector2Int(1, -1),
         new Vector2Int(-1, 1),
@@ -99,14 +99,14 @@ public static class GridStaticFunctions {
         List<Vector2Int> layerList = new();
         List<Vector2Int> closedList = new();
 
+        List<Vector2Int> neighbours = new();
+        neighbours.AddRange(directCubeNeighbours);
+        neighbours.AddRange(diagonalCubeNeighbours);
+
         openList.Add(spawnPos);
         for (int i = 0; i < range; i++) {
             for (int j = 0; j < openList.Count; j++) {
                 Vector2Int currentPos = openList[j];
-
-                List<Vector2Int> neighbours = new();
-                neighbours.AddRange(directCubeNeighbours);
-                neighbours.AddRange(diagonalCubeNeighbours);
 
                 if (i < range - 1) {
                     for (int k = 0; k < neighbours.Count; k++) {

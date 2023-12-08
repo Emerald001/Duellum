@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
@@ -14,6 +13,10 @@ public class PlayerController : MonoBehaviour {
 
     private readonly Dictionary<Vector2Int, Vector2Int> parentDictionary = new();
     private readonly List<Vector2Int> currentAccessableTiles = new();
+
+    private readonly HashSet<Vector2Int> openSet = new();
+    private readonly HashSet<Vector2Int> layerSet = new();
+    private readonly HashSet<Vector2Int> closedSet = new();
 
     private Vector2Int playerPosition;
     private Vector2Int preBattlePos;
@@ -138,52 +141,56 @@ public class PlayerController : MonoBehaviour {
         }));
     }
 
-    public void FindAccessibleTiles(Vector2Int gridPos, int speedValue) {
-        playerPosition = gridPos;
-
+    private void FindAccessibleTiles(Vector2Int gridPos, int speedValue) {
         parentDictionary.Clear();
         currentAccessableTiles.Clear();
 
-        List<Vector2Int> openList = new();
-        List<Vector2Int> layerList = new();
-        List<Vector2Int> closedList = new();
+        List<Vector2Int> neighbours = new();
+        neighbours.AddRange(GridStaticFunctions.directCubeNeighbours);
+        neighbours.AddRange(GridStaticFunctions.diagonalCubeNeighbours);
 
-        openList.Add(gridPos);
+        openSet.Add(gridPos);
         for (int i = 0; i < speedValue; i++) {
-            foreach (var currentPos in openList.ToList()) {
-                GridStaticFunctions.RippleThroughFullGridPositions(currentPos, 2, (neighbour, count) => {
-                    if (neighbour == currentPos)
-                        return;
+            Queue<Vector2Int> queue = new(openSet);
+            openSet.Clear();
 
-                    // Only applicable if no other thing is needed
+            while (queue.Count > 0) {
+                Vector2Int currentPos = queue.Dequeue();
+
+                foreach (var offset in neighbours) {
+                    Vector2Int neighbour = currentPos + offset;
+                    if (closedSet.Contains(neighbour) || layerSet.Contains(neighbour))
+                        continue;
+
                     if (GridStaticFunctions.Grid[neighbour].Type != TileType.Normal)
-                        return;
+                        continue;
 
-                    if (openList.Contains(neighbour) ||
-                        closedList.Contains(neighbour) ||
-                        layerList.Contains(neighbour))
-                        return;
-
-                    layerList.Add(neighbour);
                     currentAccessableTiles.Add(neighbour);
                     parentDictionary[neighbour] = currentPos;
-                });
 
-                closedList.Add(currentPos);
+                    layerSet.Add(neighbour);
+                    openSet.Add(neighbour);
+                }
+
+                closedSet.Add(currentPos);
             }
-
-            openList.Clear();
-            openList.AddRange(layerList);
-            layerList.Clear();
         }
+
+        openSet.Clear();
+        closedSet.Clear();
+        layerSet.Clear();
     }
 
-    public List<Vector2Int> GetPath(Vector2Int endPos) {
+    private List<Vector2Int> GetPath(Vector2Int endPos) {
         List<Vector2Int> path = new();
         Vector2Int currentPosition = endPos;
 
         while (currentPosition != playerPosition) {
             path.Add(currentPosition);
+
+            if (!parentDictionary.ContainsKey(currentPosition))
+                return new();
+
             currentPosition = parentDictionary[currentPosition];
         }
 
