@@ -23,16 +23,13 @@ public class BattleManager : MonoBehaviour {
     }
 
     private void OnEnable() {
-        EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartBattle, StartBattle);
         EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, CleanupAfterBattle);
     }
     private void OnDisable() {
-        EventManager<BattleEvents, BattleData>.Unsubscribe(BattleEvents.StartBattle, StartBattle);
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, CleanupAfterBattle);
     }
 
-    private void StartBattle(BattleData data) {
-        SetBattlefield(data);
+    public void StartBattle(BattleData data) {
         SpawnUnits(data.PlayerUnits, data.EnemyUnits);
         cardManager.SetUp();
 
@@ -51,8 +48,8 @@ public class BattleManager : MonoBehaviour {
         currentPlayer.OnUpdate();
     }
 
-    private void SetBattlefield(BattleData data) {
-        List<Vector2Int> GetSpawnPositions(int unitAmount, Vector2Int startPos, Vector2Int direction) {
+    public void SetBattlefield(BattleData data, Vector2Int direction) {
+        List<Vector2Int> GetSpawnPositions(int unitAmount, Vector2Int startPos) {
             List<Vector2Int> result = new() {
                 startPos
             };
@@ -121,20 +118,8 @@ public class BattleManager : MonoBehaviour {
             return result;
         }
 
-        Vector2Int difference = data.PlayerPos - data.EnemyPos;
-        Vector2Int middlePoint = data.PlayerPos + -difference / 2;
-        Vector2Int direction = Mathf.Abs(difference.x) > Mathf.Abs(difference.y) ? new(0, 1) : new(1, 0);
-
-        List<Vector2Int> points = new();
-        for (int x = -((BattleMapSize - 1) / 2); x <= ((BattleMapSize - 1) / 2); x++) {
-            for (int y = -((BattleMapSize - 1) / 2); y <= ((BattleMapSize - 1) / 2); y++)
-                points.Add(middlePoint + new Vector2Int(x, y));
-        }
-
-        GridStaticFunctions.SetBattleGrid(points);
-
-        GridStaticFunctions.PlayerSpawnPositions.AddRange(GetSpawnPositions(data.PlayerUnits.Count, data.PlayerPos, direction));
-        GridStaticFunctions.EnemySpawnPositions.AddRange(GetSpawnPositions(data.EnemyUnits.Count, data.EnemyPos, direction));
+        GridStaticFunctions.PlayerSpawnPositions.AddRange(GetSpawnPositions(data.PlayerUnits.Count, data.PlayerPos));
+        GridStaticFunctions.EnemySpawnPositions.AddRange(GetSpawnPositions(data.EnemyUnits.Count, data.EnemyPos));
     }
 
     private void SpawnUnits(List<UnitData> playerUnitsToSpawn, List<UnitData> enemyUnitsToSpawn) {
@@ -212,6 +197,7 @@ public class BattleManager : MonoBehaviour {
 
 public enum BattleEvents {
     EnemyViewedPlayer,
+    StartPlayerStartSequence,
     StartBattle,
     NewTurn,
     UnitHit,

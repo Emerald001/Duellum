@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,11 +22,11 @@ public class PlayerController : MonoBehaviour {
     private bool inBattle;
 
     private void OnEnable() {
-        EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartBattle, OnBattleStart);
+        EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartPlayerStartSequence, (x) => StartCoroutine(OnBattleStart(x)));
         EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, OnBattleEnd);
     }
     private void OnDisable() {
-        EventManager<BattleEvents, BattleData>.Unsubscribe(BattleEvents.StartBattle, OnBattleStart);
+        EventManager<BattleEvents, BattleData>.Unsubscribe(BattleEvents.StartPlayerStartSequence, (x) => StartCoroutine(OnBattleStart(x)));
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, OnBattleEnd);
     }
 
@@ -63,23 +64,32 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void OnBattleStart(BattleData data) {
+    private IEnumerator OnBattleStart(BattleData data) {
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
 
         if (isWalking)
             actionQueue.Clear();
 
-        preBattlePos = playerPosition;
+        visuals.SetActive(false);
+        line.enabled = false;
+        inBattle = true;
 
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
         Vector2Int middlePoint = data.PlayerPos + -difference / 2;
 
-        transform.position = GridStaticFunctions.CalcWorldPos(middlePoint) + new Vector3(0, -2, 0);
+        Vector3 newPos = GridStaticFunctions.CalcWorldPos(data.EnemyPos) + new Vector3(0, -2, 0);
+        while (transform.position != newPos) {
+            transform.position = Vector3.MoveTowards(transform.position, newPos, 10 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
 
-        visuals.SetActive(false);
-        line.enabled = false;
+        yield return new WaitForSeconds(1f);
 
-        inBattle = true;
+        newPos = GridStaticFunctions.CalcWorldPos(middlePoint) + new Vector3(0, -2, 0);
+        while (transform.position != newPos) {
+            transform.position = Vector3.MoveTowards(transform.position, newPos, 10 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     private void OnBattleEnd() {
