@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardBehaviour : MonoBehaviour, 
+public class CardBehaviour : MonoBehaviour,
     IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler {
     public static event System.Action<CardBehaviour, System.Action> OnHoverEnter;
     public static event System.Action<CardBehaviour, System.Action> OnHoverExit;
@@ -60,14 +60,17 @@ public class CardBehaviour : MonoBehaviour,
             queue.Enqueue(item);
     }
 
-    public void ClearQueue(bool finishAction = false) => queue.Clear(finishAction);
+    public void ClearQueue(bool finishAction = false) {
+        queue.Clear(finishAction);
+    }
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (grabbed || !CanInvoke)
             return;
 
-        OnHoverEnter.Invoke(this, () =>
-        {
+        OnHoverEnter.Invoke(this, () => {
+            EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Hover);
+
             queue.Clear();
             resizeQueue.Clear();
             queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, raisedPos));
@@ -79,8 +82,9 @@ public class CardBehaviour : MonoBehaviour,
         if (grabbed || !CanInvoke)
             return;
 
-        OnHoverExit.Invoke(this, () =>
-        {
+        OnHoverExit.Invoke(this, () => {
+            EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
+
             queue.Clear();
             resizeQueue.Clear();
             queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));
@@ -92,8 +96,10 @@ public class CardBehaviour : MonoBehaviour,
         if (!CanInvoke)
             return;
 
-        grabbed = true; 
+        grabbed = true;
         offset = transform.position - UICam.ScreenToWorldPoint(eventData.position);
+
+        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Grab);
         EventManager<BattleEvents>.Invoke(BattleEvents.GrabbedAbilityCard);
 
         queue.Clear();
@@ -105,13 +111,13 @@ public class CardBehaviour : MonoBehaviour,
             return;
 
         grabbed = false;
-        OnMoveRelease.Invoke(this, () =>
-        {
+        OnMoveRelease.Invoke(this, () => {
             queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));
             resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
         });
 
         EventManager<BattleEvents>.Invoke(BattleEvents.ReleasedAbilityCard);
+        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
     }
 
     public void OnPointerMove(PointerEventData eventData) {

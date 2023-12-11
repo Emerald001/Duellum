@@ -25,4 +25,5 @@ MonoBehaviour:
     includeWater: 0
     includeCover: 0
     excludeUnits: 0
+  isRanged: 1
   damageType: 1

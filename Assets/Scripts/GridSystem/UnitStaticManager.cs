@@ -12,6 +12,15 @@ public static class UnitStaticManager {
     public static List<UnitController> EnemyUnitsInPlay { get; set; } = new();
     public static List<UnitController> PlayerUnitsInPlay { get; set; } = new();
 
+    public static void Reset() {
+        UnitPositions.Clear();
+        LivingUnitsInPlay.Clear();
+        DeadUnitsInPlay.Clear();
+        UnitsWithTurnLeft.Clear();
+        EnemyUnitsInPlay.Clear();
+        PlayerUnitsInPlay.Clear();
+    }
+
     public static void SetUnitPosition(UnitController unit, Vector2Int pos) {
         UnitPositions[unit] = pos;
     }
@@ -67,9 +76,6 @@ public static class UnitStaticManager {
     }
 
     public static List<UnitController> GetEnemies(UnitController unit) {
-        if (EnemyUnitsInPlay.Contains(unit))
-            return PlayerUnitsInPlay;
-        else
-            return EnemyUnitsInPlay;
+        return EnemyUnitsInPlay.Contains(unit) ? PlayerUnitsInPlay : EnemyUnitsInPlay;
     }
 }

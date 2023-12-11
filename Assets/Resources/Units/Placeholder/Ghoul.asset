@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1935d9431b32a1b469ea1a2aac83c41f, type: 3}
+  m_Name: Ghoul
+  m_EditorClassIdentifier: 
+  Name: Ghoul
+  Description: A speedy Unit. Watch out for this one!
+  Rank: 1
+  Catagory: 0
+  Icon: {fileID: 21300000, guid: 273766fd3d062684c9835a2e4340c04c, type: 3}
+  Animations: {fileID: 0}
+  PawnPrefab: {fileID: 2314832724180352697, guid: 64bb90c61d3e08743b48cda0cbdd79b8,
+    type: 3}
+  UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
+    type: 3}
+  movementSpeed: 4
+  tileCover: 1
+  TileCoverage: 3
+  BaseStatBlock:
+    Defence: 3
+    Speed: 6
+    Attack: 2
+  Attack: {fileID: 11400000, guid: 30a598603e865a24097146ca25fb4322, type: 2}
+  Properties: []

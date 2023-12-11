@@ -3,10 +3,10 @@ using UnityEngine;
 // TODO:
 // Create a custom Drawer For this!
 [CreateAssetMenu(menuName = "Abilty Card", fileName = "Card")]
-public class AbilityCard : ScriptableObject
-{
+public class AbilityCard : ScriptableObject {
     [Header("Visuals")]
     public string Name;
+    public string ShortcutName;
     public string Discription;
 
     public Sprite Icon;
@@ -22,7 +22,7 @@ public class AbilityCard : ScriptableObject
 
     public AbilityCardType abilityType;
     public Effect effectToApply;
-    public Hex hexPrefab;
+    public Tile hexPrefab;
 }
 
 public enum AbilityCardType {
@@ -30,4 +30,6 @@ public enum AbilityCardType {
     PlaceBoulder,
     Revive,
     SkipOpponentsTurn,
+    MoveUnit,
+    SpinUnit,
 }

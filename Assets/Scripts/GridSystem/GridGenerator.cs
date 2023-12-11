@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridGenerator : MonoBehaviour
-{
+public class GridGenerator : MonoBehaviour {
     [Header("References")]
-    [SerializeField] private Hex HexPrefab;
-    [SerializeField] private Hex CubePrefab;
-    [SerializeField] private Hex ExtraHexPrefab;
+    [SerializeField] private Tile HexPrefab;
+    [SerializeField] private Tile CubePrefab;
+    [SerializeField] private Tile ExtraHexPrefab;
 
     [Header("Grid Settings")]
     [SerializeField] private bool isHexagons;
@@ -31,7 +30,7 @@ public class GridGenerator : MonoBehaviour
 
     private Texture2D heightMap;
 
-    private readonly List<Hex> Hexes = new();
+    private readonly List<Tile> Hexes = new();
 
     public void SpawnGrid() {
         heightMap = generator.GenerateHeightMap(rings + extraRings);
@@ -51,10 +50,9 @@ public class GridGenerator : MonoBehaviour
     }
 
     private void GenerateGrid() {
-
         if (isHexagons) {
             GridStaticFunctions.RippleThroughGridPositions(new Vector2Int(0, 0), rings + extraRings, (currentPos, i) => {
-                Hex hex = Instantiate(i > rings ? ExtraHexPrefab : HexPrefab);
+                Tile hex = Instantiate(i > rings ? ExtraHexPrefab : HexPrefab);
                 hex.GridPos = currentPos;
                 hex.transform.position = GridStaticFunctions.CalcHexWorldPos(currentPos);
                 hex.transform.parent = Parent.transform;
@@ -64,7 +62,7 @@ public class GridGenerator : MonoBehaviour
         }
         else {
             GridStaticFunctions.RippleThroughSquareGridPositions(new Vector2Int(0, 0), rings + extraRings, (currentPos, i) => {
-                Hex hex = Instantiate(i > rings ? ExtraHexPrefab : CubePrefab);
+                Tile hex = Instantiate(i > rings ? ExtraHexPrefab : CubePrefab);
                 hex.GridPos = currentPos;
                 hex.transform.position = GridStaticFunctions.CalcSquareWorldPos(currentPos);
                 hex.transform.parent = Parent.transform;
@@ -83,7 +81,7 @@ public class GridGenerator : MonoBehaviour
             }
         }
 
-        foreach (Hex hex in Hexes) {
+        foreach (Tile hex in Hexes) {
             if (positions.TryGetValue(hex.GridPos, out float value)) {
                 hex.SetHighlight(HighlightType.None);
                 hex.SetActionQueue(new List<Action>() {

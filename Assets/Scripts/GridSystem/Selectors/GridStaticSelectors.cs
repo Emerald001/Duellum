@@ -130,17 +130,17 @@ public static class GridStaticSelectors {
 
     private static List<Vector2Int> GetAllTiles(Selector selector) {
         List<Vector2Int> result = GridStaticFunctions.Grid.Values
-            .Where(tile => tile.Type == HexType.Normal)
+            .Where(tile => tile.Type == TileType.Normal)
             .Select(tile => tile.GridPos).ToList();
 
         if (selector.includeWater) {
             result.AddRange(GridStaticFunctions.Grid.Values
-                .Where(tile => tile.Type == HexType.Water)
+                .Where(tile => tile.Type == TileType.Water)
                 .Select(tile => tile.GridPos));
         }
         if (selector.includeCover) {
             result.AddRange(GridStaticFunctions.Grid.Values
-                .Where(tile => tile.Type == HexType.Cover)
+                .Where(tile => tile.Type == TileType.Cover)
                 .Select(tile => tile.GridPos));
         }
         if (selector.excludeUnits) {

@@ -21,9 +21,8 @@ public class GridEffects : MonoBehaviour {
     }
 
     private void Ripple(Vector2Int gridPos, float rippleStrength) {
-        GridStaticFunctions.RippleThroughGridPositions(gridPos, RippleSelector.range, (gridPos, i) =>
-        {
-            Hex currentHex = GridStaticFunctions.Grid[gridPos];
+        GridStaticFunctions.RippleThroughGridPositions(gridPos, RippleSelector.range, (gridPos, i) => {
+            Tile currentHex = GridStaticFunctions.Grid[gridPos];
             currentHex.ClearQueue();
             List<Action> queue = new() {
                     new WaitAction(Mathf.Pow(i, i / 70f) - Mathf.Pow(1, 1 / 70f)),
@@ -41,7 +40,7 @@ public class GridEffects : MonoBehaviour {
 
         for (int i = 0; i < positions.Count; i++) {
             float newHeight = invert ? -height : height;
-            Hex currentHex = GridStaticFunctions.Grid[positions[i]];
+            Tile currentHex = GridStaticFunctions.Grid[positions[i]];
             currentHex.ClearQueue();
             List<Action> queue = new() {
                     new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + new Vector3(0, newHeight, 0)),

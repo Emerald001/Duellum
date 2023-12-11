@@ -13,20 +13,22 @@ MonoBehaviour:
   m_Name: Skeleton
   m_EditorClassIdentifier: 
   Name: Skeleton
-  Description: Is a Skellie
+  Description: Has a bow and arrow, and can do ranged damage. However, it doesn't
+    do a lot of damage.
   Rank: 1
   Catagory: 1
-  Icon: {fileID: 21300000, guid: c389ee7a0df15ac4f8d5d8c90a1bc1d0, type: 3}
+  Icon: {fileID: 21300000, guid: 00ea5a40213a3e34abd093772d80b4e0, type: 3}
   Animations: {fileID: 0}
-  PawnPrefab: {fileID: 0}
-  movementSpeed: 5
-  tileCover: 0
-  TileCoverage: 1
+  PawnPrefab: {fileID: 418859313218980017, guid: d1d66aa8ff7b84e438b849f067f609cf,
+    type: 3}
+  UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
+    type: 3}
+  movementSpeed: 4
+  tileCover: 1
+  TileCoverage: 3
   BaseStatBlock:
-    EnergyPoints: 5
-    Attack: 1
     Defence: 3
-    Initiative: 4
-    Speed: 1
-  Attack: {fileID: 11400000, guid: f7a586e7450f6ba46bfa6aedad9e818c, type: 2}
+    Speed: 6
+    Attack: 2
+  Attack: {fileID: 11400000, guid: 30a598603e865a24097146ca25fb4322, type: 2}
   Properties: []

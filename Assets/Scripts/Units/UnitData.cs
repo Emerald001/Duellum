@@ -18,6 +18,7 @@ public class UnitData : ScriptableObject {
     public Sprite Icon;
     public SpriteAtlas Animations;
     public GameObject PawnPrefab;
+    public GameObject UnitCard;
     public float movementSpeed;
 
     [Header("Tile Coverage")]
@@ -36,17 +37,13 @@ public class UnitData : ScriptableObject {
 
 [Serializable]
 public class StatBlock {
-    public int EnergyPoints;
-    public int Attack;
     public int Defence;
-    public int Initiative;
     public int Speed;
+    public int Attack;
 
     public StatBlock(StatBlock clone) {
-        EnergyPoints = clone.EnergyPoints;
         Attack = clone.Attack;
         Defence = clone.Defence;
-        Initiative = clone.Initiative;
         Speed = clone.Speed;
     }
 }

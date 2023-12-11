@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AttackBoost
   m_EditorClassIdentifier: 
   Name: You found a better weapon!
+  shortcutName: attack
   Discription: +1 attack to a unit of your choice, only once.
   Icon: {fileID: 0}
   Background: {fileID: 21300000, guid: 4528beb82dc5fd14693285bedc8d2baa, type: 3}
@@ -20,6 +21,7 @@ MonoBehaviour:
   ManaCost: 0
   areaOfEffectSelector:
     type: 0
+    isHex: 0
     includeCentreTile: 0
     AllDirections: 0
     range: 1
@@ -29,6 +31,7 @@ MonoBehaviour:
     excludeUnits: 0
   availabletilesSelector:
     type: 3
+    isHex: 0
     includeCentreTile: 0
     AllDirections: 0
     range: 1
@@ -38,8 +41,8 @@ MonoBehaviour:
     excludeUnits: 0
   abilityType: 0
   effectToApply:
-    Icon: {fileID: 0}
     type: 0
     canBeStacked: 1
     duration: 1
     sevarity: 1
+  hexPrefab: {fileID: 0}

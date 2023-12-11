@@ -2,6 +2,9 @@
 using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
+    [SerializeField] private GameObject pawnParent;
+
+    private Animator unitAnimator;
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
@@ -9,25 +12,47 @@ public abstract class UnitController : MonoBehaviour {
     public UnitValues Values => values;
     protected UnitValues values;
 
-    protected UnitMovementComponent unitMovement;
+    public Vector2Int LookDirection => lookDirection;
+    protected Vector2Int lookDirection;
+
+    protected UnitMovementModule movementModule;
     protected UnitAttackModule attackModule;
     protected Vector2Int gridPosition;
-    protected Vector2Int lookDirection;
 
     private ActionQueue queue;
 
-    private bool didAttack;
+    private void OnEnable() {
+        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
+        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitHit, UnitHit);
+        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitRevive, UnitRevive);
+    }
+
+    private void OnDisable() {
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitDeath);
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitHit, UnitHit);
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitRevive, UnitRevive);
+    }
+
+    private void Start() {
+        unitAnimator = GetComponentInChildren<Animator>();
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("Card")) {
+            EventManager<BattleEvents>.Invoke(BattleEvents.SpawnAbilityCard);
+            Destroy(other.gameObject);
+        }
+    }
 
     public virtual void SetUp(UnitData data, Vector2Int pos) {
         UnitBaseData = Instantiate(data);
+        GameObject pawn = Instantiate(data.PawnPrefab, pawnParent.transform);
 
         values = new(UnitBaseData);
-        unitMovement = new();
+        movementModule = new();
         attackModule = new(UnitBaseData.Attack);
-
         gridPosition = pos;
-
-        queue = new(() => IsDone = ShouldEndTurn());
+        queue = new(() => IsDone = HasPerformedAction);
     }
 
     public virtual void OnEnter() {
@@ -52,21 +77,19 @@ public abstract class UnitController : MonoBehaviour {
                 EnqueueMovement(standingPos_optional);
                 EnqueueAttack(pickedTile, standingPos_optional);
             }
-
-            didAttack = true;
         }
-        else if (unitMovement.AccessableTiles.Contains(pickedTile))
+        else if (movementModule.AccessableTiles.Contains(pickedTile))
             EnqueueMovement(pickedTile);
     }
 
     private void EnqueueMovement(Vector2Int targetPosition) {
         queue.Enqueue(new DoMethodAction(() => {
-            //UnitAnimator.WalkAnim(true);
+            unitAnimator.SetBool("Walking", true);
             //UnitAudio.PlayLoopedAudio("Walking", true);
         }));
 
         Vector2Int lastPos = gridPosition;
-        foreach (var newPos in unitMovement.GetPath(targetPosition)) {
+        foreach (var newPos in movementModule.GetPath(targetPosition)) {
             Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(newPos) - GridStaticFunctions.CalcSquareWorldPos(lastPos));
 
             queue.Enqueue(new ActionStack(
@@ -85,8 +108,7 @@ public abstract class UnitController : MonoBehaviour {
         }
 
         queue.Enqueue(new DoMethodAction(() => {
-            //UnitAnimator.WalkAnim(false);
-            //UnitAudio.PlayLoopedAudio("Walking", false);
+            unitAnimator.SetBool("Walking", false);
 
             FindTiles();
             GridStaticFunctions.ResetTileColors();
@@ -99,21 +121,36 @@ public abstract class UnitController : MonoBehaviour {
         Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcSquareWorldPos(targetPosition) - GridStaticFunctions.CalcSquareWorldPos(standingPos));
 
         queue.Enqueue(new RotateAction(gameObject, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0), 360f, .01f));
+        queue.Enqueue(new DoMethodAction(() => unitAnimator.SetTrigger("Attacking")));
+        queue.Enqueue(new WaitAction(.2f));
         queue.Enqueue(new DoMethodAction(() => {
             bool hit = UnitStaticManager.TryGetUnitFromGridPos(targetPosition, out var unit);
             if (!hit)
                 throw new System.Exception("Something went Very wrong with getting the units attackable tiles");
 
-            DamageManager.DealDamage(values, unit);
+            this.lookDirection = lookDirection;
+            DamageManager.DealDamage(this, unit);
         }));
-
         HasPerformedAction = true;
     }
 
-    public virtual void FindTiles() {
-        unitMovement.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
+    private void UnitHit(UnitController unit) {
+        unit.unitAnimator.SetTrigger("GettingHit");
+        EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, 0.1f);
+    }
 
-        List<Vector2Int> tiles = new(unitMovement.AccessableTiles) {
+    private void UnitDeath(UnitController unit) {
+        unit.unitAnimator.SetTrigger("Dying");
+    }
+
+    private void UnitRevive(UnitController unit) {
+        unit.unitAnimator.SetTrigger("Reviving");
+    }
+
+    public virtual void FindTiles() {
+        movementModule.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
+
+        List<Vector2Int> tiles = new(movementModule.AccessableTiles) {
             gridPosition
         };
         attackModule.FindAttackableTiles(tiles, UnitStaticManager.GetEnemies(this));
@@ -123,10 +160,17 @@ public abstract class UnitController : MonoBehaviour {
         values.AddEffect(effect);
     }
 
-    private bool ShouldEndTurn() {
-        bool speedDown = values.currentStats.Speed < 1;
-        bool noAttacks = attackModule.AttackableTiles.Count < 1;
+    public void ChangeUnitPosition(Vector2Int newPosition) {
+        UnitStaticManager.SetUnitPosition(this, newPosition);
 
-        return (speedDown && noAttacks) || didAttack;
+        transform.position = GridStaticFunctions.CalcSquareWorldPos(newPosition);
+
+        gridPosition = newPosition;
+    }
+
+    public void ChangeUnitRotation(Vector2Int newRotation) {
+        lookDirection = newRotation;
+
+        transform.rotation = Quaternion.Euler(new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0));
     }
 }

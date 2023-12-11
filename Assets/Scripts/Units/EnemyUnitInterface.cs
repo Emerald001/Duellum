@@ -35,14 +35,14 @@ public class EnemyUnitInterface : UnitController {
             }
 
             Vector2Int pickedTile = UnitStaticManager.UnitPositions[lastEnemy];
-            PickedTile(pickedTile, attackModule.GetClosestTile(pickedTile, gridPosition, Vector3.zero, unitMovement.AccessableTiles));
+            PickedTile(pickedTile, attackModule.GetClosestTile(pickedTile, gridPosition, Vector3.zero));
         }
-        else if (unitMovement.AccessableTiles.Count != 0) {
+        else if (movementModule.AccessableTiles.Count != 0) {
             Vector2Int pickedTile = GridStaticFunctions.CONST_EMPTY;
 
-            for (int i = 0; i < unitMovement.AccessableTiles.Count; i++) {
-                if (unitMovement.AccessableTiles[i].x < pickedTile.x)
-                    pickedTile = unitMovement.AccessableTiles[i];
+            for (int i = 0; i < movementModule.AccessableTiles.Count; i++) {
+                if (movementModule.AccessableTiles[i].x < pickedTile.x)
+                    pickedTile = movementModule.AccessableTiles[i];
             }
 
             PickedTile(pickedTile, Vector2Int.zero);

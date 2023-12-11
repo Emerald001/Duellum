@@ -13,11 +13,11 @@ public static class AbilityManager {
             case AbilityCardType.ApplyEffect:
                 foreach (var unit in controllerList)
                     unit.AddEffect(card.effectToApply);
-            break;
+                break;
 
             case AbilityCardType.PlaceBoulder:
                 GridStaticFunctions.ReplaceHex(card.hexPrefab, positions);
-            break;
+                break;
 
             case AbilityCardType.Revive:
                 foreach (var unit in controllerList)
@@ -26,7 +26,19 @@ public static class AbilityManager {
 
             case AbilityCardType.SkipOpponentsTurn:
                 // Select All Enemy units
-            break;
+                break;
+
+            case AbilityCardType.MoveUnit:
+                foreach (var unit in controllerList) {
+                    List<Vector2Int> openPositions = GridStaticFunctions.GetAllOpenGridPositions();
+                    unit.ChangeUnitPosition(openPositions[Random.Range(0, openPositions.Count)]);
+                }
+                break;
+
+            case AbilityCardType.SpinUnit:
+                foreach (var unit in controllerList)
+                    unit.ChangeUnitRotation(-unit.LookDirection);
+                break;
 
             default:
                 throw new System.NotImplementedException($"{card.abilityType} Not Yet Implemented");

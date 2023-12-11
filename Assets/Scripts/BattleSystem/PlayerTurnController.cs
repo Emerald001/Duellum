@@ -10,7 +10,6 @@ public class PlayerTurnController : TurnController {
 
         HighlightUnits();
         isPicking = true;
-
         EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, HighlightUnits);
     }
 
@@ -41,14 +40,12 @@ public class PlayerTurnController : TurnController {
 
     private void HighlightUnits() {
         GridStaticFunctions.ResetTileColors();
-
         List<Vector2Int> positions = units.Select(unit => UnitStaticManager.UnitPositions[unit]).ToList();
         GridStaticFunctions.HighlightTiles(positions, HighlightType.OwnPositionHighlight);
     }
 
     protected override void PickUnit(Vector2Int unitPosition) {
         base.PickUnit(unitPosition);
-
         if (!isPicking)
             EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, HighlightUnits);
     }

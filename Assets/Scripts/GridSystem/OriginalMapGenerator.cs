@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class OriginalMapGenerator : MonoBehaviour {
-    [SerializeField] private Hex gridCubePrefab;
-    [SerializeField] private Hex gridWaterCubePrefab;
-    [SerializeField] private Hex gridCardCubePrefab;
-    [SerializeField] private Hex gridCoverCubePrefab;
+    [SerializeField] private Tile gridCubePrefab;
+    [SerializeField] private Tile gridWaterCubePrefab;
+    [SerializeField] private Tile gridCardCubePrefab;
+    [SerializeField] private Tile gridCoverCubePrefab;
 
     [SerializeField] private int width;
     [SerializeField] private int height;
@@ -18,8 +18,8 @@ public class OriginalMapGenerator : MonoBehaviour {
     [Range(0, 100)]
     [SerializeField] private int coverPercentage;
 
-    private readonly Dictionary<Vector2Int, Hex> GridToSpawn = new();
-    private readonly Dictionary<Vector2Int, Hex> Grid = new();
+    private readonly Dictionary<Vector2Int, Tile> GridToSpawn = new();
+    private readonly Dictionary<Vector2Int, Tile> Grid = new();
 
     private GameObject gridParent;
 
@@ -38,10 +38,11 @@ public class OriginalMapGenerator : MonoBehaviour {
 
     private void SpawnGrid() {
         foreach (var item in GridToSpawn) {
-            Hex tmp = Instantiate(item.Value);
+            Tile tmp = Instantiate(item.Value);
 
             tmp.SetHighlight(HighlightType.None);
             tmp.GridPos = item.Key;
+            tmp.transform.GetChild(0).eulerAngles = new Vector3(Random.Range(0, 4) * 90, Random.Range(0, 4) * 90, Random.Range(0, 4) * 90);
             tmp.StandardWorldPosition = GridStaticFunctions.CalcSquareWorldPos(item.Key);
             tmp.transform.position = GridStaticFunctions.CalcSquareWorldPos(item.Key);
             tmp.transform.SetParent(gridParent.transform);
@@ -81,14 +82,14 @@ public class OriginalMapGenerator : MonoBehaviour {
             },
             false);
 
-        GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2));
         GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2 - 1));
+        GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2));
         GridStaticFunctions.PlayerSpawnPos.Add(new Vector2Int(0, height / 2 + 1));
 
-        GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2));
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 - 1));
+        GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2));
         GridStaticFunctions.EnemySpawnPos.Add(new Vector2Int(width - 1, height / 2 + 1));
-
+        
         int totalTiles = height * width;
         int waterTileAmount = Mathf.RoundToInt(totalTiles * ((float)waterPercentage / 100));
         int cardTileAmount = Mathf.RoundToInt(totalTiles * ((float)cardPercentage / 100));
@@ -99,7 +100,7 @@ public class OriginalMapGenerator : MonoBehaviour {
         AllocateRandomPositions(coverTileAmount, takenPositions, gridCoverCubePrefab);
     }
 
-    private void AllocateRandomPositions(int amount, List<Vector2Int> takenPositions, Hex prefab) {
+    private void AllocateRandomPositions(int amount, List<Vector2Int> takenPositions, Tile prefab) {
         int counter = amount;
         while (counter > 0) {
             Vector2Int randomTile = new(Random.Range(0, width), Random.Range(0, height));

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5164605118751249607}
   m_Layer: 0
   m_Name: StoneFloor_Prefab
-  m_TagString: Untagged
+  m_TagString: WalkableTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
