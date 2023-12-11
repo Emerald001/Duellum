@@ -208,5 +208,6 @@ public enum BattleEvents {
     SpawnAbilityCard,
     GrabbedAbilityCard,
     ReleasedAbilityCard,
+    AddBattleInformation,
     BattleEnd,
 }
