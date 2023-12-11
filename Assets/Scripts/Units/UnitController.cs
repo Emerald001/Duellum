@@ -37,13 +37,6 @@ public abstract class UnitController : MonoBehaviour {
         unitAnimator = GetComponentInChildren<Animator>();
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Card")) {
-            EventManager<BattleEvents>.Invoke(BattleEvents.SpawnAbilityCard);
-            Destroy(other.gameObject);
-        }
-    }
-
     public virtual void SetUp(UnitData data, Vector2Int pos) {
         UnitBaseData = Instantiate(data);
         GameObject pawn = Instantiate(data.PawnPrefab, pawnParent.transform);
@@ -102,6 +95,13 @@ public abstract class UnitController : MonoBehaviour {
                 UnitStaticManager.SetUnitPosition(this, newPos);
                 gridPosition = newPos;
                 values.currentStats.Speed--;
+
+                if (GridStaticFunctions.CardPositions.ContainsKey(newPos)) {
+                    EventManager<BattleEvents>.Invoke(BattleEvents.PickUpAbilityCard);
+
+                    Destroy(GridStaticFunctions.CardPositions[newPos]);
+                    GridStaticFunctions.CardPositions.Remove(newPos);
+                }
             }));
 
             lastPos = newPos;
@@ -134,19 +134,6 @@ public abstract class UnitController : MonoBehaviour {
         HasPerformedAction = true;
     }
 
-    private void UnitHit(UnitController unit) {
-        unit.unitAnimator.SetTrigger("GettingHit");
-        EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, 0.1f);
-    }
-
-    private void UnitDeath(UnitController unit) {
-        unit.unitAnimator.SetTrigger("Dying");
-    }
-
-    private void UnitRevive(UnitController unit) {
-        unit.unitAnimator.SetTrigger("Reviving");
-    }
-
     public virtual void FindTiles() {
         movementModule.FindAccessibleTiles(gridPosition, values.currentStats.Speed);
 
@@ -158,6 +145,19 @@ public abstract class UnitController : MonoBehaviour {
 
     public void AddEffect(Effect effect) {
         values.AddEffect(effect);
+    }
+
+    private void UnitHit(UnitController unit) {
+        unit.unitAnimator.SetTrigger("GettingHit");
+        EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, 0.1f);
+    }
+
+    private void UnitDeath(UnitController unit) {
+        unit.unitAnimator.SetTrigger("Dying");
+    }
+
+    private void UnitRevive(UnitController unit) {
+        unit.unitAnimator.SetTrigger("Reviving");
     }
 
     public void ChangeUnitPosition(Vector2Int newPosition) {

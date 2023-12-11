@@ -125,7 +125,7 @@ public enum BattleEvents {
     UnitRevive,
     GiveAbilityCard,
     GiveCard,
-    SpawnAbilityCard,
+    PickUpAbilityCard,
     GrabbedAbilityCard,
     ReleasedAbilityCard,
     BattleEnd,
