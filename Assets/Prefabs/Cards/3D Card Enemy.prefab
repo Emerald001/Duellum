@@ -791,10 +791,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8217239866371085567}
   - component: {fileID: 5226560222687344958}
-  - component: {fileID: 5908612365888986362}
+  - component: {fileID: 8303632974195496424}
   - component: {fileID: -5845057114014276681}
   m_Layer: 5
-  m_Name: 3D Card
+  m_Name: 3D Card Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -829,7 +829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c23a3548ace8d4b46a3e522fe4c9dd46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardBehaviour: {fileID: 5908612365888986362}
+  cardBehaviour: {fileID: 8303632974195496424}
   ToggleVisual: {fileID: 8399205575771582146}
   Fader: {fileID: -5845057114014276681}
   Name: {fileID: 7574671193126615035}
@@ -838,7 +838,7 @@ MonoBehaviour:
   Icon: {fileID: 2352124864769876710}
   Background: {fileID: 7259527609011229209}
   Border: {fileID: 7837841311922584407}
---- !u!114 &5908612365888986362
+--- !u!114 &8303632974195496424
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -847,7 +847,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8217239866371085566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64089e59f64bd0a4ba8f602c3a208a5c, type: 3}
+  m_Script: {fileID: 11500000, guid: c15e690a31d3de14ca2ca5e7090a792e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 50

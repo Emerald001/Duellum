@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class CardAssetHolder : MonoBehaviour
 {
     [Header("References")]
-    public CardBehaviour cardBehaviour;
+    public BaseCardBehaviour cardBehaviour;
 
     [Header("Visuals")]
     public GameObject ToggleVisual;
