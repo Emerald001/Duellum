@@ -2,8 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyCardHand : CardHand {
-    // TODO: Make this arc the other way and show the back of the cards!
+    public void ResetHand() {
+        cards.Clear();
+        cardStack.ResetDeck();
+    }
 
+    // TODO: Make this arc the other way and show the back of the cards!
     protected override void LineOutCards() {
         int numObjects = cards.Count;
         float arcAngle = Mathf.Max(-((numObjects - 1) * spacing), -maxWidth);

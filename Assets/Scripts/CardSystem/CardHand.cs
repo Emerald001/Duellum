@@ -5,7 +5,7 @@ public abstract class CardHand : MonoBehaviour {
     [Header("References")]
     [SerializeField] protected Camera uiCam;
     [SerializeField] private CardAssetHolder cardPrefab;
-    [SerializeField] private CardStack cardStack;
+    [SerializeField] protected CardStack cardStack;
     [SerializeField] private Transform stackPos;
 
     [Header("Card Move Values")]
@@ -17,6 +17,8 @@ public abstract class CardHand : MonoBehaviour {
     [SerializeField] protected float maxWidth;
     [SerializeField] protected float radius;
     [SerializeField] protected float raisedAmount;
+
+    public List<AbilityCard> AbilityCards => abilityCards;
 
     protected readonly List<CardAssetHolder> cards = new();
     protected readonly List<AbilityCard> abilityCards = new();
