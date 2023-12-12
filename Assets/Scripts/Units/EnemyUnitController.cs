@@ -27,42 +27,22 @@ public class EnemyUnitController : UnitController {
 
     public override void OnExit() {
         base.OnExit();
-
-        bestPickedPosition = GridStaticFunctions.CONST_EMPTY;
     }
 
     private void PickAction() {
-        if (attackModule.AttackableTiles.Count != 0) {
-            UnitController lastEnemy = null;
-
-            for (int i = 0; i < attackModule.AttackableTiles.Count; i++) {
-                if (!UnitStaticManager.TryGetUnitFromGridPos(attackModule.AttackableTiles[i], out var unit))
-                    continue;
-
-                lastEnemy = lastEnemy ? lastEnemy : unit;
-                if (unit.Values.currentStats.Defence < lastEnemy.Values.currentStats.Defence)
-                    lastEnemy = unit;
-            }
-
-            Vector2Int pickedTile = UnitStaticManager.UnitPositions[lastEnemy];
-            PickedTile(pickedTile, attackModule.GetClosestTile(pickedTile, gridPosition, Vector3.zero));
-        }
-        else if (movementModule.AccessableTiles.Count != 0) {
-            Vector2Int pickedTile = GridStaticFunctions.CONST_EMPTY;
-
-            for (int i = 0; i < movementModule.AccessableTiles.Count; i++) {
-                if (movementModule.AccessableTiles[i].x < pickedTile.x)
-                    pickedTile = movementModule.AccessableTiles[i];
-            }
-
-            PickedTile(pickedTile, Vector2Int.zero);
-        }
+        if (attackModule.AttackableTiles.Contains(bestPickedPosition))
+            PickedTile(bestPickedPosition, attackModule.GetClosestTile(bestPickedPosition, gridPosition, Vector3.zero));
+        else if (movementModule.AccessableTiles.Contains(bestPickedPosition))
+            PickedTile(bestPickedPosition, Vector2Int.zero);
 
         pickedAction = true;
     }
 
     public int PickEvaluatedAction(List<AbilityCard> cards) {
+        bestPickedPosition = GridStaticFunctions.CONST_EMPTY;
         int result = 0;
+
+        FindTiles();
 
         if (attackModule.AttackableTiles.Count != 0) {
             UnitController lastEnemy = null;
@@ -71,7 +51,6 @@ public class EnemyUnitController : UnitController {
                 if (!UnitStaticManager.TryGetUnitFromGridPos(attackModule.AttackableTiles[i], out var unit))
                     continue;
 
-                lastEnemy = lastEnemy ? lastEnemy : unit;
                 if (values.currentStats.Attack > unit.Values.currentStats.Defence)
                     if (unit.Values.currentStats.Defence > lastEnemy.Values.currentStats.Defence)
                         lastEnemy = unit;
@@ -137,7 +116,9 @@ public class EnemyUnitController : UnitController {
                 foreach (var item in movementModule.AccessableTiles) {
                     closestPos = closestPos == GridStaticFunctions.CONST_EMPTY ? closestPos : item;
 
-                    float dis = Vector3.Distance(GridStaticFunctions.CalcSquareWorldPos(item), GridStaticFunctions.CalcSquareWorldPos(enemyPos));
+                    // if the unit is already close to an enemy, lower the score
+
+                    float dis = Vector3.Distance(GridStaticFunctions.CalcWorldPos(item), GridStaticFunctions.CalcWorldPos(enemyPos));
                     if (dis < leastDistance) {
                         leastDistance = dis;
                         closestPos = item;
@@ -148,7 +129,7 @@ public class EnemyUnitController : UnitController {
                     bestPickedPosition = closestPos;
                     result += 20;
 
-                    List<Vector2Int> path = movementModule.GetPath(attackModule.GetClosestTile(closestPos, gridPosition, Vector3.zero));
+                    List<Vector2Int> path = movementModule.GetPath(bestPickedPosition);
                     foreach (Vector2Int card in GridStaticFunctions.CardPositions.Keys) {
                         if (path.Contains(card))
                             result += 10;

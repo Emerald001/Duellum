@@ -189,8 +189,10 @@ public static class GridStaticFunctions {
         var unitPositions = UnitStaticManager.UnitPositions.Values.ToList();
 
         for (int i = result.Count - 1; i >= 0; i--) {
-            if (unitPositions.Contains(result[i]))
+            if (unitPositions.Contains(result[i])) {
                 result.RemoveAt(i);
+                continue;
+            }
 
             if (CardPositions.ContainsKey(result[i]))
                 result.RemoveAt(i);

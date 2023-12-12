@@ -2,6 +2,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyCardHand : CardHand {
+    protected override void OnDisable() {
+        EventManager<BattleEvents>.Subscribe(BattleEvents.GiveEnemyCard, GiveCard);
+    }
+    protected override void OnEnable() {
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.GiveEnemyCard, GiveCard);
+    }
+
     public void ResetHand() {
         cards.Clear();
         cardStack.ResetDeck();

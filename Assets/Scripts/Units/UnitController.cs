@@ -96,10 +96,12 @@ public abstract class UnitController : MonoBehaviour {
                 values.currentStats.Speed--;
 
                 if (GridStaticFunctions.CardPositions.ContainsKey(newPos)) {
-                    EventManager<BattleEvents>.Invoke(BattleEvents.PickUpAbilityCard);
+                    EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.PickUpAbilityCard, this);
 
                     Destroy(GridStaticFunctions.CardPositions[newPos]);
                     GridStaticFunctions.CardPositions.Remove(newPos);
+
+                    Debug.Log("Pickup Card");
                 }
             }));
 

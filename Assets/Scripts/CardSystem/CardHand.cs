@@ -23,12 +23,8 @@ public abstract class CardHand : MonoBehaviour {
     protected readonly List<CardAssetHolder> cards = new();
     protected readonly List<AbilityCard> abilityCards = new();
 
-    protected virtual void OnEnable() {
-        EventManager<BattleEvents>.Subscribe(BattleEvents.GiveAbilityCard, GiveCard);
-    }
-    protected virtual void OnDisable() {
-        EventManager<BattleEvents>.Unsubscribe(BattleEvents.GiveAbilityCard, GiveCard);
-    }
+    protected abstract void OnEnable();
+    protected abstract void OnDisable();
 
     private void Start() {
         cardStack.ResetDeck();

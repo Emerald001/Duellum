@@ -1,20 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemyTurnController : TurnController {
+    public CardHand CardHand { get; set; }
+
     public override void OnEnter() {
         base.OnEnter();
 
-        units = UnitStaticManager.EnemyUnitsInPlay;
-
         // TO DO: Calculate unit action values, and pick the highest one
-        Dictionary<int, UnitController> unitActions = new();
+        List<KeyValuePair<int, UnitController>> unitActions = new();
+        foreach (UnitController u in units)
+            unitActions.Add(new((u as EnemyUnitController).PickEvaluatedAction(CardHand.AbilityCards), u));
 
-        //foreach (UnitController u in units) {
-        //    unitActions.Add(u as EnemyUnitInterface.PickEvaluatedAction(), u);
-        //}
+        int value = 0;
+        UnitController unit = null;
+        foreach (var item in unitActions) {
+            if (item.Key > value) {
+                value = item.Key;
+                unit = item.Value;
+            }
 
-        int unit = Random.Range(0, units.Count);
-        PickUnit(UnitStaticManager.UnitPositions[units[unit]]);
+            Debug.Log($"Unit: {item.Value.UnitBaseData.Name} has a score of {item.Key}");
+        }
+
+        PickUnit(UnitStaticManager.UnitPositions[unit]);
     }
 
     public override void OnExit() {

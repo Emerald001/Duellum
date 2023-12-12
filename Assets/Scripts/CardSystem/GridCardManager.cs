@@ -6,10 +6,10 @@ public class GridCardManager : MonoBehaviour {
     [SerializeField] private int cardsToSpawn;
 
     private void OnEnable() {
-        EventManager<BattleEvents>.Subscribe(BattleEvents.PickUpAbilityCard, PickUpCard);
+        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.PickUpAbilityCard, PickUpCard);
     }
     private void OnDisable() {
-        EventManager<BattleEvents>.Unsubscribe(BattleEvents.PickUpAbilityCard, PickUpCard);
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.PickUpAbilityCard, PickUpCard);
     }
 
     public void SetUp() {
@@ -21,15 +21,19 @@ public class GridCardManager : MonoBehaviour {
         List<Vector2Int> openGridPositions = GridStaticFunctions.GetAllOpenGridPositions();
         Vector2Int position = openGridPositions[Random.Range(0, openGridPositions.Count)];
 
-        Vector3 worldPosition = GridStaticFunctions.CalcSquareWorldPos(position);
+        Vector3 worldPosition = GridStaticFunctions.CalcWorldPos(position);
         worldPosition.y += 0.5f;
 
         GameObject card = Instantiate(pickupCardPrefab, worldPosition, Quaternion.identity);
         GridStaticFunctions.CardPositions.Add(position, card);
     }
 
-    private void PickUpCard() {
-        EventManager<BattleEvents>.Invoke(BattleEvents.GiveAbilityCard);
+    private void PickUpCard(UnitController unit) {
+        if (UnitStaticManager.PlayerUnitsInPlay.Contains(unit))
+            EventManager<BattleEvents>.Invoke(BattleEvents.GivePlayerCard);
+        else
+            EventManager<BattleEvents>.Invoke(BattleEvents.GiveEnemyCard);
+
         EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_PickUpCard");
         SpawnCard();
     }

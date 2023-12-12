@@ -11,7 +11,7 @@ public class PlayerCardHand : CardHand {
     private bool hasCardFadedCallRan;
 
     protected override void OnEnable() {
-        base.OnEnable();
+        EventManager<BattleEvents>.Subscribe(BattleEvents.GivePlayerCard, GiveCard);
 
         BaseCardBehaviour.OnHoverEnter += SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
@@ -19,7 +19,7 @@ public class PlayerCardHand : CardHand {
         BaseCardBehaviour.OnMoveRelease += PerformRelease;
     }
     protected override void OnDisable() {
-        base.OnDisable();
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.GivePlayerCard, GiveCard);
 
         BaseCardBehaviour.OnHoverEnter -= SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit -= SetCardsBackToStandardPos;
@@ -129,7 +129,7 @@ public class PlayerCardHand : CardHand {
 
         if (hasCardFaded != hasCardFadedCallRan) {
             if (hasCardFaded) {
-                GridStaticFunctions.ResetTileColors();
+                GridStaticFunctions.ResetBattleTileColors();
 
                 GridStaticFunctions.HighlightTiles(GridStaticSelectors.GetPositions(
                     abilityCards[card.Index].availabletilesSelector,
@@ -137,7 +137,7 @@ public class PlayerCardHand : CardHand {
                     HighlightType.MovementHighlight);
             }
             else
-                GridStaticFunctions.ResetTileColors();
+                GridStaticFunctions.ResetBattleTileColors();
 
             EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, hasCardFaded ? abilityCards[card.Index].areaOfEffectSelector : null);
             hasCardFadedCallRan = hasCardFaded;
@@ -155,7 +155,7 @@ public class PlayerCardHand : CardHand {
             if (validTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
                 List<Vector2Int> affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos);
 
-                GridStaticFunctions.ResetTileColors();
+                GridStaticFunctions.ResetBattleTileColors();
                 AbilityManager.PerformAbility(ability, affectedTiles.ToArray());
                 RemoveCard(card.Index);
                 return;

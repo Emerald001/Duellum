@@ -101,7 +101,7 @@ public class DebugController : MonoBehaviour {
                             string cardName = inputParts[1];
                             string[] parameterValues = inputParts.Skip(2).ToArray();
 
-                            EventManager<BattleEvents, string>.Invoke(BattleEvents.GiveCard, cardName);
+                            EventManager<BattleEvents, string>.Invoke(BattleEvents.GivePlayerCard, cardName);
                         }
                         else {
                             Debug.Log("GiveCard command requires at least one parameter: Card Name.");

@@ -7,6 +7,9 @@ public class BattleManager : MonoBehaviour {
     [SerializeField] private UnitController PlayerUnitPrefab;
     [SerializeField] private UnitController EnemyUnitPrefab;
 
+    // Wish we had a better way of doing this
+    [SerializeField] private CardHand enemyCardHand;
+
     public TurnController CurrentPlayer => currentPlayer;
     public bool IsDone { get; private set; }
 
@@ -140,6 +143,7 @@ public class BattleManager : MonoBehaviour {
         players.Add(playerTurnController);
 
         EnemyTurnController enemyTurnController = new();
+        enemyTurnController.CardHand = enemyCardHand;
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPositions.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPositions[i];
 
@@ -150,7 +154,7 @@ public class BattleManager : MonoBehaviour {
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.EnemyUnitsInPlay.Add(unit);
         }
-        enemyTurnController.SetUp(new(UnitStaticManager.EnemyUnitsInPlay));
+        enemyTurnController.SetUp(UnitStaticManager.EnemyUnitsInPlay);
         players.Add(enemyTurnController);
     }
 
@@ -163,17 +167,6 @@ public class BattleManager : MonoBehaviour {
 
         currentPlayer?.OnExit();
         currentPlayer = players[currentPlayerIndex];
-
-        //bool hasUnitsLeft = false;
-        //foreach (var unit in CurrentPlayer.Units) {
-        //    if (!UnitStaticManager.DeadUnitsInPlay.Contains(unit))
-        //        hasUnitsLeft = true;
-        //}
-
-        //if (!hasUnitsLeft) {
-        //    EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
-        //    return;
-        //}
 
         currentPlayer.OnEnter();
         currentPlayerIndex++;
@@ -203,8 +196,9 @@ public enum BattleEvents {
     UnitHit,
     UnitDeath,
     UnitRevive,
-    GiveAbilityCard,
-    GiveCard,
+    PickUpAbilityCard,
+    GivePlayerCard,
+    GiveEnemyCard,
     SpawnAbilityCard,
     GrabbedAbilityCard,
     ReleasedAbilityCard,

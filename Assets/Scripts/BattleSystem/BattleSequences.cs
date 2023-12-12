@@ -36,10 +36,9 @@ public class BattleSequences : MonoBehaviour {
         battleManager.SetBattlefield(data, direction);
 
         // Do Audio Thing actionQueue.Enqueue(new DoMethodAction(() => ));
-        actionQueue.Enqueue(new WaitAction(1f));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<BattleEvents, BattleData>.Invoke(BattleEvents.StartPlayerStartSequence, data)));
         actionQueue.Enqueue(new WaitAction(3f));
-        actionQueue.Enqueue(new DoMethodAction(() => Ripple(middlePoint, 3)));
+        actionQueue.Enqueue(new DoMethodAction(() => Ripple(middlePoint, 3, points)));
         actionQueue.Enqueue(new WaitAction(.2f));
         actionQueue.Enqueue(new DoMethodAction(() => battleManager.StartBattle(data)));
     }
@@ -48,7 +47,7 @@ public class BattleSequences : MonoBehaviour {
 
     }
 
-    private void Ripple(Vector2Int gridPos, float rippleStrength) {
+    private void Ripple(Vector2Int gridPos, float rippleStrength, List<Vector2Int> battleMap) {
         GridStaticFunctions.RippleThroughGridPositions(gridPos, 1000, (gridPos, i) => {
             Tile currentHex = GridStaticFunctions.Grid[gridPos];
             currentHex.ClearQueue();
@@ -58,9 +57,14 @@ public class BattleSequences : MonoBehaviour {
                     new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 3, 0)),
                     new MoveObjectAction(currentHex.gameObject, 10, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength / 6, 0)),
                     new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 15, 0)),
-                    new MoveObjectAction(currentHex.gameObject, 2, currentHex.StandardWorldPosition),
-                    new DoMethodAction(() => currentHex.SetHighlight(HighlightType.Transparent))
+                    new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition),
                 };
+
+            if (!battleMap.Contains(gridPos)) {
+                queue.Add(new WaitAction(1));
+                queue.Add(new DoMethodAction(() => currentHex.gameObject.SetActive(false)));
+            }
+
             currentHex.SetActionQueue(queue);
         });
 
