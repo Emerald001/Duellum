@@ -6,7 +6,7 @@ public static class EnemyAIActionEvaluator {
         if (unit == null) 
             return new(0, null);
 
-        int result = 0;
+        //int result = 0;
 
         CalculateAttackValue();
         CalculateMovementValue();

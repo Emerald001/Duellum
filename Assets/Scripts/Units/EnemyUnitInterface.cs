@@ -64,7 +64,6 @@ public class EnemyUnitInterface : UnitController {
     public int PickEvaluatedAction(List<AbilityCard> cards) {
         int result = 0;
 
-        // First, we try to kill
         if (attackModule.AttackableTiles.Count != 0) {
             UnitController lastEnemy = null;
 
@@ -110,8 +109,6 @@ public class EnemyUnitInterface : UnitController {
             }
         }
 
-        // Second, we try to grab a card
-        // Third, we move
         if (movementModule.AccessableTiles.Count > 0) {
             if (bestPickedPosition != GridStaticFunctions.CONST_EMPTY) {
                 List<Vector2Int> path = movementModule.GetPath(attackModule.GetClosestTile(bestPickedPosition, gridPosition, Vector3.zero));
@@ -121,7 +118,6 @@ public class EnemyUnitInterface : UnitController {
                 }
             }
             else {
-                // Get tile closest to an enemy
                 UnitController lastEnemy = null;
                 List<UnitController> enemies = UnitStaticManager.GetEnemies(this);
 
@@ -161,7 +157,6 @@ public class EnemyUnitInterface : UnitController {
             }
         }
 
-        // Forth, skip turn
         return result;
     }
 
