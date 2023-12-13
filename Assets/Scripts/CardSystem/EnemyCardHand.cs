@@ -56,8 +56,6 @@ public class EnemyCardHand : CardHand {
     }
 
     private void SetupForBattle() {
-        Debug.Log(1);
-
         StartCoroutine(ShowCardhand());
     }
 
@@ -66,12 +64,9 @@ public class EnemyCardHand : CardHand {
     }
 
     private IEnumerator ShowCardhand() {
-        Debug.Log(2);
         yield return new WaitForSeconds(2f);
-        Debug.Log(3);
 
         while (transform.position != shownPosition.position) {
-            Debug.Log(4);
             transform.position = Vector3.MoveTowards(transform.position, shownPosition.position, Time.deltaTime);
 
             yield return new WaitForEndOfFrame();

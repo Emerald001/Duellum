@@ -12,6 +12,8 @@ public class BattleEvaluator : MonoBehaviour {
 
     private void OnEnemyViewPlayer(EnemyBehaviour behaviour) {
         BattleData data = new(player.PlayerPosition, behaviour.GridPosition, UnitStaticManager.PlayerPickedUnits, behaviour.EnemyTeam);
+
+        EventManager<BattleEvents>.Invoke(BattleEvents.StartBattle);
         EventManager<BattleEvents, BattleData>.Invoke(BattleEvents.StartBattle, data);
     }
 }

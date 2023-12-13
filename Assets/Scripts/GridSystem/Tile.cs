@@ -28,14 +28,16 @@ public class Tile : MonoBehaviour {
     }
 
     public void SetHighlight(HighlightType type) {
-        renderer.material = type switch {
-            HighlightType.None => standardColor,
-            HighlightType.MovementHighlight => movementColor,
-            HighlightType.AttackHighlight => attackColor,
-            HighlightType.OwnPositionHighlight => ownPositionColor,
-            HighlightType.Transparent => transparent,
-            _ => throw new System.NotImplementedException(),
-        };
+        if (renderer != null) {
+            renderer.material = type switch {
+                HighlightType.None => standardColor,
+                HighlightType.MovementHighlight => movementColor,
+                HighlightType.AttackHighlight => attackColor,
+                HighlightType.OwnPositionHighlight => ownPositionColor,
+                HighlightType.Transparent => transparent,
+                _ => throw new System.NotImplementedException(),
+            };
+        }
 
         currentType = type;
     }

@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour {
     private readonly List<Vector2Int> currentAccessableTiles = new();
 
     private readonly HashSet<Vector2Int> openSet = new();
-    private readonly HashSet<Vector2Int> layerSet = new();
     private readonly HashSet<Vector2Int> closedSet = new();
 
     private Vector2Int playerPosition;
@@ -72,12 +71,11 @@ public class PlayerController : MonoBehaviour {
         if (isWalking)
             actionQueue.Clear();
 
-        visuals.SetActive(false);
         line.enabled = false;
         inBattle = true;
 
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
-        Vector2Int middlePoint = data.PlayerPos + -difference / 2;
+        Vector2Int middlePoint = data.PlayerPos - difference / 2;
 
         Vector3 newPos = GridStaticFunctions.CalcWorldPos(data.EnemyPos) + new Vector3(0, -2, 0);
         while (transform.position != newPos) {
@@ -86,6 +84,7 @@ public class PlayerController : MonoBehaviour {
         }
 
         yield return new WaitForSeconds(1f);
+        visuals.SetActive(false);
 
         newPos = GridStaticFunctions.CalcWorldPos(middlePoint) + new Vector3(0, -2, 0);
         while (transform.position != newPos) {
@@ -166,7 +165,7 @@ public class PlayerController : MonoBehaviour {
 
                 foreach (var offset in neighbours) {
                     Vector2Int neighbour = currentPos + offset;
-                    if (closedSet.Contains(neighbour) || layerSet.Contains(neighbour))
+                    if (closedSet.Contains(neighbour))
                         continue;
 
                     if (GridStaticFunctions.Grid[neighbour].Type != TileType.Normal)
@@ -175,17 +174,14 @@ public class PlayerController : MonoBehaviour {
                     currentAccessableTiles.Add(neighbour);
                     parentDictionary[neighbour] = currentPos;
 
-                    layerSet.Add(neighbour);
+                    closedSet.Add(neighbour);
                     openSet.Add(neighbour);
                 }
-
-                closedSet.Add(currentPos);
             }
         }
 
         openSet.Clear();
         closedSet.Clear();
-        layerSet.Clear();
     }
 
     private List<Vector2Int> GetPath(Vector2Int endPos) {

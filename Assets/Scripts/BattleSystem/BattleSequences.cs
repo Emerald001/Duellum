@@ -23,7 +23,7 @@ public class BattleSequences : MonoBehaviour {
 
     private void SetStartSequence(BattleData data) {
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
-        Vector2Int middlePoint = data.PlayerPos + -difference / 2;
+        Vector2Int middlePoint = data.PlayerPos - difference / 2;
         Vector2Int direction = Mathf.Abs(difference.x) > Mathf.Abs(difference.y) ? new(0, 1) : new(1, 0);
 
         List<Vector2Int> points = new();
