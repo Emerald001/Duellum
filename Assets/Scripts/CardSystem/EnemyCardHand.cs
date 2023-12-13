@@ -1,17 +1,27 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyCardHand : CardHand {
-    protected override void OnDisable() {
-        EventManager<BattleEvents>.Subscribe(BattleEvents.GiveEnemyCard, GiveCard);
-    }
+    [SerializeField] private Transform shownPosition;
+    [SerializeField] private Transform hiddenPosition;
+
     protected override void OnEnable() {
-        EventManager<BattleEvents>.Unsubscribe(BattleEvents.GiveEnemyCard, GiveCard);
+        EventManager<UIEvents>.Subscribe(UIEvents.GiveEnemyCard, GiveCard);
+
+        EventManager<BattleEvents>.Subscribe(BattleEvents.StartBattle, SetupForBattle);
+        EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, ResetAfterBattle);
+    }
+    protected override void OnDisable() {
+        EventManager<UIEvents>.Unsubscribe(UIEvents.GiveEnemyCard, GiveCard);
+
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.StartBattle, SetupForBattle);
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, ResetAfterBattle);
     }
 
-    public void ResetHand() {
-        cards.Clear();
-        cardStack.ResetDeck();
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.B))
+            GiveCard();
     }
 
     // TODO: Make this arc the other way and show the back of the cards!
@@ -45,8 +55,42 @@ public class EnemyCardHand : CardHand {
         }
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.B))
-            GiveCard();
+    private void SetupForBattle() {
+        Debug.Log(1);
+
+        StartCoroutine(ShowCardhand());
+    }
+
+    private void ResetAfterBattle() {
+        StartCoroutine(HideCardhand());
+    }
+
+    private IEnumerator ShowCardhand() {
+        Debug.Log(2);
+        yield return new WaitForSeconds(2f);
+        Debug.Log(3);
+
+        while (transform.position != shownPosition.position) {
+            Debug.Log(4);
+            transform.position = Vector3.MoveTowards(transform.position, shownPosition.position, Time.deltaTime);
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private IEnumerator HideCardhand() {
+        yield return new WaitForSeconds(2f);
+
+        while (transform.position != hiddenPosition.position) {
+            transform.position = Vector3.MoveTowards(transform.position, hiddenPosition.position, Time.deltaTime);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        for (int i = cards.Count - 1; i >= 0; i--)
+            RemoveCard(i);
+
+        cards.Clear();
+        cardStack.ResetDeck();
     }
 }

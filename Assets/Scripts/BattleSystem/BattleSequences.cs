@@ -36,6 +36,7 @@ public class BattleSequences : MonoBehaviour {
         battleManager.SetBattlefield(data, direction);
 
         // Do Audio Thing actionQueue.Enqueue(new DoMethodAction(() => ));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Battle Started")));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<BattleEvents, BattleData>.Invoke(BattleEvents.StartPlayerStartSequence, data)));
         actionQueue.Enqueue(new WaitAction(3f));
         actionQueue.Enqueue(new DoMethodAction(() => Ripple(middlePoint, 3, points)));
@@ -44,7 +45,7 @@ public class BattleSequences : MonoBehaviour {
     }
 
     private void SetEndSequence(Vector2Int startPosition) {
-
+        actionQueue.Enqueue(new DoMethodAction(() => EndRipple(startPosition, 3)));
     }
 
     private void Ripple(Vector2Int gridPos, float rippleStrength, List<Vector2Int> battleMap) {
@@ -52,18 +53,36 @@ public class BattleSequences : MonoBehaviour {
             Tile currentHex = GridStaticFunctions.Grid[gridPos];
             currentHex.ClearQueue();
             List<Action> queue = new() {
-                    new WaitAction(i / 50f),
-                    new MoveObjectAction(currentHex.gameObject, 30, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength, 0)),
-                    new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 3, 0)),
-                    new MoveObjectAction(currentHex.gameObject, 10, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength / 6, 0)),
-                    new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 15, 0)),
-                    new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition),
-                };
+                new WaitAction(i / 50f),
+                new MoveObjectAction(currentHex.gameObject, 30, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength, 0)),
+                new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 3, 0)),
+                new MoveObjectAction(currentHex.gameObject, 10, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength / 6, 0)),
+                new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 15, 0)),
+            };
 
-            if (!battleMap.Contains(gridPos)) {
-                queue.Add(new WaitAction(1));
-                queue.Add(new DoMethodAction(() => currentHex.gameObject.SetActive(false)));
-            }
+            if (!battleMap.Contains(gridPos)) 
+                queue.Add(new DoMethodAction(() => currentHex.transform.GetChild(0).gameObject.SetActive(false)));
+            queue.Add(new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition));
+
+            currentHex.SetActionQueue(queue);
+        });
+
+        EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, .4f);
+    }
+
+    private void EndRipple(Vector2Int gridPos, float rippleStrength) {
+        GridStaticFunctions.RippleThroughGridPositions(gridPos, 1000, (gridPos, i) => {
+            Tile currentHex = GridStaticFunctions.Grid[gridPos];
+            currentHex.ClearQueue();
+            List<Action> queue = new() {
+                new WaitAction(i / 50f),
+                new MoveObjectAction(currentHex.gameObject, 30, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength, 0)),
+                new DoMethodAction(() => currentHex.transform.GetChild(0).gameObject.SetActive(true)),
+                new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 3, 0)),
+                new MoveObjectAction(currentHex.gameObject, 10, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength / 6, 0)),
+                new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 15, 0)),
+                new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition),
+            };
 
             currentHex.SetActionQueue(queue);
         });
