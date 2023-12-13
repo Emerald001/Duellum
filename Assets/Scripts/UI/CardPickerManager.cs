@@ -92,6 +92,9 @@ public class CardPickerManager : MonoBehaviour {
 
         gameObject.SetActive(false);
         UnitStaticManager.PlayerPickedUnits = new(pickedCards);
+
+        EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Units Chosen");
+        EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Dungeon Generation Started");
         EventManager<DungeonEvents>.Invoke(DungeonEvents.StartGeneration);
     }
 }

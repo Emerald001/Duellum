@@ -15,7 +15,7 @@ public class PlayerUnitController : UnitController {
 
     public override void OnEnter() {
         base.OnEnter();
-        EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
+        EventManager<UIEvents>.Subscribe(UIEvents.ReleasedAbilityCard, FindTiles);
 
         HighlightTiles();
     }
@@ -53,7 +53,7 @@ public class PlayerUnitController : UnitController {
         Tooltip.HideTooltip_Static();
 
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
-        EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
+        EventManager<UIEvents>.Unsubscribe(UIEvents.ReleasedAbilityCard, FindTiles);
     }
 
     public void HighlightTiles() {
@@ -118,9 +118,4 @@ public class PlayerUnitController : UnitController {
         for (int i = 1; i < CurrentPath.Count + 1; i++)
             Line.SetPosition(i, GridStaticFunctions.CalcWorldPos(CurrentPath[i - 1]));
     }
-}
-
-public enum UIEvents {
-    InfoTextUpdate,
-    UpdateCursor,
 }

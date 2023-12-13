@@ -100,8 +100,6 @@ public abstract class UnitController : MonoBehaviour {
 
                     Destroy(GridStaticFunctions.CardPositions[newPos]);
                     GridStaticFunctions.CardPositions.Remove(newPos);
-
-                    Debug.Log("Pickup Card");
                 }
             }));
 

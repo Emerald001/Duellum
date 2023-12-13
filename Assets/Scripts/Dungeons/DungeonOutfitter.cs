@@ -29,6 +29,8 @@ public class DungeonOutfitter : MonoBehaviour {
 
         SpawnPlayer();
         SpawnEnemies();
+
+        EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Dungeon Generation Finished");
     }
 
     private void OverwriteGridPositions(RoomComponent room) {

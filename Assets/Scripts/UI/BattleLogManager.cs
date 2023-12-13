@@ -6,10 +6,10 @@ public class BattleLogManager : MonoBehaviour {
     private string log;
 
     private void OnEnable() {
-        EventManager<BattleEvents, string>.Subscribe(BattleEvents.AddBattleInformation, AddBattleInformation);
+        EventManager<UIEvents, string>.Subscribe(UIEvents.AddBattleInformation, AddBattleInformation);
     }
     private void OnDisable() {
-        EventManager<BattleEvents, string>.Unsubscribe(BattleEvents.AddBattleInformation, AddBattleInformation);
+        EventManager<UIEvents, string>.Unsubscribe(UIEvents.AddBattleInformation, AddBattleInformation);
     }
 
     private void AddBattleInformation(string action) {

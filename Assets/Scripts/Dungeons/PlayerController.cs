@@ -19,18 +19,17 @@ public class PlayerController : MonoBehaviour {
     private readonly HashSet<Vector2Int> closedSet = new();
 
     private Vector2Int playerPosition;
-    private Vector2Int preBattlePos;
 
     private bool isWalking;
     private bool inBattle;
 
     private void OnEnable() {
         EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartPlayerStartSequence, (x) => StartCoroutine(OnBattleStart(x)));
-        EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, OnBattleEnd);
+        EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, () => StartCoroutine(OnBattleEnd()));
     }
     private void OnDisable() {
         EventManager<BattleEvents, BattleData>.Unsubscribe(BattleEvents.StartPlayerStartSequence, (x) => StartCoroutine(OnBattleStart(x)));
-        EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, OnBattleEnd);
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, () => StartCoroutine(OnBattleEnd()));
     }
 
     public void SetUp(Vector2Int gridPosition) {
@@ -95,9 +94,14 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void OnBattleEnd() {
-        transform.position = GridStaticFunctions.CalcWorldPos(preBattlePos);
-        playerPosition = preBattlePos;
+    private IEnumerator OnBattleEnd() {
+        yield return new WaitForSeconds(3f);
+
+        var newPos = GridStaticFunctions.CalcWorldPos(playerPosition);
+        while (transform.position != newPos) {
+            transform.position = Vector3.MoveTowards(transform.position, newPos, 10 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
 
         visuals.SetActive(true);
         inBattle = false;
@@ -112,6 +116,9 @@ public class PlayerController : MonoBehaviour {
 
         EnqueueMovement(position);
         isWalking = true;
+
+        EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, 
+            $"<color=green>Player</color> walked to <color=blue>{position}</color>");
     }
 
     private void EnqueueMovement(Vector2Int targetPosition) {

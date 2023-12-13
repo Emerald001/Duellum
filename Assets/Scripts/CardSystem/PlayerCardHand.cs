@@ -11,7 +11,7 @@ public class PlayerCardHand : CardHand {
     private bool hasCardFadedCallRan;
 
     protected override void OnEnable() {
-        EventManager<BattleEvents>.Subscribe(BattleEvents.GivePlayerCard, GiveCard);
+        EventManager<UIEvents>.Subscribe(UIEvents.GivePlayerCard, GiveCard);
 
         BaseCardBehaviour.OnHoverEnter += SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
@@ -19,7 +19,7 @@ public class PlayerCardHand : CardHand {
         BaseCardBehaviour.OnMoveRelease += PerformRelease;
     }
     protected override void OnDisable() {
-        EventManager<BattleEvents>.Unsubscribe(BattleEvents.GivePlayerCard, GiveCard);
+        EventManager<UIEvents>.Unsubscribe(UIEvents.GivePlayerCard, GiveCard);
 
         BaseCardBehaviour.OnHoverEnter -= SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit -= SetCardsBackToStandardPos;

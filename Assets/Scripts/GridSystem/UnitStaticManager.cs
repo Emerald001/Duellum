@@ -14,7 +14,7 @@ public static class UnitStaticManager {
 
     public static List<UnitController> EnemyUnitsInPlay { get; set; } = new();
     public static List<UnitController> PlayerUnitsInPlay { get; set; } = new();
-
+    
     public static void Reset() {
         UnitPositions.Clear();
         LivingUnitsInPlay.Clear();
@@ -45,6 +45,7 @@ public static class UnitStaticManager {
     }
 
     public static void UnitDeath(UnitController unit) {
+        var deathPosition = GetUnitPosition(unit);
         LivingUnitsInPlay.Remove(unit);
         DeadUnitsInPlay.Add(unit);
 
@@ -54,14 +55,18 @@ public static class UnitStaticManager {
         if (PlayerUnitsInPlay.Contains(unit)) {
             PlayerUnitsInPlay.Remove(unit);
 
-            if (PlayerUnitsInPlay.Count < 1)
+            if (PlayerUnitsInPlay.Count < 1) {
+                EventManager<BattleEvents, Vector2Int>.Invoke(BattleEvents.BattleEnd, deathPosition);
                 EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
+            }
         }
         else if (EnemyUnitsInPlay.Contains(unit)) {
             EnemyUnitsInPlay.Remove(unit);
 
-            if (EnemyUnitsInPlay.Count < 1)
+            if (EnemyUnitsInPlay.Count < 1) {
+                EventManager<BattleEvents, Vector2Int>.Invoke(BattleEvents.BattleEnd, deathPosition);
                 EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
+            }
         }
 
         EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitDeath, unit);

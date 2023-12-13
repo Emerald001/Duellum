@@ -8,7 +8,7 @@ public class PlayerTurnController : TurnController {
 
         HighlightUnits();
         isPicking = true;
-        EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, HighlightUnits);
+        EventManager<UIEvents>.Subscribe(UIEvents.ReleasedAbilityCard, HighlightUnits);
     }
 
     public override void OnUpdate() {
@@ -26,7 +26,7 @@ public class PlayerTurnController : TurnController {
             return;
 
         if (Input.GetKeyDown(KeyCode.Mouse1)) {
-            EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, HighlightUnits);
+            EventManager<UIEvents>.Subscribe(UIEvents.ReleasedAbilityCard, HighlightUnits);
 
             currentUnit.OnExit();
             currentUnit = null;
@@ -45,7 +45,7 @@ public class PlayerTurnController : TurnController {
     protected override void PickUnit(Vector2Int unitPosition) {
         base.PickUnit(unitPosition);
         if (!isPicking)
-            EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, HighlightUnits);
+            EventManager<UIEvents>.Unsubscribe(UIEvents.ReleasedAbilityCard, HighlightUnits);
     }
 
     public void AddUnit(UnitController unit) {

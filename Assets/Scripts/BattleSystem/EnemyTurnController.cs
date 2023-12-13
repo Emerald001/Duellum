@@ -19,8 +19,6 @@ public class EnemyTurnController : TurnController {
                 value = item.Key;
                 unit = item.Value;
             }
-
-            Debug.Log($"Unit: {item.Value.UnitBaseData.Name} has a score of {item.Key}");
         }
 
         PickUnit(UnitStaticManager.UnitPositions[unit]);

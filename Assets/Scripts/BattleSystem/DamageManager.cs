@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class DamageManager {
     public static void DealDamage(UnitController attackingUnit, params UnitController[] defendingUnits) {
-        EventManager<BattleEvents, string>.Invoke(BattleEvents.AddBattleInformation, BattleLogString(attackingUnit, "Attacked", defendingUnits));
+        EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, BattleLogString(attackingUnit, "Attacked", defendingUnits));
         
         foreach (UnitController unit in defendingUnits) {
             EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitHit, unit);
@@ -15,7 +15,7 @@ public static class DamageManager {
                     100));
 
                 EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitDeath, unit);
-                EventManager<BattleEvents, string>.Invoke(BattleEvents.AddBattleInformation, BattleLogString(attackingUnit, "Killed", unit));
+                EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, BattleLogString(attackingUnit, "Killed", unit));
                 UnitStaticManager.UnitDeath(unit);
             }
         }

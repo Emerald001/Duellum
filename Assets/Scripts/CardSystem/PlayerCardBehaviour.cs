@@ -40,7 +40,7 @@ public class PlayerCardBehaviour : BaseCardBehaviour,
         offset = transform.position - UICam.ScreenToWorldPoint(eventData.position);
 
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Grab);
-        EventManager<BattleEvents>.Invoke(BattleEvents.GrabbedAbilityCard);
+        EventManager<UIEvents>.Invoke(UIEvents.GrabbedAbilityCard);
         EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_grabCard");
 
         queue.Clear();
@@ -57,7 +57,7 @@ public class PlayerCardBehaviour : BaseCardBehaviour,
             resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
         });
 
-        EventManager<BattleEvents>.Invoke(BattleEvents.ReleasedAbilityCard);
+        EventManager<UIEvents>.Invoke(UIEvents.ReleasedAbilityCard);
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
     }
 
