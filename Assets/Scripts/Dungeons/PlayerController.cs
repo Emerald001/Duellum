@@ -73,9 +73,12 @@ public class PlayerController : MonoBehaviour {
 
         line.enabled = false;
         inBattle = true;
+        visuals.SetActive(false);
 
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
         Vector2Int middlePoint = data.PlayerPos - difference / 2;
+
+        yield return new WaitForSeconds(.5f);
 
         Vector3 newPos = GridStaticFunctions.CalcWorldPos(data.EnemyPos) + new Vector3(0, -2, 0);
         while (transform.position != newPos) {
@@ -84,7 +87,6 @@ public class PlayerController : MonoBehaviour {
         }
 
         yield return new WaitForSeconds(1f);
-        visuals.SetActive(false);
 
         newPos = GridStaticFunctions.CalcWorldPos(middlePoint) + new Vector3(0, -2, 0);
         while (transform.position != newPos) {
