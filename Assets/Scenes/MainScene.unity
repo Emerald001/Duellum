@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2877,23 +2877,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomAmount: 10
-  bigRoomAmount: 2
+  bigRoomAmount: 5
   roomList:
-  - {fileID: 11400000, guid: 5be102144420d614797b46fa81c3966f, type: 2}
-  - {fileID: 11400000, guid: dd4c90385c255ea4db4def404f93eb4b, type: 2}
-  - {fileID: 11400000, guid: 0f70c07c8a12604479b657c8abe2733d, type: 2}
-  - {fileID: 11400000, guid: 35185cf20f50c77429154888d5673b61, type: 2}
-  - {fileID: 11400000, guid: 00cdff03fc35c6443a4452af00a8f37a, type: 2}
-  - {fileID: 11400000, guid: 548c50c567d45f74799522827a0f28cc, type: 2}
-  - {fileID: 11400000, guid: 3ce91684954251940954f24cbc13101e, type: 2}
-  - {fileID: 11400000, guid: 00142e9ae2835fa4cbb18bb543883c13, type: 2}
-  - {fileID: 11400000, guid: b5fd4c8b87eb72543ba60db975c2a9f0, type: 2}
+  - {fileID: 11400000, guid: 5b1a42b8d73481743a2fb2e5a3eda4a6, type: 2}
+  - {fileID: 11400000, guid: b9091e60a6c7ddf47b431896240dea11, type: 2}
+  - {fileID: 11400000, guid: 4697f3c089a614741b5dfbf5a8c89ec1, type: 2}
+  - {fileID: 11400000, guid: f906fa0d892824a4e9c85226c4d910a4, type: 2}
+  - {fileID: 11400000, guid: 3b5aa53ff8a84b8418a58d77d17bc736, type: 2}
+  - {fileID: 11400000, guid: 65d27cec6a1ac384d8af8d3be3bba6ab, type: 2}
+  - {fileID: 11400000, guid: e187daf07b6dbc542845f1151992fed2, type: 2}
+  - {fileID: 11400000, guid: 892869d945a63bf4f8c5dd4ba15878b9, type: 2}
+  - {fileID: 11400000, guid: d01dbe2724d154347a3a317d6abe9476, type: 2}
+  - {fileID: 11400000, guid: 28c2ab56ece28ab4ea3e1d787acd2b22, type: 2}
+  - {fileID: 11400000, guid: 21e4050f8b0ab7943b47921df980f0bb, type: 2}
+  - {fileID: 11400000, guid: 6ce960375fb76ce4b9f98bf97e994cf6, type: 2}
+  - {fileID: 11400000, guid: 6b16a1e2829d4e141b3d4b4e0587437a, type: 2}
+  - {fileID: 11400000, guid: a974e79a11020874f879a36e9d048463, type: 2}
   endRoomList:
-  - {fileID: 11400000, guid: 00cdff03fc35c6443a4452af00a8f37a, type: 2}
-  - {fileID: 11400000, guid: 0f70c07c8a12604479b657c8abe2733d, type: 2}
-  - {fileID: 11400000, guid: 35185cf20f50c77429154888d5673b61, type: 2}
-  - {fileID: 11400000, guid: dd4c90385c255ea4db4def404f93eb4b, type: 2}
-  - {fileID: 11400000, guid: 5be102144420d614797b46fa81c3966f, type: 2}
+  - {fileID: 11400000, guid: 5b1a42b8d73481743a2fb2e5a3eda4a6, type: 2}
+  - {fileID: 11400000, guid: b9091e60a6c7ddf47b431896240dea11, type: 2}
+  - {fileID: 11400000, guid: 4697f3c089a614741b5dfbf5a8c89ec1, type: 2}
+  - {fileID: 11400000, guid: f906fa0d892824a4e9c85226c4d910a4, type: 2}
+  - {fileID: 11400000, guid: 3b5aa53ff8a84b8418a58d77d17bc736, type: 2}
   rooms:
   - name: 4 - Sided Room
     size: {x: 1, y: 1}

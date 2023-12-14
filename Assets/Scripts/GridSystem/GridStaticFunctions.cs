@@ -7,7 +7,7 @@ public static class GridStaticFunctions {
     public static int CONST_INT = -999;
     public static Vector2Int CONST_EMPTY = new(12345, 12345);
 
-    public static int TilesPerRoom = 13;
+    public static int TilesPerRoom = 5;
     public static int BattleMapSize = 11;
 
     public static readonly Vector2Int[] directCubeNeighbours = {
@@ -48,8 +48,8 @@ public static class GridStaticFunctions {
     }
 
     public static Vector3 CalcWorldPos(Vector2Int gridPos) {
-        float x = gridPos.x - 6;
-        float z = gridPos.y - 6;
+        float x = gridPos.x - TilesPerRoom / 2;
+        float z = gridPos.y - TilesPerRoom / 2;
 
         return new Vector3(x, 0, z);
     }
