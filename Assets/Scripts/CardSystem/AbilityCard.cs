@@ -32,4 +32,9 @@ public enum AbilityCardType {
     SkipOpponentsTurn,
     MoveUnit,
     SpinUnit,
+    Summon,
+    ApplyTileEffect,
+    SmokeBomb,
+    Grapple,
+    Charm,
 }

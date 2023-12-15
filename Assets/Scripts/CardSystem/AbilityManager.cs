@@ -34,10 +34,28 @@ public static class AbilityManager {
                     unit.ChangeUnitPosition(openPositions[Random.Range(0, openPositions.Count)]);
                 }
                 break;
-
+                
             case AbilityCardType.SpinUnit:
                 foreach (var unit in controllerList)
                     unit.ChangeUnitRotation(-unit.LookDirection);
+                break;
+
+            case AbilityCardType.Summon:
+                foreach (Vector2Int position in positions) {
+
+                }
+                break;
+
+            case AbilityCardType.ApplyTileEffect:
+                break;
+
+            case AbilityCardType.SmokeBomb:
+                break;
+
+            case AbilityCardType.Grapple:
+                break;
+
+            case AbilityCardType.Charm:
                 break;
 
             default:
