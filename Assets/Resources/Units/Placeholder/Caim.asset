@@ -13,20 +13,21 @@ MonoBehaviour:
   m_Name: Caim
   m_EditorClassIdentifier: 
   Name: Caim
-  Description: Bird
+  Description: A demonic entity with the appearance of a bird.
   Rank: 1
   Catagory: 0
   Icon: {fileID: 21300000, guid: c389ee7a0df15ac4f8d5d8c90a1bc1d0, type: 3}
   Animations: {fileID: 0}
-  PawnPrefab: {fileID: 0}
-  movementSpeed: 7
+  PawnPrefab: {fileID: 3703285905820451398, guid: 978f7fa5b51a33f459cc0d5afc1a26e6,
+    type: 3}
+  UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
+    type: 3}
+  movementSpeed: 5
   tileCover: 0
   TileCoverage: 1
   BaseStatBlock:
-    EnergyPoints: 1
-    Attack: 1
-    Defence: 4
-    Initiative: 5
-    Speed: 1
+    Defence: 2
+    Speed: 3
+    Attack: 3
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []

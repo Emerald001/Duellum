@@ -1,0 +1,224 @@
+fileFormatVersion: 2
+guid: f1bf79d653c818a4fad9a62e56a2730f
+timeCreated: 1511052099
+licenseType: Store
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: head
+    100004: head_end
+    100006: hips
+    100008: L_ankle
+    100010: L_elbow
+    100012: L_foot_end
+    100014: L_foot_toes
+    100016: L_i_1
+    100018: L_i_2
+    100020: L_i_3
+    100022: L_knee
+    100024: L_leg
+    100026: L_m_1
+    100028: L_m_2
+    100030: L_m_3
+    100032: L_p_1
+    100034: L_p_2
+    100036: L_p_3
+    100038: L_r_1
+    100040: L_r_2
+    100042: L_r_3
+    100044: L_shoulder
+    100046: L_th_1
+    100048: L_th_2
+    100050: L_wrist
+    100052: neck
+    100054: R_ankle
+    100056: R_elbow
+    100058: R_foot_end
+    100060: R_foot_toes
+    100062: R_i_1
+    100064: R_i_2
+    100066: R_i_3
+    100068: R_knee
+    100070: R_leg
+    100072: R_m_1
+    100074: R_m_2
+    100076: R_m_3
+    100078: R_p_1
+    100080: R_p_2
+    100082: R_p_3
+    100084: R_r_1
+    100086: R_r_2
+    100088: R_r_3
+    100090: R_shoulder
+    100092: R_th_1
+    100094: R_th_2
+    100096: R_wrist
+    100098: root
+    100100: root_ctrl
+    100102: spine1
+    100104: spine2
+    100106: spine3
+    400000: //RootNode
+    400002: head
+    400004: head_end
+    400006: hips
+    400008: L_ankle
+    400010: L_elbow
+    400012: L_foot_end
+    400014: L_foot_toes
+    400016: L_i_1
+    400018: L_i_2
+    400020: L_i_3
+    400022: L_knee
+    400024: L_leg
+    400026: L_m_1
+    400028: L_m_2
+    400030: L_m_3
+    400032: L_p_1
+    400034: L_p_2
+    400036: L_p_3
+    400038: L_r_1
+    400040: L_r_2
+    400042: L_r_3
+    400044: L_shoulder
+    400046: L_th_1
+    400048: L_th_2
+    400050: L_wrist
+    400052: neck
+    400054: R_ankle
+    400056: R_elbow
+    400058: R_foot_end
+    400060: R_foot_toes
+    400062: R_i_1
+    400064: R_i_2
+    400066: R_i_3
+    400068: R_knee
+    400070: R_leg
+    400072: R_m_1
+    400074: R_m_2
+    400076: R_m_3
+    400078: R_p_1
+    400080: R_p_2
+    400082: R_p_3
+    400084: R_r_1
+    400086: R_r_2
+    400088: R_r_3
+    400090: R_shoulder
+    400092: R_th_1
+    400094: R_th_2
+    400096: R_wrist
+    400098: root
+    400100: root_ctrl
+    400102: spine1
+    400104: spine2
+    400106: spine3
+    7400000: PlagueDoctor_take_idle
+    9500000: //RootNode
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: PlagueDoctor_take_idle
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 1
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 4.2
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: root
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 7406f4222a0ff57489bae28d3007649c,
+    type: 3}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

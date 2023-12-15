@@ -30,6 +30,7 @@ public class GridCardManager : MonoBehaviour {
 
     private void PickUpCard() {
         EventManager<BattleEvents>.Invoke(BattleEvents.GiveAbilityCard);
+        EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_PickUpCard");
         SpawnCard();
     }
 }

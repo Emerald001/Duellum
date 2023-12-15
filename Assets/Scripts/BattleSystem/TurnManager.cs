@@ -133,5 +133,7 @@ public enum BattleEvents {
 
 public enum UIEvents {
     InfoTextUpdate,
+    PopUpWindow,
+    ShowPauseMenu,
     UpdateCursor,
 }
