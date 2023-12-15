@@ -2878,7 +2878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c994313354a7f8744bf0841a9d70ac51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomAmount: 50
+  roomAmount: 40
   bigRoomAmount: 30
   roomList:
   - {fileID: 11400000, guid: 21e4050f8b0ab7943b47921df980f0bb, type: 2}

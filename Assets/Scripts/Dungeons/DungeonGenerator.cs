@@ -5,16 +5,13 @@ using System.Linq;
 using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour {
-    private const float SKEWED_POWER = .3f;
-
     [SerializeField] private int roomAmount;
     [SerializeField] private int bigRoomAmount;
+    [SerializeField] private float skewedPower = .3f;
 
-    [SerializeField] private List<DungeonRoomSO> roomList;
+    [SerializeField] private List<DungeonRoomSO> bigRoomList;
+    [SerializeField] private List<DungeonRoomSO> smallRoomList;
     [SerializeField] private List<DungeonRoomSO> endRoomList;
-
-    [SerializeField] private List<DungeonRoomTile> rooms;
-    [SerializeField] private List<DungeonRoomTile> endRooms;
 
     [SerializeField] private bool generateInstantly;
     [SerializeField] private float generationSpeed;
@@ -71,7 +68,7 @@ public class DungeonGenerator : MonoBehaviour {
                 break;
 
             Vector2Int currentPos = openSet[0];
-            Tuple<DungeonRoomTile, RoomComponent> roomData = SpawnRoom(new(roomList), currentPos, heights[currentPos]);
+            Tuple<DungeonRoomTile, RoomComponent> roomData = SpawnRoom(new(bigRoomList), currentPos, heights[currentPos]);
             roomsSpawned++;
 
             if (!generateInstantly) {
@@ -105,7 +102,7 @@ public class DungeonGenerator : MonoBehaviour {
                     if (!generateInstantly) {
                         if (debugObjects.ContainsKey(tile))
                             debugObjects[tile].GetComponent<Renderer>().material.color = Color.red;
-                        yield return new WaitForSeconds(generationSpeed);
+                        //yield return new WaitForSeconds(generationSpeed);
                     }
 
                     dungeonConnections.Add(tile, connections);
@@ -166,6 +163,34 @@ public class DungeonGenerator : MonoBehaviour {
     }
 
     private Tuple<DungeonRoomTile, RoomComponent> SpawnRoom(List<DungeonRoomSO> listToUse, Vector2Int position, float height, bool spawnFirst = false) {
+        var room = GetRoom(listToUse, position, spawnFirst);
+        if (room.Id != 0)
+            usedIds.Add(room.Id);
+
+        Vector4 connection = room.connections[room.CurrentIndex];
+        if (connection.x != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(1, 0)))
+            room.Height = height - connection.x;
+        else if (connection.y != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(-1, 0)))
+            room.Height = height - connection.y;
+        else if (connection.z != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(0, 1)))
+            room.Height = height - connection.z;
+        else if (connection.w != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(0, -1)))
+            room.Height = height - connection.w;
+
+        RoomComponent spawnedRoom = Instantiate(room.prefab, dungeonParent);
+        spawnedRoom.name = room.name;
+        spawnedRoom.transform.position = CalculateWorldPosition(position, room.Height, room);
+        spawnedRoom.transform.eulerAngles = new(0, room.RotationIndex * 90, 0);
+        spawnedRoom.size = room.size;
+        spawnedRoom.rotationIndex = room.RotationIndex;
+
+        spawnedRoom.gridPositionsPerIndex = new(room.GridPositionsPerIndex);
+        spawnedRoom.connections = new(room.connections);
+
+        return new(room, spawnedRoom);
+    }
+
+    private DungeonRoomTile GetRoom(List<DungeonRoomSO> listToUse, Vector2Int position, bool spawnFirst) {
         List<DungeonRoomTile> availableTiles = listToUse.Select(x => x.room).ToList()
         .SelectMany(item => Enumerable.Range(0, (item.size.x > 1 || item.size.y > 1) ? 1 : 4)
             .Select(i => {
@@ -194,34 +219,45 @@ public class DungeonGenerator : MonoBehaviour {
         })
         .ToList();
 
-        int index = spawnFirst ? 0 : Mathf.RoundToInt(Mathf.Pow(UnityEngine.Random.value, SKEWED_POWER) * (availableTiles.Count - 1) + 0);
-        DungeonRoomTile room = availableTiles[index];
+        List<DungeonRoomTile> availableSmallTiles = smallRoomList.Select(x => x.room).ToList()
+        .SelectMany(item => Enumerable.Range(0, 4)
+            .Select(i => {
+                DungeonRoomTile roomTile = new(item.name, item.size, item.prefab, item.connections, item.Id);
+                roomTile.Init(i);
+
+                return roomTile;
+            }))
+        .Where(tile => {
+            if (usedIds.Contains(tile.Id))
+                return false;
+
+            List<int> availableIndices = tile.GridPositionsPerIndex.Keys
+                .Where(r => CheckForFit(tile, position, r))
+                .ToList();
+
+            if (availableIndices.Count > 0) {
+                tile.CurrentIndex = availableIndices[UnityEngine.Random.Range(0, availableIndices.Count)];
+                return true;
+            }
+
+            return false;
+        })
+        .ToList();
+
+        List<DungeonRoomTile> roomlist = null;
+        if (availableTiles.Count < 1)
+            roomlist = availableSmallTiles;
+        else
+            roomlist = UnityEngine.Random.Range(0, 100) > 70 ? availableSmallTiles : availableTiles;
+
+        if (spawnFirst)
+            roomlist = availableTiles;
+
+        int index = spawnFirst ? 0 : Mathf.RoundToInt(UnityEngine.Random.Range(0, roomlist.Count));
+        DungeonRoomTile room = roomlist[index];
         bigRoomAmount -= (room.size.x > 1 || room.size.y > 1) ? 1 : 0;
 
-        if (room.Id != 0)
-            usedIds.Add(room.Id);
-
-        Vector4 connection = room.connections[room.CurrentIndex];
-        if (connection.x != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(1, 0)))
-            room.Height = height - connection.x;
-        else if (connection.y != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(-1, 0)))
-            room.Height = height - connection.y;
-        else if (connection.z != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(0, 1)))
-            room.Height = height - connection.z;
-        else if (connection.w != GridStaticFunctions.CONST_INT && dungeonConnections.ContainsKey(position + new Vector2Int(0, -1)))
-            room.Height = height - connection.w;
-
-        RoomComponent spawnedRoom = Instantiate(room.prefab, dungeonParent);
-        spawnedRoom.name = room.name;
-        spawnedRoom.transform.position = CalculateWorldPosition(position, room.Height, room);
-        spawnedRoom.transform.eulerAngles = new(0, room.RotationIndex * 90, 0);
-        spawnedRoom.size = room.size;
-        spawnedRoom.rotationIndex = room.RotationIndex;
-
-        spawnedRoom.gridPositionsPerIndex = new(room.GridPositionsPerIndex);
-        spawnedRoom.connections = new(room.connections);
-
-        return new(room, spawnedRoom);
+        return room;
     }
 
     private Vector3 CalculateWorldPosition(Vector2Int position, float height, DungeonRoomTile room) {
@@ -270,11 +306,16 @@ public class DungeonGenerator : MonoBehaviour {
 
         List<Tuple<int, RoomComponent>> rooms = new();
         foreach (KeyValuePair<Vector2Int, RoomComponent> room in GridStaticFunctions.Dungeon) {
-            if (room.Value.size.x > 1 || room.Value.size.y > 1)
-                continue;
+            int counter = 0;
+            foreach (var item in room.Value.connections) {
+                if (item.x != GridStaticFunctions.CONST_INT ||
+                    item.y != GridStaticFunctions.CONST_INT ||
+                    item.z != GridStaticFunctions.CONST_INT ||
+                    item.w != GridStaticFunctions.CONST_INT)
+                    counter++;
+            }
 
-            Vector4 connections = room.Value.connections[0];
-            if (connections.x + connections.y + connections.z + connections.w > -2500)
+            if (counter > 1)
                 continue;
 
             Vector2Int gridPosition = room.Value.indexZeroGridPos;
@@ -283,14 +324,14 @@ public class DungeonGenerator : MonoBehaviour {
         }
         int endRoomCount = rooms.Count();
 
-        if (endRoomCount < 2) 
+        if (endRoomCount < 2)
             return false;
 
         return true;
     }
 }
 
-public enum DungeonEvents { 
+public enum DungeonEvents {
     StartGeneration,
     GenerationDone,
 }

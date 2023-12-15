@@ -71,11 +71,16 @@ public class DungeonOutfitter : MonoBehaviour {
     private void CreatePathThroughDungeon() {
         List<Tuple<int, RoomComponent>> rooms = new();
         foreach (KeyValuePair<Vector2Int, RoomComponent> room in GridStaticFunctions.Dungeon) {
-            if (room.Value.size.x > 1 || room.Value.size.y > 1)
-                continue;
-
-            Vector4 connections = room.Value.connections[0];
-            if (connections.x + connections.y + connections.z + connections.w > -2500)
+            int counter = 0;
+            foreach (var item in room.Value.connections) {
+                if (item.x != GridStaticFunctions.CONST_INT ||
+                    item.y != GridStaticFunctions.CONST_INT ||
+                    item.z != GridStaticFunctions.CONST_INT ||
+                    item.w != GridStaticFunctions.CONST_INT)
+                    counter++;
+            }
+            
+            if (counter > 1)
                 continue;
 
             Vector2Int gridPosition = room.Value.indexZeroGridPos;
