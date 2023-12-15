@@ -1,9 +1,7 @@
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour {
-
     [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private GameObject infoPanel;
     [SerializeField] private GameObject pauseMenu;

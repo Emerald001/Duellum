@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -391,7 +391,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 234099680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed9f2ae7b90cb0a46aeb00470d275502, type: 3}
+  m_Script: {fileID: 11500000, guid: d221eb4505297334588d41147526c458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &234099682
@@ -2294,6 +2294,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoText: {fileID: 1531117538}
+  infoPanel: {fileID: 0}
+  pauseMenu: {fileID: 0}
 --- !u!222 &1531117540
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2876,160 +2878,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c994313354a7f8744bf0841a9d70ac51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomAmount: 10
-  bigRoomAmount: 5
-  roomList:
-  - {fileID: 11400000, guid: 5b1a42b8d73481743a2fb2e5a3eda4a6, type: 2}
-  - {fileID: 11400000, guid: b9091e60a6c7ddf47b431896240dea11, type: 2}
-  - {fileID: 11400000, guid: 4697f3c089a614741b5dfbf5a8c89ec1, type: 2}
-  - {fileID: 11400000, guid: f906fa0d892824a4e9c85226c4d910a4, type: 2}
-  - {fileID: 11400000, guid: 3b5aa53ff8a84b8418a58d77d17bc736, type: 2}
+  roomAmount: 50
+  bigRoomAmount: 30
+  skewedPower: 0.01
+  bigRoomList:
   - {fileID: 11400000, guid: 65d27cec6a1ac384d8af8d3be3bba6ab, type: 2}
   - {fileID: 11400000, guid: e187daf07b6dbc542845f1151992fed2, type: 2}
   - {fileID: 11400000, guid: 892869d945a63bf4f8c5dd4ba15878b9, type: 2}
   - {fileID: 11400000, guid: d01dbe2724d154347a3a317d6abe9476, type: 2}
   - {fileID: 11400000, guid: 28c2ab56ece28ab4ea3e1d787acd2b22, type: 2}
-  - {fileID: 11400000, guid: 21e4050f8b0ab7943b47921df980f0bb, type: 2}
+  - {fileID: 11400000, guid: 139f6818cf0694f4f8aff6e9aadd3b8b, type: 2}
+  - {fileID: 11400000, guid: d07b930396c2fe147a0175c5777dd8af, type: 2}
+  - {fileID: 11400000, guid: 79e9968c6a829cc4bbe63b0bd7779f29, type: 2}
   - {fileID: 11400000, guid: 6ce960375fb76ce4b9f98bf97e994cf6, type: 2}
-  - {fileID: 11400000, guid: 6b16a1e2829d4e141b3d4b4e0587437a, type: 2}
+  - {fileID: 11400000, guid: 3b4d02524a68d9449aafd19ef9f96278, type: 2}
+  - {fileID: 11400000, guid: e1c3610f09ab0ab4e883bef6a9a98753, type: 2}
+  - {fileID: 11400000, guid: fde2d69deece11e40b087c07ea755053, type: 2}
   - {fileID: 11400000, guid: a974e79a11020874f879a36e9d048463, type: 2}
+  - {fileID: 11400000, guid: 8ad28aff7b86bca45aa612bad82c6dba, type: 2}
+  - {fileID: 11400000, guid: 21e4050f8b0ab7943b47921df980f0bb, type: 2}
+  - {fileID: 11400000, guid: 6b16a1e2829d4e141b3d4b4e0587437a, type: 2}
+  - {fileID: 11400000, guid: 90ea48002f927ef49b65ab73605bf868, type: 2}
+  smallRoomList:
+  - {fileID: 11400000, guid: 5b1a42b8d73481743a2fb2e5a3eda4a6, type: 2}
+  - {fileID: 11400000, guid: b9091e60a6c7ddf47b431896240dea11, type: 2}
+  - {fileID: 11400000, guid: 4697f3c089a614741b5dfbf5a8c89ec1, type: 2}
+  - {fileID: 11400000, guid: f906fa0d892824a4e9c85226c4d910a4, type: 2}
+  - {fileID: 11400000, guid: 3b5aa53ff8a84b8418a58d77d17bc736, type: 2}
   endRoomList:
   - {fileID: 11400000, guid: 5b1a42b8d73481743a2fb2e5a3eda4a6, type: 2}
   - {fileID: 11400000, guid: b9091e60a6c7ddf47b431896240dea11, type: 2}
   - {fileID: 11400000, guid: 4697f3c089a614741b5dfbf5a8c89ec1, type: 2}
   - {fileID: 11400000, guid: f906fa0d892824a4e9c85226c4d910a4, type: 2}
   - {fileID: 11400000, guid: 3b5aa53ff8a84b8418a58d77d17bc736, type: 2}
-  rooms:
-  - name: 4 - Sided Room
-    size: {x: 1, y: 1}
-    prefab: {fileID: 502260893760250004, guid: 6311d915e512505408a04e3df7176c22, type: 3}
-    connections:
-    - {x: 1, y: 1, z: 1, w: 1}
-    Id: 0
-  - name: 3 T - Room
-    size: {x: 1, y: 1}
-    prefab: {fileID: 4531463131601601719, guid: 42ba83f21d9164b418af6c4adaaddee8,
-      type: 3}
-    connections:
-    - {x: 1, y: 0, z: 1, w: 1}
-    Id: 0
-  - name: 2 I - Corridor
-    size: {x: 1, y: 1}
-    prefab: {fileID: 3290643363561231301, guid: 9de4ea77074ea674ea2e2808f4412017,
-      type: 3}
-    connections:
-    - {x: 1, y: 1, z: 0, w: 0}
-    Id: 0
-  - name: 2 L - Room
-    size: {x: 1, y: 1}
-    prefab: {fileID: 1596550666254034389, guid: d0b2a581f3a86544095278332235385d,
-      type: 3}
-    connections:
-    - {x: 1, y: 0, z: 0, w: 1}
-    Id: 0
-  - name: End Cap
-    size: {x: 1, y: 1}
-    prefab: {fileID: 2999143173095309518, guid: ee2073de6382aa5459177199c5ee4dfc,
-      type: 3}
-    connections:
-    - {x: 0, y: 1, z: 0, w: 0}
-    Id: 0
-  - name: 1 by 2 - Room
-    size: {x: 2, y: 1}
-    prefab: {fileID: 4041915012533457316, guid: a3bee0dcda447e84a85ebd51edcabadc,
-      type: 3}
-    connections:
-    - {x: 0, y: 1, z: 0, w: 0}
-    - {x: 0, y: 0, z: 1, w: 1}
-    Id: 0
-  - name: 2 by 2 - Room
-    size: {x: 2, y: 2}
-    prefab: {fileID: 4041915012533457316, guid: e62ecca409d870544a1d1cf6328988b8,
-      type: 3}
-    connections:
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 1}
-    - {x: 0, y: 0, z: 1, w: 0}
-    Id: 0
-  - name: 2 by 5 - Room
-    size: {x: 2, y: 5}
-    prefab: {fileID: 4041915012533457316, guid: 9da5941990b37ba49a3560869b8bfea3,
-      type: 3}
-    connections:
-    - {x: 0, y: 1, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 1, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 1}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 1, w: 0}
-    Id: 0
-  - name: 3 by 6 - Room
-    size: {x: 3, y: 6}
-    prefab: {fileID: 4041915012533457316, guid: 02791569542955f47bd3756af0f8e0ea,
-      type: 3}
-    connections:
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 1, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 1}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 1, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    - {x: 1, y: 0, z: 0, w: 0}
-    - {x: 0, y: 0, z: 0, w: 0}
-    Id: 0
-  endRooms:
-  - name: End
-    size: {x: 1, y: 1}
-    prefab: {fileID: 2999143173095309518, guid: ee2073de6382aa5459177199c5ee4dfc,
-      type: 3}
-    connections:
-    - {x: 0, y: 1, z: 0, w: 0}
-    Id: 0
-  - name: L
-    size: {x: 1, y: 1}
-    prefab: {fileID: 1596550666254034389, guid: d0b2a581f3a86544095278332235385d,
-      type: 3}
-    connections:
-    - {x: 1, y: 0, z: 0, w: 1}
-    Id: 0
-  - name: I
-    size: {x: 1, y: 1}
-    prefab: {fileID: 3290643363561231301, guid: 9de4ea77074ea674ea2e2808f4412017,
-      type: 3}
-    connections:
-    - {x: 1, y: 1, z: 0, w: 0}
-    Id: 0
-  - name: T
-    size: {x: 1, y: 1}
-    prefab: {fileID: 4531463131601601719, guid: 42ba83f21d9164b418af6c4adaaddee8,
-      type: 3}
-    connections:
-    - {x: 1, y: 0, z: 1, w: 1}
-    Id: 0
-  - name: Plus
-    size: {x: 1, y: 1}
-    prefab: {fileID: 4531463131601601719, guid: 09d7a51839e681048b0af1de47207187,
-      type: 3}
-    connections:
-    - {x: 1, y: 1, z: 1, w: 1}
-    Id: 0
-  generateInstantly: 1
-  generationSpeed: 1
+  generateInstantly: 0
+  generationSpeed: 0.2
   outfitter: {fileID: 1965523699}
 --- !u!4 &1965523698
 Transform:

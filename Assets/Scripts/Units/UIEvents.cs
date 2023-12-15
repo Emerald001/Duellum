@@ -8,4 +8,6 @@
     GiveEnemyCard,
     ShowEnemyCardHand,
     HideEnemyCardHand,
+    PopUpWindow,
+    ShowPauseMenu,
 }
