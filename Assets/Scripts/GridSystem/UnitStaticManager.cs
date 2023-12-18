@@ -12,6 +12,7 @@ public static class UnitStaticManager {
     public static List<UnitController> DeadUnitsInPlay { get; set; } = new();
     public static List<UnitController> UnitsWithTurnLeft { get; set; } = new();
 
+    public static Dictionary<int, List<UnitController>> UnitTeams { get; set; } = new();
     public static List<UnitController> EnemyUnitsInPlay { get; set; } = new();
     public static List<UnitController> PlayerUnitsInPlay { get; set; } = new();
     
@@ -73,7 +74,8 @@ public static class UnitStaticManager {
     }
 
     public static void RemoveUnitFromOrder(UnitController unit) {
-
+        if (UnitsWithTurnLeft.Contains(unit))
+            UnitsWithTurnLeft.Remove(unit);
     }
 
     public static void ReviveUnit(UnitController unit) {
@@ -81,6 +83,17 @@ public static class UnitStaticManager {
 
         PlayerUnitsInPlay.Add(unit);
         LivingUnitsInPlay.Add(unit);
+    }
+
+    public static void MoveUnit(UnitController unit) {
+        if (PlayerUnitsInPlay.Contains(unit)) { 
+            PlayerUnitsInPlay.Remove(unit);
+            EnemyUnitsInPlay.Add(unit);
+        }
+        else if (EnemyUnitsInPlay.Contains(unit)) {
+            EnemyUnitsInPlay.Remove(unit);
+            PlayerUnitsInPlay.Add(unit);
+        }
     }
 
     public static List<UnitController> GetEnemies(UnitController unit) {
