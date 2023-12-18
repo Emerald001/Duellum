@@ -7,8 +7,8 @@ public class PlayerUnitController : UnitController {
     private List<Vector2Int> CurrentPath = new();
     private bool isPerformingAction = false;
 
-    public override void SetUp(UnitData data, Vector2Int pos) {
-        base.SetUp(data, pos);
+    public override void SetUp(int id, UnitData data, Vector2Int pos) {
+        base.SetUp(id, data, pos);
 
         Line = GetComponent<LineRenderer>();
     }

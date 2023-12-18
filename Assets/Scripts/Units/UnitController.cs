@@ -8,6 +8,7 @@ public abstract class UnitController : MonoBehaviour {
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
+    public int OwnerID { get; private set; }
 
     public UnitValues Values => values;
     protected UnitValues values;
@@ -36,13 +37,15 @@ public abstract class UnitController : MonoBehaviour {
         unitAnimator = GetComponentInChildren<Animator>();
     }
 
-    public virtual void SetUp(UnitData data, Vector2Int pos) {
+    public virtual void SetUp(int id, UnitData data, Vector2Int pos) {
         UnitBaseData = Instantiate(data);
         GameObject pawn = Instantiate(data.PawnPrefab, transform);
 
+        OwnerID = id;
+
         values = new(UnitBaseData);
         movementModule = new();
-        attackModule = new(UnitBaseData.Attack);
+        attackModule = new(UnitBaseData.Attack, id);
         gridPosition = pos;
         queue = new(() => IsDone = HasPerformedAction);
     }

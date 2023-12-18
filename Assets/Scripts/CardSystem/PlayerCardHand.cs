@@ -133,7 +133,8 @@ public class PlayerCardHand : CardHand {
 
                 GridStaticFunctions.HighlightTiles(GridStaticSelectors.GetPositions(
                     abilityCards[card.Index].availabletilesSelector,
-                    GridStaticFunctions.CONST_EMPTY),
+                    GridStaticFunctions.CONST_EMPTY,
+                    OwnerID),
                     HighlightType.MovementHighlight);
             }
             else
@@ -151,9 +152,9 @@ public class PlayerCardHand : CardHand {
         EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
 
         if (hasCardFaded) {
-            List<Vector2Int> validTiles = GridStaticSelectors.GetPositions(ability.availabletilesSelector, MouseToWorldView.HoverTileGridPos);
+            List<Vector2Int> validTiles = GridStaticSelectors.GetPositions(ability.availabletilesSelector, MouseToWorldView.HoverTileGridPos, OwnerID);
             if (validTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
-                List<Vector2Int> affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos);
+                List<Vector2Int> affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos, OwnerID);
 
                 GridStaticFunctions.ResetBattleTileColors();
                 AbilityManager.PerformAbility(ability, affectedTiles.ToArray());

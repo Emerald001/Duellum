@@ -18,6 +18,7 @@ public abstract class CardHand : MonoBehaviour {
     [SerializeField] protected float radius;
     [SerializeField] protected float raisedAmount;
 
+    public int OwnerID { get; set; }
     public List<AbilityCard> AbilityCards => abilityCards;
 
     protected readonly List<CardAssetHolder> cards = new();

@@ -3,14 +3,16 @@ using UnityEngine;
 
 public abstract class TurnController {
     public bool IsDone { get; protected set; }
+    public int ID { get; protected set; }
     public List<UnitController> Units => units;
 
     protected List<UnitController> units = new();
     protected UnitController currentUnit;
     protected bool isPicking = true;
 
-    public void SetUp(List<UnitController> units) {
+    public void SetUp(int id, List<UnitController> units) {
         this.units = units;
+        ID = id;
     }
 
     public virtual void OnEnter() {

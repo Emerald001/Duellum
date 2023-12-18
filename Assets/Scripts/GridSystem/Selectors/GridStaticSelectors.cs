@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 public static class GridStaticSelectors {
-    public static List<Vector2Int> GetPositions(Selector selector, Vector2Int startPos) {
+    public static List<Vector2Int> GetPositions(Selector selector, Vector2Int startPos, int id) {
         List<Vector2Int> result = new();
 
         switch (selector.type) {
@@ -25,6 +25,12 @@ public static class GridStaticSelectors {
 
             case SelectorType.AllTiles:
                 result = GetAllTiles(selector);
+                break;
+
+            case SelectorType.EnemiesAdjecent:
+
+                break;
+            case SelectorType.AllAdjecent:
                 break;
 
             default:
@@ -118,5 +124,21 @@ public static class GridStaticSelectors {
         }
 
         return result;
+    }
+
+    private static List<Vector2Int> GetEnemyAdjecentTiles(Selector selector) {
+        List<Vector2Int> result = new();
+
+        switch (selector.type) {
+            case SelectorType.AllUnits:
+                return UnitStaticManager.LivingUnitsInPlay.Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
+            case SelectorType.FriendlyUnits:
+                return UnitStaticManager.PlayerUnitsInPlay.Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
+            case SelectorType.EnemyUnits:
+                return UnitStaticManager.EnemyUnitsInPlay.Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
+
+            default:
+                return null;
+        }
     }
 }

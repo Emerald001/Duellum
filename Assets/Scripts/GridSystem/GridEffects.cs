@@ -39,7 +39,7 @@ public class GridEffects : MonoBehaviour {
     }
 
     private void Raise(Vector2Int gridPos, bool invert, float height) {
-        List<Vector2Int> positions = GridStaticSelectors.GetPositions(RaiseSelector, gridPos);
+        List<Vector2Int> positions = GridStaticSelectors.GetPositions(RaiseSelector, gridPos, 0);
 
         for (int i = 0; i < positions.Count; i++) {
             float newHeight = invert ? -height : height;

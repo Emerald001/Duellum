@@ -24,4 +24,6 @@ public enum SelectorType {
     FriendlyUnits,
     EnemyUnits,
     AllTiles,
+    EnemiesAdjecent,
+    AllAdjecent,
 }

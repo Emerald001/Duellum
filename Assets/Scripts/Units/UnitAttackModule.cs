@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class UnitAttackModule {
     public List<Vector2Int> AttackableTiles => currentAttackableTiles;
+    public int OwnerID { get; private set; }
 
     private readonly List<Vector2Int> currentAttackableTiles = new();
     private readonly Dictionary<Vector2Int, List<Vector2Int>> currentAttackableTilesWithStandingPosition = new();
     private readonly UnitAttack attack;
 
-    public UnitAttackModule(UnitAttack attack) {
+    public UnitAttackModule(UnitAttack attack, int id) {
+        OwnerID = id;
         this.attack = attack;
     }
 
@@ -17,7 +19,7 @@ public class UnitAttackModule {
         currentAttackableTiles.Clear();
 
         for (int i = 0; i < gridpositions.Count; i++) {
-            List<Vector2Int> tiles = GridStaticSelectors.GetPositions(attack.ApplicableTilesSelector, gridpositions[i]);
+            List<Vector2Int> tiles = GridStaticSelectors.GetPositions(attack.ApplicableTilesSelector, gridpositions[i], OwnerID);
             currentAttackableTilesWithStandingPosition.Add(gridpositions[i], new());
 
             foreach (var tile in tiles) {

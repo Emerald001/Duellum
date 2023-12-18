@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleManager : MonoBehaviour {
+public class BattleManager : Singleton<BattleManager> {
     [SerializeField] private GridCardManager cardManager;
 
     [SerializeField] private UnitController PlayerUnitPrefab;
@@ -15,13 +15,14 @@ public class BattleManager : MonoBehaviour {
 
     private UnitFactory unitFactory;
 
-    private readonly List<TurnController> players = new();
+    private readonly Dictionary<int, TurnController> players = new();
     private TurnController currentPlayer;
     private int currentPlayerIndex;
 
     private Transform unitHolder;
 
     private void Awake() {
+        Init(this);
         unitFactory = new();
     }
 
@@ -33,7 +34,10 @@ public class BattleManager : MonoBehaviour {
     }
 
     public void StartBattle(BattleData data) {
-        SpawnUnits(data.PlayerUnits, data.EnemyUnits);
+        Vector2Int difference = data.PlayerPos - data.EnemyPos;
+        Vector2Int direction = Mathf.Abs(difference.x) > Mathf.Abs(difference.y) ? new(0, 1) : new(1, 0);
+        SpawnUnits(direction, data.PlayerUnits, data.EnemyUnits);
+
         cardManager.SetUp();
 
         NextPlayer();
@@ -125,37 +129,40 @@ public class BattleManager : MonoBehaviour {
         GridStaticFunctions.EnemySpawnPositions.AddRange(GetSpawnPositions(data.EnemyUnits.Count, data.EnemyPos));
     }
 
-    private void SpawnUnits(List<UnitData> playerUnitsToSpawn, List<UnitData> enemyUnitsToSpawn) {
+    private void SpawnUnits(Vector2Int direction, List<UnitData> playerUnitsToSpawn, List<UnitData> enemyUnitsToSpawn) {
         unitHolder = new GameObject("UnitHolder").transform;
 
         PlayerTurnController playerTurnController = new();
+        UnitStaticManager.UnitTeams.Add(0, new());
         for (int i = 0; i < GridStaticFunctions.PlayerSpawnPositions.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPositions[i];
 
-            UnitController unit = unitFactory.CreateUnit(playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab, unitHolder);
-            unit.ChangeUnitRotation(new(1, 0));
+            UnitController unit = unitFactory.CreateUnit(0, playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab, unitHolder);
+            unit.ChangeUnitRotation(direction);
 
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
-            UnitStaticManager.PlayerUnitsInPlay.Add(unit);
+            UnitStaticManager.UnitTeams[0].Add(unit);
         }
-        playerTurnController.SetUp(new(UnitStaticManager.PlayerUnitsInPlay));
-        players.Add(playerTurnController);
+        playerTurnController.SetUp(0, UnitStaticManager.UnitTeams[0]);
+        players.Add(0, playerTurnController);
 
         EnemyTurnController enemyTurnController = new();
         enemyTurnController.CardHand = enemyCardHand;
+        enemyCardHand.OwnerID = 1;
+        UnitStaticManager.UnitTeams.Add(1, new());
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPositions.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPositions[i];
 
-            UnitController unit = unitFactory.CreateUnit(enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab, unitHolder);
-            unit.ChangeUnitRotation(new(-1, 0));
+            UnitController unit = unitFactory.CreateUnit(1, enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab, unitHolder);
+            unit.ChangeUnitRotation(-direction);
 
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
-            UnitStaticManager.EnemyUnitsInPlay.Add(unit);
+            UnitStaticManager.UnitTeams[1].Add(unit);
         }
-        enemyTurnController.SetUp(UnitStaticManager.EnemyUnitsInPlay);
-        players.Add(enemyTurnController);
+        enemyTurnController.SetUp(1, UnitStaticManager.UnitTeams[1]);
+        players.Add(1, enemyTurnController);
     }
 
     private void NextPlayer() {
