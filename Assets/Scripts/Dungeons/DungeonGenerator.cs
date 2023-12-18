@@ -7,10 +7,8 @@ using UnityEngine;
 public class DungeonGenerator : MonoBehaviour {
     [SerializeField] private int roomAmount;
     [SerializeField] private int bigRoomAmount;
-    [SerializeField] private float skewedPower = .3f;
 
     [SerializeField] private List<DungeonRoomSO> bigRoomList;
-    [SerializeField] private List<DungeonRoomSO> smallRoomList;
     [SerializeField] private List<DungeonRoomSO> endRoomList;
 
     [SerializeField] private bool generateInstantly;
@@ -219,7 +217,7 @@ public class DungeonGenerator : MonoBehaviour {
         })
         .ToList();
 
-        List<DungeonRoomTile> availableSmallTiles = smallRoomList.Select(x => x.room).ToList()
+        List<DungeonRoomTile> availableSmallTiles = endRoomList.Select(x => x.room).ToList()
         .SelectMany(item => Enumerable.Range(0, 4)
             .Select(i => {
                 DungeonRoomTile roomTile = new(item.name, item.size, item.prefab, item.connections, item.Id);
