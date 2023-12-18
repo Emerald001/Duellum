@@ -67,10 +67,11 @@ public enum HighlightType {
 
 public enum TileType {
     Normal,
-    Water,
+    Lava,
     Cover,
     HalfCover,
     Spawn,
     Special,
     EnemySpawn,
+    BossSpawn,
 }

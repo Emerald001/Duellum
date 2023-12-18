@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3143461922185471494}
   - component: {fileID: 3143461922185471495}
   m_Layer: 0
-  m_Name: GridWaterBlock
+  m_Name: GridLavaBlock
   m_TagString: WalkableTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -192,26 +192,25 @@ public partial class RoomGeneratorEditor : EditorWindow {
         GameObject hexGO = Resources.Load("GridBlocks/GridBlock") as GameObject;
         GameObject coverGO = Resources.Load("GridBlocks/GridCoverBlock") as GameObject;
         GameObject halfCoverGO = Resources.Load("GridBlocks/GridCoverBlock") as GameObject;
-        GameObject waterGO = Resources.Load("GridBlocks/GridWaterBlock") as GameObject;
+        GameObject lavaGO = Resources.Load("GridBlocks/GridLavaBlock") as GameObject;
         GameObject spawnGO = Resources.Load("GridBlocks/GridSpawnBlock") as GameObject;
-        GameObject specialGO = Resources.Load("GridBlocks/GridCardBlock") as GameObject;
-        GameObject enemyGO = Resources.Load("GridBlocks/GridEnemySpawnBlock") as GameObject;
+        GameObject specialGO = Resources.Load("GridBlocks/GridSpecialBlock") as GameObject;
 
         Tile hex = hexGO.GetComponent<Tile>();
         Tile coverHex = coverGO.GetComponent<Tile>();
         Tile halfCoverHex = halfCoverGO.GetComponent<Tile>();
-        Tile waterHex = waterGO.GetComponent<Tile>();
+        Tile lavaHex = lavaGO.GetComponent<Tile>();
         Tile spawnHex = spawnGO.GetComponent<Tile>();
         Tile specialHex = specialGO.GetComponent<Tile>();
-        Tile enemyHex = enemyGO.GetComponent<Tile>();
 
         result.Add(TileType.Normal, hex);
         result.Add(TileType.Cover, coverHex);
         result.Add(TileType.HalfCover, halfCoverHex);
-        result.Add(TileType.Water, waterHex);
+        result.Add(TileType.Lava, lavaHex);
         result.Add(TileType.Spawn, spawnHex);
         result.Add(TileType.Special, specialHex);
-        result.Add(TileType.EnemySpawn, enemyHex);
+        result.Add(TileType.EnemySpawn, hex);
+        result.Add(TileType.BossSpawn, hex);
 
         return result;
     }
@@ -437,14 +436,14 @@ public partial class RoomGeneratorEditor {
             case TileType.Normal:
                 grid[new(x, y)] = TileType.HalfCover;
                 break;
-            case TileType.Water:
-                grid[new(x, y)] = TileType.Spawn;
-                break;
-            case TileType.Cover:
-                grid[new(x, y)] = TileType.Water;
-                break;
             case TileType.HalfCover:
                 grid[new(x, y)] = TileType.Cover;
+                break;
+            case TileType.Cover:
+                grid[new(x, y)] = TileType.Lava;
+                break;
+            case TileType.Lava:
+                grid[new(x, y)] = TileType.Spawn;
                 break;
             case TileType.Spawn:
                 grid[new(x, y)] = TileType.Special;
@@ -453,6 +452,9 @@ public partial class RoomGeneratorEditor {
                 grid[new(x, y)] = TileType.EnemySpawn;
                 break;
             case TileType.EnemySpawn:
+                grid[new(x, y)] = TileType.BossSpawn;
+                break;
+            case TileType.BossSpawn:
                 grid[new(x, y)] = TileType.Normal;
                 break;
 
@@ -528,8 +530,8 @@ public partial class RoomGeneratorEditor {
             case TileType.Normal:
                 GUI.backgroundColor = Color.white;
                 break;
-            case TileType.Water:
-                GUI.backgroundColor = Color.blue;
+            case TileType.Lava:
+                GUI.backgroundColor = new Color(1f, .5f, 0);
                 break;
             case TileType.Cover:
                 GUI.backgroundColor = Color.black;
@@ -545,6 +547,9 @@ public partial class RoomGeneratorEditor {
                 break;
             case TileType.EnemySpawn:
                 GUI.backgroundColor = Color.red;
+                break;
+            case TileType.BossSpawn:
+                GUI.backgroundColor = new Color(.5f, 0, 0);
                 break;
 
             default:

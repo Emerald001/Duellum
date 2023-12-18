@@ -102,7 +102,7 @@ public static class GridStaticSelectors {
 
         if (selector.includeWater) {
             result.AddRange(GridStaticFunctions.Grid.Values
-                .Where(tile => tile.Type == TileType.Water)
+                .Where(tile => tile.Type == TileType.Lava)
                 .Select(tile => tile.GridPos));
         }
         if (selector.includeCover) {
