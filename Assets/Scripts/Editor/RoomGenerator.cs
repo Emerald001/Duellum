@@ -178,6 +178,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
                 tmp.StandardWorldPosition = CalcSquareWorldPos(gridPos);
                 tmp.transform.position = CalcSquareWorldPos(gridPos);
                 tmp.transform.SetParent(parent);
+                tmp.Height = heightGrid[gridPos];
 
                 result.Add(gridPos, tmp);
             }

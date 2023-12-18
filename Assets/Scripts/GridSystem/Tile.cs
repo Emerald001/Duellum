@@ -13,12 +13,11 @@ public class Tile : MonoBehaviour {
     [SerializeField] private Material transparent;
 
     [SerializeField] private TileType type;
-    [SerializeField] private float height;
 
     public Vector2Int GridPos { get; set; }
     public Vector3 StandardWorldPosition { get; set; }
+    public float Height { get; set; }
     public TileType Type => type;
-    public float Height => height;
 
     private HighlightType currentType = HighlightType.None;
     private readonly ActionQueue queue = new();
@@ -74,4 +73,9 @@ public enum TileType {
     Special,
     EnemySpawn,
     BossSpawn,
+}
+
+public enum TileEffect {
+    OnFire,
+    Trapped,
 }

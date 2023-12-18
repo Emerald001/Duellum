@@ -42,7 +42,8 @@ public static class AbilityManager {
 
             case AbilityCardType.Summon:
                 foreach (Vector2Int position in positions) {
-
+                    //var spawnedUnit = GameObject.Instantiate()
+                    //BattleManager.Instance.CurrentPlayer.Units.Add();
                 }
                 break;
 
@@ -50,6 +51,7 @@ public static class AbilityManager {
                 break;
 
             case AbilityCardType.SmokeBomb:
+
                 break;
 
             case AbilityCardType.Grapple:

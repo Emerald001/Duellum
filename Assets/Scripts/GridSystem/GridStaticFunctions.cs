@@ -49,9 +49,10 @@ public static class GridStaticFunctions {
 
     public static Vector3 CalcWorldPos(Vector2Int gridPos) {
         float x = gridPos.x - TilesPerRoom / 2;
+        float y = Grid[gridPos].Height;
         float z = gridPos.y - TilesPerRoom / 2;
 
-        return new Vector3(x, 0, z);
+        return new Vector3(x, y, z);
     }
 
     public static Vector2Int GetGridPosFromTileGameObject(GameObject valueVar) {
