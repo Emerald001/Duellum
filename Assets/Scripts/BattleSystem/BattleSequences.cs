@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 public class BattleSequences : MonoBehaviour {
     [SerializeField] private BattleManager battleManager;
@@ -48,22 +51,32 @@ public class BattleSequences : MonoBehaviour {
     }
 
     private void Ripple(Vector2Int gridPos, float rippleStrength, List<Vector2Int> battleMap) {
-        GridStaticFunctions.RippleThroughGridPositions(gridPos, 1000, (gridPos, i) => {
+        GridStaticFunctions.RippleThroughGridPositions(gridPos, 100, (gridPos, i) => {
             Tile currentHex = GridStaticFunctions.Grid[gridPos];
             currentHex.ClearQueue();
-            List<Action> queue = new() {
+
+            Vector3 downVector = Vector3.up * rippleStrength;
+            Vector3 upVector = Vector3.up * (rippleStrength / 3);
+            Vector3 downSmallVector = Vector3.up * (rippleStrength / 6);
+            Vector3 upSmallVector = Vector3.up * (rippleStrength / 15);
+
+            Action[] actions = {
                 new WaitAction(i / 50f),
-                new MoveObjectAction(currentHex.gameObject, 30, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength, 0)),
-                new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 3, 0)),
-                new MoveObjectAction(currentHex.gameObject, 10, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength / 6, 0)),
-                new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 15, 0)),
+                new MoveObjectAction(currentHex.gameObject, 30, currentHex.StandardWorldPosition - downVector),
+                new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + upVector),
+                new MoveObjectAction(currentHex.gameObject, 10, currentHex.StandardWorldPosition - downSmallVector),
+                new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition + upSmallVector)
             };
 
-            if (!battleMap.Contains(gridPos)) 
-                queue.Add(new DoMethodAction(() => currentHex.transform.GetChild(0).gameObject.SetActive(false)));
-            queue.Add(new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition));
+            if (!battleMap.Contains(gridPos)) {
+                Array.Resize(ref actions, actions.Length + 1);
+                actions[^1] = new DoMethodAction(() => currentHex.transform.GetChild(0).gameObject.SetActive(false));
+            }
 
-            currentHex.SetActionQueue(queue);
+            Array.Resize(ref actions, actions.Length + 1);
+            actions[^1] = new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition);
+
+            currentHex.SetActionQueue(actions.ToList());
         });
 
         EventManager<CameraEventType, float>.Invoke(CameraEventType.DO_CAMERA_SHAKE, .4f);

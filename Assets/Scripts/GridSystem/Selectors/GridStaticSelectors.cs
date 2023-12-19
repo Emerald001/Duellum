@@ -20,7 +20,7 @@ public static class GridStaticSelectors {
             case SelectorType.FriendlyUnits:
             case SelectorType.EnemyUnits:
             case SelectorType.AllUnits:
-                result = GetAvailableTilesUnits(selector, startPos);
+                result = GetAvailableTilesUnits(selector, startPos, id);
                 break;
 
             case SelectorType.AllTiles:
@@ -28,9 +28,10 @@ public static class GridStaticSelectors {
                 break;
 
             case SelectorType.EnemiesAdjecent:
-
+                GetEnemyAdjecentTiles(id);
                 break;
             case SelectorType.AllAdjecent:
+                GetOpenAdjecentTiles(id);
                 break;
 
             default:
@@ -82,7 +83,7 @@ public static class GridStaticSelectors {
         return result;
     }
 
-    private static List<Vector2Int> GetAvailableTilesUnits(Selector selector, Vector2Int startpos) {
+    private static List<Vector2Int> GetAvailableTilesUnits(Selector selector, Vector2Int startpos, int id) {
         List<Vector2Int> result = new();
 
         if (selector.includeCentreTile)
@@ -92,9 +93,9 @@ public static class GridStaticSelectors {
             case SelectorType.AllUnits:
                 return UnitStaticManager.LivingUnitsInPlay.Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
             case SelectorType.FriendlyUnits:
-                return UnitStaticManager.PlayerUnitsInPlay.Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
+                return UnitStaticManager.UnitTeams[id].Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
             case SelectorType.EnemyUnits:
-                return UnitStaticManager.EnemyUnitsInPlay.Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
+                return UnitStaticManager.GetEnemies(id).Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
 
             default:
                 return null;
@@ -126,19 +127,35 @@ public static class GridStaticSelectors {
         return result;
     }
 
-    private static List<Vector2Int> GetEnemyAdjecentTiles(Selector selector) {
+    private static List<Vector2Int> GetOpenAdjecentTiles(int id) {
         List<Vector2Int> result = new();
 
-        switch (selector.type) {
-            case SelectorType.AllUnits:
-                return UnitStaticManager.LivingUnitsInPlay.Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
-            case SelectorType.FriendlyUnits:
-                return UnitStaticManager.PlayerUnitsInPlay.Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
-            case SelectorType.EnemyUnits:
-                return UnitStaticManager.EnemyUnitsInPlay.Select(unit => UnitStaticManager.GetUnitPosition(unit)).ToList();
-
-            default:
-                return null;
+        var units = UnitStaticManager.UnitTeams[id];
+        foreach (var unit in units) {
+            GridStaticFunctions.RippleThroughGridPositions(UnitStaticManager.GetUnitPosition(unit), 2, (position, i) => {
+                if (!UnitStaticManager.TryGetUnitFromGridPos(position, out var enemy))
+                    result.Add(position);
+            });
         }
+
+        return result;
+    }
+
+    private static List<Vector2Int> GetEnemyAdjecentTiles(int id) {
+        List<Vector2Int> result = new();
+
+        var units = UnitStaticManager.UnitTeams[id];
+        var enemies = UnitStaticManager.GetEnemies(id);
+        foreach (var unit in units) {
+            GridStaticFunctions.RippleThroughGridPositions(UnitStaticManager.GetUnitPosition(unit), 2, (position, i) => {
+                if (!UnitStaticManager.TryGetUnitFromGridPos(position, out var enemy))
+                    return;
+
+                if (enemies.Contains(enemy))
+                    result.Add(position);
+            });
+        }
+
+        return result;
     }
 }

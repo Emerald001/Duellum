@@ -11,7 +11,6 @@ public class EnemyBehaviour : MonoBehaviour {
     private Vector2Int gridPos;
 
     private Transform player;
-    private bool Running;
 
     public void Setup(Transform player, List<UnitData> enemyTeam, Vector2Int gridPos) {
         this.player = player;

@@ -11,7 +11,7 @@ public class PlayerCardHand : CardHand {
     private bool hasCardFadedCallRan;
 
     protected override void OnEnable() {
-        EventManager<UIEvents>.Subscribe(UIEvents.GivePlayerCard, GiveCard);
+        base.OnEnable();
 
         BaseCardBehaviour.OnHoverEnter += SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
@@ -19,7 +19,7 @@ public class PlayerCardHand : CardHand {
         BaseCardBehaviour.OnMoveRelease += PerformRelease;
     }
     protected override void OnDisable() {
-        EventManager<UIEvents>.Unsubscribe(UIEvents.GivePlayerCard, GiveCard);
+        base.OnDisable();
 
         BaseCardBehaviour.OnHoverEnter -= SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit -= SetCardsBackToStandardPos;
@@ -29,7 +29,7 @@ public class PlayerCardHand : CardHand {
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.V))
-            GiveCard();
+            GiveCard(OwnerID);
     }
 
     protected override void AddCard(AbilityCard card) {
@@ -157,7 +157,7 @@ public class PlayerCardHand : CardHand {
                 List<Vector2Int> affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos, OwnerID);
 
                 GridStaticFunctions.ResetBattleTileColors();
-                AbilityManager.PerformAbility(ability, affectedTiles.ToArray());
+                AbilityManager.PerformAbility(ability, OwnerID, affectedTiles.ToArray());
                 RemoveCard(card.Index);
                 return;
             }

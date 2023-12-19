@@ -24,14 +24,21 @@ public abstract class CardHand : MonoBehaviour {
     protected readonly List<CardAssetHolder> cards = new();
     protected readonly List<AbilityCard> abilityCards = new();
 
-    protected abstract void OnEnable();
-    protected abstract void OnDisable();
+    protected virtual void OnEnable() {
+        EventManager<UIEvents, int>.Subscribe(UIEvents.GiveCard, GiveCard);
+    }
+    protected virtual void OnDisable() {
+        EventManager<UIEvents, int>.Unsubscribe(UIEvents.GiveCard, GiveCard);
+    }
 
     private void Start() {
         cardStack.ResetDeck();
     }
 
-    protected void GiveCard() {
+    protected void GiveCard(int id) {
+        if (id != OwnerID)
+            return;
+
         AbilityCard card = cardStack.GetCard();
         if (card != null)
             AddCard(card);

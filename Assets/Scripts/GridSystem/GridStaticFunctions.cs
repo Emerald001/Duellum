@@ -11,17 +11,17 @@ public static class GridStaticFunctions {
     public static int BattleMapSize = 11;
 
     public static readonly Vector2Int[] directCubeNeighbours = {
-        new Vector2Int(1, 0),
-        new Vector2Int(0, 1),
-        new Vector2Int(-1, 0),
-        new Vector2Int(0, -1),
+        new (1, 0),
+        new (0, 1),
+        new (-1, 0),
+        new (0, -1),
     };
 
     public static readonly Vector2Int[] diagonalCubeNeighbours = {
-        new Vector2Int(1, 1),
-        new Vector2Int(1, -1),
-        new Vector2Int(-1, 1),
-        new Vector2Int(-1, -1),
+        new (1, 1),
+        new (1, -1),
+        new (-1, 1),
+        new (-1, -1),
     };
 
     private static readonly float[] lookDirections = {
@@ -31,7 +31,7 @@ public static class GridStaticFunctions {
         180,
     };
 
-    public static Dictionary<Vector2Int, GameObject> CardPositions { get; set; } = new();
+    public static Dictionary<Vector2Int, TileEffect> TileEffectPositions { get; set; } = new();
     public static Dictionary<Vector2Int, Tile> Grid { get; set; } = new();
     public static Dictionary<Vector2Int, Tile> CurrentBattleGrid { get; set; } = new();
     public static Dictionary<Vector2Int, RoomComponent> Dungeon { get; set; } = new();
@@ -41,10 +41,13 @@ public static class GridStaticFunctions {
     public static List<Vector2Int> EnemySpawnPositions { get; set; } = new();
 
     public static void Reset() {
-        CardPositions.Clear();
         Grid.Clear();
-        PlayerSpawnPositions.Clear();
+        Dungeon.Clear();
+        CurrentBattleGrid.Clear();
+        DungeonConnections.Clear();
+        TileEffectPositions.Clear();
         EnemySpawnPositions.Clear();
+        PlayerSpawnPositions.Clear();
     }
 
     public static Vector3 CalcWorldPos(Vector2Int gridPos) {
@@ -195,7 +198,7 @@ public static class GridStaticFunctions {
                 continue;
             }
 
-            if (CardPositions.ContainsKey(result[i]))
+            if (TileEffectPositions.ContainsKey(result[i]))
                 result.RemoveAt(i);
         }
 

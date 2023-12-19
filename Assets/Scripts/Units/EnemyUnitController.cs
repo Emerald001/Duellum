@@ -91,14 +91,14 @@ public class EnemyUnitController : UnitController {
         if (movementModule.AccessableTiles.Count > 0) {
             if (bestPickedPosition != GridStaticFunctions.CONST_EMPTY) {
                 List<Vector2Int> path = movementModule.GetPath(attackModule.GetClosestTile(bestPickedPosition, gridPosition, Vector3.zero));
-                foreach (Vector2Int card in GridStaticFunctions.CardPositions.Keys) {
+                foreach (Vector2Int card in GridStaticFunctions.TileEffectPositions.Keys) {
                     if (path.Contains(card))
                         result += 10;
                 }
             }
             else {
                 UnitController lastEnemy = null;
-                List<UnitController> enemies = UnitStaticManager.GetEnemies(this);
+                List<UnitController> enemies = UnitStaticManager.GetEnemies(OwnerID);
 
                 for (int i = 0; i < enemies.Count; i++) {
                     var unit = enemies[i];
@@ -130,7 +130,7 @@ public class EnemyUnitController : UnitController {
                     result += 20;
 
                     List<Vector2Int> path = movementModule.GetPath(bestPickedPosition);
-                    foreach (Vector2Int card in GridStaticFunctions.CardPositions.Keys) {
+                    foreach (Vector2Int card in GridStaticFunctions.TileEffectPositions.Keys) {
                         if (path.Contains(card))
                             result += 10;
                     }

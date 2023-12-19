@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager> {
-    [SerializeField] private GridCardManager cardManager;
+    [SerializeField] private TileEffectManager cardManager;
 
     [SerializeField] private UnitController PlayerUnitPrefab;
     [SerializeField] private UnitController EnemyUnitPrefab;
@@ -131,6 +131,7 @@ public class BattleManager : Singleton<BattleManager> {
 
     private void SpawnUnits(Vector2Int direction, List<UnitData> playerUnitsToSpawn, List<UnitData> enemyUnitsToSpawn) {
         unitHolder = new GameObject("UnitHolder").transform;
+        Vector2Int reversedDirection = new(direction.y, direction.x);
 
         PlayerTurnController playerTurnController = new();
         UnitStaticManager.UnitTeams.Add(0, new());
@@ -138,7 +139,7 @@ public class BattleManager : Singleton<BattleManager> {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPositions[i];
 
             UnitController unit = unitFactory.CreateUnit(0, playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab, unitHolder);
-            unit.ChangeUnitRotation(direction);
+            unit.ChangeUnitRotation(reversedDirection);
 
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
@@ -155,7 +156,7 @@ public class BattleManager : Singleton<BattleManager> {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPositions[i];
 
             UnitController unit = unitFactory.CreateUnit(1, enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab, unitHolder);
-            unit.ChangeUnitRotation(-direction);
+            unit.ChangeUnitRotation(-reversedDirection);
 
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
@@ -203,7 +204,7 @@ public enum BattleEvents {
     UnitHit,
     UnitDeath,
     UnitRevive,
-    PickUpAbilityCard,
+    UnitTouchedTileEffect,
     SpawnAbilityCard,
     BattleEnd,
 }

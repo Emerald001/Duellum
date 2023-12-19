@@ -4,7 +4,6 @@ using UnityEngine;
 public abstract class UnitController : MonoBehaviour {
     [SerializeField] private GameObject pawnParent;
 
-    private Animator unitAnimator;
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
@@ -21,6 +20,7 @@ public abstract class UnitController : MonoBehaviour {
     protected Vector2Int gridPosition;
 
     private ActionQueue queue;
+    private Animator unitAnimator;
 
     private void OnEnable() {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
@@ -98,12 +98,8 @@ public abstract class UnitController : MonoBehaviour {
                 gridPosition = newPos;
                 values.currentStats.Speed--;
 
-                if (GridStaticFunctions.CardPositions.ContainsKey(newPos)) {
-                    EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.PickUpAbilityCard, this);
-
-                    Destroy(GridStaticFunctions.CardPositions[newPos]);
-                    GridStaticFunctions.CardPositions.Remove(newPos);
-                }
+                if (GridStaticFunctions.TileEffectPositions.ContainsKey(newPos))
+                    EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitTouchedTileEffect, this);
             }));
 
             lastPos = newPos;
@@ -139,7 +135,7 @@ public abstract class UnitController : MonoBehaviour {
         List<Vector2Int> tiles = new(movementModule.AccessableTiles) {
             gridPosition
         };
-        attackModule.FindAttackableTiles(tiles, UnitStaticManager.GetEnemies(this));
+        attackModule.FindAttackableTiles(tiles, UnitStaticManager.GetEnemies(OwnerID));
     }
 
     public void AddEffect(Effect effect) {

@@ -76,6 +76,7 @@ public enum TileType {
 }
 
 public enum TileEffect {
+    Card,
     OnFire,
     Trapped,
 }

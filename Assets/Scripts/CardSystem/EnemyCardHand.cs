@@ -7,21 +7,16 @@ public class EnemyCardHand : CardHand {
     [SerializeField] private Transform hiddenPosition;
 
     protected override void OnEnable() {
-        EventManager<UIEvents>.Subscribe(UIEvents.GiveEnemyCard, GiveCard);
+        base.OnEnable();
 
         EventManager<BattleEvents>.Subscribe(BattleEvents.StartBattle, SetupForBattle);
         EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, ResetAfterBattle);
     }
     protected override void OnDisable() {
-        EventManager<UIEvents>.Unsubscribe(UIEvents.GiveEnemyCard, GiveCard);
+        base.OnDisable();
 
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.StartBattle, SetupForBattle);
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, ResetAfterBattle);
-    }
-
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.B))
-            GiveCard();
     }
 
     // TODO: Make this arc the other way and show the back of the cards!
