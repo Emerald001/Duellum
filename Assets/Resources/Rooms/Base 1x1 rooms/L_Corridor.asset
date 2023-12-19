@@ -15,7 +15,8 @@ MonoBehaviour:
   room:
     name: L_Corridor
     size: {x: 1, y: 1}
-    prefab: {fileID: 995518280873560155, guid: 6c33d30820206b74c94d7fa02144b1db, type: 3}
+    prefab: {fileID: 2774764177668201309, guid: 6c33d30820206b74c94d7fa02144b1db,
+      type: 3}
     connections:
     - {x: 0, y: -999, z: -999, w: 0}
     Id: 0
