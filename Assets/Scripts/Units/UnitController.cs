@@ -99,7 +99,7 @@ public abstract class UnitController : MonoBehaviour {
                 values.currentStats.Speed--;
 
                 if (GridStaticFunctions.TileEffectPositions.ContainsKey(newPos))
-                    EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitTouchedTileEffect, this);
+                    EventManager<BattleEvents, EventMessage<UnitController, Vector2Int>>.Invoke(BattleEvents.UnitTouchedTileEffect, new(this, newPos));
             }));
 
             lastPos = newPos;
