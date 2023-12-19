@@ -12,24 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c25c04580a62a49bc10ef81d214032, type: 3}
   m_Name: ArrowRain
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Rain of Arrows
   ShortcutName: 
-  Discription: 
+  Discription: From Skeleton, Lay down a rain of arrows in an area, to kill weaker
+    units.
   Icon: {fileID: 0}
   Background: {fileID: 0}
   Border: {fileID: 0}
   ManaCost: 0
   areaOfEffectSelector:
-    type: 0
-    includeCentreTile: 0
+    type: 2
+    includeCentreTile: 1
     AllDirections: 0
-    range: 1
+    range: 3
     rotIndex: 1
     includeWater: 0
     includeCover: 0
     excludeUnits: 0
   availabletilesSelector:
-    type: 0
+    type: 6
     includeCentreTile: 0
     AllDirections: 0
     range: 1
@@ -37,11 +38,11 @@ MonoBehaviour:
     includeWater: 0
     includeCover: 0
     excludeUnits: 0
-  abilityType: 0
+  abilityType: 11
   effectToApply:
     type: 0
     canBeStacked: 0
     duration: 0
     sevarity: 0
   hexPrefab: {fileID: 0}
-  tileEffect: 0
+  tileEffect: 1

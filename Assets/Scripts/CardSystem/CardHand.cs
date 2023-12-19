@@ -26,9 +26,11 @@ public abstract class CardHand : MonoBehaviour {
 
     protected virtual void OnEnable() {
         EventManager<UIEvents, int>.Subscribe(UIEvents.GiveCard, GiveCard);
+        EventManager<UIEvents, EventMessage<int, AbilityCard>>.Subscribe(UIEvents.GiveCard, GiveSpecificCard);
     }
     protected virtual void OnDisable() {
         EventManager<UIEvents, int>.Unsubscribe(UIEvents.GiveCard, GiveCard);
+        EventManager<UIEvents, EventMessage<int, AbilityCard>>.Unsubscribe(UIEvents.GiveCard, GiveSpecificCard);
     }
 
     private void Start() {
@@ -44,10 +46,12 @@ public abstract class CardHand : MonoBehaviour {
             AddCard(card);
     }
 
-    private void GiveSpecificCard(string name) {
-        AbilityCard card = cardStack.GetSpecificCard(name);
-        if (card != null)
-            AddCard(card);
+    private void GiveSpecificCard(EventMessage<int, AbilityCard> message) {
+        if (message.value1 != OwnerID)
+            return;
+
+        if (message.value2 != null)
+            AddCard(message.value2);
     }
 
     protected virtual void AddCard(AbilityCard card) {

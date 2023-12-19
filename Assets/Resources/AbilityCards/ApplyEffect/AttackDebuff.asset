@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c25c04580a62a49bc10ef81d214032, type: 3}
   m_Name: AttackDebuff
   m_EditorClassIdentifier: 
-  Name: 
-  ShortcutName: 
-  Discription: 
+  Name: Disarm
+  ShortcutName: AttackDebuff
+  Discription: From Caim, Debuff an enemy!
   Icon: {fileID: 0}
   Background: {fileID: 0}
   Border: {fileID: 0}
@@ -29,7 +29,7 @@ MonoBehaviour:
     includeCover: 0
     excludeUnits: 0
   availabletilesSelector:
-    type: 0
+    type: 3
     includeCentreTile: 0
     AllDirections: 0
     range: 1

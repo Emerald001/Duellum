@@ -61,7 +61,7 @@ public class EnemyUnitController : UnitController {
                     if (cards[i].abilityType != AbilityCardType.ApplyEffect)
                         continue;
 
-                    if (cards[i].effectToApply.type != EffectType.AttackBoost)
+                    if (cards[i].effectToApply.type != EffectType.Attack)
                         continue;
 
                     for (int j = 0; j < attackModule.AttackableTiles.Count; j++) {

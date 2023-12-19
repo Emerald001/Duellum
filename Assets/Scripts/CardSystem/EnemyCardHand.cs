@@ -9,13 +9,11 @@ public class EnemyCardHand : CardHand {
     protected override void OnEnable() {
         base.OnEnable();
 
-        EventManager<BattleEvents>.Subscribe(BattleEvents.StartBattle, SetupForBattle);
         EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, ResetAfterBattle);
     }
     protected override void OnDisable() {
         base.OnDisable();
 
-        EventManager<BattleEvents>.Unsubscribe(BattleEvents.StartBattle, SetupForBattle);
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, ResetAfterBattle);
     }
 
@@ -50,33 +48,7 @@ public class EnemyCardHand : CardHand {
         }
     }
 
-    private void SetupForBattle() {
-        StartCoroutine(ShowCardhand());
-    }
-
     private void ResetAfterBattle() {
-        StartCoroutine(HideCardhand());
-    }
-
-    private IEnumerator ShowCardhand() {
-        yield return new WaitForSeconds(2f);
-
-        while (transform.position != shownPosition.position) {
-            transform.position = Vector3.MoveTowards(transform.position, shownPosition.position, Time.deltaTime);
-
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-    private IEnumerator HideCardhand() {
-        yield return new WaitForSeconds(2f);
-
-        while (transform.position != hiddenPosition.position) {
-            transform.position = Vector3.MoveTowards(transform.position, hiddenPosition.position, Time.deltaTime);
-
-            yield return new WaitForEndOfFrame();
-        }
-
         for (int i = cards.Count - 1; i >= 0; i--)
             RemoveCard(i);
 

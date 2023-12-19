@@ -28,6 +28,8 @@ public class AbilityCard : ScriptableObject {
     public Tile hexPrefab;
     [Space(10)]
     public TileEffect tileEffect;
+    [Space(10)]
+    public int Damage;
 }
 
 public enum AbilityCardType {

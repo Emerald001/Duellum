@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1935d9431b32a1b469ea1a2aac83c41f, type: 3}
-  m_Name: Skeleton
+  m_Name: Golem
   m_EditorClassIdentifier: 
-  Name: Skeleton
-  Description: Has a bow and arrow, and can do ranged damage. However, it doesn't
-    do a lot of damage.
-  Rank: 1
-  Catagory: 1
-  Type: 2
-  Icon: {fileID: 21300000, guid: 00ea5a40213a3e34abd093772d80b4e0, type: 3}
-  Animations: {fileID: 0}
-  PawnPrefab: {fileID: 418859313218980017, guid: d1d66aa8ff7b84e438b849f067f609cf,
+  Name: Golem
+  Description: A tank. Backstab him!
+  Rank: 4
+  Catagory: 3
+  Type: 0
+  Icon: {fileID: 21300000, guid: df5913b52f4057249893f078b0191cc0, type: 3}
+  PawnPrefab: {fileID: 8753619234690991416, guid: e812c04705f47d645beb13e90ec0ff93,
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
     type: 3}
-  movementSpeed: 4
-  tileCover: 1
-  TileCoverage: 3
+  movementSpeed: 2
+  tileCover: 0
+  TileCoverage: 1
   BaseStatBlock:
-    Defence: 3
-    Speed: 6
+    Defence: 5
+    Speed: 1
     Attack: 2
-  Attack: {fileID: 11400000, guid: 30a598603e865a24097146ca25fb4322, type: 2}
+  Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
+  Card: {fileID: 11400000, guid: a6f40bb0eee2a964db03e1caa4ddddbc, type: 2}
+  CardAmount: 1

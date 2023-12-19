@@ -34,7 +34,7 @@ public static class AbilityManager {
                     unit.ChangeUnitPosition(openPositions[Random.Range(0, openPositions.Count)]);
                 }
                 break;
-                
+
             case AbilityCardType.SpinUnit:
                 foreach (var unit in controllerList)
                     unit.ChangeUnitRotation(-unit.LookDirection);
@@ -77,6 +77,9 @@ public static class AbilityManager {
                 break;
 
             case AbilityCardType.Charm:
+                break;
+            case AbilityCardType.AreaOfEffectAttack:
+                DamageManager.DealDamage(card.Damage, controllerList.ToArray());
                 break;
 
             default:

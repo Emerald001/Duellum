@@ -141,6 +141,9 @@ public class BattleManager : Singleton<BattleManager> {
             UnitController unit = unitFactory.CreateUnit(0, playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab, unitHolder);
             unit.ChangeUnitRotation(reversedDirection);
 
+            for (int j = 0; j < playerUnitsToSpawn[i].CardAmount; j++)
+                EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(0, playerUnitsToSpawn[i].Card));
+
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.UnitTeams[0].Add(unit);
@@ -157,6 +160,9 @@ public class BattleManager : Singleton<BattleManager> {
 
             UnitController unit = unitFactory.CreateUnit(1, enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab, unitHolder);
             unit.ChangeUnitRotation(-reversedDirection);
+
+            for (int j = 0; j < enemyUnitsToSpawn[i].CardAmount; j++)
+                EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(1, enemyUnitsToSpawn[i].Card));
 
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);

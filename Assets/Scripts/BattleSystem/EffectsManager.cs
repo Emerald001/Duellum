@@ -1,15 +1,15 @@
 ﻿using System;
 
 public enum EffectType {
-    AttackBoost,
-    DefenceBoost,
-    SpeedBoost,
+    Attack,
+    Defence,
+    Speed,
     Grappled,
     Fury,
     Fear,
-    Slow,
     Exhaust,
     KnockedOut,
+    StoneWall,
 }
 
 [Serializable]
@@ -32,33 +32,32 @@ public class Effect {
 public static class EffectsManager {
     public static void ApplyEffects(UnitValues data, Effect effect) {
         switch (effect.type) {
-            case EffectType.AttackBoost:
+            case EffectType.Attack:
                 data.currentStats.Attack += effect.sevarity;
                 break;
-            case EffectType.DefenceBoost:
+            case EffectType.Defence:
                 data.currentStats.Defence += effect.sevarity;
                 break;
-            case EffectType.SpeedBoost:
+            case EffectType.Speed:
                 data.currentStats.Speed += effect.sevarity;
-                break;
-            case EffectType.Fury:
-
-                break;
-            case EffectType.Fear:
-
-                break;
-            case EffectType.Slow:
-                data.currentStats.Speed -= effect.sevarity;
                 break;
             case EffectType.Exhaust:
                 data.currentStats.Speed -= 1000;
                 break;
-            case EffectType.KnockedOut:
-
-                break;
             case EffectType.Grappled:
                 data.currentStats.Speed -= 1000;
                 data.currentStats.Defence -= effect.sevarity;
+                break;
+            case EffectType.StoneWall:
+                data.currentStats.Speed -= 1000;
+                data.currentStats.Defence += effect.sevarity;
+                break;
+
+            case EffectType.Fury:
+                break;
+            case EffectType.Fear:
+                break;
+            case EffectType.KnockedOut:
                 break;
         }
     }
