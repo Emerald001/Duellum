@@ -23,6 +23,7 @@ public class AbilityCard : ScriptableObject {
     public AbilityCardType abilityType;
     public Effect effectToApply;
     public Tile hexPrefab;
+    public TileEffect tileEffect;
 }
 
 public enum AbilityCardType {
@@ -37,4 +38,5 @@ public enum AbilityCardType {
     SmokeBomb,
     Grapple,
     Charm,
+    AreaOfEffectAttack,
 }

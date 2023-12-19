@@ -4,6 +4,7 @@ public enum EffectType {
     AttackBoost,
     DefenceBoost,
     SpeedBoost,
+    Grappled,
     Fury,
     Fear,
     Slow,
@@ -54,6 +55,10 @@ public static class EffectsManager {
                 break;
             case EffectType.KnockedOut:
 
+                break;
+            case EffectType.Grappled:
+                data.currentStats.Speed -= 1000;
+                data.currentStats.Defence -= effect.sevarity;
                 break;
         }
     }

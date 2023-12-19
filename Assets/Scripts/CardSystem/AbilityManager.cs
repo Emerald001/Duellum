@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public static class AbilityManager {
-    public static void PerformAbility(AbilityCard card, params Vector2Int[] positions) {
+    public static void PerformAbility(AbilityCard card, int id, params Vector2Int[] positions) {
         List<UnitController> controllerList = new();
         foreach (Vector2Int position in positions) {
             if (UnitStaticManager.TryGetUnitFromGridPos(position, out var unit))
@@ -48,13 +48,32 @@ public static class AbilityManager {
                 break;
 
             case AbilityCardType.ApplyTileEffect:
+                foreach (var item in positions)
+                    GridStaticFunctions.TileEffectPositions.Add(item, card.tileEffect);
                 break;
 
             case AbilityCardType.SmokeBomb:
+                var pos = positions[0];
+                var enemyUnit = controllerList[0];
+                var backPos = pos - enemyUnit.LookDirection;
+                var newLookDir = backPos - pos;
 
+                UnitController attackingUnit = null;
+                GridStaticFunctions.RippleThroughFullGridPositions(pos, 2, (pos, i) => {
+                    if (UnitStaticManager.TryGetUnitFromGridPos(pos, out var unit)) {
+                        attackingUnit ??= unit;
+                        if (unit.Values.currentStats.Attack > attackingUnit.Values.currentStats.Attack)
+                            attackingUnit = unit;
+                    }
+                });
+
+                attackingUnit.ChangeUnitPosition(backPos);
+                attackingUnit.ChangeUnitRotation(newLookDir);
                 break;
 
             case AbilityCardType.Grapple:
+                foreach (var item in controllerList)
+                    item.AddEffect(card.effectToApply);
                 break;
 
             case AbilityCardType.Charm:
