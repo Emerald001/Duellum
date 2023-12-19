@@ -196,6 +196,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
         GameObject lavaGO = Resources.Load("GridBlocks/GridLavaBlock") as GameObject;
         GameObject spawnGO = Resources.Load("GridBlocks/GridSpawnBlock") as GameObject;
         GameObject specialGO = Resources.Load("GridBlocks/GridSpecialBlock") as GameObject;
+        GameObject enemyGO = Resources.Load("GridBlocks/EnemySpawnGridBlock") as GameObject;
+        GameObject bossGO = Resources.Load("GridBlocks/BossSpawnGridBlock") as GameObject;
 
         Tile hex = hexGO.GetComponent<Tile>();
         Tile coverHex = coverGO.GetComponent<Tile>();
@@ -203,6 +205,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
         Tile lavaHex = lavaGO.GetComponent<Tile>();
         Tile spawnHex = spawnGO.GetComponent<Tile>();
         Tile specialHex = specialGO.GetComponent<Tile>();
+        Tile enemyHex = enemyGO.GetComponent<Tile>();
+        Tile bossHex = bossGO.GetComponent<Tile>();
 
         result.Add(TileType.Normal, hex);
         result.Add(TileType.Cover, coverHex);
@@ -210,8 +214,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
         result.Add(TileType.Lava, lavaHex);
         result.Add(TileType.Spawn, spawnHex);
         result.Add(TileType.Special, specialHex);
-        result.Add(TileType.EnemySpawn, hex);
-        result.Add(TileType.BossSpawn, hex);
+        result.Add(TileType.EnemySpawn, enemyHex);
+        result.Add(TileType.BossSpawn, bossHex);
 
         return result;
     }
