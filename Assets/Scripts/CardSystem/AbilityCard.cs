@@ -20,9 +20,13 @@ public class AbilityCard : ScriptableObject {
     public Selector areaOfEffectSelector;
     public Selector availabletilesSelector;
 
+    [Header("Extra Data")]
     public AbilityCardType abilityType;
+    [Space(10)]
     public Effect effectToApply;
+    [Space(10)]
     public Tile hexPrefab;
+    [Space(10)]
     public TileEffect tileEffect;
 }
 
