@@ -202,7 +202,7 @@ public class DungeonOutfitter : MonoBehaviour {
     }
 
     private void SpawnEnemies() {
-        foreach (RoomComponent room in mainRoomSequence) {
+        foreach (RoomComponent room in GridStaticFunctions.Dungeon.Values) {
             int enemyIndex = 0;
             foreach (var position in room.gridValues.Where(x => x.Type == TileType.EnemySpawn)) {
                 int index = room.gridValues.IndexOf(position);

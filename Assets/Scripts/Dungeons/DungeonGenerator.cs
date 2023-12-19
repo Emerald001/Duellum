@@ -189,11 +189,13 @@ public class DungeonGenerator : MonoBehaviour {
     }
 
     private DungeonRoomTile GetRoom(List<DungeonRoomSO> listToUse, Vector2Int position, bool spawnFirst) {
+        int counter = 1;
         List<DungeonRoomTile> availableTiles = listToUse.Select(x => x.room).ToList()
         .SelectMany(item => Enumerable.Range(0, (item.size.x > 1 || item.size.y > 1) ? 1 : 4)
             .Select(i => {
-                DungeonRoomTile roomTile = new(item.name, item.size, item.prefab, item.connections, item.Id);
-                roomTile.Init(i);
+                DungeonRoomTile roomTile = new(item.name, item.size, item.prefab, item.connections, counter);
+                roomTile.Init(0);
+                counter++;
 
                 return roomTile;
             }))
@@ -249,7 +251,7 @@ public class DungeonGenerator : MonoBehaviour {
             roomlist = UnityEngine.Random.Range(0, 100) > 70 ? availableSmallTiles : availableTiles;
 
         if (spawnFirst)
-            roomlist = availableTiles;
+            roomlist = availableSmallTiles;
 
         int index = spawnFirst ? 0 : Mathf.RoundToInt(UnityEngine.Random.Range(0, roomlist.Count));
         DungeonRoomTile room = roomlist[index];
