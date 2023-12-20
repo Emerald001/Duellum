@@ -45,3 +45,4 @@ MonoBehaviour:
     sevarity: 0
   hexPrefab: {fileID: 0}
   tileEffect: 0
+  Damage: 0

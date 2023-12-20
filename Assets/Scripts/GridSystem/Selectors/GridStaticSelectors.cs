@@ -28,10 +28,10 @@ public static class GridStaticSelectors {
                 break;
 
             case SelectorType.EnemiesAdjecent:
-                GetEnemyAdjecentTiles(id);
+                result = GetEnemyAdjecentTiles(id);
                 break;
             case SelectorType.AllAdjecent:
-                GetOpenAdjecentTiles(id);
+                result = GetOpenAdjecentTiles(id);
                 break;
 
             default:
@@ -133,6 +133,9 @@ public static class GridStaticSelectors {
         var units = UnitStaticManager.UnitTeams[id];
         foreach (var unit in units) {
             GridStaticFunctions.RippleThroughGridPositions(UnitStaticManager.GetUnitPosition(unit), 2, (position, i) => {
+                if (!GridStaticFunctions.CurrentBattleGrid.ContainsKey(position))
+                    return;
+
                 if (!UnitStaticManager.TryGetUnitFromGridPos(position, out var enemy))
                     result.Add(position);
             });
@@ -156,6 +159,7 @@ public static class GridStaticSelectors {
             });
         }
 
+        Debug.Log(result.Count);
         return result;
     }
 }

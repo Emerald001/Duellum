@@ -131,7 +131,7 @@ public class PlayerCardHand : CardHand {
             if (hasCardFaded) {
                 GridStaticFunctions.ResetBattleTileColors();
 
-                GridStaticFunctions.HighlightTiles(GridStaticSelectors.GetPositions(
+                GridStaticFunctions.HighlightBattleTiles(GridStaticSelectors.GetPositions(
                     abilityCards[card.Index].availabletilesSelector,
                     GridStaticFunctions.CONST_EMPTY,
                     OwnerID),

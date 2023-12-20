@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3143461922185471495}
   m_Layer: 0
   m_Name: GridLavaBlock
-  m_TagString: WalkableTile
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,7 +53,6 @@ MonoBehaviour:
   ownPositionColor: {fileID: 2100000, guid: 959cb5d0c807aab47b3bed0e43c0cbe1, type: 2}
   transparent: {fileID: 2100000, guid: 7de9981cb0a8a8243adf7eb98b6d0caa, type: 2}
   type: 1
-  height: 0
 --- !u!1 &3143461923594965703
 GameObject:
   m_ObjectHideFlags: 0
