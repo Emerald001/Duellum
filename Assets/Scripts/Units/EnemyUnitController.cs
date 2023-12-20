@@ -86,6 +86,15 @@ public class EnemyUnitController : UnitController {
                 bestPickedPosition = UnitStaticManager.UnitPositions[lastEnemy];
                 result += 60;
             }
+
+            result += UnitBaseData.Type switch {
+                UnitType.Assault => 10,
+                UnitType.Rogue => 5,
+                UnitType.Scout => 0,
+                UnitType.Support => -5,
+                UnitType.Structure => 15,
+                UnitType.Tank => 7
+            };
         }
 
         if (movementModule.AccessableTiles.Count > 0) {
@@ -97,43 +106,79 @@ public class EnemyUnitController : UnitController {
                 }
             }
             else {
-                UnitController lastEnemy = null;
-                List<UnitController> enemies = UnitStaticManager.GetEnemies(OwnerID);
-
-                for (int i = 0; i < enemies.Count; i++) {
-                    var unit = enemies[i];
-
-                    lastEnemy = lastEnemy ? lastEnemy : unit;
-                    if (values.currentStats.Attack > unit.Values.currentStats.Defence)
-                        if (unit.Values.currentStats.Defence > lastEnemy.Values.currentStats.Defence)
-                            lastEnemy = unit;
-                }
-
-                Vector2Int enemyPos = UnitStaticManager.GetUnitPosition(lastEnemy);
-                Vector2Int closestPos = GridStaticFunctions.CONST_EMPTY;
-
-                float leastDistance = Mathf.Infinity;
+                bool containsCard = false;
+                Vector2Int cardPosition = GridStaticFunctions.CONST_EMPTY;
                 foreach (var item in movementModule.AccessableTiles) {
-                    closestPos = closestPos == GridStaticFunctions.CONST_EMPTY ? closestPos : item;
+                    if (GridStaticFunctions.TileEffectPositions.TryGetValue(item, out var value)) {
+                        if (value != TileEffect.Card)
+                            continue;
 
-                    // if the unit is already close to an enemy, lower the score
-
-                    float dis = Vector3.Distance(GridStaticFunctions.CalcWorldPos(item), GridStaticFunctions.CalcWorldPos(enemyPos));
-                    if (dis < leastDistance) {
-                        leastDistance = dis;
-                        closestPos = item;
+                        containsCard = true;
+                        cardPosition = item;
+                        break;
                     }
                 }
 
-                if (closestPos != GridStaticFunctions.CONST_EMPTY) {
-                    bestPickedPosition = closestPos;
-                    result += 20;
+                if (containsCard) {
+                    bestPickedPosition = cardPosition;
+                    result += 30;
 
-                    List<Vector2Int> path = movementModule.GetPath(bestPickedPosition);
-                    foreach (Vector2Int card in GridStaticFunctions.TileEffectPositions.Keys) {
-                        if (path.Contains(card))
-                            result += 10;
+                    result += UnitBaseData.Type switch {
+                        UnitType.Assault => 10,
+                        UnitType.Rogue => 5,
+                        UnitType.Scout => 15,
+                        UnitType.Support => 0,
+                        UnitType.Structure => -100,
+                        UnitType.Tank => 1
+                    };
+                }
+                else {
+                    UnitController lastEnemy = null;
+                    List<UnitController> enemies = UnitStaticManager.GetEnemies(OwnerID);
+
+                    for (int i = 0; i < enemies.Count; i++) {
+                        var unit = enemies[i];
+
+                        lastEnemy = lastEnemy ? lastEnemy : unit;
+                        if (values.currentStats.Attack > unit.Values.currentStats.Defence)
+                            if (unit.Values.currentStats.Defence > lastEnemy.Values.currentStats.Defence)
+                                lastEnemy = unit;
                     }
+
+                    Vector2Int enemyPos = UnitStaticManager.GetUnitPosition(lastEnemy);
+                    Vector2Int closestPos = GridStaticFunctions.CONST_EMPTY;
+
+                    float leastDistance = Mathf.Infinity;
+                    foreach (var item in movementModule.AccessableTiles) {
+                        closestPos = closestPos == GridStaticFunctions.CONST_EMPTY ? closestPos : item;
+
+                        float dis = Vector3.Distance(GridStaticFunctions.CalcWorldPos(item), GridStaticFunctions.CalcWorldPos(enemyPos));
+                        if (dis < leastDistance) {
+                            leastDistance = dis;
+                            closestPos = item;
+                        }
+                    }
+                    result += (int)(leastDistance / 2);
+
+                    if (closestPos != GridStaticFunctions.CONST_EMPTY) {
+                        bestPickedPosition = closestPos;
+                        result += 20;
+
+                        List<Vector2Int> path = movementModule.GetPath(bestPickedPosition);
+                        foreach (Vector2Int card in GridStaticFunctions.TileEffectPositions.Keys) {
+                            if (path.Contains(card))
+                                result += 10;
+                        }
+                    }
+
+                    result += UnitBaseData.Type switch {
+                        UnitType.Assault => 15,
+                        UnitType.Rogue => 10,
+                        UnitType.Scout => 4,
+                        UnitType.Support => -5,
+                        UnitType.Structure => -100,
+                        UnitType.Tank => 15
+                    };
                 }
             }
         }
