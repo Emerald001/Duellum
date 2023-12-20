@@ -93,7 +93,8 @@ public class EnemyUnitController : UnitController {
                 UnitType.Scout => 0,
                 UnitType.Support => -5,
                 UnitType.Structure => 15,
-                UnitType.Tank => 7
+                UnitType.Tank => 7,
+                _ => throw new System.NotImplementedException()
             };
         }
 
@@ -129,7 +130,8 @@ public class EnemyUnitController : UnitController {
                         UnitType.Scout => 15,
                         UnitType.Support => 0,
                         UnitType.Structure => -100,
-                        UnitType.Tank => 1
+                        UnitType.Tank => 1,
+                        _ => throw new System.NotImplementedException()
                     };
                 }
                 else {
@@ -177,7 +179,8 @@ public class EnemyUnitController : UnitController {
                         UnitType.Scout => 4,
                         UnitType.Support => -5,
                         UnitType.Structure => -100,
-                        UnitType.Tank => 15
+                        UnitType.Tank => 15,
+                        _ => throw new System.NotImplementedException()
                     };
                 }
             }

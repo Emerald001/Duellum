@@ -71,7 +71,7 @@ public class PlayerUnitController : UnitController {
     private void CreatePathForLine() {
         Vector2Int endPos = MouseToWorldView.HoverTileGridPos;
         // Should Not be here!
-        EventManager<UIEvents, string>.Invoke(UIEvents.InfoTextUpdate, "Right mouse button to cancel action");
+        //EventManager<UIEvents, string>.Invoke(UIEvents.InfoTextUpdate, "Right mouse button to cancel action");
 
         if (movementModule.AccessableTiles.Contains(endPos)) {
             EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Move);
