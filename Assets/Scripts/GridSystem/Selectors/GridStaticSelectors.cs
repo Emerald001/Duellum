@@ -44,7 +44,6 @@ public static class GridStaticSelectors {
 
     private static List<Vector2Int> GetAvailableTilesCircle(Selector selector, Vector2Int startPos) {
         List<Vector2Int> result = new();
-
         GridStaticFunctions.RippleThroughGridPositions(startPos, selector.range, (currentPos, index) => {
             result.Add(currentPos);
         });

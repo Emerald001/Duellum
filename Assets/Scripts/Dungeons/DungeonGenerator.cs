@@ -7,6 +7,7 @@ using UnityEngine;
 public class DungeonGenerator : MonoBehaviour {
     [SerializeField] private int roomAmount;
     [SerializeField] private int bigRoomAmount;
+    [SerializeField] [Range(0, 100)] private int bigRoomPercentage;
 
     [SerializeField] private List<DungeonRoomSO> bigRoomList;
     [SerializeField] private List<DungeonRoomSO> endRoomList;
@@ -248,7 +249,7 @@ public class DungeonGenerator : MonoBehaviour {
         if (availableTiles.Count < 1)
             roomlist = availableSmallTiles;
         else
-            roomlist = UnityEngine.Random.Range(0, 100) > 70 ? availableSmallTiles : availableTiles;
+            roomlist = UnityEngine.Random.Range(0, 100) > bigRoomPercentage ? availableSmallTiles : availableTiles;
 
         if (spawnFirst)
             roomlist = availableSmallTiles;

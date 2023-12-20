@@ -2814,6 +2814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomAmount: 15
   bigRoomAmount: 10
+  bigRoomPercentage: 75
   bigRoomList:
   - {fileID: 11400000, guid: 1650963078715414f889bbbabd91bec8, type: 2}
   - {fileID: 11400000, guid: 4ac9a24224cf5064b811f458e39649a0, type: 2}

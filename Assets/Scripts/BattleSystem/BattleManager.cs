@@ -67,10 +67,12 @@ public class BattleManager : Singleton<BattleManager> {
             while (result.Count < unitAmount && breakout < 50) {
                 Vector2Int calculatedPos = startPos + direction * positionModifier;
 
-                if (GridStaticFunctions.CurrentBattleGrid.ContainsKey(calculatedPos)) {
-                    if (GridStaticFunctions.Grid[calculatedPos].Type != TileType.Normal)
-                        continue;
+                bool exists = GridStaticFunctions.CurrentBattleGrid.ContainsKey(calculatedPos);
+                bool valid = false;
+                if (exists)
+                    valid = GridStaticFunctions.Grid[calculatedPos].Type == TileType.Normal;
 
+                if (valid) {
                     result.Add(calculatedPos);
                     direction = -direction;
 
@@ -111,6 +113,7 @@ public class BattleManager : Singleton<BattleManager> {
                         tilesToCheck.RemoveAt(0);
                         breakout2++;
                     }
+
 
                     if (breakout2 > 49)
                         Debug.Log("Broke out at loop 2");
