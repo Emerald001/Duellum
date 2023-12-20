@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyCardHand : CardHand {
-    [SerializeField] private Transform shownPosition;
-    [SerializeField] private Transform hiddenPosition;
-
     protected override void OnEnable() {
         base.OnEnable();
 
@@ -20,7 +17,7 @@ public class EnemyCardHand : CardHand {
     // TODO: Make this arc the other way and show the back of the cards!
     protected override void LineOutCards() {
         int numObjects = cards.Count;
-        float arcAngle = Mathf.Max(-((numObjects - 1) * spacing), -maxWidth);
+        float arcAngle = Mathf.Max(((numObjects - 1) * spacing), maxWidth);
         float angleIncrement = arcAngle == 0 ? 0 : arcAngle / (numObjects - 1);
         float startAngle = -arcAngle / 2f;
 
