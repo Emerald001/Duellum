@@ -16,17 +16,21 @@ MonoBehaviour:
   Description: The Dragon
   Rank: 3
   Catagory: 0
+  Type: 0
   Icon: {fileID: 21300000, guid: c389ee7a0df15ac4f8d5d8c90a1bc1d0, type: 3}
-  Animations: {fileID: 0}
   PawnPrefab: {fileID: 0}
+  UnitCard: {fileID: 0}
   movementSpeed: 10
   tileCover: 1
   TileCoverage: 2
   BaseStatBlock:
-    EnergyPoints: 1
-    Attack: 1
     Defence: 4
-    Initiative: 10
     Speed: 1
+    Attack: 1
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
+  Card: {fileID: 0}
+  CardAmount: 0
+  walkingSounds: ph_footsteps
+  attackingSounds: 
+  hurtSounds: 

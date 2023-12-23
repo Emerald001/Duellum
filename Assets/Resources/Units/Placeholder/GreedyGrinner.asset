@@ -13,19 +13,26 @@ MonoBehaviour:
   m_Name: GreedyGrinner
   m_EditorClassIdentifier: 
   Name: The Greedy Grinner
-  Description: 
+  Description: Steal a card from your enemy. "I'll be taking that one!"
   Rank: 0
-  Catagory: 2
+  Catagory: 5
+  Type: 1
   Icon: {fileID: 0}
-  Animations: {fileID: 0}
-  PawnPrefab: {fileID: 0}
-  UnitCard: {fileID: 0}
-  movementSpeed: 0
+  PawnPrefab: {fileID: 5395017174695144330, guid: f2606a298442d7d40a2d64be4aeb56c3,
+    type: 3}
+  UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
+    type: 3}
+  movementSpeed: 5
   tileCover: 0
-  TileCoverage: 0
+  TileCoverage: 3
   BaseStatBlock:
-    Defence: 0
-    Speed: 0
-    Attack: 0
-  Attack: {fileID: 0}
+    Defence: 4
+    Speed: 3
+    Attack: 3
+  Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
+  Card: {fileID: 11400000, guid: 1d84e6ebbac63244baa19e0f9553e8fd, type: 2}
+  CardAmount: 3
+  walkingSounds: ph_footsteps
+  attackingSounds: ph_swordHit
+  hurtSounds: 

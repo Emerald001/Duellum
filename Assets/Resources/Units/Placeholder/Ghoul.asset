@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Ghoul
   m_EditorClassIdentifier: 
   Name: Ghoul
-  Description: A speedy Unit. Watch out for this one!
+  Description: A lowly summoned soul.
   Rank: 1
   Catagory: 0
+  Type: 2
   Icon: {fileID: 21300000, guid: 273766fd3d062684c9835a2e4340c04c, type: 3}
-  Animations: {fileID: 0}
   PawnPrefab: {fileID: 2314832724180352697, guid: 64bb90c61d3e08743b48cda0cbdd79b8,
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
@@ -28,6 +28,11 @@ MonoBehaviour:
   BaseStatBlock:
     Defence: 3
     Speed: 6
-    Attack: 2
-  Attack: {fileID: 11400000, guid: 30a598603e865a24097146ca25fb4322, type: 2}
+    Attack: 1
+  Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
+  Card: {fileID: 0}
+  CardAmount: 0
+  walkingSounds: ph_footsteps
+  attackingSounds: ph_bluntHit
+  hurtSounds: 
