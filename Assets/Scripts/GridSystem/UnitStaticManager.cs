@@ -56,6 +56,7 @@ public static class UnitStaticManager {
         }
 
         EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitDeath, unit);
+        EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_successAttack");
     }
 
     public static void RemoveUnitFromOrder(UnitController unit) {

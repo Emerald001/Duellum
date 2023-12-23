@@ -22,6 +22,10 @@ public abstract class UnitController : MonoBehaviour {
     private ActionQueue queue;
     private Animator unitAnimator;
 
+    private string walkingSounds;
+    private string attackingSounds;
+    private string hurtSounds;
+
     private void OnEnable() {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitHit, UnitHit);
@@ -45,6 +49,9 @@ public abstract class UnitController : MonoBehaviour {
         gridPosition = pos;
         queue = new(() => IsDone = HasPerformedAction);
 
+        walkingSounds = data.walkingSounds;
+        attackingSounds = data.attackingSounds;
+        hurtSounds = data.hurtSounds;
         unitAnimator = GetComponentInChildren<Animator>();
     }
 
@@ -80,7 +87,7 @@ public abstract class UnitController : MonoBehaviour {
     private void EnqueueMovement(Vector2Int targetPosition) {
         queue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", true);
-            //UnitAudio.PlayLoopedAudio("Walking", true);
+            EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new(walkingSounds, true));
         }));
 
         Vector2Int lastPos = gridPosition;
@@ -107,6 +114,7 @@ public abstract class UnitController : MonoBehaviour {
 
         queue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", false);
+            EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new(walkingSounds, false));
         }));
 
         HasPerformedAction = true;
@@ -149,6 +157,9 @@ public abstract class UnitController : MonoBehaviour {
 
     private void UnitDeath(UnitController unit) {
         unit.unitAnimator.SetTrigger("Dying");
+        EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, hurtSounds);
+        unit.unitAnimator.SetTrigger("Dying");
+        EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_bodyFall");
     }
 
     private void UnitRevive(UnitController unit) {
