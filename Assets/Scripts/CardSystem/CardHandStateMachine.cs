@@ -42,7 +42,7 @@ public class CardHandStateMachine {
     private void NextState() {
         if (stateIndex >= statesLeft.Count) {
             AbilityManager.PerformAbility(currentCard, ownerId, tilesPerState);
-            EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_abilityCard");
+            EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, currentCard.cardAbilitySFX);
             OnUse.Invoke(currentCard);
             OnDismiss.Invoke();
             ResetMachine();
