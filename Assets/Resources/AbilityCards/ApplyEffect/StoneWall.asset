@@ -66,3 +66,4 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   tileEffect: 0
   Damage: 0
+  cardAbilitySFX: ph_abilityCard
