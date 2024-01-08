@@ -6,7 +6,8 @@ public class EnemyUnitController : UnitController {
     private bool pickedAction;
 
     private Vector2Int bestPickedPosition = GridStaticFunctions.CONST_EMPTY;
-    private AbilityCard cardToUse;
+
+    public AbilityCard CardToUse { get; private set; } = null;
 
     public override void OnEnter() {
         base.OnEnter();
@@ -31,7 +32,7 @@ public class EnemyUnitController : UnitController {
 
     private void PickAction() {
         if (attackModule.AttackableTiles.Contains(bestPickedPosition))
-            PickedTile(bestPickedPosition, attackModule.GetClosestTile(bestPickedPosition, gridPosition, Vector3.zero));
+            PickedTile(bestPickedPosition, attackModule.GetClosestTile(bestPickedPosition));
         else if (movementModule.AccessableTiles.Contains(bestPickedPosition))
             PickedTile(bestPickedPosition, Vector2Int.zero);
 
@@ -71,7 +72,7 @@ public class EnemyUnitController : UnitController {
                         lastEnemy = lastEnemy ? lastEnemy : unit;
                         if (values.currentStats.Attack + cards[i].effectToApply.sevarity > unit.Values.currentStats.Defence)
                             if (unit.Values.currentStats.Defence > lastEnemy.Values.currentStats.Defence) {
-                                cardToUse = cards[i];
+                                CardToUse = cards[i];
                                 lastEnemy = unit;
                             }
                     }
@@ -100,7 +101,7 @@ public class EnemyUnitController : UnitController {
 
         if (movementModule.AccessableTiles.Count > 0) {
             if (bestPickedPosition != GridStaticFunctions.CONST_EMPTY) {
-                List<Vector2Int> path = movementModule.GetPath(attackModule.GetClosestTile(bestPickedPosition, gridPosition, Vector3.zero));
+                List<Vector2Int> path = movementModule.GetPath(attackModule.GetClosestTile(bestPickedPosition));
                 foreach (Vector2Int card in GridStaticFunctions.TileEffectPositions.Keys) {
                     if (path.Contains(card))
                         result += 10;
@@ -135,19 +136,19 @@ public class EnemyUnitController : UnitController {
                     };
                 }
                 else {
-                    UnitController lastEnemy = null;
+                    UnitController weakestEnemy = null;
                     List<UnitController> enemies = UnitStaticManager.GetEnemies(OwnerID);
 
                     for (int i = 0; i < enemies.Count; i++) {
                         var unit = enemies[i];
 
-                        lastEnemy = lastEnemy ? lastEnemy : unit;
+                        weakestEnemy = weakestEnemy ? weakestEnemy : unit;
                         if (values.currentStats.Attack > unit.Values.currentStats.Defence)
-                            if (unit.Values.currentStats.Defence > lastEnemy.Values.currentStats.Defence)
-                                lastEnemy = unit;
+                            if (unit.Values.currentStats.Defence > weakestEnemy.Values.currentStats.Defence)
+                                weakestEnemy = unit;
                     }
 
-                    Vector2Int enemyPos = UnitStaticManager.GetUnitPosition(lastEnemy);
+                    Vector2Int enemyPos = UnitStaticManager.GetUnitPosition(weakestEnemy);
                     Vector2Int closestPos = GridStaticFunctions.CONST_EMPTY;
 
                     float leastDistance = Mathf.Infinity;

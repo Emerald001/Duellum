@@ -35,7 +35,7 @@ public class PlayerUnitController : UnitController {
                 !movementModule.AccessableTiles.Contains(MouseToWorldView.HoverTileGridPos))
                 return;
 
-            PickedTile(MouseToWorldView.HoverTileGridPos, attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos, gridPosition, MouseToWorldView.HoverPointPos));
+            PickedTile(MouseToWorldView.HoverTileGridPos, attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos));
 
             Tooltip.HideTooltip_Static();
             GridStaticFunctions.ResetBattleTileColors();
@@ -78,10 +78,10 @@ public class PlayerUnitController : UnitController {
             CurrentPath = movementModule.GetPath(endPos);
         }
         else if (attackModule.AttackableTiles.Contains(endPos)) {
-            CurrentPath = movementModule.GetPath(attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos));
+            CurrentPath = movementModule.GetPath(attackModule.GetClosestTile(endPos));
             CurrentPath.Add(MouseToWorldView.HoverTileGridPos);
 
-            Vector2Int calculatedLookDir = endPos - attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos);
+            Vector2Int calculatedLookDir = endPos - attackModule.GetClosestTile(endPos);
             calculatedLookDir.Clamp(new(-1, -1), new(1, 1));
 
             // Should not be here!

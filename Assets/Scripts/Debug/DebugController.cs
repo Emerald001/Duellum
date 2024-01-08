@@ -78,7 +78,7 @@ public class DebugController : MonoBehaviour {
                             EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitRevive, unit);
 
                         for (int i = UnitStaticManager.DeadUnitsInPlay.Count - 1; i >= 0; i--)
-                            UnitStaticManager.ReviveUnit(UnitStaticManager.DeadUnitsInPlay[i]);
+                            UnitStaticManager.ReviveUnit(UnitStaticManager.DeadUnitsInPlay[i], 0);
                     break;
 
                     //case CommandType.KillAll:

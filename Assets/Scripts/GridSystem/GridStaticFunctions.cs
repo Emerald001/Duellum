@@ -223,4 +223,27 @@ public static class GridStaticFunctions {
         result = CONST_EMPTY;
         return false;
     }
+
+    public static bool TryGetNeighbour(Vector2Int startPos, Vector2Int direction, out Vector2Int result) {
+        if (Grid.TryGetValue(startPos + direction, out Tile hex)) {
+            result = hex.GridPos;
+            return true;
+        }
+
+        result = CONST_EMPTY;
+        return false;
+    }
+
+    public static List<Vector2Int> GetLine(Vector2Int startPos, Vector2Int direction, int range) {
+        List<Vector2Int> result = new() {
+            startPos
+        };
+
+        for (int i = 0; i < range; i++) {
+            if (TryGetNeighbour(result[^1], direction, out Vector2Int pos))
+                result.Add(pos);
+        }
+
+        return result;
+    }
 }

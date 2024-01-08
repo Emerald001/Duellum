@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 public class EnemyTurnController : TurnController {
     public CardHand CardHand { get; set; }
@@ -7,7 +6,6 @@ public class EnemyTurnController : TurnController {
     public override void OnEnter() {
         base.OnEnter();
 
-        // TO DO: Calculate unit action values, and pick the highest one
         List<KeyValuePair<int, UnitController>> unitActions = new();
         foreach (UnitController u in units)
             unitActions.Add(new((u as EnemyUnitController).PickEvaluatedAction(CardHand.AbilityCards), u));
@@ -20,6 +18,10 @@ public class EnemyTurnController : TurnController {
                 unit = item.Value;
             }
         }
+
+        AbilityCard card = (unit as EnemyUnitController).CardToUse;
+        if (card != null)
+            CardHand.RemoveSpecificCard(card);
 
         PickUnit(UnitStaticManager.UnitPositions[unit]);
     }

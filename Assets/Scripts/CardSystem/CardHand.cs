@@ -73,5 +73,13 @@ public abstract class CardHand : MonoBehaviour {
         LineOutCards();
     }
 
+    public void RemoveSpecificCard(AbilityCard card) {
+        if (!abilityCards.Contains(card))
+            return;
+
+        int index = abilityCards.IndexOf(card);
+        RemoveCard(index);
+    }
+
     protected abstract void LineOutCards();
 }

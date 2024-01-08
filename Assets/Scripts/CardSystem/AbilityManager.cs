@@ -53,14 +53,17 @@ public static class AbilityManager {
                 break;
 
             case AbilityCardType.SmokeBomb:
-                var pos = positions[0];
+                var enemyPos = positions[0];
                 var enemyUnit = controllerList[0];
-                var backPos = pos - enemyUnit.LookDirection;
-                var newLookDir = backPos - pos;
+                var backPos = enemyPos - enemyUnit.LookDirection;
+                var newLookDir = backPos - enemyPos;
 
                 UnitController attackingUnit = null;
-                GridStaticFunctions.RippleThroughFullGridPositions(pos, 2, (pos, i) => {
+                GridStaticFunctions.RippleThroughFullGridPositions(enemyPos, 2, (pos, i) => {
                     if (UnitStaticManager.TryGetUnitFromGridPos(pos, out var unit)) {
+                        if (pos == enemyPos)
+                            return;
+
                         attackingUnit ??= unit;
                         if (unit.Values.currentStats.Attack > attackingUnit.Values.currentStats.Attack)
                             attackingUnit = unit;

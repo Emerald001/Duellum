@@ -28,6 +28,7 @@ public class TileEffectManager : MonoBehaviour {
         switch (effect) {
             case TileEffect.Card:
                 Destroy(visualsPerTile[message.value2]);
+                visualsPerTile.Remove(message.value2);
                 GridStaticFunctions.TileEffectPositions.Remove(message.value2);
 
                 EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_PickUpCard");
@@ -58,9 +59,10 @@ public class TileEffectManager : MonoBehaviour {
 
     private void CleanUpEffects() {
         for (int i = GridStaticFunctions.TileEffectPositions.Count - 1; i >= 0; i--) {
-            var tile = GridStaticFunctions.TileEffectPositions.Keys.ToList()[i];
+            Vector2Int tile = GridStaticFunctions.TileEffectPositions.Keys.ToList()[i];
 
             Destroy(visualsPerTile[tile]);
+            visualsPerTile.Remove(tile);
             GridStaticFunctions.TileEffectPositions.Remove(tile);
         }
     }

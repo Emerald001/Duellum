@@ -6,14 +6,11 @@ public static class UnitStaticManager {
     public static List<UnitData> PlayerPickedUnits { get; set; } = new();
 
     public static Dictionary<UnitController, Vector2Int> UnitPositions { get; set; } = new();
+    public static Dictionary<int, List<UnitController>> UnitTeams { get; set; } = new();
 
     public static List<UnitController> LivingUnitsInPlay { get; set; } = new();
-
     public static List<UnitController> DeadUnitsInPlay { get; set; } = new();
     public static List<UnitController> UnitsWithTurnLeft { get; set; } = new();
-
-    public static Dictionary<int, List<UnitController>> UnitTeams { get; set; } = new();
-    public static List<UnitController> PlayerUnitsInPlay { get; set; } = new();
     
     public static void Reset() {
         UnitPositions.Clear();
@@ -66,10 +63,9 @@ public static class UnitStaticManager {
             UnitsWithTurnLeft.Remove(unit);
     }
 
-    public static void ReviveUnit(UnitController unit) {
+    public static void ReviveUnit(UnitController unit, int index) {
         DeadUnitsInPlay.Remove(unit);
-
-        PlayerUnitsInPlay.Add(unit);
+        UnitTeams[index].Add(unit);
         LivingUnitsInPlay.Add(unit);
     }
 
