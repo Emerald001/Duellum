@@ -16,10 +16,10 @@ MonoBehaviour:
   ShortcutName: Stonewall
   Discription: Turn yourself into a wall of stone, a lot of defence, but not a lot
     of movement.
+  CardType: 0
   Icon: {fileID: 0}
   Background: {fileID: 0}
   Border: {fileID: 0}
-  ManaCost: 0
   areaOfEffectSelector:
     type: 0
     includeCentreTile: 0
@@ -46,3 +46,4 @@ MonoBehaviour:
     sevarity: 5
   hexPrefab: {fileID: 0}
   tileEffect: 0
+  Damage: 0

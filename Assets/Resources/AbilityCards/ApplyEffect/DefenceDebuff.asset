@@ -15,10 +15,10 @@ MonoBehaviour:
   Name: Defence Down
   ShortcutName: DefenceDebuff
   Discription: 
+  CardType: 1
   Icon: {fileID: 0}
   Background: {fileID: 0}
   Border: {fileID: 0}
-  ManaCost: 0
   areaOfEffectSelector:
     type: 0
     includeCentreTile: 0
@@ -45,3 +45,4 @@ MonoBehaviour:
     sevarity: -1
   hexPrefab: {fileID: 0}
   tileEffect: 0
+  Damage: 0

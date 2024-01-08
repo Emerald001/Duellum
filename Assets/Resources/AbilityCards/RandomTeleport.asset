@@ -13,15 +13,14 @@ MonoBehaviour:
   m_Name: RandomTeleport
   m_EditorClassIdentifier: 
   Name: The Goddess of Nature has decided to help you.
-  shortcutName: teleport
+  ShortcutName: 
   Discription: Teleport a unit to a random tile.
+  CardType: 2
   Icon: {fileID: 0}
   Background: {fileID: 0}
   Border: {fileID: 0}
-  ManaCost: 0
   areaOfEffectSelector:
     type: 0
-    isHex: 0
     includeCentreTile: 0
     AllDirections: 0
     range: 1
@@ -31,7 +30,6 @@ MonoBehaviour:
     excludeUnits: 0
   availabletilesSelector:
     type: 3
-    isHex: 0
     includeCentreTile: 0
     AllDirections: 0
     range: 1
@@ -46,3 +44,5 @@ MonoBehaviour:
     duration: 0
     sevarity: 0
   hexPrefab: {fileID: 0}
+  tileEffect: 0
+  Damage: 0
