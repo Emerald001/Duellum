@@ -1,6 +1,6 @@
 ﻿using UnityEngine.EventSystems;
 
-public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler {
+public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
     public void OnPointerEnter(PointerEventData eventData) {
         if (grabbed || !CanInvoke)
             return;
@@ -57,10 +57,5 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
 
         EventManager<UIEvents>.Invoke(UIEvents.ReleasedAbilityCard);
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
-    }
-
-    public void OnPointerMove(PointerEventData eventData) {
-        if (!grabbed || !CanInvoke)
-            return;
     }
 }
