@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 public class EnemyTurnController : TurnController {
     public CardHand CardHand { get; set; }
@@ -8,7 +9,7 @@ public class EnemyTurnController : TurnController {
 
         List<KeyValuePair<int, UnitController>> unitActions = new();
         foreach (UnitController u in units)
-            unitActions.Add(new((u as EnemyUnitController).PickEvaluatedAction(CardHand.AbilityCards), u));
+            unitActions.Add(new((u as EnemyUnitController).PickEvaluatedAction(CardHand.Cards), u));
 
         int value = 0;
         UnitController unit = null;

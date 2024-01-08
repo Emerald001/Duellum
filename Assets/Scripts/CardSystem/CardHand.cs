@@ -1,5 +1,7 @@
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class CardHand : MonoBehaviour {
     [Header("References")]
@@ -19,10 +21,10 @@ public abstract class CardHand : MonoBehaviour {
     [SerializeField] protected float raisedAmount;
 
     public int OwnerID { get; set; }
-    public List<AbilityCard> AbilityCards => abilityCards;
+    public List<Card> Cards => cards;
 
-    protected readonly List<CardAssetHolder> cards = new();
-    protected readonly List<AbilityCard> abilityCards = new();
+    protected List<CardAssetHolder> cardVisuals = new();
+    protected List<Card> cards = new();
 
     protected virtual void OnEnable() {
         EventManager<UIEvents, int>.Subscribe(UIEvents.GiveCard, GiveCard);
@@ -57,28 +59,37 @@ public abstract class CardHand : MonoBehaviour {
     protected virtual void AddCard(AbilityCard card) {
         CardAssetHolder cardObject = Instantiate(cardPrefab, stackPos.position, stackPos.rotation);
 
-        cards.Add(cardObject);
-        abilityCards.Add(card);
+        cardVisuals.Add(cardObject);
+        cards.Add(card);
+
         LineOutCards();
     }
 
     protected virtual void RemoveCard(int index) {
-        CardAssetHolder card = cards[index];
+        CardAssetHolder card = cardVisuals[index];
 
+        cardVisuals.RemoveAt(index);
         cards.RemoveAt(index);
-        abilityCards.RemoveAt(index);
 
         Destroy(card.gameObject);
-
-        LineOutCards();
     }
 
     public void RemoveSpecificCard(AbilityCard card) {
-        if (!abilityCards.Contains(card))
+        if (!cards.Contains(card))
             return;
 
-        int index = abilityCards.IndexOf(card);
+        int index = cards.IndexOf(card);
         RemoveCard(index);
+    }
+
+    protected void SortCards() {
+        var tmp = cards.Zip(cardVisuals, (k, v) => new { k, v })
+           .OrderByDescending(x => (int)x.k.CardType)
+           .ToList();
+        tmp.Reverse();
+
+        cards = tmp.Select(x => x.k).ToList();
+        cardVisuals = tmp.Select(x => x.v).ToList();
     }
 
     protected abstract void LineOutCards();

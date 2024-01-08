@@ -2,8 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardAssetHolder : MonoBehaviour
-{
+public class CardAssetHolder : MonoBehaviour {
     [Header("References")]
     public BaseCardBehaviour cardBehaviour;
 
@@ -13,7 +12,6 @@ public class CardAssetHolder : MonoBehaviour
 
     public TextMeshProUGUI Name;
     public TextMeshProUGUI Discription;
-    public TextMeshProUGUI ManaCost;
 
     public Image Icon;
     public Image Background;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyUnitController : UnitController {
@@ -39,7 +40,9 @@ public class EnemyUnitController : UnitController {
         pickedAction = true;
     }
 
-    public int PickEvaluatedAction(List<AbilityCard> cards) {
+    public int PickEvaluatedAction(List<Card> cards) {
+        List<AbilityCard> abilityCards = cards.Where(x => x is AbilityCard).Select(x => x as AbilityCard).ToList();
+
         bestPickedPosition = GridStaticFunctions.CONST_EMPTY;
         int result = 0;
 
@@ -58,11 +61,11 @@ public class EnemyUnitController : UnitController {
             }
 
             if (lastEnemy == null) {
-                for (int i = 0; i < cards.Count; i++) {
-                    if (cards[i].abilityType != AbilityCardType.ApplyEffect)
+                for (int i = 0; i < abilityCards.Count; i++) {
+                    if (abilityCards[i].abilityType != AbilityCardType.ApplyEffect)
                         continue;
 
-                    if (cards[i].effectToApply.type != EffectType.Attack)
+                    if (abilityCards[i].effectToApply.type != EffectType.Attack)
                         continue;
 
                     for (int j = 0; j < attackModule.AttackableTiles.Count; j++) {
@@ -70,9 +73,9 @@ public class EnemyUnitController : UnitController {
                             continue;
 
                         lastEnemy = lastEnemy ? lastEnemy : unit;
-                        if (values.currentStats.Attack + cards[i].effectToApply.sevarity > unit.Values.currentStats.Defence)
+                        if (values.currentStats.Attack + abilityCards[i].effectToApply.sevarity > unit.Values.currentStats.Defence)
                             if (unit.Values.currentStats.Defence > lastEnemy.Values.currentStats.Defence) {
-                                CardToUse = cards[i];
+                                CardToUse = abilityCards[i];
                                 lastEnemy = unit;
                             }
                     }

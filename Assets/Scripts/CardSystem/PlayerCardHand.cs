@@ -7,24 +7,24 @@ public class PlayerCardHand : CardHand {
     [SerializeField] private float cardViewMoveSpeed;
     [SerializeField] private float moveOverDistance;
 
-    private bool hasCardFaded;
-    private bool hasCardFadedCallRan;
+    //private bool hasCardFaded;
+    //private bool hasCardFadedCallRan;
 
     protected override void OnEnable() {
         base.OnEnable();
 
         BaseCardBehaviour.OnHoverEnter += SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
-        BaseCardBehaviour.OnMove += HandleCardDrag;
-        BaseCardBehaviour.OnMoveRelease += PerformRelease;
+        //BaseCardBehaviour.OnMove += HandleCardDrag;
+        //BaseCardBehaviour.OnMoveRelease += PerformRelease;
     }
     protected override void OnDisable() {
         base.OnDisable();
 
         BaseCardBehaviour.OnHoverEnter -= SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit -= SetCardsBackToStandardPos;
-        BaseCardBehaviour.OnMove -= HandleCardDrag;
-        BaseCardBehaviour.OnMoveRelease -= PerformRelease;
+        //BaseCardBehaviour.OnMove -= HandleCardDrag;
+        //BaseCardBehaviour.OnMoveRelease -= PerformRelease;
     }
 
     private void Update() {
@@ -32,24 +32,21 @@ public class PlayerCardHand : CardHand {
             GiveCard(OwnerID);
     }
 
-    protected override void AddCard(AbilityCard card) {
-        base.AddCard(card);
-
-        CardAssetHolder cardObject = cards[^1];
-        cardObject.Name.text = card.Name;
-        cardObject.Discription.text = card.Discription;
-        cardObject.Icon.sprite = card.Icon;
-        cardObject.ManaCost.text = card.ManaCost.ToString();
-    }
-
     protected override void LineOutCards() {
-        int numObjects = cards.Count;
+        SortCards();
+
+        int numObjects = cardVisuals.Count;
         float arcAngle = Mathf.Min((numObjects - 1) * spacing, maxWidth);
         float angleIncrement = arcAngle == 0 ? 0 : arcAngle / (numObjects - 1);
         float startAngle = -arcAngle / 2f;
 
-        for (int i = 0; i < cards.Count; i++) {
-            CardAssetHolder card = cards[i];
+        for (int i = 0; i < cardVisuals.Count; i++) {
+            CardAssetHolder card = cardVisuals[i];
+            Card cardData = cards[i];
+
+            card.Name.text = cardData.Name;
+            card.Discription.text = cardData.Discription;
+            card.Icon.sprite = cardData.Icon;
 
             float angle = startAngle + i * angleIncrement;
             float radianAngle = Mathf.Deg2Rad * angle;
@@ -73,11 +70,11 @@ public class PlayerCardHand : CardHand {
     }
 
     private void SetCardsToMoveOver(BaseCardBehaviour raisedCard, System.Action actionForRaisedCard) {
-        if (cards.Where(x => x.cardBehaviour.CanInvoke == false).ToList().Count > 0)
+        if (cardVisuals.Where(x => x.cardBehaviour.CanInvoke == false).ToList().Count > 0)
             return;
 
         bool hasReachedraisedCard = false;
-        foreach (CardAssetHolder card in cards) {
+        foreach (CardAssetHolder card in cardVisuals) {
             if (card.cardBehaviour == raisedCard) {
                 actionForRaisedCard.Invoke();
                 hasReachedraisedCard = true;
@@ -100,10 +97,10 @@ public class PlayerCardHand : CardHand {
     }
 
     private void SetCardsBackToStandardPos(BaseCardBehaviour raisedCard, System.Action actionForRaisedCard) {
-        if (cards.Where(x => x.cardBehaviour.CanInvoke == false).ToList().Count > 0)
+        if (cardVisuals.Where(x => x.cardBehaviour.CanInvoke == false).ToList().Count > 0)
             return;
 
-        foreach (CardAssetHolder card in cards) {
+        foreach (CardAssetHolder card in cardVisuals) {
             if (card.cardBehaviour == raisedCard) {
                 actionForRaisedCard.Invoke();
                 continue;
@@ -116,55 +113,55 @@ public class PlayerCardHand : CardHand {
         }
     }
 
-    private void HandleCardDrag(BaseCardBehaviour card) {
-        hasCardFaded = false;
-        CanvasGroup canvasGroup = cards[card.Index].Fader;
+    //private void HandleCardDrag(BaseCardBehaviour card) {
+    //    hasCardFaded = false;
+    //    CanvasGroup canvasGroup = cardVisuals[card.Index].Fader;
 
-        float targetAlpha = card.transform.position.y > transform.position.y + fadeThreshold ? 0.0f : 1.0f;
-        float scaler = Mathf.Clamp(Mathf.Abs((transform.position.y + fadeThreshold) - card.transform.position.y) * .5f, 0, 1);
-        float newAlpha = Mathf.Lerp(canvasGroup.alpha, targetAlpha, scaler);
-        canvasGroup.alpha = newAlpha;
+    //    float targetAlpha = card.transform.position.y > transform.position.y + fadeThreshold ? 0.0f : 1.0f;
+    //    float scaler = Mathf.Clamp(Mathf.Abs((transform.position.y + fadeThreshold) - card.transform.position.y) * .5f, 0, 1);
+    //    float newAlpha = Mathf.Lerp(canvasGroup.alpha, targetAlpha, scaler);
+    //    canvasGroup.alpha = newAlpha;
 
-        hasCardFaded = newAlpha < .1f;
+    //    hasCardFaded = newAlpha < .1f;
 
-        if (hasCardFaded != hasCardFadedCallRan) {
-            if (hasCardFaded) {
-                GridStaticFunctions.ResetBattleTileColors();
+    //    if (hasCardFaded != hasCardFadedCallRan) {
+    //        if (hasCardFaded) {
+    //            GridStaticFunctions.ResetBattleTileColors();
 
-                GridStaticFunctions.HighlightTiles(GridStaticSelectors.GetPositions(
-                    abilityCards[card.Index].availabletilesSelector,
-                    GridStaticFunctions.CONST_EMPTY,
-                    OwnerID),
-                    HighlightType.MovementHighlight);
-            }
-            else
-                GridStaticFunctions.ResetBattleTileColors();
+    //            GridStaticFunctions.HighlightTiles(GridStaticSelectors.GetPositions(
+    //                cards[card.Index].availabletilesSelector,
+    //                GridStaticFunctions.CONST_EMPTY,
+    //                OwnerID),
+    //                HighlightType.MovementHighlight);
+    //        }
+    //        else
+    //            GridStaticFunctions.ResetBattleTileColors();
 
-            EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, hasCardFaded ? abilityCards[card.Index].areaOfEffectSelector : null);
-            hasCardFadedCallRan = hasCardFaded;
-        }
-    }
+    //        EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, hasCardFaded ? cards[card.Index].areaOfEffectSelector : null);
+    //        hasCardFadedCallRan = hasCardFaded;
+    //    }
+    //}
 
-    private void PerformRelease(BaseCardBehaviour card, System.Action actionForRaisedCard) {
-        CanvasGroup canvasGroup = cards[card.Index].Fader;
-        AbilityCard ability = abilityCards[card.Index];
+    //private void PerformRelease(BaseCardBehaviour card, System.Action actionForRaisedCard) {
+    //    CanvasGroup canvasGroup = cardVisuals[card.Index].Fader;
+    //    AbilityCard ability = cards[card.Index];
 
-        EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
+    //    EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
 
-        if (hasCardFaded) {
-            List<Vector2Int> validTiles = GridStaticSelectors.GetPositions(ability.availabletilesSelector, MouseToWorldView.HoverTileGridPos, OwnerID);
-            if (validTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
-                List<Vector2Int> affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos, OwnerID);
+    //    if (hasCardFaded) {
+    //        List<Vector2Int> validTiles = GridStaticSelectors.GetPositions(ability.availabletilesSelector, MouseToWorldView.HoverTileGridPos, OwnerID);
+    //        if (validTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
+    //            List<Vector2Int> affectedTiles = GridStaticSelectors.GetPositions(ability.areaOfEffectSelector, MouseToWorldView.HoverTileGridPos, OwnerID);
 
-                GridStaticFunctions.ResetBattleTileColors();
-                AbilityManager.PerformAbility(ability, OwnerID, affectedTiles.ToArray());
-                RemoveCard(card.Index);
-                return;
-            }
-        }
+    //            GridStaticFunctions.ResetBattleTileColors();
+    //            AbilityManager.PerformAbility(ability, OwnerID, affectedTiles.ToArray());
+    //            RemoveCard(card.Index);
+    //            return;
+    //        }
+    //    }
 
-        // If no other thing was done
-        canvasGroup.alpha = 1;
-        actionForRaisedCard.Invoke();
-    }
+    //    // If no other thing was done
+    //    canvasGroup.alpha = 1;
+    //    actionForRaisedCard.Invoke();
+    //}
 }

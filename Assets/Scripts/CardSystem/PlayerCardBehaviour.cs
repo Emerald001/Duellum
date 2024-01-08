@@ -1,8 +1,6 @@
 ﻿using UnityEngine.EventSystems;
 
-public class PlayerCardBehaviour : BaseCardBehaviour, 
-    IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler {
-
+public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler {
     public void OnPointerEnter(PointerEventData eventData) {
         if (grabbed || !CanInvoke)
             return;

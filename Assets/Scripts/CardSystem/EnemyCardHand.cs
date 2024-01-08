@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,13 +15,15 @@ public class EnemyCardHand : CardHand {
 
     // TODO: Make this arc the other way and show the back of the cards!
     protected override void LineOutCards() {
-        int numObjects = cards.Count;
+        SortCards();
+
+        int numObjects = cardVisuals.Count;
         float arcAngle = -Mathf.Min((numObjects - 1) * spacing, maxWidth);
         float angleIncrement = arcAngle == 0 ? 0 : arcAngle / (numObjects - 1);
         float startAngle = arcAngle / 2f;
 
-        for (int i = 0; i < cards.Count; i++) {
-            CardAssetHolder card = cards[i];
+        for (int i = 0; i < cardVisuals.Count; i++) {
+            CardAssetHolder card = cardVisuals[i];
 
             float angle = startAngle - i * angleIncrement;
             float radianAngle = Mathf.Deg2Rad * angle;
@@ -46,10 +47,10 @@ public class EnemyCardHand : CardHand {
     }
 
     private void ResetAfterBattle() {
-        for (int i = cards.Count - 1; i >= 0; i--)
+        for (int i = cardVisuals.Count - 1; i >= 0; i--)
             RemoveCard(i);
 
-        cards.Clear();
+        cardVisuals.Clear();
         cardStack.ResetDeck();
     }
 }
