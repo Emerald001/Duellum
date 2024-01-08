@@ -158,7 +158,6 @@ public static class GridStaticSelectors {
             });
         }
 
-        Debug.Log(result.Count);
         return result;
     }
 }
