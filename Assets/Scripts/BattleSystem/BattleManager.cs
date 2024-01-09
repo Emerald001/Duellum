@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager> {
@@ -40,8 +41,11 @@ public class BattleManager : Singleton<BattleManager> {
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
         Vector2Int direction = Mathf.Abs(difference.x) > Mathf.Abs(difference.y) ? new(0, 1) : new(1, 0);
         SpawnUnits(direction, data.PlayerUnits, data.EnemyUnits);
-
         cardManager.SetUp();
+
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("Music", false));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("BattleMusic", true));
+
         NextPlayer();
     }
 
@@ -195,6 +199,8 @@ public class BattleManager : Singleton<BattleManager> {
         GridStaticFunctions.EnemySpawnPositions.Clear();
 
         UnitStaticManager.Reset();
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("BattleMusic", false));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("Music", true));
     }
 }
 
