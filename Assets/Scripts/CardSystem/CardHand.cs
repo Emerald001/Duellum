@@ -1,7 +1,6 @@
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using System;
 
 public abstract class CardHand : MonoBehaviour {
     [Header("References")]
@@ -9,6 +8,7 @@ public abstract class CardHand : MonoBehaviour {
     [SerializeField] private CardAssetHolder cardPrefab;
     [SerializeField] protected CardStack cardStack;
     [SerializeField] private Transform stackPos;
+    [SerializeField] protected Transform selectedPosition;
 
     [Header("Card Move Values")]
     [SerializeField] protected float cardSpawnMoveSpeed;
@@ -20,11 +20,13 @@ public abstract class CardHand : MonoBehaviour {
     [SerializeField] protected float radius;
     [SerializeField] protected float raisedAmount;
 
-    public int OwnerID { get; set; }
+    public int OwnerID { get; private set; }
     public List<Card> Cards => cards;
 
     protected List<CardAssetHolder> cardVisuals = new();
     protected List<Card> cards = new();
+
+    protected CardHandStateMachine CardHandStateMachine;
 
     protected virtual void OnEnable() {
         EventManager<UIEvents, int>.Subscribe(UIEvents.GiveCard, GiveCard);
@@ -35,7 +37,9 @@ public abstract class CardHand : MonoBehaviour {
         EventManager<UIEvents, EventMessage<int, AbilityCard>>.Unsubscribe(UIEvents.GiveCard, GiveSpecificCard);
     }
 
-    private void Start() {
+    public void SetHand(int ID) {
+        OwnerID = ID;
+        CardHandStateMachine = new(OwnerID);
         cardStack.ResetDeck();
     }
 

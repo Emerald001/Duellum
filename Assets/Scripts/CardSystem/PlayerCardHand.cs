@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,24 +8,19 @@ public class PlayerCardHand : CardHand {
     [SerializeField] private float cardViewMoveSpeed;
     [SerializeField] private float moveOverDistance;
 
-    //private bool hasCardFaded;
-    //private bool hasCardFadedCallRan;
-
     protected override void OnEnable() {
         base.OnEnable();
 
         BaseCardBehaviour.OnHoverEnter += SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
-        //BaseCardBehaviour.OnMove += HandleCardDrag;
-        //BaseCardBehaviour.OnMoveRelease += PerformRelease;
+        BaseCardBehaviour.OnClick += HandleCardClick;
     }
     protected override void OnDisable() {
         base.OnDisable();
 
         BaseCardBehaviour.OnHoverEnter -= SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit -= SetCardsBackToStandardPos;
-        //BaseCardBehaviour.OnMove -= HandleCardDrag;
-        //BaseCardBehaviour.OnMoveRelease -= PerformRelease;
+        BaseCardBehaviour.OnClick -= HandleCardClick;
     }
 
     private void Update() {
@@ -64,7 +60,7 @@ public class PlayerCardHand : CardHand {
                     new MoveObjectAction(card.gameObject, cardSpawnMoveSpeed, position + new Vector3(0, -radius, 0)),
                     new RotateAction(card.gameObject, rotation.eulerAngles, cardRotationSpeed, .01f)
                 ),
-                new DoMethodAction(() => card.cardBehaviour?.SetValues(position + new Vector3(0, -radius, 0) + new Vector3(0, raisedAmount, 0), uiCam, index))
+                new DoMethodAction(() => card.cardBehaviour?.SetValues(position + new Vector3(0, -radius, 0) + new Vector3(0, raisedAmount, 0), selectedPosition.position, uiCam, index))
             });
         }
     }
@@ -111,6 +107,11 @@ public class PlayerCardHand : CardHand {
                 new MoveObjectAction(card.gameObject, cardViewMoveSpeed, card.cardBehaviour.StandardPosition),
             });
         }
+    }
+
+    private void HandleCardClick(BaseCardBehaviour card) {
+        AbilityCard abilityCard = cards[card.Index] as AbilityCard;
+        CardHandStateMachine.SetMachine(abilityCard);
     }
 
     //private void HandleCardDrag(BaseCardBehaviour card) {
@@ -164,4 +165,10 @@ public class PlayerCardHand : CardHand {
     //    canvasGroup.alpha = 1;
     //    actionForRaisedCard.Invoke();
     //}
+}
+
+[Serializable]
+public class CardState {
+    public Selector areaOfSelection;
+    public Selector mouseArea;
 }

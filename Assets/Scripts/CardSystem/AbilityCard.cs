@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // TODO:
@@ -5,6 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Ability Card", fileName = "Card")]
 public class AbilityCard : Card {
     [Header("Card Selectors")]
+    public List<CardState> cardStates = new();
+
     public Selector areaOfEffectSelector;
     public Selector availabletilesSelector;
 

@@ -1,8 +1,8 @@
 ﻿using UnityEngine.EventSystems;
 
-public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler {
+public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
     public void OnPointerEnter(PointerEventData eventData) {
-        if (grabbed || !CanInvoke)
+        if (selected || !CanInvoke)
             return;
 
         EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_shuffleCards");
@@ -17,7 +17,7 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        if (grabbed || !CanInvoke)
+        if (selected || !CanInvoke)
             return;
 
         OnHoverExit.Invoke(this, () => {
@@ -30,32 +30,24 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
         });
     }
 
-    public void OnPointerDown(PointerEventData eventData) {
-        if (!CanInvoke)
+    public void OnPointerClick(PointerEventData eventData) {
+        if (selected || !CanInvoke)
             return;
 
-        grabbed = true;
-        offset = transform.position - UICam.ScreenToWorldPoint(eventData.position);
+        selected = true;
+        OnClick.Invoke(this);
 
-        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Grab);
-        EventManager<UIEvents>.Invoke(UIEvents.GrabbedAbilityCard);
+        CardHandStateMachine.OnDismiss += DeselectCard;
+        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
         EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_grabCard");
-
-        queue.Clear();
-        resizeQueue.Clear();
     }
 
-    public void OnPointerUp(PointerEventData eventData) {
-        if (!CanInvoke)
-            return;
+    public void DeselectCard() {
+        selected = false;
 
-        grabbed = false;
-        OnMoveRelease.Invoke(this, () => {
-            queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));
-            resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
-        });
+        queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, selectedPos));
+        resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
 
-        EventManager<UIEvents>.Invoke(UIEvents.ReleasedAbilityCard);
-        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
+        CardHandStateMachine.OnDismiss -= DeselectCard;
     }
 }

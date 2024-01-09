@@ -13,7 +13,7 @@ public class EnemyCardHand : CardHand {
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, ResetAfterBattle);
     }
 
-    // TODO: Make this arc the other way and show the back of the cards!
+    // TODO: Make this show the back of the cards!
     protected override void LineOutCards() {
         SortCards();
 
@@ -32,6 +32,7 @@ public class EnemyCardHand : CardHand {
 
             Vector3 position = transform.position + new Vector3(x, y, i * .01f);
             Quaternion rotation = Quaternion.LookRotation(Vector3.forward, position - transform.position);
+            //rotation.eulerAngles += new Vector3(0, 180, 0);
 
             int index = i;
             card.cardBehaviour.ClearQueue();
@@ -41,7 +42,7 @@ public class EnemyCardHand : CardHand {
                     new MoveObjectAction(card.gameObject, cardSpawnMoveSpeed, position + new Vector3(0, radius, 0)),
                     new RotateAction(card.gameObject, rotation.eulerAngles, cardRotationSpeed, .01f)
                 ),
-                new DoMethodAction(() => card.cardBehaviour.SetValues(position + new Vector3(0, radius, 0) + new Vector3(0, -raisedAmount, 0), uiCam, index))
+                new DoMethodAction(() => card.cardBehaviour.SetValues(position + new Vector3(0, radius, 0) + new Vector3(0, -raisedAmount, 0), selectedPosition.position, uiCam, index))
             });
         }
     }

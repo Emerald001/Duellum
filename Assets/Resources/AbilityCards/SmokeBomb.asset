@@ -15,10 +15,29 @@ MonoBehaviour:
   Name: Smoke bomb
   ShortcutName: SmokeBomb
   Discription: Throw a smoke bomb to go the the back of one of your enemies
+  CardType: 0
   Icon: {fileID: 0}
   Background: {fileID: 0}
   Border: {fileID: 0}
-  ManaCost: 0
+  cardStates:
+  - areaOfSelection:
+      type: 0
+      includeCentreTile: 0
+      AllDirections: 0
+      range: 0
+      rotIndex: 0
+      includeWater: 0
+      includeCover: 0
+      excludeUnits: 0
+    mouseArea:
+      type: 7
+      includeCentreTile: 0
+      AllDirections: 0
+      range: 0
+      rotIndex: 0
+      includeWater: 0
+      includeCover: 0
+      excludeUnits: 0
   areaOfEffectSelector:
     type: 0
     includeCentreTile: 0

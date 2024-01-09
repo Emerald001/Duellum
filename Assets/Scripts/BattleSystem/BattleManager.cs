@@ -138,6 +138,7 @@ public class BattleManager : Singleton<BattleManager> {
 
         PlayerTurnController playerTurnController = new();
         UnitStaticManager.UnitTeams.Add(0, new());
+        
         for (int i = 0; i < GridStaticFunctions.PlayerSpawnPositions.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPositions[i];
 
@@ -156,7 +157,7 @@ public class BattleManager : Singleton<BattleManager> {
 
         EnemyTurnController enemyTurnController = new();
         enemyTurnController.CardHand = enemyCardHand;
-        enemyCardHand.OwnerID = 1;
+        enemyCardHand.SetHand(1);
         UnitStaticManager.UnitTeams.Add(1, new());
         for (int i = 0; i < GridStaticFunctions.EnemySpawnPositions.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPositions[i];
@@ -201,8 +202,6 @@ public class BattleManager : Singleton<BattleManager> {
 
         UnitStaticManager.Reset();
     }
-
-    private int BattleMapSize => GridStaticFunctions.BattleMapSize;
 }
 
 public enum BattleEvents {
