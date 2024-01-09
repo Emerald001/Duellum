@@ -3549,6 +3549,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9d00290829401c4a9cb26eb3aa6fd31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitRaycast:
+    serializedVersion: 2
+    m_Bits: 59
   hovercolor: {fileID: 2100000, guid: 60e4fff2b4acfcc45879b86ca25abb71, type: 2}
   standardSelector:
     type: 0
