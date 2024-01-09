@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: RectangleEnd
     size: {x: 3, y: 4}
-    prefab: {fileID: 1574276868028660741, guid: dacd167d66435254c89cf413748b37ef,
+    prefab: {fileID: 4740722087155938999, guid: 8b24d98fe565e1240837e9b862dbc047,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
