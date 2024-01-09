@@ -8,6 +8,7 @@ public class BattleManager : Singleton<BattleManager> {
     [SerializeField] private UnitController EnemyUnitPrefab;
 
     // Wish we had a better way of doing this
+    [SerializeField] private CardHand playerCardHand;
     [SerializeField] private CardHand enemyCardHand;
 
     public TurnController CurrentPlayer => currentPlayer;

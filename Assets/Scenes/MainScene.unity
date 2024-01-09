@@ -1013,6 +1013,7 @@ MonoBehaviour:
     type: 3}
   EnemyUnitPrefab: {fileID: 4145673499434279597, guid: 919b967ef4647eb4884630713477122d,
     type: 3}
+  playerCardHand: {fileID: 861751918}
   enemyCardHand: {fileID: 380746902}
 --- !u!114 &578185377
 MonoBehaviour:
@@ -1466,7 +1467,7 @@ GameObject:
   - component: {fileID: 861751918}
   - component: {fileID: 861751917}
   m_Layer: 5
-  m_Name: CardHandHolder
+  m_Name: PlayerCardHandHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
