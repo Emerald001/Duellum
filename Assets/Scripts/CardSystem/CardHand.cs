@@ -47,7 +47,7 @@ public abstract class CardHand : MonoBehaviour {
     }
 
     private void Update() {
-        CardHandStateMachine.OnUpdate();
+        CardHandStateMachine?.OnUpdate();
     }
 
     protected void GiveCard(int id) {
