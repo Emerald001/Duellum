@@ -32,6 +32,6 @@ MonoBehaviour:
   Properties: []
   Card: {fileID: 0}
   CardAmount: 0
-  walkingSounds: ph_footsteps
+  walkingSounds: LightFootsteps
   attackingSounds: ph_Charm
   hurtSounds: 

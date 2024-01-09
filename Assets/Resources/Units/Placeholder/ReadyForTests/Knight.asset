@@ -33,6 +33,6 @@ MonoBehaviour:
   Properties: []
   Card: {fileID: 11400000, guid: 194ab24f3993d5f48897a159689d4423, type: 2}
   CardAmount: 1
-  walkingSounds: ph_footsteps
+  walkingSounds: HeavyFootsteps
   attackingSounds: ph_swordHit
   hurtSounds: 
