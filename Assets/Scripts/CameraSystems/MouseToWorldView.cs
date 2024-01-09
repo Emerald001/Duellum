@@ -3,9 +3,11 @@ using System.Linq;
 using UnityEngine;
 
 public class MouseToWorldView : MonoBehaviour {
+
     public static Vector2Int HoverTileGridPos { get; set; } = GridStaticFunctions.CONST_EMPTY;
     public static Vector3 HoverPointPos { get; set; }
 
+    [SerializeField] private LayerMask hitRaycast;
     [SerializeField] private Material hovercolor;
     [SerializeField] private Selector standardSelector;
 
@@ -25,7 +27,7 @@ public class MouseToWorldView : MonoBehaviour {
     }
 
     private void Update() {
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 10000))
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 10000, hitRaycast))
             UpdateTileColors(hit);
         else
             ResetTiles();
