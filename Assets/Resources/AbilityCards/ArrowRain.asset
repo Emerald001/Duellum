@@ -16,10 +16,29 @@ MonoBehaviour:
   ShortcutName: 
   Discription: From Skeleton, Lay down a rain of arrows in an area, to kill weaker
     units.
+  CardType: 0
   Icon: {fileID: 0}
   Background: {fileID: 0}
   Border: {fileID: 0}
-  ManaCost: 0
+  cardStates:
+  - areaOfSelection:
+      type: 6
+      includeCentreTile: 0
+      AllDirections: 0
+      range: 0
+      rotIndex: 0
+      includeWater: 1
+      includeCover: 0
+      excludeUnits: 0
+    mouseArea:
+      type: 2
+      includeCentreTile: 1
+      AllDirections: 0
+      range: 3
+      rotIndex: 0
+      includeWater: 0
+      includeCover: 0
+      excludeUnits: 0
   areaOfEffectSelector:
     type: 2
     includeCentreTile: 1
@@ -46,3 +65,4 @@ MonoBehaviour:
     sevarity: 0
   hexPrefab: {fileID: 0}
   tileEffect: 1
+  Damage: 0

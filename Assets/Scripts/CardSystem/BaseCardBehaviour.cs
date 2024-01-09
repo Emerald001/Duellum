@@ -28,7 +28,7 @@ public abstract class BaseCardBehaviour : MonoBehaviour {
 
     protected Vector3 offset;
 
-    protected bool selected = false;
+    protected static bool selected = false;
 
     public void SetValues(Vector3 raisedPos, Vector3 selectedPos, Camera UICam, int index) {
         standardPos = transform.position;

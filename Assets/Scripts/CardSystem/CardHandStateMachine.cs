@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class CardHandStateMachine {
     public static System.Action OnDismiss;
+    public static System.Action<Card> OnUse;
 
     private readonly List<List<Vector2Int>> tilesPerState = new();
     private List<Vector2Int> currentAvailableTiles = new();
 
     private List<CardState> statesLeft;
     private AbilityCard currentCard;
-    private CardState currentState;
+    private CardState currentState = null;
     private int stateIndex = 0;
 
     private readonly int ownerId;
@@ -19,17 +20,22 @@ public class CardHandStateMachine {
     }
 
     public void OnUpdate() {
+
         if (currentState == null)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+
+        if (Input.GetKeyDown(KeyCode.Mouse1)) {
             PreviousState();
+        }
 
         if (!currentAvailableTiles.Contains(MouseToWorldView.HoverTileGridPos))
             return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            stateIndex++;
             NextState();
+        }
     }
 
     public void SetMachine(AbilityCard abilityCard) {
@@ -43,14 +49,22 @@ public class CardHandStateMachine {
             tilesPerState.Add(GridStaticSelectors.GetPositions(currentState.mouseArea, MouseToWorldView.HoverTileGridPos, ownerId));
 
         if (stateIndex >= statesLeft.Count) {
+
             AbilityManager.PerformAbility(currentCard, ownerId, tilesPerState);
+            OnUse.Invoke(currentCard);
+            OnDismiss.Invoke();
             ResetMachine();
             return;
         }
 
-        stateIndex++;
         currentState = statesLeft[stateIndex];
         currentAvailableTiles = GridStaticSelectors.GetPositions(currentState.areaOfSelection, GridStaticFunctions.CONST_EMPTY, ownerId);
+
+        if (currentAvailableTiles.Count < 1) {
+            OnDismiss?.Invoke();
+            ResetMachine();
+            return;
+        }
 
         GridStaticFunctions.ResetBattleTileColors();
         GridStaticFunctions.HighlightTiles(currentAvailableTiles, HighlightType.MovementHighlight);
@@ -62,17 +76,18 @@ public class CardHandStateMachine {
         stateIndex--;
 
         if (stateIndex < 0) {
-            OnDismiss.Invoke();
+            OnDismiss?.Invoke();
             ResetMachine();
+            return;
         }
 
         tilesPerState.RemoveAt(tilesPerState.Count - 1);
-        stateIndex--;
         NextState();
     }
 
     private void ResetMachine() {
         GridStaticFunctions.ResetBattleTileColors();
+        EventManager<UIEvents>.Invoke(UIEvents.ReleasedAbilityCard);
         EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
 
         currentCard = null;

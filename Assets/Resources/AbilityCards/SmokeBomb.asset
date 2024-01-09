@@ -21,7 +21,7 @@ MonoBehaviour:
   Border: {fileID: 0}
   cardStates:
   - areaOfSelection:
-      type: 0
+      type: 7
       includeCentreTile: 0
       AllDirections: 0
       range: 0
@@ -30,7 +30,7 @@ MonoBehaviour:
       includeCover: 0
       excludeUnits: 0
     mouseArea:
-      type: 7
+      type: 0
       includeCentreTile: 0
       AllDirections: 0
       range: 0

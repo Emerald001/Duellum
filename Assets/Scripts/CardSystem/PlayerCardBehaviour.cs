@@ -1,4 +1,5 @@
-﻿using UnityEngine.EventSystems;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
     public void OnPointerEnter(PointerEventData eventData) {
@@ -35,18 +36,25 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
             return;
 
         selected = true;
-        OnClick.Invoke(this);
-
         CardHandStateMachine.OnDismiss += DeselectCard;
+
+        queue.Enqueue(new ActionStack(
+            new MoveObjectAction(gameObject, moveSpeed, selectedPos),
+            new RotateAction(gameObject, Vector3.zero, resizeSpeed, .1f),
+            new ResizeAction(transform, resizeSpeed, standardSize)));
+
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
         EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_grabCard");
+
+        OnClick.Invoke(this);
     }
 
     public void DeselectCard() {
         selected = false;
 
-        queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, selectedPos));
-        resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
+        queue.Enqueue(new ActionStack(
+            new MoveObjectAction(gameObject, moveSpeed, standardPos),
+            new ResizeAction(transform, resizeSpeed, standardSize)));
 
         CardHandStateMachine.OnDismiss -= DeselectCard;
     }

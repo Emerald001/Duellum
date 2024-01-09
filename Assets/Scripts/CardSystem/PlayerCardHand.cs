@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,6 +13,8 @@ public class PlayerCardHand : CardHand {
         BaseCardBehaviour.OnHoverEnter += SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
         BaseCardBehaviour.OnClick += HandleCardClick;
+        CardHandStateMachine.OnDismiss += LineOutCards;
+        CardHandStateMachine.OnUse += RemoveSpecificCard;
     }
     protected override void OnDisable() {
         base.OnDisable();
@@ -21,9 +22,13 @@ public class PlayerCardHand : CardHand {
         BaseCardBehaviour.OnHoverEnter -= SetCardsToMoveOver;
         BaseCardBehaviour.OnHoverExit -= SetCardsBackToStandardPos;
         BaseCardBehaviour.OnClick -= HandleCardClick;
+        CardHandStateMachine.OnDismiss -= LineOutCards;
+        CardHandStateMachine.OnUse -= RemoveSpecificCard;
     }
 
     private void Update() {
+        CardHandStateMachine?.OnUpdate();
+
         if (Input.GetKeyDown(KeyCode.V))
             GiveCard(OwnerID);
     }
@@ -165,10 +170,4 @@ public class PlayerCardHand : CardHand {
     //    canvasGroup.alpha = 1;
     //    actionForRaisedCard.Invoke();
     //}
-}
-
-[Serializable]
-public class CardState {
-    public Selector areaOfSelection;
-    public Selector mouseArea;
 }

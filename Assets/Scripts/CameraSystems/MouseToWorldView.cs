@@ -3,17 +3,15 @@ using System.Linq;
 using UnityEngine;
 
 public class MouseToWorldView : MonoBehaviour {
-
     public static Vector2Int HoverTileGridPos { get; set; } = GridStaticFunctions.CONST_EMPTY;
     public static Vector3 HoverPointPos { get; set; }
 
-    [SerializeField] private LayerMask hitRaycast;
     [SerializeField] private Material hovercolor;
     [SerializeField] private Selector standardSelector;
-
-    private Selector displaySelector;
+    [SerializeField] private LayerMask hitRaycast;
 
     private readonly List<Tile> lastTiles = new();
+    private Selector displaySelector;
 
     private void Awake() {
         displaySelector = standardSelector;

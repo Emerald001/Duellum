@@ -44,7 +44,7 @@ public abstract class CardHand : MonoBehaviour {
     }
 
     private void Update() {
-        CardHandStateMachine.OnUpdate();
+        CardHandStateMachine?.OnUpdate();
     }
 
     protected void GiveCard(int id) {
@@ -80,9 +80,10 @@ public abstract class CardHand : MonoBehaviour {
         cards.RemoveAt(index);
 
         Destroy(card.gameObject);
+        LineOutCards();
     }
 
-    public void RemoveSpecificCard(AbilityCard card) {
+    public void RemoveSpecificCard(Card card) {
         if (!cards.Contains(card))
             return;
 
