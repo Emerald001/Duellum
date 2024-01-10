@@ -163,6 +163,9 @@ public static class GridStaticFunctions {
 
             Grid[hex] = UnityEngine.Object.Instantiate(hexPrefab);
             Grid[hex].transform.position = CalcWorldPos(hex);
+
+            if (CurrentBattleGrid.ContainsKey(hex))
+                CurrentBattleGrid[hex] = Grid[hex];
         }
     }
 
