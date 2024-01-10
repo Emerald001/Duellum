@@ -20,7 +20,7 @@ public class Tile : MonoBehaviour {
     public float Height { get; set; }
     public TileType Type => type;
 
-    private List<Vector3> ripplePositions = new();
+    private readonly List<Vector3> ripplePositions = new();
 
     private HighlightType currentType = HighlightType.None;
     private readonly ActionQueue queue = new();

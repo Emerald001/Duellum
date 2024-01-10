@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class MouseToWorldView : MonoBehaviour {
     public static Vector2Int HoverTileGridPos { get; set; } = GridStaticFunctions.CONST_EMPTY;
-    public static Vector3 HoverPointPos { get; set; }
 
     [SerializeField] private Material hovercolor;
     [SerializeField] private Selector standardSelector;
     [SerializeField] private LayerMask hitRaycast;
 
-    private readonly List<Tile> lastTiles = new();
+    private List<Tile> lastTiles = new();
     private Selector displaySelector;
+    private Camera mainCam;
 
     private void Awake() {
         displaySelector = standardSelector;
+        mainCam = Camera.main;
     }
 
     private void OnEnable() {
@@ -25,34 +26,29 @@ public class MouseToWorldView : MonoBehaviour {
     }
 
     private void Update() {
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 10000, hitRaycast))
+        if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 10000, hitRaycast))
             UpdateTileColors(hit);
         else
             ResetTiles();
     }
 
     private void UpdateTileColors(RaycastHit hit) {
-        HoverPointPos = hit.point;
-
         if (!hit.transform.CompareTag("WalkableTile")) {
             ResetTiles();
             return;
         }
 
         GameObject hitTile = hit.transform.parent.gameObject;
-        List<Vector2Int> newTiles = GridStaticSelectors.GetPositions(displaySelector, GridStaticFunctions.GetGridPosFromTileGameObject(hitTile), 0);
+        Vector2Int hoverTileGridPos = GridStaticFunctions.GetGridPosFromTileGameObject(hitTile);
+        List<Vector2Int> newTiles = GridStaticSelectors.GetPositions(displaySelector, hoverTileGridPos, 0)
+            .Where(tile => tile != GridStaticFunctions.CONST_EMPTY)
+            .ToList();
 
-        if (newTiles.Contains(GridStaticFunctions.CONST_EMPTY))
-            newTiles.Remove(GridStaticFunctions.CONST_EMPTY);
+        foreach (var lastTile in lastTiles.Where(t => t != null))
+            lastTile.SetHover(newTiles.Contains(lastTile.GridPos));
 
-        foreach (var lastTile in lastTiles) {
-            if (lastTile != null)
-                lastTile.SetHover(newTiles.Contains(lastTile.GridPos));
-        }
-
-        lastTiles.Clear();
-        lastTiles.AddRange(newTiles.Select(x => GridStaticFunctions.Grid[x]));
-        HoverTileGridPos = GridStaticFunctions.GetGridPosFromTileGameObject(hitTile);
+        lastTiles = newTiles.Select(x => GridStaticFunctions.Grid[x]).ToList();
+        HoverTileGridPos = hoverTileGridPos;
     }
 
     private void ResetTiles() {
