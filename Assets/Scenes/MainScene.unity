@@ -3551,9 +3551,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9d00290829401c4a9cb26eb3aa6fd31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitRaycast:
-    serializedVersion: 2
-    m_Bits: 59
   hovercolor: {fileID: 2100000, guid: 60e4fff2b4acfcc45879b86ca25abb71, type: 2}
   standardSelector:
     type: 0
@@ -3564,6 +3561,9 @@ MonoBehaviour:
     includeWater: 0
     includeCover: 0
     excludeUnits: 0
+  hitRaycast:
+    serializedVersion: 2
+    m_Bits: 59
 --- !u!20 &147816838796106456
 Camera:
   m_ObjectHideFlags: 0
@@ -3674,6 +3674,7 @@ GameObject:
   - component: {fileID: 147816839716906535}
   - component: {fileID: 147816839716906532}
   - component: {fileID: 147816839716906536}
+  - component: {fileID: 147816839716906537}
   m_Layer: 0
   m_Name: Camera Holder
   m_TagString: Untagged
@@ -3709,4 +3710,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42b3e5a2493696442816d6b1c1457319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 30
+--- !u!114 &147816839716906537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147816839716906534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 420087794e1265e418d96268f4bf1dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5809999509499819768
 Transform:
   m_ObjectHideFlags: 0
@@ -175,4 +175,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50cd33eb34dcf784c9bf33378d200523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualsParent: {fileID: 1696045434725523971}
   viewRange: 9
+  rotationSpeed: 30

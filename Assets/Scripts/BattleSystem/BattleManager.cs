@@ -58,13 +58,10 @@ public class BattleManager : Singleton<BattleManager> {
 
     public void SetBattlefield(BattleData data, Vector2Int direction) {
         List<Vector2Int> GetSpawnPositions(int unitAmount, Vector2Int startPos) {
-            List<Vector2Int> result = new() {
-                startPos
-            };
-
+            List<Vector2Int> result = new() { startPos };
             int positionModifier = 1;
-
             int breakout = 0;
+
             while (result.Count < unitAmount && breakout < 50) {
                 Vector2Int calculatedPos = startPos + direction * positionModifier;
 
@@ -115,7 +112,6 @@ public class BattleManager : Singleton<BattleManager> {
                         breakout2++;
                     }
 
-
                     if (breakout2 > 49)
                         Debug.Log("Broke out at loop 2");
                 }
@@ -140,7 +136,7 @@ public class BattleManager : Singleton<BattleManager> {
         PlayerTurnController playerTurnController = new();
         UnitStaticManager.UnitTeams.Add(0, new());
         playerCardHand.SetHand(0);
-        
+
         for (int i = 0; i < GridStaticFunctions.PlayerSpawnPositions.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPositions[i];
 

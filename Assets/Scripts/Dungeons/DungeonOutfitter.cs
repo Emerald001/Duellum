@@ -229,6 +229,7 @@ public class DungeonOutfitter : MonoBehaviour {
         player.SetUp(spawnGridPosition);
         playerController = player;
 
+        EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 30);
         EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, player.transform);
     }
 }

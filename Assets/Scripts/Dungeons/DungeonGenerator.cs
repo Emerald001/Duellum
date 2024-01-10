@@ -328,6 +328,15 @@ public class DungeonGenerator : MonoBehaviour {
         if (endRoomCount < 2)
             return false;
 
+        int enemyCount = 0;
+        foreach (KeyValuePair<Vector2Int, RoomComponent> room in GridStaticFunctions.Dungeon) {
+            if (room.Value.gridValues.Select(x => x.Type).Contains(TileType.EnemySpawn))
+                enemyCount++;
+        }
+
+        if (enemyCount < 3) 
+            return false;
+
         return true;
     }
 }

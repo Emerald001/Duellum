@@ -33,10 +33,6 @@ public abstract class UnitController : MonoBehaviour {
         EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitRevive, UnitRevive);
     }
 
-    private void Start() {
-        unitAnimator = GetComponentInChildren<Animator>();
-    }
-
     public virtual void SetUp(int id, UnitData data, Vector2Int pos) {
         UnitBaseData = Instantiate(data);
         GameObject pawn = Instantiate(data.PawnPrefab, transform);
@@ -48,6 +44,8 @@ public abstract class UnitController : MonoBehaviour {
         attackModule = new(UnitBaseData.Attack, id);
         gridPosition = pos;
         queue = new(() => IsDone = HasPerformedAction);
+
+        unitAnimator = GetComponentInChildren<Animator>();
     }
 
     public virtual void OnEnter() {

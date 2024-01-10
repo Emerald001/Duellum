@@ -39,8 +39,16 @@ public class BattleSequences : MonoBehaviour {
         // Do Audio Thing actionQueue.Enqueue(new DoMethodAction(() => ));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Battle Started")));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<BattleEvents, BattleData>.Invoke(BattleEvents.StartPlayerStartSequence, data)));
-        actionQueue.Enqueue(new WaitAction(3f));
+        actionQueue.Enqueue(new WaitAction(.5f));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 10)));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, GridStaticFunctions.Grid[data.EnemyPos].transform)));
+        actionQueue.Enqueue(new WaitAction(1f));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, GridStaticFunctions.Grid[middlePoint].transform)));
+        actionQueue.Enqueue(new WaitAction(1f));
         actionQueue.Enqueue(new DoMethodAction(() => Ripple(middlePoint, 3, points)));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, EventMessage<float, float>>.Invoke(CameraEventType.ZOOM_CAM, new(3, 10))));
+        actionQueue.Enqueue(new WaitAction(.2f));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, EventMessage<float, float>>.Invoke(CameraEventType.ZOOM_CAM, new(7, 10))));
         actionQueue.Enqueue(new WaitAction(.2f));
         actionQueue.Enqueue(new DoMethodAction(() => battleManager.StartBattle(data)));
     }

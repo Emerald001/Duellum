@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
@@ -76,36 +75,16 @@ public class PlayerController : MonoBehaviour {
 
         line.enabled = false;
         inBattle = true;
+
+        yield return new WaitForSeconds(2.5f);
         visuals.SetActive(false);
-
-        Vector2Int difference = data.PlayerPos - data.EnemyPos;
-        Vector2Int middlePoint = data.PlayerPos - difference / 2;
-
-        yield return new WaitForSeconds(.5f);
-
-        Vector3 newPos = GridStaticFunctions.CalcWorldPos(data.EnemyPos) + new Vector3(0, -2, 0);
-        while (transform.position != newPos) {
-            transform.position = Vector3.MoveTowards(transform.position, newPos, 10 * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
-        }
-
-        yield return new WaitForSeconds(1f);
-
-        newPos = GridStaticFunctions.CalcWorldPos(middlePoint) + new Vector3(0, -2, 0);
-        while (transform.position != newPos) {
-            transform.position = Vector3.MoveTowards(transform.position, newPos, 10 * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
-        }
     }
 
     private IEnumerator OnBattleEnd() {
         yield return new WaitForSeconds(3f);
 
-        var newPos = GridStaticFunctions.CalcWorldPos(playerPosition);
-        while (transform.position != newPos) {
-            transform.position = Vector3.MoveTowards(transform.position, newPos, 10 * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
-        }
+        EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, transform);
+        EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 30);
 
         visuals.SetActive(true);
         inBattle = false;
@@ -141,7 +120,6 @@ public class PlayerController : MonoBehaviour {
 
             actionQueue.Enqueue(new DoMethodAction(() => {
                 this.lookDirection = lookDirection;
-                Debug.Log(lookDirection);
                 playerPosition = newPos;
             }));
 
