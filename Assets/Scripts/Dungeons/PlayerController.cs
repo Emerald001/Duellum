@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     [SerializeField] private LineRenderer line;
     [SerializeField] private GameObject visuals;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float rotSpeed;
 
     public Vector2Int PlayerPosition => playerPosition;
 
@@ -18,6 +20,7 @@ public class PlayerController : MonoBehaviour {
     private readonly HashSet<Vector2Int> closedSet = new();
 
     private Vector2Int playerPosition;
+    private Vector2Int lookDirection;
 
     private bool isWalking;
     private bool inBattle;
@@ -125,15 +128,20 @@ public class PlayerController : MonoBehaviour {
     private void EnqueueMovement(Vector2Int targetPosition) {
         actionQueue.Enqueue(new DoMethodAction(() => {
             //UnitAnimator.WalkAnim(true);
-            //UnitAudio.PlayLoopedAudio("Walking", true);
         }));
 
         Vector2Int lastPos = playerPosition;
         foreach (var newPos in GetPath(targetPosition)) {
             Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcWorldPos(newPos) - GridStaticFunctions.CalcWorldPos(lastPos));
 
-            actionQueue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, GridStaticFunctions.CalcWorldPos(newPos)));
+            actionQueue.Enqueue(new ActionStack(
+                new MoveObjectAction(gameObject, moveSpeed, GridStaticFunctions.CalcWorldPos(newPos)),
+                new RotateAction(visuals, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection, true), 0), rotSpeed, .1f)
+                ));
+
             actionQueue.Enqueue(new DoMethodAction(() => {
+                this.lookDirection = lookDirection;
+                Debug.Log(lookDirection);
                 playerPosition = newPos;
             }));
 
@@ -142,7 +150,6 @@ public class PlayerController : MonoBehaviour {
 
         actionQueue.Enqueue(new DoMethodAction(() => {
             //UnitAnimator.WalkAnim(false);
-            //UnitAudio.PlayLoopedAudio("Walking", false);
 
             FindAccessibleTiles(playerPosition, 30);
             GridStaticFunctions.ResetAllTileColors();
@@ -199,7 +206,7 @@ public class PlayerController : MonoBehaviour {
             currentPosition = parentDictionary[currentPosition];
         }
 
-        path.Add(currentPosition);
+        //path.Add(currentPosition);
         path.Reverse();
 
         return path;

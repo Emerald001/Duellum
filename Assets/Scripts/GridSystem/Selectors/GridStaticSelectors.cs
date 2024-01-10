@@ -103,7 +103,7 @@ public static class GridStaticSelectors {
 
     private static List<Vector2Int> GetAllTiles(Selector selector) {
         List<Vector2Int> result = GridStaticFunctions.Grid.Values
-            .Where(tile => tile.Type == TileType.Normal)
+            .Where(tile => tile.Type is TileType.Normal or TileType.EnemySpawn or TileType.BossSpawn)
             .Select(tile => tile.GridPos).ToList();
 
         if (selector.includeWater) {

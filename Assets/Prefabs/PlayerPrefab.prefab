@@ -182,6 +182,7 @@ MonoBehaviour:
   line: {fileID: 1944027737191963537}
   visuals: {fileID: 157805048344579267}
   moveSpeed: 10
+  rotSpeed: 40
 --- !u!114 &17315637739332628
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,6 +29,10 @@ public static class GridStaticFunctions {
         0,
         270,
         180,
+        45,
+        135,
+        315,
+        225,
     };
 
     public static Dictionary<Vector2Int, TileEffect> TileEffectPositions { get; set; } = new();
@@ -205,9 +209,11 @@ public static class GridStaticFunctions {
         return result;
     }
 
-    public static float GetRotationFromVector2Direction(Vector2Int dir) {
-        for (int i = 0; i < directCubeNeighbours.Length; i++) {
-            Vector2Int direction = directCubeNeighbours[i];
+    public static float GetRotationFromVector2Direction(Vector2Int dir, bool includeDiagonals = false) {
+        Vector2Int[] directions = includeDiagonals ? directCubeNeighbours.Concat(diagonalCubeNeighbours).ToArray() : directCubeNeighbours;
+
+        for (int i = 0; i < directions.Length; i++) {
+            Vector2Int direction = directions[i];
             if (direction == dir)
                 return lookDirections[i];
         }
