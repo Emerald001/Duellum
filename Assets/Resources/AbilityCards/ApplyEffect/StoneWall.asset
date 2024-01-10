@@ -20,6 +20,25 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Background: {fileID: 0}
   Border: {fileID: 0}
+  cardStates:
+  - areaOfSelection:
+      type: 4
+      includeCentreTile: 0
+      AllDirections: 0
+      range: 0
+      rotIndex: 0
+      includeWater: 0
+      includeCover: 0
+      excludeUnits: 0
+    mouseArea:
+      type: 0
+      includeCentreTile: 0
+      AllDirections: 0
+      range: 0
+      rotIndex: 0
+      includeWater: 0
+      includeCover: 0
+      excludeUnits: 0
   areaOfEffectSelector:
     type: 0
     includeCentreTile: 0

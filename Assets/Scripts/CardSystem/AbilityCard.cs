@@ -8,9 +8,6 @@ public class AbilityCard : Card {
     [Header("Card Selectors")]
     public List<CardState> cardStates = new();
 
-    public Selector areaOfEffectSelector;
-    public Selector availabletilesSelector;
-
     [Header("Extra Data")]
     public AbilityCardType abilityType;
     [Space(10)]
