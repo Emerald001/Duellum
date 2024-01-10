@@ -30,13 +30,16 @@ public abstract class BaseCardBehaviour : MonoBehaviour {
 
     protected static bool selected = false;
 
+    private void Awake() {
+        standardSize = transform.localScale;
+        raisedSize = standardSize * scaleModifier;
+    }
+
     public void SetValues(Vector3 raisedPos, Vector3 selectedPos, Camera UICam, int index) {
         standardPos = transform.position;
-        standardSize = transform.localScale;
 
         this.raisedPos = raisedPos;
         this.selectedPos = selectedPos;
-        raisedSize = standardSize * scaleModifier;
 
         this.UICam = UICam;
         Index = index;

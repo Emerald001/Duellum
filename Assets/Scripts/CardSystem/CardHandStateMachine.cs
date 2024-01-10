@@ -20,10 +20,8 @@ public class CardHandStateMachine {
     }
 
     public void OnUpdate() {
-
         if (currentState == null)
             return;
-
 
         if (Input.GetKeyDown(KeyCode.Mouse1)) {
             PreviousState();
@@ -49,7 +47,6 @@ public class CardHandStateMachine {
             tilesPerState.Add(GridStaticSelectors.GetPositions(currentState.mouseArea, MouseToWorldView.HoverTileGridPos, ownerId));
 
         if (stateIndex >= statesLeft.Count) {
-
             AbilityManager.PerformAbility(currentCard, ownerId, tilesPerState);
             OnUse.Invoke(currentCard);
             OnDismiss.Invoke();

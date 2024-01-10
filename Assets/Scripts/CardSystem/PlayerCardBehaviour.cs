@@ -52,9 +52,7 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
     public void DeselectCard() {
         selected = false;
 
-        queue.Enqueue(new ActionStack(
-            new MoveObjectAction(gameObject, moveSpeed, standardPos),
-            new ResizeAction(transform, resizeSpeed, standardSize)));
+        resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
 
         CardHandStateMachine.OnDismiss -= DeselectCard;
     }
