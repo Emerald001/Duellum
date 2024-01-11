@@ -141,7 +141,7 @@ public class BattleManager : Singleton<BattleManager> {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPositions[i];
 
             UnitController unit = unitFactory.CreateUnit(0, playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab, unitHolder);
-            unit.ChangeUnitRotation(reversedDirection);
+            unit.ChangeUnitRotation(-reversedDirection);
 
             for (int j = 0; j < playerUnitsToSpawn[i].CardAmount; j++)
                 EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(0, playerUnitsToSpawn[i].Card));
@@ -161,7 +161,7 @@ public class BattleManager : Singleton<BattleManager> {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPositions[i];
 
             UnitController unit = unitFactory.CreateUnit(1, enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab, unitHolder);
-            unit.ChangeUnitRotation(-reversedDirection);
+            unit.ChangeUnitRotation(reversedDirection);
 
             for (int j = 0; j < enemyUnitsToSpawn[i].CardAmount; j++)
                 EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(1, enemyUnitsToSpawn[i].Card));

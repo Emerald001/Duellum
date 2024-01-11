@@ -20,6 +20,7 @@ public class DungeonGenerator : MonoBehaviour {
     private readonly Dictionary<Vector2Int, Vector4> dungeonConnections = new();
     private int tileSize => GridStaticFunctions.TilesPerRoom;
     private readonly List<int> usedIds = new();
+    private int spawnedBigRoomAmount;
 
     private Transform dungeonParent;
 
@@ -148,11 +149,13 @@ public class DungeonGenerator : MonoBehaviour {
             GridStaticFunctions.Dungeon.Clear();
             dungeonConnections.Clear();
             usedIds.Clear();
+            spawnedBigRoomAmount = 0;
 
             Destroy(dungeonParent.gameObject);
 
-            GenerateDungeon();
             yield return null;
+
+            GenerateDungeon();
             yield break;
         }
 
@@ -202,7 +205,7 @@ public class DungeonGenerator : MonoBehaviour {
                 return roomTile;
             }))
         .Where(tile => {
-            if (bigRoomAmount < 1 && (tile.size.x > 1 || tile.size.y > 1))
+            if (spawnedBigRoomAmount >= bigRoomAmount && (tile.size.x > 1 || tile.size.y > 1))
                 return false;
 
             if (usedIds.Contains(tile.Id))
@@ -257,7 +260,7 @@ public class DungeonGenerator : MonoBehaviour {
 
         int index = spawnFirst ? 0 : Mathf.RoundToInt(UnityEngine.Random.Range(0, roomlist.Count));
         DungeonRoomTile room = roomlist[index];
-        bigRoomAmount -= (room.size.x > 1 || room.size.y > 1) ? 1 : 0;
+        spawnedBigRoomAmount += (room.size.x > 1 || room.size.y > 1) ? 1 : 0;
 
         return room;
     }
@@ -334,27 +337,25 @@ public class DungeonGenerator : MonoBehaviour {
             Vector2Int gridpos = room.Key;
             RoomComponent roomComp = room.Value;
 
-            if (gridpos == roomComp.indexZeroGridPos) {
+            if (gridpos == roomComp.indexZeroGridPos)
                 rooms.Add(roomComp);
-            }
         }
 
         int bossCount = 0;
-        foreach (RoomComponent room in rooms) {
-            if (room.gridValues.Select(x => x.Type).Contains(TileType.BossSpawn))
-                bossCount++;
-        }
-
-        if (bossCount < 1 || bossCount > 1)
-            return false;
-
         int enemyCount = 0;
         foreach (RoomComponent room in rooms) {
-            if (room.gridValues.Select(x => x.Type).Contains(TileType.EnemySpawn))
+            var tmp = room.gridValues.Select(x => x.Type);
+
+            if (tmp.Contains(TileType.BossSpawn)) {
+                enemyCount++;
+                bossCount++;
+            }
+
+            if (tmp.Contains(TileType.EnemySpawn))
                 enemyCount++;
         }
 
-        if (enemyCount < 3) 
+        if (bossCount < 1 || bossCount > 1 || enemyCount < 3)
             return false;
 
         return true;

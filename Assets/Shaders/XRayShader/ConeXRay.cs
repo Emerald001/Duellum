@@ -21,6 +21,9 @@ public class ConeXRay : MonoBehaviour {
     }
 
     private void OnTriggerStay(Collider other) {
+        if (other.gameObject.layer != Mask)
+            return;
+
         var dir = player.position - Camera.transform.position;
         var ray = new Ray(Camera.transform.position, dir.normalized);
         var dis = Vector3.Distance(Camera.transform.position, player.position);
