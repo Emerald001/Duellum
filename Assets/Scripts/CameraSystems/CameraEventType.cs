@@ -3,5 +3,7 @@
     CHANGE_CAM_SELECTOR,
     CHANGE_CAM_FOLLOW_OBJECT,
     CHANGE_CAM_FOLLOW_SPEED,
+    ResetCamBackOnPlayer,
     ZOOM_CAM,
+    QuickZoom,
 }

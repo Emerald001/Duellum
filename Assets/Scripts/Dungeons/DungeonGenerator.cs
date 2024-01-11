@@ -152,6 +152,7 @@ public class DungeonGenerator : MonoBehaviour {
             Destroy(dungeonParent.gameObject);
 
             GenerateDungeon();
+            yield return null;
             yield break;
         }
 
@@ -305,7 +306,7 @@ public class DungeonGenerator : MonoBehaviour {
         if (roomAmount < this.roomAmount / 2)
             return false;
 
-        List<Tuple<int, RoomComponent>> rooms = new();
+        List<RoomComponent> endRooms = new();
         foreach (KeyValuePair<Vector2Int, RoomComponent> room in GridStaticFunctions.Dungeon) {
             int counter = 0;
             foreach (var item in room.Value.connections) {
@@ -321,16 +322,35 @@ public class DungeonGenerator : MonoBehaviour {
 
             Vector2Int gridPosition = room.Value.indexZeroGridPos;
             int amount = gridPosition.x + gridPosition.y;
-            rooms.Add(new(amount, room.Value));
+            endRooms.Add(room.Value);
         }
-        int endRoomCount = rooms.Count();
+        int endRoomCount = endRooms.Count();
 
         if (endRoomCount < 2)
             return false;
 
+        List<RoomComponent> rooms = new();
+        foreach (var room in GridStaticFunctions.Dungeon) {
+            Vector2Int gridpos = room.Key;
+            RoomComponent roomComp = room.Value;
+
+            if (gridpos == roomComp.indexZeroGridPos) {
+                rooms.Add(roomComp);
+            }
+        }
+
+        int bossCount = 0;
+        foreach (RoomComponent room in rooms) {
+            if (room.gridValues.Select(x => x.Type).Contains(TileType.BossSpawn))
+                bossCount++;
+        }
+
+        if (bossCount < 1 || bossCount > 1)
+            return false;
+
         int enemyCount = 0;
-        foreach (KeyValuePair<Vector2Int, RoomComponent> room in GridStaticFunctions.Dungeon) {
-            if (room.Value.gridValues.Select(x => x.Type).Contains(TileType.EnemySpawn))
+        foreach (RoomComponent room in rooms) {
+            if (room.gridValues.Select(x => x.Type).Contains(TileType.EnemySpawn))
                 enemyCount++;
         }
 

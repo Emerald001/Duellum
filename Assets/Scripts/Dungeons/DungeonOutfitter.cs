@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class DungeonOutfitter : MonoBehaviour {
@@ -69,7 +67,7 @@ public class DungeonOutfitter : MonoBehaviour {
     }
 
     private void CreatePathThroughDungeon() {
-        List<Tuple<int, RoomComponent>> rooms = new();
+        List<RoomComponent> rooms = new();
         foreach (KeyValuePair<Vector2Int, RoomComponent> room in GridStaticFunctions.Dungeon) {
             int counter = 0;
             foreach (var item in room.Value.connections) {
@@ -83,19 +81,13 @@ public class DungeonOutfitter : MonoBehaviour {
             if (counter > 1)
                 continue;
 
-            Vector2Int gridPosition = room.Value.indexZeroGridPos;
-            int amount = gridPosition.x + gridPosition.y;
-            rooms.Add(new(amount, room.Value));
+            rooms.Add(room.Value);
         }
-        rooms = rooms.OrderBy(obj => obj.Item1).ToList();
-
         Dictionary<RoomComponent, RoomComponent> parentDictionary = new();
 
         List<RoomComponent> openSet = new();
         List<RoomComponent> closedSet = new();
-
-        openSet.Add(rooms[0].Item2);
-        RoomComponent currentRoom = openSet[0];
+        openSet.Add(rooms[0]);
 
         void AddRooms(Vector2Int newRoomPos, RoomComponent parentRoom) {
             RoomComponent room = GridStaticFunctions.Dungeon[newRoomPos];
@@ -108,7 +100,7 @@ public class DungeonOutfitter : MonoBehaviour {
         }
 
         while (openSet.Count > 0) {
-            currentRoom = openSet[0];
+            RoomComponent currentRoom = openSet[0];
 
             int index = 0;
             for (int x = 0; x < currentRoom.size.x; x++) {
@@ -133,7 +125,7 @@ public class DungeonOutfitter : MonoBehaviour {
             openSet.RemoveAt(0);
         }
 
-        DrawLines(rooms.Select(x => x.Item2).ToList(), parentDictionary);
+        DrawLines(rooms, parentDictionary);
     }
 
     private void DrawLines(List<RoomComponent> rooms, Dictionary<RoomComponent, RoomComponent> parentDictionary) {

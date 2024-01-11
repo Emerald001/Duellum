@@ -204,6 +204,7 @@ public class BattleManager : Singleton<BattleManager> {
 
 public enum BattleEvents {
     EnemyViewedPlayer,
+    SetPlayerInteractable,
     StartPlayerStartSequence,
     StartBattle,
     NewTurn,

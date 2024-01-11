@@ -22,14 +22,16 @@ public class PlayerController : MonoBehaviour {
     private Vector2Int lookDirection;
 
     private bool isWalking;
-    private bool inBattle;
+    private bool isInteractable;
 
     private void OnEnable() {
         EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartPlayerStartSequence, (x) => StartCoroutine(OnBattleStart(x)));
+        EventManager<BattleEvents, bool>.Subscribe(BattleEvents.SetPlayerInteractable, (x) => isInteractable = x);
         EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, () => StartCoroutine(OnBattleEnd()));
     }
     private void OnDisable() {
         EventManager<BattleEvents, BattleData>.Unsubscribe(BattleEvents.StartPlayerStartSequence, (x) => StartCoroutine(OnBattleStart(x)));
+        EventManager<BattleEvents, bool>.Unsubscribe(BattleEvents.SetPlayerInteractable, (x) => isInteractable = x);
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, () => StartCoroutine(OnBattleEnd()));
     }
 
@@ -38,10 +40,12 @@ public class PlayerController : MonoBehaviour {
         playerPosition = gridPosition;
 
         FindAccessibleTiles(playerPosition, 30);
+
+        isInteractable = true;
     }
 
     private void Update() {
-        if (inBattle)
+        if (!isInteractable)
             return;
 
         actionQueue.OnUpdate();
@@ -74,7 +78,7 @@ public class PlayerController : MonoBehaviour {
             actionQueue.Clear();
 
         line.enabled = false;
-        inBattle = true;
+        isInteractable = false;
 
         yield return new WaitForSeconds(2.5f);
         visuals.SetActive(false);
@@ -87,7 +91,7 @@ public class PlayerController : MonoBehaviour {
         EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 30);
 
         visuals.SetActive(true);
-        inBattle = false;
+        isInteractable = true;
 
         FindAccessibleTiles(playerPosition, 30);
     }
