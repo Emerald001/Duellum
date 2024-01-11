@@ -1,0 +1,145 @@
+fileFormatVersion: 2
+guid: 9812534a832c94846aa7992f00151115
+timeCreated: 1511043614
+licenseType: Store
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: hips
+    100004: L_ankle
+    100006: L_elbow
+    100008: L_foot_end
+    100010: L_foot_toes
+    100012: L_knee
+    100014: L_leg
+    100016: L_shoulder
+    100018: neck
+    100020: PlagueDoctor_cloth_LOD0
+    100022: PlagueDoctor_cloth_LOD1
+    100024: R_ankle
+    100026: R_elbow
+    100028: R_foot_end
+    100030: R_foot_toes
+    100032: R_knee
+    100034: R_leg
+    100036: R_shoulder
+    100038: root
+    100040: spine1
+    100042: spine2
+    100044: spine3
+    400000: //RootNode
+    400002: hips
+    400004: L_ankle
+    400006: L_elbow
+    400008: L_foot_end
+    400010: L_foot_toes
+    400012: L_knee
+    400014: L_leg
+    400016: L_shoulder
+    400018: neck
+    400020: PlagueDoctor_cloth_LOD0
+    400022: PlagueDoctor_cloth_LOD1
+    400024: R_ankle
+    400026: R_elbow
+    400028: R_foot_end
+    400030: R_foot_toes
+    400032: R_knee
+    400034: R_leg
+    400036: R_shoulder
+    400038: root
+    400040: spine1
+    400042: spine2
+    400044: spine3
+    4300000: PlagueDoctor_cloth_LOD0
+    4300002: PlagueDoctor_cloth_LOD1
+    9500000: //RootNode
+    13700000: PlagueDoctor_cloth_LOD0
+    13700002: PlagueDoctor_cloth_LOD1
+    20500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert2
+    second: {fileID: 2100000, guid: 0c1dfe8a6c4dced4e8f0e4a317d2dcc6, type: 2}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages:
+    - 0.25
+    - 0.01
+    globalScale: 4.2
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 0
+  copyAvatar: 1
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: root
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 7406f4222a0ff57489bae28d3007649c,
+    type: 3}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

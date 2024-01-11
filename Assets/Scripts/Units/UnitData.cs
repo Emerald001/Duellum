@@ -13,6 +13,7 @@ public class UnitData : ScriptableObject {
     public int Rank;
 
     public UnitRace Catagory;
+    public UnitType Type;
 
     [Header("Visuals")]
     public Sprite Icon;
@@ -61,4 +62,13 @@ public enum UnitTileCoverType {
     SingleTile,
     Line,
     Round,
+}
+
+public enum UnitType {
+    Assault,
+    Rogue,
+    Scout,
+    Support,
+    Structure,
+    Tank,
 }

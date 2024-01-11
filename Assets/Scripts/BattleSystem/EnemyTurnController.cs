@@ -7,6 +7,13 @@ public class EnemyTurnController : TurnController {
 
         units = UnitStaticManager.EnemyUnitsInPlay;
 
+        // TO DO: Calculate unit action values, and pick the highest one
+        Dictionary<int, UnitController> unitActions = new();
+
+        //foreach (UnitController u in units) {
+        //    unitActions.Add(u as EnemyUnitInterface.PickEvaluatedAction(), u);
+        //}
+
         int unit = Random.Range(0, units.Count);
         PickUnit(UnitStaticManager.UnitPositions[units[unit]]);
     }

@@ -125,7 +125,7 @@ public enum BattleEvents {
     UnitRevive,
     GiveAbilityCard,
     GiveCard,
-    SpawnAbilityCard,
+    PickUpAbilityCard,
     GrabbedAbilityCard,
     ReleasedAbilityCard,
     BattleEnd,
@@ -133,5 +133,7 @@ public enum BattleEvents {
 
 public enum UIEvents {
     InfoTextUpdate,
+    PopUpWindow,
+    ShowPauseMenu,
     UpdateCursor,
 }
