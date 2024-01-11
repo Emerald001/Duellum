@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: -0.0013572678, g: -0.00006190511, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: -0.0012676934, g: -0.000067732755, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3150,8 +3150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomAmount: 15
-  bigRoomAmount: 10
-  bigRoomPercentage: 75
+  bigRoomAmount: 15
+  bigRoomPercentage: 80
   bigRoomList:
   - {fileID: 11400000, guid: 1650963078715414f889bbbabd91bec8, type: 2}
   - {fileID: 11400000, guid: 4ac9a24224cf5064b811f458e39649a0, type: 2}
@@ -3175,6 +3175,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 88c7c5bb6a034b741804f13092f8a5b6, type: 2}
   - {fileID: 11400000, guid: dd7a743c874e6724db7bbdeab40a78ff, type: 2}
   - {fileID: 11400000, guid: 260cdb635929e2c428678a69cb0492a6, type: 2}
+  - {fileID: 11400000, guid: 46ba4284f7096294588521cc8875faa4, type: 2}
   endRoomList:
   - {fileID: 11400000, guid: 7a6f313154ef7fb45965ffdcbeb1ad02, type: 2}
   - {fileID: 11400000, guid: 819ddf8097f014b479435134fadb4df5, type: 2}
