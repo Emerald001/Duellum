@@ -16,6 +16,7 @@ public class AudioHandler : MonoBehaviour
 
     private void Start() {
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("Music", true));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("ExplorationAmbience", true));
     }
 
     private void PlayLoopedAudio(EventMessage<string, bool> eventMessage) {
