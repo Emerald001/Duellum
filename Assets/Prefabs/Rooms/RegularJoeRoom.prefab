@@ -9239,7 +9239,7 @@ MonoBehaviour:
   attackColor: {fileID: 2100000, guid: 12881b21d09933b4882c9a936f694af3, type: 2}
   ownPositionColor: {fileID: 2100000, guid: 959cb5d0c807aab47b3bed0e43c0cbe1, type: 2}
   transparent: {fileID: 2100000, guid: 7de9981cb0a8a8243adf7eb98b6d0caa, type: 2}
-  type: 3
+  type: 4
 --- !u!1 &3681571475863571024
 GameObject:
   m_ObjectHideFlags: 0
