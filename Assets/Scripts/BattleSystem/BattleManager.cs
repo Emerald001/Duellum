@@ -44,6 +44,8 @@ public class BattleManager : Singleton<BattleManager> {
         cardManager.SetUp();
 
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("Music", false));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("ExplorationAmbience", false));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("CombatAmbience", true));
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("BattleMusic", true));
 
         NextPlayer();
@@ -201,6 +203,8 @@ public class BattleManager : Singleton<BattleManager> {
         UnitStaticManager.Reset();
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("BattleMusic", false));
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("Music", true));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("CombatAmbience", false));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("ExplorationAmbience", true));
     }
 }
 
