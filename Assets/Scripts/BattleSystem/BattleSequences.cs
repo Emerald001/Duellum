@@ -33,16 +33,19 @@ public class BattleSequences : MonoBehaviour {
 
         GridStaticFunctions.SetBattleGrid(points);
         battleManager.SetBattlefield(data, direction);
-
+        
         // Do Audio Thing actionQueue.Enqueue(new DoMethodAction(() => ));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Battle Started")));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "BattleStart")));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<BattleEvents, BattleData>.Invoke(BattleEvents.StartPlayerStartSequence, data)));
         actionQueue.Enqueue(new WaitAction(.5f));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "Whoosh")));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 10)));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, GridStaticFunctions.Grid[data.EnemyPos].transform)));
         actionQueue.Enqueue(new WaitAction(1f));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, GridStaticFunctions.Grid[middlePoint].transform)));
         actionQueue.Enqueue(new WaitAction(1f));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "Ripple")));
         actionQueue.Enqueue(new DoMethodAction(() => Ripple(middlePoint, 3, points)));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, EventMessage<float, float>>.Invoke(CameraEventType.ZOOM_CAM, new(3, 10))));
         actionQueue.Enqueue(new WaitAction(.2f));
