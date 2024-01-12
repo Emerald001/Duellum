@@ -3,7 +3,9 @@ using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
     [SerializeField] private GameObject pawnParent;
+    private FootstepManager footstepManager;
 
+    [SerializeField] private float checkInterval = 5f;   // Adjust the interval as needed
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
@@ -26,6 +28,12 @@ public abstract class UnitController : MonoBehaviour {
     private string attackingSounds;
     private string hurtSounds;
 
+    private bool isWalking;
+    private float lastCheckTime;
+
+    private void Start() {
+        footstepManager = transform.GetChild(1).GetComponent<FootstepManager>();
+    }
     private void OnEnable() {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitHit, UnitHit);
@@ -71,6 +79,21 @@ public abstract class UnitController : MonoBehaviour {
         Debug.Log(3);
     }
 
+    private void Update() {
+        
+        if (!isWalking || Time.time - lastCheckTime < checkInterval)
+            return;
+        else {
+            if (isWalking) {
+            footstepManager.CheckFootstep(footstepManager.leftFootTransform);
+            footstepManager.CheckFootstep(footstepManager.rightFootTransform);
+
+            }
+        }
+
+        lastCheckTime = Time.time;
+    }
+
     protected virtual void PickedTile(Vector2Int pickedTile, Vector2Int standingPos_optional) {
         if (attackModule.AttackableTiles.Contains(pickedTile)) {
             if (gridPosition == standingPos_optional)
@@ -87,7 +110,7 @@ public abstract class UnitController : MonoBehaviour {
     private void EnqueueMovement(Vector2Int targetPosition) {
         queue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", true);
-            EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new(walkingSounds, true));
+            isWalking = true;
         }));
 
         Vector2Int lastPos = gridPosition;
@@ -114,7 +137,7 @@ public abstract class UnitController : MonoBehaviour {
 
         queue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", false);
-            EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new(walkingSounds, false));
+            isWalking = false;
         }));
 
         HasPerformedAction = true;
@@ -170,7 +193,6 @@ public abstract class UnitController : MonoBehaviour {
         UnitStaticManager.SetUnitPosition(this, newPosition);
 
         transform.position = GridStaticFunctions.CalcWorldPos(newPosition);
-
         gridPosition = newPosition;
     }
 
