@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: Jail
     size: {x: 3, y: 3}
-    prefab: {fileID: 7536494035750566539, guid: af2ee75ab586a4b41a5fabbb63850c8b,
+    prefab: {fileID: 3684867310511666634, guid: a23f57419c6660a4aac977cdaec14ac5,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}

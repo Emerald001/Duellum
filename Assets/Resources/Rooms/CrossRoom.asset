@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: CrossRoom
     size: {x: 5, y: 5}
-    prefab: {fileID: 9076220762531617539, guid: f365efc9eb04eda4e9ff1199816245a3,
+    prefab: {fileID: 4230450345415962511, guid: f365efc9eb04eda4e9ff1199816245a3,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}

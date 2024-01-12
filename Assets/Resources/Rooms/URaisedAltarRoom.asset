@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: URaisedAltarRoom
     size: {x: 7, y: 5}
-    prefab: {fileID: 2664008084212328875, guid: 538cc48f47fb1d74f8d7cccef923e103,
+    prefab: {fileID: 6912173449976265959, guid: ecd694419526bfb4085d5e4e3fc34017,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}

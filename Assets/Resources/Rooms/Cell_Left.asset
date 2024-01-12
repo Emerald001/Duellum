@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: Cell_Left
     size: {x: 2, y: 3}
-    prefab: {fileID: 3237107031192088086, guid: 12a6fee7d10a2c44dabbd399152f2700,
+    prefab: {fileID: 2944384811042047025, guid: ad7918f62db6fe34398bd43d061228a1,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: 0}

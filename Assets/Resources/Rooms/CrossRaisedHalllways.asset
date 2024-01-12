@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: CrossRaisedHalllways
     size: {x: 5, y: 5}
-    prefab: {fileID: 1595267239670122451, guid: bcbfe6c1eb7485a44a1da97b2f56012f,
+    prefab: {fileID: 5464311979670270725, guid: 8d152488ef18a75438798b38ddce0723,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
