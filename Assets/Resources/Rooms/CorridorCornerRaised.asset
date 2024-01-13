@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: CorridorCornerRaised
     size: {x: 5, y: 4}
-    prefab: {fileID: 8896263670849212935, guid: 61f8a5701c15deb46910339efbce9bba,
+    prefab: {fileID: 3117733643971409739, guid: b988cd9d5e6272f4695f5ea3512332e4,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
@@ -1094,13 +1094,13 @@ MonoBehaviour:
   - 3
   - 3
   - 3
+  - 3
+  - 3
   - 0
   - 0
   - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 3
+  - 3
   - 3
   - 3
   - 3

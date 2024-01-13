@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: ConnectionHeart
     size: {x: 3, y: 5}
-    prefab: {fileID: 1783067301608794287, guid: 29447198721b1754498c8a53d55235f1,
+    prefab: {fileID: 3264181411003651160, guid: 4af8b466722f94f4d9be4c09342ca238,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}

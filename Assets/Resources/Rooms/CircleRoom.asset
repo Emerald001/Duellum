@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: CircleRoom
     size: {x: 5, y: 4}
-    prefab: {fileID: 1100242316035566173, guid: 4538f5a3121a9b74db8a05b9ad0b694a,
+    prefab: {fileID: 2065231883854919587, guid: 34ab5493266962e47a6319114a7d9e65,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
