@@ -24,7 +24,6 @@ public abstract class UnitController : MonoBehaviour {
     private ActionQueue queue;
     private Animator unitAnimator;
 
-    private string walkingSounds;
     private string attackingSounds;
     private string hurtSounds;
 
@@ -32,7 +31,7 @@ public abstract class UnitController : MonoBehaviour {
     private float lastCheckTime;
 
     private void Start() {
-        footstepManager = transform.GetChild(1).GetComponent<FootstepManager>();
+        footstepManager = transform.GetChild(0).GetComponent<FootstepManager>();
     }
     private void OnEnable() {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
@@ -57,7 +56,6 @@ public abstract class UnitController : MonoBehaviour {
         gridPosition = pos;
         queue = new(() => IsDone = HasPerformedAction);
 
-        walkingSounds = data.walkingSounds;
         attackingSounds = data.attackingSounds;
         hurtSounds = data.hurtSounds;
         unitAnimator = GetComponentInChildren<Animator>();
@@ -78,22 +76,6 @@ public abstract class UnitController : MonoBehaviour {
 
         Debug.Log(3);
     }
-
-    private void Update() {
-        
-        if (!isWalking || Time.time - lastCheckTime < checkInterval)
-            return;
-        else {
-            if (isWalking) {
-            footstepManager.CheckFootstep(footstepManager.leftFootTransform);
-            footstepManager.CheckFootstep(footstepManager.rightFootTransform);
-
-            }
-        }
-
-        lastCheckTime = Time.time;
-    }
-
     protected virtual void PickedTile(Vector2Int pickedTile, Vector2Int standingPos_optional) {
         if (attackModule.AttackableTiles.Contains(pickedTile)) {
             if (gridPosition == standingPos_optional)
@@ -127,7 +109,8 @@ public abstract class UnitController : MonoBehaviour {
                 UnitStaticManager.SetUnitPosition(this, newPos);
                 gridPosition = newPos;
                 values.currentStats.Speed--;
-
+                footstepManager.CheckFootstep(footstepManager.leftFootTransform);
+                footstepManager.CheckFootstep(footstepManager.rightFootTransform);
                 if (GridStaticFunctions.TileEffectPositions.ContainsKey(newPos))
                     EventManager<BattleEvents, EventMessage<UnitController, Vector2Int>>.Invoke(BattleEvents.UnitTouchedTileEffect, new(this, newPos));
             }));
