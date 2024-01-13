@@ -845,6 +845,7 @@ MonoBehaviour:
   - HeavyFootstep5
   - HeavyFootstep6
   groundTag: WalkableTile
+  dustParticles: {fileID: 0}
   leftFootTransform: {fileID: 418859313219474661}
   rightFootTransform: {fileID: 418859313219474575}
 --- !u!1 &418859313218980019
