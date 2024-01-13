@@ -18,8 +18,7 @@ MonoBehaviour:
   Catagory: 2
   Type: 0
   Icon: {fileID: 21300000, guid: 36a0190629a208845abc33f3a9639106, type: 3}
-  PawnPrefab: {fileID: 820556625507350852, guid: eff80cc7b0fac7b4fb26a0a39c8a18d2,
-    type: 3}
+  PawnPrefab: {fileID: 1797452604812196, guid: ba8946e3ff3494a4eb510dd03f6aa412, type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
     type: 3}
   movementSpeed: 4
