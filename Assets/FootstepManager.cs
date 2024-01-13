@@ -4,6 +4,7 @@ using UnityEngine;
 public class FootstepManager : MonoBehaviour {
     [SerializeField] private List<string> stringList = new List<string>();
     [SerializeField] private string groundTag = "WalkableTile";
+    [SerializeField] private ParticleSystem dustParticles;
 
     public Transform leftFootTransform;
     public Transform rightFootTransform;
@@ -16,6 +17,7 @@ public class FootstepManager : MonoBehaviour {
             string randomString = GetRandomString();
             Debug.Log("Random String: " + randomString);
             EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, randomString);
+            dustParticles.Play();
         }
     }
     private string GetRandomString() {
