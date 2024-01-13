@@ -43,6 +43,7 @@ public class BattleSequences : MonoBehaviour {
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 10)));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, GridStaticFunctions.Grid[data.EnemyPos].transform)));
         actionQueue.Enqueue(new WaitAction(1f));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "SummonEnemies")));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, GridStaticFunctions.Grid[middlePoint].transform)));
         actionQueue.Enqueue(new WaitAction(1f));
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "Ripple")));
