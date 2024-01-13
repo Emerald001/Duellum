@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: RegularJoeRoom
     size: {x: 3, y: 2}
-    prefab: {fileID: 8849445214633678024, guid: b791b956f6c43e540aa24d82d7ef4116,
+    prefab: {fileID: 7745559209497736185, guid: b791b956f6c43e540aa24d82d7ef4116,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}

@@ -15,8 +15,7 @@ MonoBehaviour:
   room:
     name: CircularMultipleConnections
     size: {x: 5, y: 5}
-    prefab: {fileID: 6562764217925894945, guid: 1b4bfc7fc85e65e4b95d3d2360964b2e,
-      type: 3}
+    prefab: {fileID: 862947440932251183, guid: 1b4bfc7fc85e65e4b95d3d2360964b2e, type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
     - {x: -999, y: -999, z: -999, w: -999}

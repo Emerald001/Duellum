@@ -15,7 +15,8 @@ MonoBehaviour:
   room:
     name: WaffleRoom
     size: {x: 5, y: 5}
-    prefab: {fileID: 639422762689391327, guid: d1933b5747d25c14b81405ae98f2b036, type: 3}
+    prefab: {fileID: 3404622656128943972, guid: d1933b5747d25c14b81405ae98f2b036,
+      type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
     - {x: -999, y: -999, z: -999, w: -999}

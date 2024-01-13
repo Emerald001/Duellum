@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: RoundRoom
     size: {x: 7, y: 7}
-    prefab: {fileID: 2554121268325913164, guid: d366bec5f6e79834a8c6ea9edae5c329,
+    prefab: {fileID: 8724506121095101067, guid: d366bec5f6e79834a8c6ea9edae5c329,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
