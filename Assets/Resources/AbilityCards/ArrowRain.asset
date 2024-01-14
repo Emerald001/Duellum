@@ -18,8 +18,8 @@ MonoBehaviour:
     units.
   CardType: 0
   Icon: {fileID: 0}
-  Background: {fileID: 0}
-  Border: {fileID: 0}
+  Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}
+  Border: {fileID: 21300000, guid: 059fe52a829907f4c91652b852cd4188, type: 3}
   cardStates:
   - areaOfSelection:
       type: 6
@@ -39,24 +39,6 @@ MonoBehaviour:
       includeWater: 0
       includeCover: 0
       excludeUnits: 0
-  areaOfEffectSelector:
-    type: 2
-    includeCentreTile: 1
-    AllDirections: 0
-    range: 3
-    rotIndex: 1
-    includeWater: 0
-    includeCover: 0
-    excludeUnits: 0
-  availabletilesSelector:
-    type: 6
-    includeCentreTile: 0
-    AllDirections: 0
-    range: 1
-    rotIndex: 1
-    includeWater: 0
-    includeCover: 0
-    excludeUnits: 0
   abilityType: 11
   effectToApply:
     type: 0
