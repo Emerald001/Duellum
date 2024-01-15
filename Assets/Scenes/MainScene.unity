@@ -1321,7 +1321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickupCardPrefab: {fileID: 8137534332355796912, guid: fd9df713b62d60d4c8c098e253df4157,
     type: 3}
-  cardsToSpawn: 3
+  cardsToSpawn: 2
 --- !u!114 &578185378
 MonoBehaviour:
   m_ObjectHideFlags: 0
