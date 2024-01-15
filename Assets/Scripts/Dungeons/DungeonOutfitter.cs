@@ -68,26 +68,48 @@ public class DungeonOutfitter : MonoBehaviour {
 
     private void CreatePathThroughDungeon() {
         List<RoomComponent> rooms = new();
-        foreach (KeyValuePair<Vector2Int, RoomComponent> room in GridStaticFunctions.Dungeon) {
+        foreach (var room in GridStaticFunctions.Dungeon) {
+            Vector2Int gridpos = room.Key;
+            RoomComponent roomComp = room.Value;
+
+            if (gridpos == roomComp.indexZeroGridPos)
+                rooms.Add(roomComp);
+        }
+        RoomComponent bossroom = rooms.First(x => x.gridValues.Select(x => x.Type).Contains(TileType.BossSpawn));
+
+        float largestDis = 0;
+        RoomComponent bestStartRoom = null;
+        List<RoomComponent> endRooms = new();
+        foreach (RoomComponent room in rooms) {
             int counter = 0;
-            foreach (var item in room.Value.connections) {
+            foreach (var item in room.connections) {
                 if (item.x != GridStaticFunctions.CONST_INT ||
                     item.y != GridStaticFunctions.CONST_INT ||
                     item.z != GridStaticFunctions.CONST_INT ||
                     item.w != GridStaticFunctions.CONST_INT)
                     counter++;
             }
-            
+
             if (counter > 1)
                 continue;
 
-            rooms.Add(room.Value);
+            IEnumerable<TileType> values = room.gridValues.Select(x => x.Type);
+            if (values.Contains(TileType.Spawn)) {
+                float distance = Vector3.Distance(bossroom.transform.position, room.transform.position);
+                if (distance > largestDis) {
+                    largestDis = distance;
+                    bestStartRoom = room;
+                }
+            }
+
+            if (values.Contains(TileType.Special) || values.Contains(TileType.Spawn))
+                endRooms.Add(room);
         }
         Dictionary<RoomComponent, RoomComponent> parentDictionary = new();
 
         List<RoomComponent> openSet = new();
         List<RoomComponent> closedSet = new();
-        openSet.Add(rooms[0]);
+        openSet.Add(bestStartRoom);
 
         void AddRooms(Vector2Int newRoomPos, RoomComponent parentRoom) {
             RoomComponent room = GridStaticFunctions.Dungeon[newRoomPos];
@@ -125,15 +147,15 @@ public class DungeonOutfitter : MonoBehaviour {
             openSet.RemoveAt(0);
         }
 
-        DrawLines(rooms, parentDictionary);
+        DrawLines(endRooms, parentDictionary, bestStartRoom, bossroom);
     }
 
-    private void DrawLines(List<RoomComponent> rooms, Dictionary<RoomComponent, RoomComponent> parentDictionary) {
+    private void DrawLines(List<RoomComponent> rooms, Dictionary<RoomComponent, RoomComponent> parentDictionary, RoomComponent startRoom, RoomComponent endRoom) {
         List<RoomComponent> path = new();
         List<RoomComponent> checkedRooms = new();
 
-        RoomComponent currentRoom = rooms[^1];
-        while (currentRoom != rooms[0]) {
+        RoomComponent currentRoom = endRoom;
+        while (currentRoom != startRoom) {
             path.Add(currentRoom);
             currentRoom = parentDictionary[currentRoom];
         }
@@ -142,7 +164,7 @@ public class DungeonOutfitter : MonoBehaviour {
         path.Reverse();
 
         LineRenderer line = Instantiate(LinePrefab, transform).GetComponent<LineRenderer>();
-        line.material.color = new(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
+        line.material.color = new(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
         line.positionCount = path.Count;
 
         for (int i = 0; i < path.Count; i++) {
@@ -159,7 +181,7 @@ public class DungeonOutfitter : MonoBehaviour {
             List<RoomComponent> smallPath = new();
 
             line = Instantiate(LinePrefab, transform).GetComponent<LineRenderer>();
-            line.material.color = new(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f));
+            line.material.color = new(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
             line.positionCount = 1;
 
             currentRoom = room;
@@ -213,8 +235,7 @@ public class DungeonOutfitter : MonoBehaviour {
     private void SpawnPlayer() {
         RoomComponent spawnRoom = mainRoomSequence[0];
 
-        List<Tile> allSpawnableTiles = spawnRoom.gridValues.Where(x => x.Type == TileType.Normal).ToList();
-        Vector2Int spawnGridPosition = GridStaticFunctions.GetGridPosFromTileGameObject(allSpawnableTiles[UnityEngine.Random.Range(0, allSpawnableTiles.Count())].gameObject);
+        Vector2Int spawnGridPosition = GridStaticFunctions.GetGridPosFromTileGameObject(spawnRoom.gridValues.First(x => x.Type == TileType.Spawn).gameObject);
         Vector3 worldPosition = GridStaticFunctions.CalcWorldPos(spawnGridPosition);
 
         PlayerController player = Instantiate(PlayerPrefab, worldPosition, Quaternion.identity);

@@ -65064,7 +65064,7 @@ MonoBehaviour:
   attackColor: {fileID: 2100000, guid: 4a0439b5cbc81454383ee052f83c061c, type: 2}
   ownPositionColor: {fileID: 2100000, guid: 959cb5d0c807aab47b3bed0e43c0cbe1, type: 2}
   transparent: {fileID: 2100000, guid: 7de9981cb0a8a8243adf7eb98b6d0caa, type: 2}
-  type: 0
+  type: 5
 --- !u!1 &7414834634894667441
 GameObject:
   m_ObjectHideFlags: 0

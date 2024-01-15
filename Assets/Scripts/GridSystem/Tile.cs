@@ -72,8 +72,10 @@ public class Tile : MonoBehaviour {
             }
         }
 
-        if (setToFalse)
-            transform.GetChild(0).gameObject.SetActive(false);
+        if (setToFalse) {
+            for (int i = 0; i < transform.childCount; i++)
+                transform.GetChild(i).gameObject.SetActive(false);
+        }
 
         ripplePositions.Clear();
     }

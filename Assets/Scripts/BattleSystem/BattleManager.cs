@@ -7,20 +7,20 @@ public class BattleManager : Singleton<BattleManager> {
     [SerializeField] private UnitController PlayerUnitPrefab;
     [SerializeField] private UnitController EnemyUnitPrefab;
 
-    // Wish we had a better way of doing this
     [SerializeField] private CardHand playerCardHand;
     [SerializeField] private CardHand enemyCardHand;
 
     public TurnController CurrentPlayer => currentPlayer;
     public bool IsDone { get; private set; }
 
-    private UnitFactory unitFactory;
-
     private readonly Dictionary<int, TurnController> players = new();
-    private TurnController currentPlayer;
-    private int currentPlayerIndex;
 
+    private UnitFactory unitFactory;
+    private TurnController currentPlayer;
     private Transform unitHolder;
+
+    private bool inBattle;
+    private int currentPlayerIndex;
 
     private void Awake() {
         Init(this);
@@ -35,17 +35,18 @@ public class BattleManager : Singleton<BattleManager> {
     }
 
     public void StartBattle(BattleData data) {
+        inBattle = true;
+
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
         Vector2Int direction = Mathf.Abs(difference.x) > Mathf.Abs(difference.y) ? new(0, 1) : new(1, 0);
         SpawnUnits(direction, data.PlayerUnits, data.EnemyUnits);
 
         cardManager.SetUp();
-
         NextPlayer();
     }
 
     private void Update() {
-        if (currentPlayer == null)
+        if (!inBattle)
             return;
 
         if (currentPlayer.IsDone) {
@@ -60,9 +61,8 @@ public class BattleManager : Singleton<BattleManager> {
         List<Vector2Int> GetSpawnPositions(int unitAmount, Vector2Int startPos) {
             List<Vector2Int> result = new() { startPos };
             int positionModifier = 1;
-            int breakout = 0;
 
-            while (result.Count < unitAmount && breakout < 50) {
+            while (result.Count < unitAmount) {
                 Vector2Int calculatedPos = startPos + direction * positionModifier;
 
                 bool exists = GridStaticFunctions.CurrentBattleGrid.ContainsKey(calculatedPos);
@@ -84,8 +84,7 @@ public class BattleManager : Singleton<BattleManager> {
                     };
                     List<Vector2Int> checkedTiles = new();
 
-                    int breakout2 = 0;
-                    while (!hasFoundPos && breakout2 < 50) {
+                    while (!hasFoundPos) {
                         GridStaticFunctions.RippleThroughFullGridPositions(tilesToCheck[0], 2, (tile, i) => {
                             if (hasFoundPos)
                                 return;
@@ -109,18 +108,9 @@ public class BattleManager : Singleton<BattleManager> {
 
                         checkedTiles.Add(tilesToCheck[0]);
                         tilesToCheck.RemoveAt(0);
-                        breakout2++;
                     }
-
-                    if (breakout2 > 49)
-                        Debug.Log("Broke out at loop 2");
                 }
-
-                breakout++;
             }
-
-            if (breakout > 49)
-                Debug.Log("Broke out at Loop 1");
 
             return result;
         }
@@ -189,6 +179,7 @@ public class BattleManager : Singleton<BattleManager> {
     }
 
     private void CleanupAfterBattle() {
+        inBattle = false;
         currentPlayer = null;
         players.Clear();
         currentPlayerIndex = 0;

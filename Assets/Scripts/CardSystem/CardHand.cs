@@ -92,9 +92,9 @@ public abstract class CardHand : MonoBehaviour {
 
     protected void SortCards() {
         var tmp = cards.Zip(cardVisuals, (k, v) => new { k, v })
-           .OrderByDescending(x => (int)x.k.CardType)
+           .OrderBy(x => (int)x.k.CardType)
            .ToList();
-        tmp.Reverse();
+        //tmp.Reverse();
 
         cards = tmp.Select(x => x.k).ToList();
         cardVisuals = tmp.Select(x => x.v).ToList();
