@@ -3,6 +3,9 @@ using System.Linq;
 using UnityEngine;
 
 public abstract class CardHand : MonoBehaviour {
+    public static System.Action<Vector2Int> OnPickPosition;
+    public static System.Action OnUndo;
+
     [Header("References")]
     [SerializeField] protected Camera uiCam;
     [SerializeField] private CardAssetHolder cardPrefab;
@@ -41,10 +44,6 @@ public abstract class CardHand : MonoBehaviour {
         OwnerID = ID;
         CardHandStateMachine = new(OwnerID);
         cardStack.ResetDeck();
-    }
-
-    private void Update() {
-        CardHandStateMachine?.OnUpdate();
     }
 
     protected void GiveCard(int id) {

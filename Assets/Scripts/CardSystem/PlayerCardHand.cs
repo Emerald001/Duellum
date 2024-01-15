@@ -14,7 +14,6 @@ public class PlayerCardHand : CardHand {
         BaseCardBehaviour.OnHoverExit += SetCardsBackToStandardPos;
         BaseCardBehaviour.OnClick += HandleCardClick;
         CardHandStateMachine.OnDismiss += LineOutCards;
-        CardHandStateMachine.OnUse += RemoveSpecificCard;
     }
     protected override void OnDisable() {
         base.OnDisable();
@@ -23,18 +22,19 @@ public class PlayerCardHand : CardHand {
         BaseCardBehaviour.OnHoverExit -= SetCardsBackToStandardPos;
         BaseCardBehaviour.OnClick -= HandleCardClick;
         CardHandStateMachine.OnDismiss -= LineOutCards;
-        CardHandStateMachine.OnUse -= RemoveSpecificCard;
     }
 
     private void Update() {
-        CardHandStateMachine?.OnUpdate();
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+            OnUndo?.Invoke();
 
-        if (Input.GetKeyDown(KeyCode.V))
-            GiveCard(OwnerID);
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+            OnPickPosition?.Invoke(MouseToWorldView.HoverTileGridPos);
     }
 
     protected override void LineOutCards() {
         SortCards();
+        CardHandStateMachine.OnUse -= RemoveSpecificCard;
 
         int numObjects = cardVisuals.Count;
         float arcAngle = Mathf.Min((numObjects - 1) * spacing, maxWidth);
@@ -69,7 +69,7 @@ public class PlayerCardHand : CardHand {
             });
         }
     }
-
+    
     private void SetCardsToMoveOver(BaseCardBehaviour raisedCard, System.Action actionForRaisedCard) {
         if (cardVisuals.Where(x => x.cardBehaviour.CanInvoke == false).ToList().Count > 0)
             return;
@@ -116,6 +116,8 @@ public class PlayerCardHand : CardHand {
 
     private void HandleCardClick(BaseCardBehaviour card) {
         AbilityCard abilityCard = cards[card.Index] as AbilityCard;
+
         CardHandStateMachine.SetMachine(abilityCard);
+        CardHandStateMachine.OnUse += RemoveSpecificCard;
     }
 }

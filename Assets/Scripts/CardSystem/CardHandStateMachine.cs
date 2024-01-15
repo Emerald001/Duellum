@@ -19,33 +19,27 @@ public class CardHandStateMachine {
         this.ownerId = ownerId;
     }
 
-    public void OnUpdate() {
-        if (currentState == null)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.Mouse1)) {
-            PreviousState();
-        }
-
-        if (!currentAvailableTiles.Contains(MouseToWorldView.HoverTileGridPos))
-            return;
-
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
-            stateIndex++;
-            NextState();
-        }
-    }
-
     public void SetMachine(AbilityCard abilityCard) {
         currentCard = abilityCard;
         statesLeft = new(abilityCard.cardStates);
         NextState();
+
+        CardHand.OnPickPosition += PickPosition;
+        CardHand.OnUndo += PreviousState;
+    }
+
+    private void PickPosition(Vector2Int position) {
+        if (!currentAvailableTiles.Contains(position))
+            return;
+
+        if (currentState != null)
+            tilesPerState.Add(GridStaticSelectors.GetPositions(currentState.mouseArea, position, ownerId));
+
+        stateIndex++;
+        NextState();
     }
 
     private void NextState() {
-        if (currentState != null)
-            tilesPerState.Add(GridStaticSelectors.GetPositions(currentState.mouseArea, MouseToWorldView.HoverTileGridPos, ownerId));
-
         if (stateIndex >= statesLeft.Count) {
             AbilityManager.PerformAbility(currentCard, ownerId, tilesPerState);
             OnUse.Invoke(currentCard);
@@ -92,5 +86,8 @@ public class CardHandStateMachine {
         stateIndex = 0;
         statesLeft.Clear();
         tilesPerState.Clear();
+
+        CardHand.OnPickPosition -= PickPosition;
+        CardHand.OnUndo -= PreviousState;
     }
 }

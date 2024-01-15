@@ -6,16 +6,19 @@ public class EnemyCardHand : CardHand {
         base.OnEnable();
 
         EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, ResetAfterBattle);
+        CardHandStateMachine.OnUse += RemoveSpecificCard;
     }
     protected override void OnDisable() {
         base.OnDisable();
 
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, ResetAfterBattle);
+        CardHandStateMachine.OnUse -= RemoveSpecificCard;
     }
 
     // TODO: Make this show the back of the cards!
     protected override void LineOutCards() {
         SortCards();
+        CardHandStateMachine.OnUse -= RemoveSpecificCard;
 
         int numObjects = cardVisuals.Count;
         float arcAngle = -Mathf.Min((numObjects - 1) * spacing, maxWidth);
@@ -53,5 +56,14 @@ public class EnemyCardHand : CardHand {
 
         cardVisuals.Clear();
         cardStack.ResetDeck();
+    }
+
+    public void DisplayCard(AbilityCard card) {
+        CardAssetHolder tmp = cardVisuals[cards.IndexOf(card)];
+        EnemyCardBehaviour Ecard = tmp.cardBehaviour as EnemyCardBehaviour;
+
+        CardHandStateMachine.SetMachine(card);
+        CardHandStateMachine.OnUse += RemoveSpecificCard;
+        Ecard.SelectCard();
     }
 }

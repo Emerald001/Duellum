@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour {
         if (!isInteractable)
             return;
 
-        actionQueue.OnUpdate();
+        actionQueue?.OnUpdate();
 
         if (MouseToWorldView.HoverTileGridPos == GridStaticFunctions.CONST_EMPTY ||
             !currentAccessableTiles.Contains(MouseToWorldView.HoverTileGridPos)) {
