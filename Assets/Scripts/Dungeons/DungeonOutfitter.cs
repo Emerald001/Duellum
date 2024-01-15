@@ -7,6 +7,7 @@ public class DungeonOutfitter : MonoBehaviour {
     [SerializeField] private EnemyBehaviour EnemyPrefab;
     [SerializeField] private PlayerController PlayerPrefab;
 
+    private List<RoomComponent> allRooms = new();
     private List<RoomComponent> mainRoomSequence = new();
     private List<List<RoomComponent>> roomsInProgression = new();
 
@@ -67,20 +68,19 @@ public class DungeonOutfitter : MonoBehaviour {
     }
 
     private void CreatePathThroughDungeon() {
-        List<RoomComponent> rooms = new();
         foreach (var room in GridStaticFunctions.Dungeon) {
             Vector2Int gridpos = room.Key;
             RoomComponent roomComp = room.Value;
 
             if (gridpos == roomComp.indexZeroGridPos)
-                rooms.Add(roomComp);
+                allRooms.Add(roomComp);
         }
-        RoomComponent bossroom = rooms.First(x => x.gridValues.Select(x => x.Type).Contains(TileType.BossSpawn));
+        RoomComponent bossroom = allRooms.First(x => x.gridValues.Select(x => x.Type).Contains(TileType.BossSpawn));
 
         float largestDis = 0;
         RoomComponent bestStartRoom = null;
         List<RoomComponent> endRooms = new();
-        foreach (RoomComponent room in rooms) {
+        foreach (RoomComponent room in allRooms) {
             int counter = 0;
             foreach (var item in room.connections) {
                 if (item.x != GridStaticFunctions.CONST_INT ||
@@ -173,6 +173,8 @@ public class DungeonOutfitter : MonoBehaviour {
             mainRoomSequence.Add(path[i]);
         }
 
+        roomsInProgression.Add(new(mainRoomSequence));
+
         List<RoomComponent> endCaps = rooms
             .Where(x => !path.Contains(x) && !checkedRooms.Contains(x))
             .Where(x => x.connections[0].x + x.connections[0].y + x.connections[0].z + x.connections[0].w < -2500)
@@ -216,7 +218,7 @@ public class DungeonOutfitter : MonoBehaviour {
     }
 
     private void SpawnEnemies() {
-        foreach (RoomComponent room in mainRoomSequence) {
+        foreach (RoomComponent room in allRooms) {
             int enemyIndex = 0;
             foreach (var position in room.gridValues.Where(x => x.Type == TileType.EnemySpawn)) {
                 int index = room.gridValues.IndexOf(position);
