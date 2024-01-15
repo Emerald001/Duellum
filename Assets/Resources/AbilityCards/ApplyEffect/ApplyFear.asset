@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: The Goddess of Emotion has chosen to help you.
   ShortcutName: 
-  Discription: Strike one of your oponents with Fear.
+  Discription: Strike one of your opponents with Fear.
   CardType: 1
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 3ac157deba1fc6547b59437926c33888, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}
   Border: {fileID: 21300000, guid: 422cca4457711724f8071b6a683349fa, type: 3}
   cardStates:
