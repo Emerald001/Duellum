@@ -46,10 +46,6 @@ public abstract class CardHand : MonoBehaviour {
         cardStack.ResetDeck();
     }
 
-    private void Update() {
-        CardHandStateMachine?.OnUpdate();
-    }
-
     protected void GiveCard(int id) {
         if (id != OwnerID)
             return;

@@ -367,15 +367,6 @@ public class DungeonGenerator : MonoBehaviour {
         if (bossCount < 1 || bossCount > 1 || enemyCount < 3)
             return false;
 
-        int enemyCount = 0;
-        foreach (KeyValuePair<Vector2Int, RoomComponent> room in GridStaticFunctions.Dungeon) {
-            if (room.Value.gridValues.Select(x => x.Type).Contains(TileType.EnemySpawn))
-                enemyCount++;
-        }
-
-        if (enemyCount < 3) 
-            return false;
-
         return true;
     }
 }

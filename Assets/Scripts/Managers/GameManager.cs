@@ -9,13 +9,6 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyUp(KeyCode.H)) {
-            EventManager<BattleEvents>.Invoke(BattleEvents.StartBattle);
-            EventManager<BattleEvents, BattleData>.Invoke(BattleEvents.StartBattle, TMPData);
-        }
-    }
-
-    private void Update() {
         if (Input.GetKeyDown(KeyCode.H)) {
             Transform target = GridStaticFunctions.Grid[Vector2Int.zero].transform;
             EventManager<CameraEventType, EventMessage<Transform, float, float>>.Invoke(CameraEventType.QuickZoom, new(target, 4, 3));
