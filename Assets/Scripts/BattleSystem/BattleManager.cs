@@ -125,7 +125,6 @@ public class BattleManager : Singleton<BattleManager> {
 
         PlayerTurnController playerTurnController = new();
         UnitStaticManager.UnitTeams.Add(0, new());
-        playerCardHand.SetHand(0);
 
         for (int i = 0; i < GridStaticFunctions.PlayerSpawnPositions.Count; i++) {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPositions[i];

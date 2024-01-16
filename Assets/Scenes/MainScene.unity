@@ -3215,6 +3215,8 @@ MonoBehaviour:
     type: 3}
   PlayerPrefab: {fileID: 157805048160012014, guid: 61fe23356ac234f43b68d14ddbd66c7a,
     type: 3}
+  ChestPrefab: {fileID: 4538176185132377286, guid: 17ab3c2877a5b1c44b5168c842c55a40,
+    type: 3}
 --- !u!1 &1984525471
 GameObject:
   m_ObjectHideFlags: 0
@@ -3631,6 +3633,7 @@ GameObject:
   - component: {fileID: 147816838796106459}
   - component: {fileID: 147816838796106454}
   - component: {fileID: 147816838796106455}
+  - component: {fileID: 147816838796106460}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3646,6 +3649,22 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147816838796106458}
   m_Enabled: 1
+--- !u!114 &147816838796106460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147816838796106458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 27
+  m_MaxRayIntersections: 0
 --- !u!114 &147816839716906532
 MonoBehaviour:
   m_ObjectHideFlags: 0

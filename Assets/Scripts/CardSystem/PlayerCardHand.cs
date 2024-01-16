@@ -24,6 +24,10 @@ public class PlayerCardHand : CardHand {
         CardHandStateMachine.OnDismiss -= LineOutCards;
     }
 
+    private void Awake() {
+        SetHand(0);
+    }
+
     private void Update() {
         if (Input.GetKeyDown(KeyCode.Mouse1))
             OnUndo?.Invoke();

@@ -7,6 +7,8 @@ public class DungeonOutfitter : MonoBehaviour {
     [SerializeField] private EnemyBehaviour EnemyPrefab;
     [SerializeField] private PlayerController PlayerPrefab;
 
+    [SerializeField] private DungeonChest ChestPrefab;
+
     private List<RoomComponent> allRooms = new();
     private List<RoomComponent> mainRoomSequence = new();
     private List<List<RoomComponent>> roomsInProgression = new();
@@ -147,10 +149,12 @@ public class DungeonOutfitter : MonoBehaviour {
             openSet.RemoveAt(0);
         }
 
-        DrawLines(endRooms, parentDictionary, bestStartRoom, bossroom);
+        SetMainSequence(parentDictionary, bestStartRoom, bossroom);
+        DefineSidePaths(endRooms, parentDictionary);
+        SpawnChests();
     }
 
-    private void DrawLines(List<RoomComponent> rooms, Dictionary<RoomComponent, RoomComponent> parentDictionary, RoomComponent startRoom, RoomComponent endRoom) {
+    private void SetMainSequence(Dictionary<RoomComponent, RoomComponent> parentDictionary, RoomComponent startRoom, RoomComponent endRoom) {
         List<RoomComponent> path = new();
         List<RoomComponent> checkedRooms = new();
 
@@ -174,19 +178,19 @@ public class DungeonOutfitter : MonoBehaviour {
         }
 
         roomsInProgression.Add(new(mainRoomSequence));
+    }
 
-        List<RoomComponent> endCaps = rooms
-            .Where(x => !path.Contains(x) && !checkedRooms.Contains(x))
-            .Where(x => x.connections[0].x + x.connections[0].y + x.connections[0].z + x.connections[0].w < -2500)
-            .ToList();
-        foreach (var room in endCaps) {
+    private void DefineSidePaths(List<RoomComponent> endRooms, Dictionary<RoomComponent, RoomComponent> parentDictionary) {
+        List<RoomComponent> checkedRooms = new(mainRoomSequence);
+
+        foreach (var room in endRooms) {
             List<RoomComponent> smallPath = new();
 
-            line = Instantiate(LinePrefab, transform).GetComponent<LineRenderer>();
+            LineRenderer line = Instantiate(LinePrefab, transform).GetComponent<LineRenderer>();
             line.material.color = new(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
             line.positionCount = 1;
 
-            currentRoom = room;
+            RoomComponent currentRoom = room;
             line.SetPosition(0, CalculateWorldPosition(currentRoom));
 
             int index = 1;
@@ -207,14 +211,17 @@ public class DungeonOutfitter : MonoBehaviour {
         }
     }
 
-    private Vector3 CalculateWorldPosition(RoomComponent room) {
-        Vector3 worldPosition = new();
-        for (int x = 0; x < room.size.x; x++) {
-            for (int y = 0; y < room.size.y; y++)
-                worldPosition += new Vector3((room.indexZeroGridPos.x + x) * GridStaticFunctions.TilesPerRoom, 5, (room.indexZeroGridPos.y + y) * GridStaticFunctions.TilesPerRoom);
-        }
+    private void SpawnChests() {
+        foreach (var room in allRooms) {
+            foreach (var position in room.gridValues.Where(x => x.Type == TileType.Special)) {
+                Vector2Int spawnGridPosition = GridStaticFunctions.GetGridPosFromTileGameObject(position.gameObject);
+                Vector3 worldPosition = GridStaticFunctions.CalcWorldPos(spawnGridPosition);
 
-        return worldPosition / (room.size.x * room.size.y);
+                DungeonChest chest = Instantiate(ChestPrefab);
+                chest.transform.position = worldPosition;
+                chest.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(0, 4), 0);
+            }
+        }
     }
 
     private void SpawnEnemies() {
@@ -246,5 +253,15 @@ public class DungeonOutfitter : MonoBehaviour {
 
         EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 30);
         EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, player.transform);
+    }
+
+    private Vector3 CalculateWorldPosition(RoomComponent room) {
+        Vector3 worldPosition = new();
+        for (int x = 0; x < room.size.x; x++) {
+            for (int y = 0; y < room.size.y; y++)
+                worldPosition += new Vector3((room.indexZeroGridPos.x + x) * GridStaticFunctions.TilesPerRoom, 5, (room.indexZeroGridPos.y + y) * GridStaticFunctions.TilesPerRoom);
+        }
+
+        return worldPosition / (room.size.x * room.size.y);
     }
 }
