@@ -4,8 +4,6 @@ using UnityEngine;
 public abstract class UnitController : MonoBehaviour {
     [SerializeField] private GameObject pawnParent;
     private FootstepManager footstepManager;
-
-    [SerializeField] private float checkInterval = 5f;   // Adjust the interval as needed
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
@@ -26,9 +24,6 @@ public abstract class UnitController : MonoBehaviour {
 
     private string attackingSounds;
     private string hurtSounds;
-
-    private bool isWalking;
-    private float lastCheckTime;
 
     private void Start() {
         footstepManager = transform.GetChild(0).GetComponent<FootstepManager>();
@@ -92,7 +87,6 @@ public abstract class UnitController : MonoBehaviour {
     private void EnqueueMovement(Vector2Int targetPosition) {
         queue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", true);
-            isWalking = true;
         }));
 
         Vector2Int lastPos = gridPosition;
@@ -120,7 +114,6 @@ public abstract class UnitController : MonoBehaviour {
 
         queue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", false);
-            isWalking = false;
         }));
 
         HasPerformedAction = true;
