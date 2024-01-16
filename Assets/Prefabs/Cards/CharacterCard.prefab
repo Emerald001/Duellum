@@ -123,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackText: {fileID: 2632573487614959450}
   defenseText: {fileID: 2632573487808423996}
+  speedText: {fileID: 2301734798272847065}
   nameText: {fileID: 2632573487471200692}
   descriptionText: {fileID: 2632573487962814550}
   visuals: {fileID: 2632573487880509870}
@@ -644,12 +645,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2632573488689154100}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.139, y: -0.163}
-  m_SizeDelta: {x: 6.308, y: 10.878}
+  m_SizeDelta: {x: 3.608, y: 6.223}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2632573487880509865
 CanvasRenderer:
@@ -679,7 +680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 81940a07f53c9b14bb6db6db653e559c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 507cb389034b0fa44902663fe86bb69a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -856,8 +857,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2632573487880509871}
   - {fileID: 3727710079909648292}
+  - {fileID: 2632573487880509871}
   - {fileID: 2632573487471200693}
   - {fileID: 1133448193024140839}
   - {fileID: 2632573487962814551}
@@ -1022,7 +1023,7 @@ GameObject:
   - component: {fileID: 1689543939202978917}
   - component: {fileID: 3471189077627846853}
   m_Layer: 0
-  m_Name: Image
+  m_Name: CardBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1041,12 +1042,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2632573488689154100}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.357, y: -0.42}
-  m_SizeDelta: {x: 4.886, y: 6.533}
+  m_AnchoredPosition: {x: 0.16, y: 0.58225}
+  m_SizeDelta: {x: 7.817, y: 12.368}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1689543939202978917
 CanvasRenderer:
@@ -1076,7 +1077,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 507cb389034b0fa44902663fe86bb69a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1098,7 +1099,7 @@ GameObject:
   - component: {fileID: 5094358360876455289}
   - component: {fileID: 2301734798272847065}
   m_Layer: 0
-  m_Name: Defense
+  m_Name: Speed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
