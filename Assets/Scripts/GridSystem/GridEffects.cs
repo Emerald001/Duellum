@@ -14,7 +14,7 @@ public class GridEffects : MonoBehaviour {
         if (MouseToWorldView.HoverTileGridPos == GridStaticFunctions.CONST_EMPTY)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.K))
             Ripple(MouseToWorldView.HoverTileGridPos, rippleStrength);
         if (Input.GetKeyDown(KeyCode.Mouse1))
             Raise(MouseToWorldView.HoverTileGridPos, Input.GetKey(KeyCode.LeftShift), height);
@@ -25,9 +25,12 @@ public class GridEffects : MonoBehaviour {
             Tile currentHex = GridStaticFunctions.Grid[gridPos];
             currentHex.ClearQueue();
             List<Action> queue = new() {
-                    new WaitAction(Mathf.Pow(i, i / 70f) - Mathf.Pow(1, 1 / 70f)),
-                    new MoveObjectAction(currentHex.gameObject, 50 / Mathf.Pow(i, i / 70f), currentHex.StandardWorldPosition - new Vector3(0, RippleSelector.range / rippleStrength / Mathf.Pow(i, i / 10f), 0)),
-                    new MoveObjectAction(currentHex.gameObject, 2 / Mathf.Pow(i, i / 10f), currentHex.StandardWorldPosition),
+                    new WaitAction(i / 50f),
+                    new MoveObjectAction(currentHex.gameObject, 30, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength, 0)),
+                    new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 3, 0)),
+                    new MoveObjectAction(currentHex.gameObject, 10, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength / 6, 0)),
+                    new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 15, 0)),
+                    new MoveObjectAction(currentHex.gameObject, 2, currentHex.StandardWorldPosition),
                 };
             currentHex.SetActionQueue(queue);
         });
@@ -36,7 +39,7 @@ public class GridEffects : MonoBehaviour {
     }
 
     private void Raise(Vector2Int gridPos, bool invert, float height) {
-        List<Vector2Int> positions = GridStaticSelectors.GetPositions(RaiseSelector, gridPos);
+        List<Vector2Int> positions = GridStaticSelectors.GetPositions(RaiseSelector, gridPos, 0);
 
         for (int i = 0; i < positions.Count; i++) {
             float newHeight = invert ? -height : height;

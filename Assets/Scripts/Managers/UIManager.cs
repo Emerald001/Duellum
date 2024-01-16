@@ -1,9 +1,7 @@
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour {
-
     [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private GameObject infoPanel;
     [SerializeField] private GameObject pauseMenu;
@@ -12,8 +10,8 @@ public class UIManager : MonoBehaviour {
     private TextMeshProUGUI panelContentText;
 
     private void Start() {
-        infoPanel.SetActive(false);
-        panelTitleText = infoPanel.GetComponentInChildren<TextMeshProUGUI>();
+        //infoPanel.SetActive(false);
+        //panelTitleText = infoPanel.GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void OnEnable() {

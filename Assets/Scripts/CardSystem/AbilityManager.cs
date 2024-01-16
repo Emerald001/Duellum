@@ -2,9 +2,9 @@
 using UnityEngine;
 
 public static class AbilityManager {
-    public static void PerformAbility(AbilityCard card, params Vector2Int[] positions) {
+    public static void PerformAbility(AbilityCard card, int id, List<List<Vector2Int>> allFoundTiles) {
         List<UnitController> controllerList = new();
-        foreach (Vector2Int position in positions) {
+        foreach (Vector2Int position in allFoundTiles[0]) {
             if (UnitStaticManager.TryGetUnitFromGridPos(position, out var unit))
                 controllerList.Add(unit);
         }
@@ -16,7 +16,7 @@ public static class AbilityManager {
                 break;
 
             case AbilityCardType.PlaceBoulder:
-                GridStaticFunctions.ReplaceHex(card.hexPrefab, positions);
+                GridStaticFunctions.ReplaceTile(card.hexPrefab, allFoundTiles[0].ToArray());
                 break;
 
             case AbilityCardType.Revive:
@@ -38,6 +38,51 @@ public static class AbilityManager {
             case AbilityCardType.SpinUnit:
                 foreach (var unit in controllerList)
                     unit.ChangeUnitRotation(-unit.LookDirection);
+                break;
+
+            case AbilityCardType.Summon:
+                foreach (Vector2Int position in allFoundTiles[0]) {
+                    //var spawnedUnit = GameObject.Instantiate()
+                    //BattleManager.Instance.CurrentPlayer.Units.Add();
+                }
+                break;
+
+            case AbilityCardType.ApplyTileEffect:
+                foreach (var item in allFoundTiles[0])
+                    GridStaticFunctions.TileEffectPositions.Add(item, card.tileEffect);
+                break;
+
+            case AbilityCardType.SmokeBomb:
+                var enemyPos = allFoundTiles[0][0];
+                var enemyUnit = controllerList[0];
+                var backPos = enemyPos - enemyUnit.LookDirection;
+                var newLookDir = backPos - enemyPos;
+
+                UnitController attackingUnit = null;
+                GridStaticFunctions.RippleThroughFullGridPositions(enemyPos, 2, (pos, i) => {
+                    if (UnitStaticManager.TryGetUnitFromGridPos(pos, out var unit)) {
+                        if (pos == enemyPos)
+                            return;
+
+                        attackingUnit ??= unit;
+                        if (unit.Values.currentStats.Attack > attackingUnit.Values.currentStats.Attack)
+                            attackingUnit = unit;
+                    }
+                });
+
+                attackingUnit.ChangeUnitPosition(backPos);
+                attackingUnit.ChangeUnitRotation(newLookDir);
+                break;
+
+            case AbilityCardType.Grapple:
+                foreach (var item in controllerList)
+                    item.AddEffect(card.effectToApply);
+                break;
+
+            case AbilityCardType.Charm:
+                break;
+            case AbilityCardType.AreaOfEffectAttack:
+                DamageManager.DealDamage(card.Damage, controllerList.ToArray());
                 break;
 
             default:

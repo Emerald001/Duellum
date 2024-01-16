@@ -2,44 +2,68 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyCardHand : CardHand {
-    public void ResetHand() {
-        cards.Clear();
-        cardStack.ResetDeck();
+    protected override void OnEnable() {
+        base.OnEnable();
+
+        EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, ResetAfterBattle);
+        CardHandStateMachine.OnUse += RemoveSpecificCard;
+    }
+    protected override void OnDisable() {
+        base.OnDisable();
+
+        EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, ResetAfterBattle);
+        CardHandStateMachine.OnUse -= RemoveSpecificCard;
     }
 
-    // TODO: Make this arc the other way and show the back of the cards!
+    // TODO: Make this show the back of the cards!
     protected override void LineOutCards() {
-        int numObjects = cards.Count;
-        float arcAngle = Mathf.Max(-((numObjects - 1) * spacing), -maxWidth);
+        SortCards();
+        CardHandStateMachine.OnUse -= RemoveSpecificCard;
+
+        int numObjects = cardVisuals.Count;
+        float arcAngle = -Mathf.Min((numObjects - 1) * spacing, maxWidth);
         float angleIncrement = arcAngle == 0 ? 0 : arcAngle / (numObjects - 1);
-        float startAngle = -arcAngle / 2f;
+        float startAngle = arcAngle / 2f;
 
-        for (int i = 0; i < cards.Count; i++) {
-            CardAssetHolder card = cards[i];
+        for (int i = 0; i < cardVisuals.Count; i++) {
+            CardAssetHolder card = cardVisuals[i];
 
-            float angle = startAngle + i * angleIncrement;
+            float angle = startAngle - i * angleIncrement;
             float radianAngle = Mathf.Deg2Rad * angle;
-            float x = radius * Mathf.Sin(radianAngle);
-            float y = radius * Mathf.Cos(radianAngle);
+            float x = radius * -Mathf.Sin(radianAngle);
+            float y = radius * -Mathf.Cos(radianAngle);
 
             Vector3 position = transform.position + new Vector3(x, y, i * .01f);
             Quaternion rotation = Quaternion.LookRotation(Vector3.forward, position - transform.position);
+            //rotation.eulerAngles += new Vector3(0, 180, 0);
 
             int index = i;
             card.cardBehaviour.ClearQueue();
             card.cardBehaviour.SetActionQueue(new List<Action>() {
                 new DoMethodAction(() => card.cardBehaviour.CanInvoke = false),
                 new ActionStack(
-                    new MoveObjectAction(card.gameObject, cardSpawnMoveSpeed, position + new Vector3(0, -radius, 0)),
+                    new MoveObjectAction(card.gameObject, cardSpawnMoveSpeed, position + new Vector3(0, radius, 0)),
                     new RotateAction(card.gameObject, rotation.eulerAngles, cardRotationSpeed, .01f)
                 ),
-                new DoMethodAction(() => card.cardBehaviour?.SetValues(position + new Vector3(0, -radius, 0) + new Vector3(0, raisedAmount, 0), uiCam, index))
+                new DoMethodAction(() => card.cardBehaviour.SetValues(position + new Vector3(0, radius, 0) + new Vector3(0, -raisedAmount, 0), selectedPosition.position, uiCam, index))
             });
         }
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.B))
-            GiveCard();
+    private void ResetAfterBattle() {
+        for (int i = cardVisuals.Count - 1; i >= 0; i--)
+            RemoveCard(i);
+
+        cardVisuals.Clear();
+        cardStack.ResetDeck();
+    }
+
+    public void DisplayCard(AbilityCard card) {
+        CardAssetHolder tmp = cardVisuals[cards.IndexOf(card)];
+        EnemyCardBehaviour Ecard = tmp.cardBehaviour as EnemyCardBehaviour;
+
+        CardHandStateMachine.SetMachine(card);
+        CardHandStateMachine.OnUse += RemoveSpecificCard;
+        Ecard.SelectCard();
     }
 }

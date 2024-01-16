@@ -4,32 +4,24 @@ using System.Linq;
 using UnityEngine;
 
 public static class GridStaticFunctions {
+    public static int CONST_INT = -999;
     public static Vector2Int CONST_EMPTY = new(12345, 12345);
-    public static Color CONST_HIGHLIGHT_COLOR = new(50, 50, 50);
 
-    private static readonly Vector2Int[] evenNeighbours = {
-        new Vector2Int(-1, -1),
-        new Vector2Int(0, -1),
-        new Vector2Int(1, 0),
-        new Vector2Int(0, 1),
-        new Vector2Int(-1, 1),
-        new Vector2Int(-1, 0),
+    public static int TilesPerRoom = 5;
+    public static int BattleMapSize = 11;
+
+    public static readonly Vector2Int[] directCubeNeighbours = {
+        new (1, 0),
+        new (0, 1),
+        new (-1, 0),
+        new (0, -1),
     };
 
-    private static readonly Vector2Int[] unevenNeighbours = {
-        new Vector2Int(0, -1),
-        new Vector2Int(1, -1),
-        new Vector2Int(1, 0),
-        new Vector2Int(1, 1),
-        new Vector2Int(0, 1),
-        new Vector2Int(-1, 0),
-    };
-
-    private static readonly Vector2Int[] directCubeNeighbours = {
-        new Vector2Int(1, 0),
-        new Vector2Int(0, 1),
-        new Vector2Int(-1, 0),
-        new Vector2Int(0, -1),
+    public static readonly Vector2Int[] diagonalCubeNeighbours = {
+        new (1, 1),
+        new (1, -1),
+        new (-1, 1),
+        new (-1, -1),
     };
 
     private static readonly float[] lookDirections = {
@@ -37,53 +29,40 @@ public static class GridStaticFunctions {
         0,
         270,
         180,
+        45,
+        135,
+        315,
+        225,
     };
 
-    public static float HexWidth { get; set; }
-    public static float HexHeight { get; set; }
-
-    public static float SquareWidth { get; set; }
-    public static float SquareHeight { get; set; }
-
-    public static int GridWidth { get; set; }
-    public static int GridHeight { get; set; }
-    public static float GridGap { get; set; }
-
-    public static Vector3 StartPos { get; set; }
-
+    public static Dictionary<Vector2Int, TileEffect> TileEffectPositions { get; set; } = new();
     public static Dictionary<Vector2Int, Tile> Grid { get; set; } = new();
-    public static List<Vector2Int> PlayerSpawnPos { get; set; } = new();
-    public static List<Vector2Int> EnemySpawnPos { get; set; } = new();
-    public static Dictionary<Vector2Int, GameObject> CardPositions { get; set; } = new();
-    public static List<GameObject> SpawnCubes { get; set; } = new();
+    public static Dictionary<Vector2Int, Tile> CurrentBattleGrid { get; set; } = new();
+    public static Dictionary<Vector2Int, RoomComponent> Dungeon { get; set; } = new();
+    public static Dictionary<Vector2Int, Vector4> DungeonConnections { get; set; } = new();
+
+    public static List<Vector2Int> PlayerSpawnPositions { get; set; } = new();
+    public static List<Vector2Int> EnemySpawnPositions { get; set; } = new();
 
     public static void Reset() {
-        CardPositions.Clear();
         Grid.Clear();
-        PlayerSpawnPos.Clear();
-        EnemySpawnPos.Clear();
-        SpawnCubes.Clear();
+        Dungeon.Clear();
+        CurrentBattleGrid.Clear();
+        DungeonConnections.Clear();
+        TileEffectPositions.Clear();
+        EnemySpawnPositions.Clear();
+        PlayerSpawnPositions.Clear();
     }
 
-    public static Vector3 CalcHexWorldPos(Vector2Int gridPos) {
-        float offset = 0;
-        if (gridPos.y % 2 != 0)
-            offset = HexWidth / 2;
+    public static Vector3 CalcWorldPos(Vector2Int gridPos) {
+        float x = gridPos.x - TilesPerRoom / 2;
+        float y = Grid[gridPos].StandardWorldPosition.y;
+        float z = gridPos.y - TilesPerRoom / 2;
 
-        float x = StartPos.x + gridPos.x * HexWidth + offset;
-        float z = StartPos.z - gridPos.y * HexHeight * .75f;
-
-        return new Vector3(x, 0, z);
+        return new Vector3(x, y, z);
     }
 
-    public static Vector3 CalcSquareWorldPos(Vector2Int gridpos) {
-        float x = gridpos.x - (GridWidth / 2 + (GridGap * GridWidth) / 2) + GridGap * gridpos.x;
-        float z = gridpos.y - (GridHeight / 2 + (GridGap * GridHeight) / 2) + GridGap * gridpos.y;
-
-        return new Vector3(x, 0, z);
-    }
-
-    public static Vector2Int GetGridPosFromHexGameObject(GameObject valueVar) {
+    public static Vector2Int GetGridPosFromTileGameObject(GameObject valueVar) {
         foreach (Vector2Int keyVar in Grid.Keys) {
             if (Grid[keyVar].gameObject != valueVar)
                 continue;
@@ -93,36 +72,6 @@ public static class GridStaticFunctions {
     }
 
     public static void RippleThroughGridPositions(Vector2Int spawnPos, float range, Action<Vector2Int, int> action, bool hasCreatedGrid = true) {
-        List<Vector2Int> openList = new();
-        List<Vector2Int> layerList = new();
-        List<Vector2Int> closedList = new();
-
-        openList.Add(spawnPos);
-        for (int i = 0; i < range; i++) {
-            for (int j = 0; j < openList.Count; j++) {
-                Vector2Int currentPos = openList[j];
-                Vector2Int[] listToUse = currentPos.y % 2 != 0 ? unevenNeighbours : evenNeighbours;
-
-                for (int k = 0; k < 6; k++) {
-                    Vector2Int neighbour = currentPos + listToUse[k];
-                    if (openList.Contains(neighbour) || closedList.Contains(neighbour) || layerList.Contains(neighbour) || (hasCreatedGrid && !Grid.ContainsKey(neighbour)))
-                        continue;
-
-                    layerList.Add(neighbour);
-                }
-
-                // Invokes on every tile found
-                action.Invoke(currentPos, i);
-                closedList.Add(openList[j]);
-            }
-
-            openList.Clear();
-            openList.AddRange(layerList);
-            layerList.Clear();
-        }
-    }
-
-    public static void RippleThroughSquareGridPositions(Vector2Int spawnPos, float range, Action<Vector2Int, int> action, bool hasCreatedGrid = true) {
         List<Vector2Int> openList = new();
         List<Vector2Int> layerList = new();
         List<Vector2Int> closedList = new();
@@ -153,22 +102,81 @@ public static class GridStaticFunctions {
         }
     }
 
+    public static void RippleThroughFullGridPositions(Vector2Int spawnPos, float range, Action<Vector2Int, int> action, bool hasCreatedGrid = true) {
+        List<Vector2Int> openList = new();
+        List<Vector2Int> layerList = new();
+        List<Vector2Int> closedList = new();
+
+        List<Vector2Int> neighbours = new();
+        neighbours.AddRange(directCubeNeighbours);
+        neighbours.AddRange(diagonalCubeNeighbours);
+
+        openList.Add(spawnPos);
+        for (int i = 0; i < range; i++) {
+            for (int j = 0; j < openList.Count; j++) {
+                Vector2Int currentPos = openList[j];
+
+                if (i < range - 1) {
+                    for (int k = 0; k < neighbours.Count; k++) {
+                        Vector2Int neighbour = currentPos + neighbours[k];
+                        if (openList.Contains(neighbour) || closedList.Contains(neighbour) || layerList.Contains(neighbour) || (hasCreatedGrid && !Grid.ContainsKey(neighbour)))
+                            continue;
+
+                        layerList.Add(neighbour);
+                    }
+                }
+
+                // Invokes on every tile found
+                action.Invoke(currentPos, i);
+                closedList.Add(openList[j]);
+            }
+
+            openList.Clear();
+            openList.AddRange(layerList);
+            layerList.Clear();
+        }
+    }
+
     public static void HighlightTiles(List<Vector2Int> tiles, HighlightType type) {
         foreach (var tile in tiles)
             Grid[tile].SetHighlight(type);
     }
 
-    public static void ResetTileColors() {
+    public static void HighlightBattleTiles(List<Vector2Int> tiles, HighlightType type) {
+        foreach (var tile in tiles)
+            CurrentBattleGrid[tile].SetHighlight(type);
+    }
+
+    public static void ResetAllTileColors() {
         foreach (var tile in Grid.Values)
             tile.SetHighlight(HighlightType.None);
     }
 
-    public static void ReplaceHex(Tile hexPrefab, params Vector2Int[] hexPositions) {
+    public static void ResetBattleTileColors() {
+        foreach (var tile in CurrentBattleGrid.Values)
+            tile.SetHighlight(HighlightType.None);
+    }
+
+    public static void ReplaceTile(Tile hexPrefab, params Vector2Int[] hexPositions) {
         foreach (var hex in hexPositions) {
             UnityEngine.Object.Destroy(Grid[hex].gameObject);
 
             Grid[hex] = UnityEngine.Object.Instantiate(hexPrefab);
-            Grid[hex].transform.position = CalcSquareWorldPos(hex);
+            Grid[hex].transform.position = CalcWorldPos(hex);
+
+            if (CurrentBattleGrid.ContainsKey(hex))
+                CurrentBattleGrid[hex] = Grid[hex];
+        }
+    }
+
+    public static void SetBattleGrid(List<Vector2Int> positions) {
+        CurrentBattleGrid.Clear();
+
+        foreach(var position in positions) {
+            if (!Grid.ContainsKey(position))
+                continue;
+
+            CurrentBattleGrid.Add(position, Grid[position]);
         }
     }
 
@@ -188,41 +196,34 @@ public static class GridStaticFunctions {
     }
 
     public static List<Vector2Int> GetAllOpenGridPositions() {
-        var result = Grid.Keys.Where(hex => Grid[hex].Type == TileType.Normal).ToList();
+        var result = CurrentBattleGrid.Keys.Where(hex => Grid[hex].Type == TileType.Normal).ToList();
         var unitPositions = UnitStaticManager.UnitPositions.Values.ToList();
 
         for (int i = result.Count - 1; i >= 0; i--) {
-            if (unitPositions.Contains(result[i]))
+            if (unitPositions.Contains(result[i])) {
                 result.RemoveAt(i);
+                continue;
+            }
 
-            if (CardPositions.ContainsKey(result[i]))
+            if (TileEffectPositions.ContainsKey(result[i]))
                 result.RemoveAt(i);
         }
 
         return result;
     }
 
-    public static float GetRotationFromVector2Direction(Vector2Int dir) {
-        for (int i = 0; i < directCubeNeighbours.Length; i++) {
-            Vector2Int direction = directCubeNeighbours[i];
+    public static float GetRotationFromVector2Direction(Vector2Int dir, bool includeDiagonals = false) {
+        Vector2Int[] directions = includeDiagonals ? directCubeNeighbours.Concat(diagonalCubeNeighbours).ToArray() : directCubeNeighbours;
+
+        for (int i = 0; i < directions.Length; i++) {
+            Vector2Int direction = directions[i];
             if (direction == dir)
                 return lookDirections[i];
         }
         return 0;
     }
 
-    public static bool TryGetHexNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {
-        Vector2Int[] listToUse = startPos.y % 2 != 0 ? unevenNeighbours : evenNeighbours;
-        if (Grid.TryGetValue(startPos + listToUse[dirIndex], out Tile hex)) {
-            result = hex.GridPos;
-            return true;
-        }
-
-        result = CONST_EMPTY;
-        return false;
-    }
-
-    public static bool TryGetSquareNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {
+    public static bool TryGetNeighbour(Vector2Int startPos, int dirIndex, out Vector2Int result) {
         if (Grid.TryGetValue(startPos + directCubeNeighbours[dirIndex], out Tile hex)) {
             result = hex.GridPos;
             return true;
@@ -230,5 +231,28 @@ public static class GridStaticFunctions {
 
         result = CONST_EMPTY;
         return false;
+    }
+
+    public static bool TryGetNeighbour(Vector2Int startPos, Vector2Int direction, out Vector2Int result) {
+        if (Grid.TryGetValue(startPos + direction, out Tile hex)) {
+            result = hex.GridPos;
+            return true;
+        }
+
+        result = CONST_EMPTY;
+        return false;
+    }
+
+    public static List<Vector2Int> GetLine(Vector2Int startPos, Vector2Int direction, int range) {
+        List<Vector2Int> result = new() {
+            startPos
+        };
+
+        for (int i = 0; i < range; i++) {
+            if (TryGetNeighbour(result[^1], direction, out Vector2Int pos))
+                result.Add(pos);
+        }
+
+        return result;
     }
 }

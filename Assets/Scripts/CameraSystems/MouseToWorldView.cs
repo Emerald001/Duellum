@@ -4,56 +4,51 @@ using UnityEngine;
 
 public class MouseToWorldView : MonoBehaviour {
     public static Vector2Int HoverTileGridPos { get; set; } = GridStaticFunctions.CONST_EMPTY;
-    public static Vector3 HoverPointPos { get; set; }
 
     [SerializeField] private Material hovercolor;
     [SerializeField] private Selector standardSelector;
+    [SerializeField] private LayerMask hitRaycast;
 
+    private List<Tile> lastTiles = new();
     private Selector displaySelector;
-
-    private readonly List<Tile> lastTiles = new();
+    private Camera mainCam;
 
     private void Awake() {
         displaySelector = standardSelector;
+        mainCam = Camera.main;
     }
 
     private void OnEnable() {
         EventManager<CameraEventType, Selector>.Subscribe(CameraEventType.CHANGE_CAM_SELECTOR, GiveSelector);
     }
-
     private void OnDisable() {
         EventManager<CameraEventType, Selector>.Unsubscribe(CameraEventType.CHANGE_CAM_SELECTOR, GiveSelector);
     }
 
     private void Update() {
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 10000))
+        if (Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 10000, hitRaycast))
             UpdateTileColors(hit);
         else
             ResetTiles();
     }
 
     private void UpdateTileColors(RaycastHit hit) {
-        HoverPointPos = hit.point;
-
         if (!hit.transform.CompareTag("WalkableTile")) {
             ResetTiles();
             return;
         }
 
         GameObject hitTile = hit.transform.parent.gameObject;
-        List<Vector2Int> newTiles = GridStaticSelectors.GetPositions(displaySelector, GridStaticFunctions.GetGridPosFromHexGameObject(hitTile));
+        Vector2Int hoverTileGridPos = GridStaticFunctions.GetGridPosFromTileGameObject(hitTile);
+        List<Vector2Int> newTiles = GridStaticSelectors.GetPositions(displaySelector, hoverTileGridPos, 0)
+            .Where(tile => tile != GridStaticFunctions.CONST_EMPTY)
+            .ToList();
 
-        if (newTiles.Contains(GridStaticFunctions.CONST_EMPTY))
-            newTiles.Remove(GridStaticFunctions.CONST_EMPTY);
+        foreach (var lastTile in lastTiles.Where(t => t != null))
+            lastTile.SetHover(newTiles.Contains(lastTile.GridPos));
 
-        foreach (var lastTile in lastTiles) {
-            if (lastTile != null)
-                lastTile.SetHover(newTiles.Contains(lastTile.GridPos));
-        }
-
-        lastTiles.Clear();
-        lastTiles.AddRange(newTiles.Select(x => GridStaticFunctions.Grid[x]));
-        HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(hitTile);
+        lastTiles = newTiles.Select(x => GridStaticFunctions.Grid[x]).ToList();
+        HoverTileGridPos = hoverTileGridPos;
     }
 
     private void ResetTiles() {
@@ -63,7 +58,7 @@ public class MouseToWorldView : MonoBehaviour {
                     lastTiles[i].SetHover(false);
             }
 
-            HoverTileGridPos = GridStaticFunctions.GetGridPosFromHexGameObject(null);
+            HoverTileGridPos = GridStaticFunctions.GetGridPosFromTileGameObject(null);
             lastTiles.Clear();
         }
     }

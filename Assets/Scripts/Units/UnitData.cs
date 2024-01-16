@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.U2D;
 
 [Serializable]
 [CreateAssetMenu(fileName = "New UnitData", menuName = "Unit/UnitData")]
@@ -17,7 +16,6 @@ public class UnitData : ScriptableObject {
 
     [Header("Visuals")]
     public Sprite Icon;
-    public SpriteAtlas Animations;
     public GameObject PawnPrefab;
     public GameObject UnitCard;
     public float movementSpeed;
@@ -34,6 +32,10 @@ public class UnitData : ScriptableObject {
 
     [Header("Properties")]
     public List<UnitAttribute> Properties;
+
+    [Header("Ability Card")]
+    public AbilityCard Card;
+    public int CardAmount;
 }
 
 [Serializable]

@@ -3,10 +3,17 @@ using UnityEngine;
 
 public abstract class TurnController {
     public bool IsDone { get; protected set; }
+    public int ID { get; protected set; }
+    public List<UnitController> Units => units;
 
-    protected List<UnitController> units;
+    protected List<UnitController> units = new();
     protected UnitController currentUnit;
     protected bool isPicking = true;
+
+    public void SetUp(int id, List<UnitController> units) {
+        this.units = units;
+        ID = id;
+    }
 
     public virtual void OnEnter() {
         IsDone = false;
@@ -37,8 +44,6 @@ public abstract class TurnController {
             return;
 
         if (units.Contains(unit)) {
-            GridStaticFunctions.ResetTileColors();
-
             currentUnit = unit;
             currentUnit.OnEnter();
             isPicking = false;

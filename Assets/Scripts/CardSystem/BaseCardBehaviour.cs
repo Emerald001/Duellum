@@ -4,8 +4,7 @@ using UnityEngine;
 public abstract class BaseCardBehaviour : MonoBehaviour {
     public static System.Action<BaseCardBehaviour, System.Action> OnHoverEnter;
     public static System.Action<BaseCardBehaviour, System.Action> OnHoverExit;
-    public static System.Action<BaseCardBehaviour, System.Action> OnMoveRelease;
-    public static System.Action<BaseCardBehaviour> OnMove;
+    public static System.Action<BaseCardBehaviour> OnClick;
 
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected float resizeSpeed;
@@ -22,20 +21,25 @@ public abstract class BaseCardBehaviour : MonoBehaviour {
 
     protected Vector3 standardPos;
     protected Vector3 raisedPos;
+    protected Vector3 selectedPos;
 
     protected Vector3 standardSize;
     protected Vector3 raisedSize;
 
     protected Vector3 offset;
 
-    protected bool grabbed = false;
+    protected static bool selected = false;
 
-    public void SetValues(Vector3 raisedPos, Camera UICam, int index) {
-        standardPos = transform.position;
+    private void Awake() {
         standardSize = transform.localScale;
+        raisedSize = standardSize * scaleModifier;
+    }
+
+    public void SetValues(Vector3 raisedPos, Vector3 selectedPos, Camera UICam, int index) {
+        standardPos = transform.position;
 
         this.raisedPos = raisedPos;
-        raisedSize = standardSize * scaleModifier;
+        this.selectedPos = selectedPos;
 
         this.UICam = UICam;
         Index = index;
@@ -44,11 +48,6 @@ public abstract class BaseCardBehaviour : MonoBehaviour {
     }
 
     private void Update() {
-        if (grabbed && CanInvoke) {
-            transform.position = UICam.ScreenToWorldPoint(Input.mousePosition) + offset;
-            OnMove.Invoke(this);
-        }
-
         queue.OnUpdate();
         resizeQueue.OnUpdate();
     }

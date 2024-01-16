@@ -22,20 +22,18 @@ public class UnitMovementModule {
         openList.Add(gridPos);
         for (int i = 0; i < speedValue; i++) {
             foreach (var currentPos in openList.ToList()) {
-                GridStaticFunctions.RippleThroughSquareGridPositions(currentPos, 2, (neighbour, count) => {
+                GridStaticFunctions.RippleThroughGridPositions(currentPos, 2, (neighbour, count) => {
                     if (neighbour == currentPos)
+                        return;
+
+                    if (!GridStaticFunctions.CurrentBattleGrid.ContainsKey(neighbour))
                         return;
 
                     if (UnitStaticManager.TryGetUnitFromGridPos(neighbour, out var tmp))
                         return;
 
-                    //if (Has effect or Attribute that allows water or Flight movement)
-                        //if (Tile contains water or Body)
-                        //if (applicalble)
-                            //Get all neighbours or add tile anyway
-
                     // Only applicable if no other thing is needed
-                    if (GridStaticFunctions.Grid[neighbour].Type != TileType.Normal)
+                    if (GridStaticFunctions.CurrentBattleGrid[neighbour].Type != TileType.Normal)
                         return;
 
                     if (openList.Contains(neighbour) ||

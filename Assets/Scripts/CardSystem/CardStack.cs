@@ -12,6 +12,9 @@ public class CardStack : MonoBehaviour {
     }
 
     public AbilityCard GetCard() {
+        if (currentCards.Count < 1)
+            return null;
+
         int random = Random.Range(0, currentCards.Count);
         AbilityCard card = currentCards[random];
 

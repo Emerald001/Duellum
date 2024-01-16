@@ -7,15 +7,15 @@ public class PlayerUnitController : UnitController {
     private List<Vector2Int> CurrentPath = new();
     private bool isPerformingAction = false;
 
-    public override void SetUp(UnitData data, Vector2Int pos) {
-        base.SetUp(data, pos);
+    public override void SetUp(int id, UnitData data, Vector2Int pos) {
+        base.SetUp(id, data, pos);
 
         Line = GetComponent<LineRenderer>();
     }
 
     public override void OnEnter() {
         base.OnEnter();
-        EventManager<BattleEvents>.Subscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
+        EventManager<UIEvents>.Subscribe(UIEvents.ReleasedAbilityCard, FindTiles);
 
         HighlightTiles();
     }
@@ -35,9 +35,10 @@ public class PlayerUnitController : UnitController {
                 !movementModule.AccessableTiles.Contains(MouseToWorldView.HoverTileGridPos))
                 return;
 
-            PickedTile(MouseToWorldView.HoverTileGridPos, attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos, gridPosition, MouseToWorldView.HoverPointPos));
+            PickedTile(MouseToWorldView.HoverTileGridPos, attackModule.GetClosestTile(MouseToWorldView.HoverTileGridPos));
 
-            GridStaticFunctions.ResetTileColors();
+            Tooltip.HideTooltip_Static();
+            GridStaticFunctions.ResetBattleTileColors();
             Line.enabled = false;
             isPerformingAction = true;
         }
@@ -52,7 +53,7 @@ public class PlayerUnitController : UnitController {
         Tooltip.HideTooltip_Static();
 
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
-        EventManager<BattleEvents>.Unsubscribe(BattleEvents.ReleasedAbilityCard, FindTiles);
+        EventManager<UIEvents>.Unsubscribe(UIEvents.ReleasedAbilityCard, FindTiles);
     }
 
     public void HighlightTiles() {
@@ -70,17 +71,17 @@ public class PlayerUnitController : UnitController {
     private void CreatePathForLine() {
         Vector2Int endPos = MouseToWorldView.HoverTileGridPos;
         // Should Not be here!
-        EventManager<UIEvents, string>.Invoke(UIEvents.InfoTextUpdate, "Right mouse button to cancel action");
+        //EventManager<UIEvents, string>.Invoke(UIEvents.InfoTextUpdate, "Right mouse button to cancel action");
 
         if (movementModule.AccessableTiles.Contains(endPos)) {
             EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Move);
             CurrentPath = movementModule.GetPath(endPos);
         }
         else if (attackModule.AttackableTiles.Contains(endPos)) {
-            CurrentPath = movementModule.GetPath(attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos));
+            CurrentPath = movementModule.GetPath(attackModule.GetClosestTile(endPos));
             CurrentPath.Add(MouseToWorldView.HoverTileGridPos);
 
-            Vector2Int calculatedLookDir = endPos - attackModule.GetClosestTile(endPos, gridPosition, MouseToWorldView.HoverPointPos);
+            Vector2Int calculatedLookDir = endPos - attackModule.GetClosestTile(endPos);
             calculatedLookDir.Clamp(new(-1, -1), new(1, 1));
 
             // Should not be here!
@@ -113,8 +114,8 @@ public class PlayerUnitController : UnitController {
         Line.enabled = true;
         Line.positionCount = CurrentPath.Count + 1;
 
-        Line.SetPosition(0, GridStaticFunctions.CalcSquareWorldPos(gridPosition));
+        Line.SetPosition(0, GridStaticFunctions.CalcWorldPos(gridPosition));
         for (int i = 1; i < CurrentPath.Count + 1; i++)
-            Line.SetPosition(i, GridStaticFunctions.CalcSquareWorldPos(CurrentPath[i - 1]));
+            Line.SetPosition(i, GridStaticFunctions.CalcWorldPos(CurrentPath[i - 1]));
     }
 }

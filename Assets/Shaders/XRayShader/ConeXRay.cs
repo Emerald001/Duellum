@@ -7,15 +7,23 @@ public class ConeXRay : MonoBehaviour {
 
     [SerializeField] private float holeSize;
     [SerializeField] private Material WallMaterial;
-    [SerializeField] private Camera Camera;
     [SerializeField] private LayerMask Mask;
     [SerializeField] private Transform player;
 
     private readonly List<Collider> currentHits = new();
     private List<Collider> previousHits = new();
+
+    private Camera Camera;
     private bool canInvoke = false;
 
+    private void Awake() {
+        Camera = Camera.main;
+    }
+
     private void OnTriggerStay(Collider other) {
+        if (other.gameObject.layer != Mask)
+            return;
+
         var dir = player.position - Camera.transform.position;
         var ray = new Ray(Camera.transform.position, dir.normalized);
         var dis = Vector3.Distance(Camera.transform.position, player.position);

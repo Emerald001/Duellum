@@ -78,35 +78,34 @@ public class DebugController : MonoBehaviour {
                             EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.UnitRevive, unit);
 
                         for (int i = UnitStaticManager.DeadUnitsInPlay.Count - 1; i >= 0; i--)
-                            UnitStaticManager.ReviveUnit(UnitStaticManager.DeadUnitsInPlay[i]);
+                            UnitStaticManager.ReviveUnit(UnitStaticManager.DeadUnitsInPlay[i], 0);
                     break;
 
-                    case CommandType.KillAll:
-                        for (int i = UnitStaticManager.LivingUnitsInPlay.Count - 1; i >= 0; i--)
-                            UnitStaticManager.UnitDeath(UnitStaticManager.LivingUnitsInPlay[i]);
-                    break;
-                    case CommandType.KillEnemies:
-                        for (int i = UnitStaticManager.EnemyUnitsInPlay.Count - 1; i >= 0; i--)
-                            UnitStaticManager.UnitDeath(UnitStaticManager.EnemyUnitsInPlay[i]);
-                    break;
+                    //case CommandType.KillAll:
+                    //    for (int i = UnitStaticManager.LivingUnitsInPlay.Count - 1; i >= 0; i--)
+                    //        UnitStaticManager.UnitDeath(UnitStaticManager.LivingUnitsInPlay[i]);
+                    //break;
+                    //case CommandType.KillEnemies:
+                    //    for (int i = UnitStaticManager.EnemyUnitsInPlay.Count - 1; i >= 0; i--)
+                    //        UnitStaticManager.UnitDeath(UnitStaticManager.EnemyUnitsInPlay[i]);
+                    //break;
 
-                    case CommandType.KillHeroes:
-                        for (int i = UnitStaticManager.PlayerUnitsInPlay.Count - 1; i >= 0; i--)
-                            UnitStaticManager.UnitDeath(UnitStaticManager.PlayerUnitsInPlay[i]);
-                    break;
+                    //case CommandType.KillHeroes:
+                    //    for (int i = UnitStaticManager.PlayerUnitsInPlay.Count - 1; i >= 0; i--)
+                    //        UnitStaticManager.UnitDeath(UnitStaticManager.PlayerUnitsInPlay[i]);
+                    //break;
 
+                    //case CommandType.GiveCard:
+                    //    if (inputParts.Length >= 3) {
+                    //        string cardName = inputParts[1];
+                    //        string[] parameterValues = inputParts.Skip(2).ToArray();
 
-                    case CommandType.GiveCard:
-                        if (inputParts.Length >= 3) {
-                            string cardName = inputParts[1];
-                            string[] parameterValues = inputParts.Skip(2).ToArray();
-
-                            EventManager<BattleEvents, string>.Invoke(BattleEvents.GiveCard, cardName);
-                        }
-                        else {
-                            Debug.Log("GiveCard command requires at least one parameter: Card Name.");
-                        }
-                    break;
+                    //        EventManager<UIEvents, string>.Invoke(UIEvents.GiveCard, cardName);
+                    //    }
+                    //    else {
+                    //        Debug.Log("GiveCard command requires at least one parameter: Card Name.");
+                    //    }
+                    //break;
 
                     default:
                         Debug.Log("Unknown command: " + command);

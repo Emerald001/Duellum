@@ -1,28 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // TODO:
 // Create a custom Drawer For this!
-[CreateAssetMenu(menuName = "Abilty Card", fileName = "Card")]
-public class AbilityCard : ScriptableObject {
-    [Header("Visuals")]
-    public string Name;
-    public string ShortcutName;
-    public string Discription;
-
-    public Sprite Icon;
-    public Sprite Background;
-    public Sprite Border;
-
-    [Header("Card Abilities")]
-    public int ManaCost;
-
+[CreateAssetMenu(menuName = "Ability Card", fileName = "Card")]
+public class AbilityCard : Card {
     [Header("Card Selectors")]
-    public Selector areaOfEffectSelector;
-    public Selector availabletilesSelector;
+    public List<CardState> cardStates = new();
 
+    [Header("Extra Data")]
     public AbilityCardType abilityType;
+    [Space(10)]
     public Effect effectToApply;
+    [Space(10)]
     public Tile hexPrefab;
+    [Space(10)]
+    public TileEffect tileEffect;
+    [Space(10)]
+    public int Damage;
 }
 
 public enum AbilityCardType {
@@ -32,4 +27,10 @@ public enum AbilityCardType {
     SkipOpponentsTurn,
     MoveUnit,
     SpinUnit,
+    Summon,
+    ApplyTileEffect,
+    SmokeBomb,
+    Grapple,
+    Charm,
+    AreaOfEffectAttack,
 }

@@ -1,10 +1,9 @@
-﻿using UnityEngine.EventSystems;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PlayerCardBehaviour : BaseCardBehaviour, 
-    IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerMoveHandler {
-
+public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
     public void OnPointerEnter(PointerEventData eventData) {
-        if (grabbed || !CanInvoke)
+        if (selected || !CanInvoke)
             return;
 
         EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_shuffleCards");
@@ -19,7 +18,7 @@ public class PlayerCardBehaviour : BaseCardBehaviour,
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        if (grabbed || !CanInvoke)
+        if (selected || !CanInvoke)
             return;
 
         OnHoverExit.Invoke(this, () => {
@@ -32,37 +31,29 @@ public class PlayerCardBehaviour : BaseCardBehaviour,
         });
     }
 
-    public void OnPointerDown(PointerEventData eventData) {
-        if (!CanInvoke)
+    public void OnPointerClick(PointerEventData eventData) {
+        if (selected || !CanInvoke)
             return;
 
-        grabbed = true;
-        offset = transform.position - UICam.ScreenToWorldPoint(eventData.position);
+        selected = true;
+        CardHandStateMachine.OnDismiss += DeselectCard;
 
-        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Grab);
-        EventManager<BattleEvents>.Invoke(BattleEvents.GrabbedAbilityCard);
+        queue.Enqueue(new ActionStack(
+            new MoveObjectAction(gameObject, moveSpeed, selectedPos),
+            new RotateAction(gameObject, Vector3.zero, resizeSpeed, .1f),
+            new ResizeAction(transform, resizeSpeed, standardSize)));
+
+        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
         EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_grabCard");
 
-        queue.Clear();
-        resizeQueue.Clear();
+        OnClick.Invoke(this);
     }
 
-    public void OnPointerUp(PointerEventData eventData) {
-        if (!CanInvoke)
-            return;
+    public void DeselectCard() {
+        selected = false;
 
-        grabbed = false;
-        OnMoveRelease.Invoke(this, () => {
-            queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, standardPos));
-            resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
-        });
+        resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
 
-        EventManager<BattleEvents>.Invoke(BattleEvents.ReleasedAbilityCard);
-        EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
-    }
-
-    public void OnPointerMove(PointerEventData eventData) {
-        if (!grabbed || !CanInvoke)
-            return;
+        CardHandStateMachine.OnDismiss -= DeselectCard;
     }
 }

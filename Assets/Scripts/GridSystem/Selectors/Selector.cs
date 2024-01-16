@@ -3,7 +3,6 @@ using System;
 [Serializable]
 public class Selector {
     public SelectorType type;
-    public bool isHex;
 
     public bool includeCentreTile;
     public bool AllDirections;
@@ -25,4 +24,6 @@ public enum SelectorType {
     FriendlyUnits,
     EnemyUnits,
     AllTiles,
+    EnemiesAdjecent,
+    AllAdjecent,
 }
