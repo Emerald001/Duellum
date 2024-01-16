@@ -332,7 +332,7 @@ public class DungeonGenerator : MonoBehaviour {
         }
 
         int spawnPointAmounts = 0;
-        foreach (var room in endRooms) {
+        foreach (RoomComponent room in endRooms) {
             IEnumerable<TileType> values = room.gridValues.Select(x => x.Type);
             if (values.Contains(TileType.Spawn))
                 spawnPointAmounts++;
