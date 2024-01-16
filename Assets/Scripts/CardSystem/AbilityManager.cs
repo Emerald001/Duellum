@@ -84,6 +84,9 @@ public static class AbilityManager {
             case AbilityCardType.AreaOfEffectAttack:
                 DamageManager.DealDamage(card.Damage, controllerList.ToArray());
                 break;
+            case AbilityCardType.GiveCard:
+                //give card
+                break;
 
             default:
                 throw new System.NotImplementedException($"{card.abilityType} Not Yet Implemented");

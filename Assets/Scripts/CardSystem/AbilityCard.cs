@@ -36,4 +36,5 @@ public enum AbilityCardType {
     Grapple,
     Charm,
     AreaOfEffectAttack,
+    GiveCard
 }
