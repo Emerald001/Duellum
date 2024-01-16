@@ -17,7 +17,7 @@ MonoBehaviour:
   Rank: 1
   Catagory: 2
   Type: 0
-  Icon: {fileID: 21300000, guid: d7aaa22776e9c1f4796728c9abc46497, type: 3}
+  Icon: {fileID: 21300000, guid: 507cb389034b0fa44902663fe86bb69a, type: 3}
   PawnPrefab: {fileID: 4957605393579145644, guid: 4f46098734d87e24490aef9267915ad2,
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
