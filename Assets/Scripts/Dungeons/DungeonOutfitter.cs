@@ -207,6 +207,34 @@ public class DungeonOutfitter : MonoBehaviour {
                     break;
             }
 
+            //RoomComponent connectingRoom = currentRoom;
+            //RoomComponent nextMainSequenceRoom = parentDictionary[connectingRoom];
+
+            //Vector3 doorPosition = new();
+            //foreach (var item in connectingRoom.connections) {
+            //    if (item.x == GridStaticFunctions.CONST_INT &&
+            //        item.y == GridStaticFunctions.CONST_INT &&
+            //        item.z == GridStaticFunctions.CONST_INT &&
+            //        item.w == GridStaticFunctions.CONST_INT)
+            //        continue;
+
+            //    int i = connectingRoom.connections.IndexOf(item);
+
+            //    Vector2 direction = new Vector2(item.x + item.y, item.z + item.w).normalized;
+            //    Vector2Int localGridPos = connectingRoom.gridPositionsPerIndex[i];
+            //    Vector2Int newPos = connectingRoom.indexZeroGridPos + localGridPos + new Vector2Int((int)direction.x, (int)direction.y);
+
+            //    if (GridStaticFunctions.Dungeon[newPos] == nextMainSequenceRoom) {
+            //        Vector3 worldPos = GridStaticFunctions.CalcWorldPos((connectingRoom.indexZeroGridPos + localGridPos) * GridStaticFunctions.TilesPerRoom);
+            //        Vector2 dir = direction * 5.5f;
+
+            //        //float height = room.gridHeights;
+            //        //doorPosition = worldPos + new Vector3(dir.x, height, dir.y);
+
+            //        break;
+            //    }
+            //}
+
             roomsInProgression.Add(new(smallPath));
         }
     }
