@@ -32,7 +32,7 @@ MonoBehaviour:
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
   Card: {fileID: 11400000, guid: 179810ca375c03445baebe265d4fe6ba, type: 2}
-  CardAmount: 2
+  CardAmount: 1
   walkingSounds: LightFootsteps
   attackingSounds: ph_swordHit
   hurtSounds: 
