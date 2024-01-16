@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3c25c04580a62a49bc10ef81d214032, type: 3}
-  m_Name: Grapple
+  m_Name: Stun
   m_EditorClassIdentifier: 
-  Name: Grapple an Enemy
+  Name: Stun an enemy
   ShortcutName: Grapple
-  Discription: Grapple an enemy so they cannot move!
+  Discription: Enemy can't move for three turns.
   CardType: 0
-  Icon: {fileID: 21300000, guid: f1e57c77708e984458460dd2a1f5e38e, type: 3}
+  Icon: {fileID: 21300000, guid: 413c8dc6abcd0b241ad7771e6e5bbb98, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}
   Border: {fileID: 21300000, guid: 422cca4457711724f8071b6a683349fa, type: 3}
   cardStates:

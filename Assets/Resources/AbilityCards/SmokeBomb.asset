@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c25c04580a62a49bc10ef81d214032, type: 3}
   m_Name: SmokeBomb
   m_EditorClassIdentifier: 
-  Name: Smoke bomb
+  Name: Backstab
   ShortcutName: SmokeBomb
   Discription: When in range, throw a smokebomb and backstab a unit.
   CardType: 0

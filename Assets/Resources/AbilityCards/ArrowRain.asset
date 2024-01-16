@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Rain of Arrows
   ShortcutName: 
-  Discription: n area, to kill weaker units.n of arrows in an area, to kill weaker
-    units.
+  Discription: Shoot a rain of arrows in a 3x3 radius.
   CardType: 0
   Icon: {fileID: 21300000, guid: 215794e2b43a6bd4b8694c507a5b0ccf, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}
@@ -44,7 +43,7 @@ MonoBehaviour:
     type: 0
     canBeStacked: 0
     duration: 0
-    sevarity: 0
+    sevarity: 2
   hexPrefab: {fileID: 0}
   tileEffect: 1
   Damage: 0
