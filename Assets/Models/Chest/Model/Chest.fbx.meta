@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: ChestChainMAT
+    second: {fileID: 2100000, guid: 1b96c773ed7e13249b00445266305344, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: ChestMAT
     second: {fileID: 2100000, guid: 30e9803040e077f4d9d92ab6d5e91623, type: 2}
   materials:
