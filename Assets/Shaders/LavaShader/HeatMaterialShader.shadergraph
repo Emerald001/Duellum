@@ -31,7 +31,11 @@
             "m_Id": "17463e30ba2e4fc9a05597f1ce450151"
         },
         {
+<<<<<<<< HEAD:Assets/Shaders/LavaShader/HeatMaterialShader.shadergraph
             "m_Id": "7298f869664b412089a2a7b2db8a31c7"
+========
+            "m_Id": "b504630356d64c85b97b3b6789337ba7"
+>>>>>>>> 3d33d71 (Import: Re-added all the small assets along with their texture and made prefabs for them. Also remade the dissolve shader and added a lava texture property to the heat material shader. Also made the lava material.):Assets/Shaders/HeatShader/HeatMaterialShader.shadergraph
         }
     ],
     "m_Keywords": [],
@@ -181,7 +185,14 @@
             "m_Id": "49fb57f8846b437482203214f98114b2"
         },
         {
+<<<<<<<< HEAD:Assets/Shaders/LavaShader/HeatMaterialShader.shadergraph
             "m_Id": "ce0a0862d6514d0e9bcd5b6a2e46ce5c"
+========
+            "m_Id": "c981a20c16bd46b097b5c51087aa7660"
+        },
+        {
+            "m_Id": "79160948ac3546ad89523f9c21298d8e"
+>>>>>>>> 3d33d71 (Import: Re-added all the small assets along with their texture and made prefabs for them. Also remade the dissolve shader and added a lava texture property to the heat material shader. Also made the lava material.):Assets/Shaders/HeatShader/HeatMaterialShader.shadergraph
         }
     ],
     "m_GroupDatas": [],
@@ -381,6 +392,20 @@
                     "m_Id": "aec740395b9440a0aae4b849186464ca"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "79160948ac3546ad89523f9c21298d8e"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "723fbf0d1e0d4ed5994f616ff3cbfa5c"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -645,6 +670,20 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "13c70b40a7cb4b81bbceb69ab5897257"
+                },
+                "m_SlotId": 1
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "c981a20c16bd46b097b5c51087aa7660"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "20c4da28f8ff41e4b72f80ba704d7dc2"
                 },
                 "m_SlotId": 1
             }
@@ -1035,6 +1074,19 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
+    "m_ObjectId": "0d8c35935f6b4ed19324e63406af9f08",
+    "m_Id": 0,
+    "m_DisplayName": "HeatTexture",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_BareResource": false
 }
 
 {
@@ -2829,7 +2881,11 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
+<<<<<<<< HEAD:Assets/Shaders/LavaShader/HeatMaterialShader.shadergraph
         "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"6a630749a219ddf4197843ae42c587fe\",\"type\":3}}",
+========
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"b5cf52462d93b67419e5cbf58320a6ee\",\"type\":3}}",
+>>>>>>>> 3d33d71 (Import: Re-added all the small assets along with their texture and made prefabs for them. Also remade the dissolve shader and added a lava texture property to the heat material shader. Also made the lava material.):Assets/Shaders/HeatShader/HeatMaterialShader.shadergraph
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -2946,7 +3002,7 @@
         "x"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_PreviewMode": 0,
     "m_CustomColors": {
         "m_SerializableColors": []
@@ -3406,6 +3462,41 @@
         "m_Guid": ""
     },
     "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "79160948ac3546ad89523f9c21298d8e",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -438.0,
+            "y": -870.0,
+            "width": 149.0,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "b49a653df27f49cf9374cc766001f677"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "b504630356d64c85b97b3b6789337ba7"
+    }
 }
 
 {
@@ -4044,7 +4135,11 @@
             "m_Id": "f315383ac29b4681ae6bbd5eb0f94806"
         },
         {
+<<<<<<<< HEAD:Assets/Shaders/LavaShader/HeatMaterialShader.shadergraph
             "m_Id": "7298f869664b412089a2a7b2db8a31c7"
+========
+            "m_Id": "b504630356d64c85b97b3b6789337ba7"
+>>>>>>>> 3d33d71 (Import: Re-added all the small assets along with their texture and made prefabs for them. Also remade the dissolve shader and added a lava texture property to the heat material shader. Also made the lava material.):Assets/Shaders/HeatShader/HeatMaterialShader.shadergraph
         }
     ]
 }
@@ -4492,7 +4587,11 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
+<<<<<<<< HEAD:Assets/Shaders/LavaShader/HeatMaterialShader.shadergraph
         "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"6a630749a219ddf4197843ae42c587fe\",\"type\":3}}",
+========
+        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"b5cf52462d93b67419e5cbf58320a6ee\",\"type\":3}}",
+>>>>>>>> 3d33d71 (Import: Re-added all the small assets along with their texture and made prefabs for them. Also remade the dissolve shader and added a lava texture property to the heat material shader. Also made the lava material.):Assets/Shaders/HeatShader/HeatMaterialShader.shadergraph
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -4949,6 +5048,48 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
+    "m_ObjectId": "b49a653df27f49cf9374cc766001f677",
+    "m_Id": 0,
+    "m_DisplayName": "HeatTexture",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_BareResource": false
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
+    "m_ObjectId": "b504630356d64c85b97b3b6789337ba7",
+    "m_Guid": {
+        "m_GuidSerialized": "618dca8b-fc77-4acf-b329-ae989b01cff4"
+    },
+    "m_Name": "HeatTexture",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "HeatTexture",
+    "m_DefaultReferenceName": "_HeatTexture",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_Guid": ""
+    },
+    "isMainTexture": false,
+    "useTilingAndOffset": false,
+    "m_Modifiable": true,
+    "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "b7fd5e921ba742589169a6e07b4137dd",
     "m_Id": 2,
@@ -5288,6 +5429,41 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "c981a20c16bd46b097b5c51087aa7660",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -448.0,
+            "y": -1148.0,
+            "width": 149.0,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "0d8c35935f6b4ed19324e63406af9f08"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "b504630356d64c85b97b3b6789337ba7"
     }
 }
 
