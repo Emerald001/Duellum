@@ -3,22 +3,34 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class DungeonChest : MonoBehaviour, IPointerClickHandler {
+    public static int Dissolve = Shader.PropertyToID("_Dissolve");
+
+    [SerializeField] private GameObject lockObject;
+
     private bool hasClicked = false;
 
     public void OnPointerClick(PointerEventData eventData) {
         if (hasClicked)
             return;
 
-        Debug.Log(1);
-
         hasClicked = true;
         StartCoroutine(ChestSequence());
     }
 
     private IEnumerator ChestSequence() {
-        // Do desolve on Chest
+        EventManager<CameraEventType, EventMessage<Transform, float, float>>.Invoke(CameraEventType.QuickZoom, new(transform, 4, 3f));
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
+
+        Material mat = lockObject.GetComponent<Renderer>().material;
+
+        float amount = 0;
+        while (!Mathf.Approximately(amount, 1f)) {
+            amount = Mathf.Lerp(amount, 1f, Time.deltaTime);
+
+            mat.SetFloat(Dissolve, amount);
+            yield return null;
+        }
 
         EventManager<UIEvents, int>.Invoke(UIEvents.GiveCard, 0);
     }
