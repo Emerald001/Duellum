@@ -8,8 +8,8 @@ public class XRayManager : MonoBehaviour {
     [SerializeField] private float holeSize;
     [SerializeField] private CapsuleCollider trigger;
 
-    private readonly List<Collider> currentHits = new();
-    private List<Collider> previousHits = new();
+    private readonly List<Renderer> currentHits = new();
+    private List<Renderer> previousHits = new();
 
     private Camera Camera;
     private Plane plane;
@@ -19,44 +19,47 @@ public class XRayManager : MonoBehaviour {
         Camera = Camera.main;
 
         plane = new Plane(Vector3.up, Vector3.zero);
+        trigger.radius = holeSize * 2;
     }
 
     private void OnEnable() {
-        EventManager<CameraEventType, float>.Subscribe(CameraEventType.ChangeXraySize, (x) => holeSize = x);
+        EventManager<CameraEventType, float>.Subscribe(CameraEventType.ChangeXraySize, SetSizes);
     }
     private void OnDisable() {
-        EventManager<CameraEventType, float>.Unsubscribe(CameraEventType.ChangeXraySize, (x) => holeSize = x);
+        EventManager<CameraEventType, float>.Unsubscribe(CameraEventType.ChangeXraySize, SetSizes);
+    }
+
+    private void SetSizes(float size) {
+        holeSize = size;
+        trigger.radius = holeSize* 2;
     }
 
     private void OnTriggerStay(Collider other) {
         if (other.gameObject.layer != 6)
             return;
-        
+
+        Renderer rend = other.GetComponent<Renderer>();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
         if (plane.Raycast(ray, out float enter)) {
             Vector3 hitPoint = ray.GetPoint(enter);
 
-            Material mat = other.GetComponent<Renderer>().material;
-            mat.SetFloat(SizeID, holeSize);
-            mat.SetVector(PosID, Camera.WorldToViewportPoint(hitPoint));
+            rend.material.SetFloat(SizeID, holeSize);
+            rend.material.SetVector(PosID, Camera.WorldToViewportPoint(hitPoint));
         }
 
-        currentHits.Add(other);
+        currentHits.Add(rend);
         canInvoke = true;
     }
 
-    private void LateUpdate() {
+    private void Update() {
         if (!canInvoke)
             return;
 
-        foreach (Collider item in previousHits) {
-            if (!currentHits.Contains(item)) {
-                Material mat = item.GetComponent<Renderer>().material;
-                mat.SetFloat(SizeID, 0);
-            }
+        for (int i = 0; i < previousHits.Count; i++) {
+            if (!currentHits.Contains(previousHits[i]))
+                previousHits[i].material.SetFloat(SizeID, 0);
         }
-
-        trigger.radius = holeSize;
 
         previousHits = new(currentHits);
         currentHits.Clear();

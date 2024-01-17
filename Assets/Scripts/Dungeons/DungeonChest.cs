@@ -18,15 +18,15 @@ public class DungeonChest : MonoBehaviour, IPointerClickHandler {
     }
 
     private IEnumerator ChestSequence() {
-        EventManager<CameraEventType, EventMessage<Transform, float, float>>.Invoke(CameraEventType.QuickZoom, new(transform, 1, 3f));
+        EventManager<CameraEventType, EventMessage<Transform, float, float>>.Invoke(CameraEventType.QuickZoom, new(transform, 4, 3f));
 
         yield return new WaitForSeconds(1f);
 
         Material mat = lockObject.GetComponent<Renderer>().material;
 
         float amount = 0;
-        while (!Mathf.Approximately(amount, 1f)) {
-            amount = Mathf.Lerp(amount, 1f, Time.deltaTime);
+        while (1 - amount > .01f) {
+            amount = Mathf.Lerp(amount, 1f, Time.deltaTime * 2);
 
             mat.SetFloat(Dissolve, amount);
             yield return null;

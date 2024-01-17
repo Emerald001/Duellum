@@ -24,7 +24,7 @@ public class PlayerCardHand : CardHand {
         CardHandStateMachine.OnDismiss -= LineOutCards;
     }
 
-    private void Awake() {
+    private void Start() {
         SetHand(0);
     }
 
@@ -121,7 +121,7 @@ public class PlayerCardHand : CardHand {
     private void HandleCardClick(BaseCardBehaviour card) {
         AbilityCard abilityCard = cards[card.Index] as AbilityCard;
 
-        CardHandStateMachine.SetMachine(abilityCard);
+        CardHandStateMachine.SetMachine(abilityCard, true);
         CardHandStateMachine.OnUse += RemoveSpecificCard;
     }
 }

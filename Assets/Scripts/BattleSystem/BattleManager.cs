@@ -44,8 +44,6 @@ public class BattleManager : Singleton<BattleManager> {
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("CombatAmbience", true));
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("BattleMusic", true));
 
-        EventManager<CameraEventType, float>.Invoke(CameraEventType.ChangeXraySize, 50);
-
         NextPlayer();
     }
 
@@ -203,8 +201,6 @@ public class BattleManager : Singleton<BattleManager> {
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("Music", true));
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("CombatAmbience", false));
         EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("ExplorationAmbience", true));
-
-        EventManager<CameraEventType, float>.Invoke(CameraEventType.ChangeXraySize, 5);
     }
 }
 

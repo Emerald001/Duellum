@@ -14,18 +14,21 @@ public class CardHandStateMachine {
     private int stateIndex = 0;
 
     private readonly int ownerId;
+    private bool isPlayer;
 
     public CardHandStateMachine(int ownerId) {
         this.ownerId = ownerId;
     }
 
-    public void SetMachine(AbilityCard abilityCard) {
+    public void SetMachine(AbilityCard abilityCard, bool isPlayer = false) {
         currentCard = abilityCard;
         statesLeft = new(abilityCard.cardStates);
         NextState();
 
         CardHand.OnPickPosition += PickPosition;
         CardHand.OnUndo += PreviousState;
+
+        this.isPlayer = isPlayer;
     }
 
     private void PickPosition(Vector2Int position) {
@@ -43,8 +46,10 @@ public class CardHandStateMachine {
         if (stateIndex >= statesLeft.Count) {
             AbilityManager.PerformAbility(currentCard, ownerId, tilesPerState);
             EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, currentCard.cardAbilitySFX);
+
             OnUse.Invoke(currentCard);
             OnDismiss.Invoke();
+
             ResetMachine();
             return;
         }
@@ -58,10 +63,12 @@ public class CardHandStateMachine {
             return;
         }
 
-        GridStaticFunctions.ResetBattleTileColors();
-        GridStaticFunctions.HighlightTiles(currentAvailableTiles, HighlightType.MovementHighlight);
+        if (isPlayer) {
+            GridStaticFunctions.ResetBattleTileColors();
+            GridStaticFunctions.HighlightTiles(currentAvailableTiles, HighlightType.MovementHighlight);
 
-        EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, currentState.mouseArea);
+            EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, currentState.mouseArea);
+        }
     }
 
     private void PreviousState() {
@@ -78,9 +85,11 @@ public class CardHandStateMachine {
     }
 
     private void ResetMachine() {
-        GridStaticFunctions.ResetBattleTileColors();
-        EventManager<UIEvents>.Invoke(UIEvents.ReleasedAbilityCard);
-        EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
+        if (isPlayer) {
+            GridStaticFunctions.ResetBattleTileColors();
+            EventManager<UIEvents>.Invoke(UIEvents.ReleasedAbilityCard);
+            EventManager<CameraEventType, Selector>.Invoke(CameraEventType.CHANGE_CAM_SELECTOR, null);
+        }
 
         currentCard = null;
         currentState = null;
