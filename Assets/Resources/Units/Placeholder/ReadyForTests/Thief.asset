@@ -17,7 +17,7 @@ MonoBehaviour:
   Rank: 1
   Catagory: 2
   Type: 0
-  Icon: {fileID: 21300000, guid: 507cb389034b0fa44902663fe86bb69a, type: 3}
+  Icon: {fileID: 21300000, guid: d00563ec169590949963ce20c5a93477, type: 3}
   PawnPrefab: {fileID: 4957605393579145644, guid: 4f46098734d87e24490aef9267915ad2,
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
@@ -31,7 +31,7 @@ MonoBehaviour:
     Attack: 3
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
-  Card: {fileID: 11400000, guid: 179810ca375c03445baebe265d4fe6ba, type: 2}
+  Card: {fileID: 11400000, guid: 50c69792e0d59664cbed032d77fd7f1a, type: 2}
   CardAmount: 1
   walkingSounds: LightFootsteps
   attackingSounds: ph_swordHit
