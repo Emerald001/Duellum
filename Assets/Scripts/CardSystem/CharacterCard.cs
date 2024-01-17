@@ -7,6 +7,7 @@ public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [Header("References")]
     [SerializeField] private TextMeshProUGUI attackText;
     [SerializeField] private TextMeshProUGUI defenseText;
+    [SerializeField] private TextMeshProUGUI speedText;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Image visuals;
@@ -34,6 +35,7 @@ public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         descriptionText.SetText(unit.Description.ToString());
         defenseText.SetText(unit.BaseStatBlock.Defence.ToString());
         attackText.SetText(unit.BaseStatBlock.Attack.ToString());
+        speedText.SetText(unit.BaseStatBlock.Speed.ToString());
         visuals.sprite = unit.Icon;
 
         canvas = GetComponentInChildren<Canvas>();

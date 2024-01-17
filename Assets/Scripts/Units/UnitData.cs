@@ -36,6 +36,11 @@ public class UnitData : ScriptableObject {
     [Header("Ability Card")]
     public AbilityCard Card;
     public int CardAmount;
+
+    [Header("Unit Specific Audio")]
+    public string walkingSounds;
+    public string attackingSounds;
+    public string hurtSounds;
 }
 
 [Serializable]

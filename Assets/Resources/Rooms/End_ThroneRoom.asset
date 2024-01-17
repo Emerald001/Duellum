@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: End_ThroneRoom
     size: {x: 5, y: 7}
-    prefab: {fileID: 1278754533280650181, guid: 9e2f2f448076ae84889f0a08859ae34d,
+    prefab: {fileID: 6848601593839633072, guid: 9e2f2f448076ae84889f0a08859ae34d,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}

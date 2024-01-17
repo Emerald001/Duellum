@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
     [SerializeField] private GameObject pawnParent;
-
+    private FootstepManager footstepManager;
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
@@ -22,6 +22,12 @@ public abstract class UnitController : MonoBehaviour {
     private ActionQueue queue;
     private Animator unitAnimator;
 
+    private string attackingSounds;
+    private string hurtSounds;
+
+    private void Start() {
+        footstepManager = transform.GetChild(0).GetComponent<FootstepManager>();
+    }
     private void OnEnable() {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitHit, UnitHit);
@@ -45,6 +51,8 @@ public abstract class UnitController : MonoBehaviour {
         gridPosition = pos;
         queue = new(() => IsDone = HasPerformedAction);
 
+        attackingSounds = data.attackingSounds;
+        hurtSounds = data.hurtSounds;
         unitAnimator = GetComponentInChildren<Animator>();
     }
 
@@ -60,8 +68,9 @@ public abstract class UnitController : MonoBehaviour {
     public virtual void OnExit() {
         HasPerformedAction = false;
         IsDone = false;
-    }
 
+        Debug.Log(3);
+    }
     protected virtual void PickedTile(Vector2Int pickedTile, Vector2Int standingPos_optional) {
         if (attackModule.AttackableTiles.Contains(pickedTile)) {
             if (gridPosition == standingPos_optional)
@@ -78,7 +87,6 @@ public abstract class UnitController : MonoBehaviour {
     private void EnqueueMovement(Vector2Int targetPosition) {
         queue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", true);
-            //UnitAudio.PlayLoopedAudio("Walking", true);
         }));
 
         Vector2Int lastPos = gridPosition;
@@ -95,7 +103,8 @@ public abstract class UnitController : MonoBehaviour {
                 UnitStaticManager.SetUnitPosition(this, newPos);
                 gridPosition = newPos;
                 values.currentStats.Speed--;
-
+                footstepManager.CheckFootstep(footstepManager.leftFootTransform);
+                footstepManager.CheckFootstep(footstepManager.rightFootTransform);
                 if (GridStaticFunctions.TileEffectPositions.ContainsKey(newPos))
                     EventManager<BattleEvents, EventMessage<UnitController, Vector2Int>>.Invoke(BattleEvents.UnitTouchedTileEffect, new(this, newPos));
             }));
@@ -147,6 +156,9 @@ public abstract class UnitController : MonoBehaviour {
 
     private void UnitDeath(UnitController unit) {
         unit.unitAnimator.SetTrigger("Dying");
+        EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, hurtSounds);
+        unit.unitAnimator.SetTrigger("Dying");
+        EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_bodyFall");
     }
 
     private void UnitRevive(UnitController unit) {
@@ -157,7 +169,6 @@ public abstract class UnitController : MonoBehaviour {
         UnitStaticManager.SetUnitPosition(this, newPosition);
 
         transform.position = GridStaticFunctions.CalcWorldPos(newPosition);
-
         gridPosition = newPosition;
     }
 

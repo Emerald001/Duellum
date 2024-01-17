@@ -18,6 +18,9 @@ public class AbilityCard : Card {
     public TileEffect tileEffect;
     [Space(10)]
     public int Damage;
+
+    [Header("Audio")]
+    public string cardAbilitySFX;
 }
 
 public enum AbilityCardType {
@@ -33,4 +36,5 @@ public enum AbilityCardType {
     Grapple,
     Charm,
     AreaOfEffectAttack,
+    GiveCard
 }

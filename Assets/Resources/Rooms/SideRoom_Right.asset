@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: SideRoom_Right
     size: {x: 2, y: 3}
-    prefab: {fileID: 5778820511222149567, guid: 87dc018133057894993378b5bebb4f87,
+    prefab: {fileID: 5997883137250647673, guid: 345973cf0a4f45f4890a8e8b58ebc546,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}

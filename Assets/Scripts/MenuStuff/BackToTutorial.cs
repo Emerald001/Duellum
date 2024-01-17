@@ -6,4 +6,8 @@ public class BackToTutorial : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.R))
             SceneManager.LoadScene(0);
     }
+
+    public void Btn_Reset() {
+        SceneManager.LoadScene(0);
+    }
 }

@@ -46,14 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderer: {fileID: 115773787320398505}
-  standardColor: {fileID: 2100000, guid: d833684fc1608704fbd4f03fb721dcac, type: 2}
-  HoverColor: {fileID: 2100000, guid: 60e4fff2b4acfcc45879b86ca25abb71, type: 2}
-  movementColor: {fileID: 2100000, guid: d6b0338079e4151449a07ec1499e8038, type: 2}
+  standardColor: {fileID: 2100000, guid: f6e6193dab309d64cb32bf5ad931eade, type: 2}
+  HoverColor: {fileID: 2100000, guid: bae9a93a98f107e44898f98c3be66686, type: 2}
+  movementColor: {fileID: 2100000, guid: 83d9df5dda796d0488cb91db8aee9f79, type: 2}
   attackColor: {fileID: 2100000, guid: 4a0439b5cbc81454383ee052f83c061c, type: 2}
   ownPositionColor: {fileID: 2100000, guid: 959cb5d0c807aab47b3bed0e43c0cbe1, type: 2}
   transparent: {fileID: 2100000, guid: 7de9981cb0a8a8243adf7eb98b6d0caa, type: 2}
   type: 0
-  height: 0
 --- !u!1001 &5059533989813790318
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -18,6 +18,9 @@ public static class DamageManager {
                 EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, BattleLogString(attackingUnit, "Killed", unit));
                 UnitStaticManager.UnitDeath(unit);
             }
+            else if (UnitStaticManager.UnitTeams[0].Contains(attackingUnit)) {
+                EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_failureAttack");
+            }
         }
     }
 

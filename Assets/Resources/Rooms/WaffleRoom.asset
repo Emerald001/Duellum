@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: WaffleRoom
     size: {x: 5, y: 5}
-    prefab: {fileID: 4080016650784579262, guid: 314c404e27dee5b40891133c4be4b5b3,
+    prefab: {fileID: 3404622656128943972, guid: d1933b5747d25c14b81405ae98f2b036,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
@@ -1976,4 +1976,4 @@ MonoBehaviour:
   - 0
   - 0
   enemyTeams:
-  - {fileID: 11400000, guid: 08fc0c07f0fafc74794413756c87d18a, type: 2}
+  - {fileID: 11400000, guid: b7167988425883a4abf7782d5a6a4466, type: 2}

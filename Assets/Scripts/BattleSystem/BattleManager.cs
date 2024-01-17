@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager> {
@@ -40,8 +41,13 @@ public class BattleManager : Singleton<BattleManager> {
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
         Vector2Int direction = Mathf.Abs(difference.x) > Mathf.Abs(difference.y) ? new(0, 1) : new(1, 0);
         SpawnUnits(direction, data.PlayerUnits, data.EnemyUnits);
-
         cardManager.SetUp();
+
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("Music", false));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("ExplorationAmbience", false));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("CombatAmbience", true));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("BattleMusic", true));
+
         NextPlayer();
     }
 
@@ -135,6 +141,9 @@ public class BattleManager : Singleton<BattleManager> {
             for (int j = 0; j < playerUnitsToSpawn[i].CardAmount; j++)
                 EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(0, playerUnitsToSpawn[i].Card));
 
+            for (int j = 0; j < playerUnitsToSpawn[i].CardAmount; j++)
+                EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(0, playerUnitsToSpawn[i].Card));
+
             UnitStaticManager.SetUnitPosition(unit, spawnPos);
             UnitStaticManager.LivingUnitsInPlay.Add(unit);
             UnitStaticManager.UnitTeams[0].Add(unit);
@@ -151,6 +160,9 @@ public class BattleManager : Singleton<BattleManager> {
 
             UnitController unit = unitFactory.CreateUnit(1, enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab, unitHolder);
             unit.ChangeUnitRotation(reversedDirection);
+
+            for (int j = 0; j < enemyUnitsToSpawn[i].CardAmount; j++)
+                EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(1, enemyUnitsToSpawn[i].Card));
 
             for (int j = 0; j < enemyUnitsToSpawn[i].CardAmount; j++)
                 EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(1, enemyUnitsToSpawn[i].Card));
@@ -189,6 +201,10 @@ public class BattleManager : Singleton<BattleManager> {
         GridStaticFunctions.EnemySpawnPositions.Clear();
 
         UnitStaticManager.Reset();
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("BattleMusic", false));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("Music", true));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("CombatAmbience", false));
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("ExplorationAmbience", true));
     }
 }
 

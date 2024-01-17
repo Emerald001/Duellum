@@ -1,6 +1,8 @@
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
+    [SerializeField] private BattleData TMPData;
+
     private void Start() {
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
         Tooltip.HideTooltip_Static();

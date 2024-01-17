@@ -15,8 +15,7 @@ MonoBehaviour:
   room:
     name: ConnectionHeart
     size: {x: 3, y: 5}
-    prefab: {fileID: 4152137278215874974, guid: 29447198721b1754498c8a53d55235f1,
-      type: 3}
+    prefab: {fileID: 128176308187402592, guid: 4af8b466722f94f4d9be4c09342ca238, type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
     - {x: -999, y: -999, z: -999, w: -999}
@@ -1196,4 +1195,4 @@ MonoBehaviour:
   - 0
   - 0
   enemyTeams:
-  - {fileID: 11400000, guid: 08fc0c07f0fafc74794413756c87d18a, type: 2}
+  - {fileID: 11400000, guid: 58f47974340cdf740af86c9888e55b8d, type: 2}

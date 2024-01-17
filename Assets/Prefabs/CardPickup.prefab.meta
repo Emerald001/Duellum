@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/CardPickup.prefab.meta
 guid: f660a0c7bdb9f374abe5600693d0b727
+========
+guid: d32493f9b8087804f8d1b2678b841c34
+>>>>>>>> f778e84 (chore: after rebasing rooms broke, tried to fix):Assets/Prefabs/Rooms/End_Room.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

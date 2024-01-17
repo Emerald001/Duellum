@@ -16,8 +16,8 @@ MonoBehaviour:
   Description: A strong warrior. Sturdy, but slow.
   Rank: 4
   Catagory: 2
+  Type: 0
   Icon: {fileID: 21300000, guid: 36a0190629a208845abc33f3a9639106, type: 3}
-  Animations: {fileID: 0}
   PawnPrefab: {fileID: 820556625507350852, guid: eff80cc7b0fac7b4fb26a0a39c8a18d2,
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
@@ -31,3 +31,8 @@ MonoBehaviour:
     Attack: 3
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
+  Card: {fileID: 0}
+  CardAmount: 0
+  walkingSounds: HeavyFootsteps
+  attackingSounds: ph_swordHit
+  hurtSounds: 

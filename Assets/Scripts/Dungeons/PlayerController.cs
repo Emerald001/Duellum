@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private GameObject visuals;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotSpeed;
-
+    [SerializeField] FootstepManager footstepManager;
     public Vector2Int PlayerPosition => playerPosition;
 
     private ActionQueue actionQueue;
@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour {
     private Vector2Int lookDirection;
 
     private bool isWalking;
+
+    [SerializeField] private Animator unitAnimator;
+    private bool inBattle;
     private bool isInteractable;
 
     private void OnEnable() {
@@ -103,14 +106,14 @@ public class PlayerController : MonoBehaviour {
 
         EnqueueMovement(position);
         isWalking = true;
-
+        
         EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, 
             $"<color=green>Player</color> walked to <color=blue>{position}</color>");
     }
 
     private void EnqueueMovement(Vector2Int targetPosition) {
         actionQueue.Enqueue(new DoMethodAction(() => {
-            //UnitAnimator.WalkAnim(true);
+            unitAnimator.SetBool("Walking", true);
         }));
 
         Vector2Int lastPos = playerPosition;
@@ -118,6 +121,7 @@ public class PlayerController : MonoBehaviour {
             Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcWorldPos(newPos) - GridStaticFunctions.CalcWorldPos(lastPos));
 
             actionQueue.Enqueue(new ActionStack(
+
                 new MoveObjectAction(gameObject, moveSpeed, GridStaticFunctions.CalcWorldPos(newPos)),
                 new RotateAction(visuals, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection, true), 0), rotSpeed, .1f)
                 ));
@@ -125,14 +129,17 @@ public class PlayerController : MonoBehaviour {
             actionQueue.Enqueue(new DoMethodAction(() => {
                 this.lookDirection = lookDirection;
                 playerPosition = newPos;
-            }));
 
+                footstepManager.CheckFootstep(footstepManager.leftFootTransform);
+                footstepManager.CheckFootstep(footstepManager.rightFootTransform);
+            }));
+            
             lastPos = newPos;
         }
 
         actionQueue.Enqueue(new DoMethodAction(() => {
-            //UnitAnimator.WalkAnim(false);
-
+            unitAnimator.SetBool("Walking", false);
+            
             FindAccessibleTiles(playerPosition, 30);
             GridStaticFunctions.ResetAllTileColors();
         }));
