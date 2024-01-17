@@ -1,7 +1,8 @@
 using UnityEngine;
 
 public class XRaySync : MonoBehaviour {
-    [SerializeField] private GameObject cone;
+    [SerializeField] private GameObject triggerObject;
+
     private Camera Camera;
 
     private void Awake() {
@@ -9,11 +10,11 @@ public class XRaySync : MonoBehaviour {
     }
 
     private void Update() {
-        var dis = Vector3.Distance(Camera.transform.position, transform.position);
+        float dis = Vector3.Distance(Camera.transform.position, transform.position);
 
         Vector3 newPos = (transform.position + Camera.transform.position) / 2;
-        cone.transform.position = newPos;
-        cone.transform.localScale = new(1, 1, dis / 2);
-        cone.transform.LookAt(transform.position);
+        triggerObject.transform.position = newPos;
+        triggerObject.transform.localScale = new(1, 1, dis / 2);
+        triggerObject.transform.LookAt(transform.position);
     }
 }

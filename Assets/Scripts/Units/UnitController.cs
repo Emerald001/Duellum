@@ -103,8 +103,8 @@ public abstract class UnitController : MonoBehaviour {
                 UnitStaticManager.SetUnitPosition(this, newPos);
                 gridPosition = newPos;
                 values.currentStats.Speed--;
-                footstepManager.CheckFootstep(footstepManager.leftFootTransform);
-                footstepManager.CheckFootstep(footstepManager.rightFootTransform);
+                footstepManager.CheckFootstep(footstepManager.LeftFootTransform);
+                footstepManager.CheckFootstep(footstepManager.RightFootTransform);
                 if (GridStaticFunctions.TileEffectPositions.ContainsKey(newPos))
                     EventManager<BattleEvents, EventMessage<UnitController, Vector2Int>>.Invoke(BattleEvents.UnitTouchedTileEffect, new(this, newPos));
             }));

@@ -17,8 +17,9 @@ public class DungeonGenerator : MonoBehaviour {
 
     [SerializeField] private DungeonOutfitter outfitter;
 
-    private readonly Dictionary<Vector2Int, Vector4> dungeonConnections = new();
     private int tileSize => GridStaticFunctions.TilesPerRoom;
+
+    private readonly Dictionary<Vector2Int, Vector4> dungeonConnections = new();
     private readonly List<int> usedIds = new();
     private int spawnedBigRoomAmount;
 

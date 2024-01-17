@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class ConeXRay : MonoBehaviour {
+public class XRayManager : MonoBehaviour {
     public static int PosID = Shader.PropertyToID("_PlayerPos");
     public static int SizeID = Shader.PropertyToID("_CircleSize");
 
@@ -24,12 +24,12 @@ public class ConeXRay : MonoBehaviour {
         if (other.gameObject.layer != Mask)
             return;
 
-        var dir = player.position - Camera.transform.position;
-        var ray = new Ray(Camera.transform.position, dir.normalized);
-        var dis = Vector3.Distance(Camera.transform.position, player.position);
+        Vector3 dir = player.position - Camera.transform.position;
+        Ray ray = new(Camera.transform.position, dir.normalized);
+        float dis = Vector3.Distance(Camera.transform.position, player.position);
 
-        if (Physics.Raycast(ray, out var hit, dis, Mask)) {
-            var mat = other.GetComponent<Renderer>().material;
+        if (Physics.Raycast(ray, out RaycastHit hit, dis, Mask)) {
+            Material mat = other.GetComponent<Renderer>().material;
             mat.SetFloat(SizeID, holeSize);
             mat.SetVector(PosID, Camera.WorldToViewportPoint(hit.point));
         }
@@ -42,13 +42,13 @@ public class ConeXRay : MonoBehaviour {
         if (!canInvoke)
             return;
 
-        foreach (var item in previousHits) {
+        foreach (Collider item in previousHits) {
             if (!currentHits.Contains(item)) {
-                var mat = item.GetComponent<Renderer>().material;
+                Material mat = item.GetComponent<Renderer>().material;
                 mat.SetFloat(SizeID, 0);
             }
         }
-        
+
         previousHits = new(currentHits);
         currentHits.Clear();
         canInvoke = false;

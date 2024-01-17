@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleManager : Singleton<BattleManager> {
@@ -10,9 +9,6 @@ public class BattleManager : Singleton<BattleManager> {
 
     [SerializeField] private CardHand playerCardHand;
     [SerializeField] private CardHand enemyCardHand;
-
-    public TurnController CurrentPlayer => currentPlayer;
-    public bool IsDone { get; private set; }
 
     private readonly Dictionary<int, TurnController> players = new();
 
