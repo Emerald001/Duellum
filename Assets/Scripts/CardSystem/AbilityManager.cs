@@ -85,7 +85,7 @@ public static class AbilityManager {
                 DamageManager.DealDamage(card.Damage, controllerList.ToArray());
                 break;
             case AbilityCardType.GiveCard:
-                //give card
+                EventManager<UIEvents, int>.Invoke(UIEvents.GiveCard, 0);
                 break;
 
             default:
