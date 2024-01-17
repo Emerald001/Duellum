@@ -6,32 +6,39 @@ public class XRayManager : MonoBehaviour {
     public static int SizeID = Shader.PropertyToID("_CircleSize");
 
     [SerializeField] private float holeSize;
-    [SerializeField] private Material WallMaterial;
-    [SerializeField] private LayerMask Mask;
-    [SerializeField] private Transform player;
+    [SerializeField] private CapsuleCollider trigger;
 
     private readonly List<Collider> currentHits = new();
     private List<Collider> previousHits = new();
 
     private Camera Camera;
+    private Plane plane;
     private bool canInvoke = false;
 
     private void Awake() {
         Camera = Camera.main;
+
+        plane = new Plane(Vector3.up, Vector3.zero);
+    }
+
+    private void OnEnable() {
+        EventManager<CameraEventType, float>.Subscribe(CameraEventType.ChangeXraySize, (x) => holeSize = x);
+    }
+    private void OnDisable() {
+        EventManager<CameraEventType, float>.Unsubscribe(CameraEventType.ChangeXraySize, (x) => holeSize = x);
     }
 
     private void OnTriggerStay(Collider other) {
-        if (other.gameObject.layer != Mask)
+        if (other.gameObject.layer != 6)
             return;
+        
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (plane.Raycast(ray, out float enter)) {
+            Vector3 hitPoint = ray.GetPoint(enter);
 
-        Vector3 dir = player.position - Camera.transform.position;
-        Ray ray = new(Camera.transform.position, dir.normalized);
-        float dis = Vector3.Distance(Camera.transform.position, player.position);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, dis, Mask)) {
             Material mat = other.GetComponent<Renderer>().material;
             mat.SetFloat(SizeID, holeSize);
-            mat.SetVector(PosID, Camera.WorldToViewportPoint(hit.point));
+            mat.SetVector(PosID, Camera.WorldToViewportPoint(hitPoint));
         }
 
         currentHits.Add(other);
@@ -48,6 +55,8 @@ public class XRayManager : MonoBehaviour {
                 mat.SetFloat(SizeID, 0);
             }
         }
+
+        trigger.radius = holeSize;
 
         previousHits = new(currentHits);
         currentHits.Clear();
