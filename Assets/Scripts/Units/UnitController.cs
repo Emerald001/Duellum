@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
     [SerializeField] private GameObject pawnParent;
-    private FootstepManager footstepManager;
+
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
@@ -19,6 +19,7 @@ public abstract class UnitController : MonoBehaviour {
     protected UnitAttackModule attackModule;
     protected Vector2Int gridPosition;
 
+    private FootstepManager footstepManager;
     private ActionQueue queue;
     private Animator unitAnimator;
 
@@ -26,8 +27,9 @@ public abstract class UnitController : MonoBehaviour {
     private string hurtSounds;
 
     private void Start() {
-        footstepManager = transform.GetChild(0).GetComponent<FootstepManager>();
+        footstepManager = GetComponentInChildren<FootstepManager>();
     }
+
     private void OnEnable() {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitHit, UnitHit);
@@ -68,9 +70,8 @@ public abstract class UnitController : MonoBehaviour {
     public virtual void OnExit() {
         HasPerformedAction = false;
         IsDone = false;
-
-        Debug.Log(3);
     }
+
     protected virtual void PickedTile(Vector2Int pickedTile, Vector2Int standingPos_optional) {
         if (attackModule.AttackableTiles.Contains(pickedTile)) {
             if (gridPosition == standingPos_optional)
@@ -103,8 +104,10 @@ public abstract class UnitController : MonoBehaviour {
                 UnitStaticManager.SetUnitPosition(this, newPos);
                 gridPosition = newPos;
                 values.currentStats.Speed--;
+
                 footstepManager.CheckFootstep(footstepManager.LeftFootTransform);
                 footstepManager.CheckFootstep(footstepManager.RightFootTransform);
+
                 if (GridStaticFunctions.TileEffectPositions.ContainsKey(newPos))
                     EventManager<BattleEvents, EventMessage<UnitController, Vector2Int>>.Invoke(BattleEvents.UnitTouchedTileEffect, new(this, newPos));
             }));

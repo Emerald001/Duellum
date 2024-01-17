@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FootstepManager : MonoBehaviour {
-    [SerializeField] private List<string> stringList = new List<string>();
+    [SerializeField] private List<string> stringList = new();
     [SerializeField] private ParticleSystem dustParticles;
+    [SerializeField] private Transform leftFootTransform;
+    [SerializeField] private Transform rightFootTransform;
+
     [SerializeField] private string groundTag = "WalkableTile";
 
-    public Transform LeftFootTransform { get; set; }
-    public Transform RightFootTransform { get; set; }
+    public Transform LeftFootTransform => leftFootTransform;
+    public Transform RightFootTransform => rightFootTransform;
 
     private string previousString;
 
