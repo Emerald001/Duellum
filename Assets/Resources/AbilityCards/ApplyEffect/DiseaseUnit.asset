@@ -16,7 +16,7 @@ MonoBehaviour:
   ShortcutName: Disease
   Discription: -1 Defense on an enemy unit for two turns.
   CardType: 0
-  Icon: {fileID: 21300000, guid: 85e157bae68557d4da87a1d60dc70c71, type: 3}
+  Icon: {fileID: 21300000, guid: 9fb72d972c384694c82399ba8af7e533, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}
   Border: {fileID: 21300000, guid: 422cca4457711724f8071b6a683349fa, type: 3}
   cardStates:
@@ -47,4 +47,4 @@ MonoBehaviour:
   hexPrefab: {fileID: 0}
   tileEffect: 0
   Damage: 0
-  cardAbilitySFX: ph_abilityCard
+  cardAbilitySFX: abilityCard_Disease

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c25c04580a62a49bc10ef81d214032, type: 3}
   m_Name: Steal
   m_EditorClassIdentifier: 
-  Name: Backstab
-  ShortcutName: SmokeBomb
-  Discription: When in range, throw a smokebomb and backstab a unit.
+  Name: Pickpocket
+  ShortcutName: Steal
+  Discription: Steal a random card from the enemy.
   CardType: 0
   Icon: {fileID: 21300000, guid: 0c9d7658c27d8c1419f98d9fbfa14f64, type: 3}
   Background: {fileID: 0}
   Border: {fileID: 0}
   cardStates:
   - areaOfSelection:
-      type: 7
+      type: 5
       includeCentreTile: 0
       AllDirections: 0
       range: 0
@@ -38,13 +38,13 @@ MonoBehaviour:
       includeWater: 0
       includeCover: 0
       excludeUnits: 0
-  abilityType: 8
+  abilityType: 12
   effectToApply:
-    type: 0
+    type: 7
     canBeStacked: 0
     duration: 0
     sevarity: 0
   hexPrefab: {fileID: 0}
   tileEffect: 0
   Damage: 0
-  cardAbilitySFX: ph_abilityCard
+  cardAbilitySFX: abilityCard_Steal
