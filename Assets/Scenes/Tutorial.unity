@@ -852,7 +852,6 @@ MonoBehaviour:
   hovercolor: {fileID: 2100000, guid: 60e4fff2b4acfcc45879b86ca25abb71, type: 2}
   standardSelector:
     type: 0
-    isHex: 0
     includeCentreTile: 0
     AllDirections: 0
     range: 1
@@ -860,6 +859,9 @@ MonoBehaviour:
     includeWater: 0
     includeCover: 0
     excludeUnits: 0
+  hitRaycast:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1198,42 +1200,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoClips:
-  - {fileID: 32900000, guid: 9a041f5705b87bf459a25dbbe39ddf98, type: 3}
-  - {fileID: 32900000, guid: 47569645f2ba3d04d84112c518b1b384, type: 3}
-  - {fileID: 32900000, guid: a83a3f947febbb84d95f42e2e08dc557, type: 3}
-  - {fileID: 32900000, guid: e1d1850c337cfad4d94983264d562fe4, type: 3}
   - {fileID: 32900000, guid: 52e954337d391994b98d328125a81565, type: 3}
-  - {fileID: 32900000, guid: 7facfd2da50edce40903d99cfddc7314, type: 3}
-  - {fileID: 32900000, guid: 617e811dc1ddf4342887f6033f6709c9, type: 3}
+  - {fileID: 32900000, guid: b1dcda0eca4737e4f97a81aa3423d59f, type: 3}
+  - {fileID: 32900000, guid: b1dcda0eca4737e4f97a81aa3423d59f, type: 3}
+  - {fileID: 32900000, guid: 5c703e60ffc304f479fcc76823ffa486, type: 3}
+  - {fileID: 32900000, guid: 1f7aae39619fc7d44aa82c069980c5de, type: 3}
+  - {fileID: 32900000, guid: 2355bcfcaf3a0ab4fbb550c92549512d, type: 3}
   videoPlayer: {fileID: 1327085361}
   rawImage: {fileID: 1520987657}
   videoTitleText: {fileID: 1610376241}
   videoDescriptionText: {fileID: 1528793540}
   videoTitles:
   - Welcome to Duellum!
-  - Camera rotation
-  - Card Abilities
-  - Unit attack/defense
-  - Directional Attacking
   - Attack Direction Bonus
-  - This bonus is crucial!
+  - Attack and Defense
+  - Where to find unit stats
+  - Life or Death
+  - Cards and Abilities
   videoDescriptions:
-  - Move a unit by pressing on it and <color=red>clicking</color> on an <color=red>adjacent
-    tile</color>.
-  - Rotate the camera by pressing <color=red>Q</color> or <color=red>E</color>.
-  - <color=red>Cards</color> spawn all over the battlefield. <br><br>Use them to
-    get  temporary <color=red>special abilities</color>.
-  - Every Unit has their own attack and defense stats. <br><br> If the <color=red>attack
-    stat </color>of an attacking Unit is <color=red>higher</color> than the <color=red>defense
-    stat </color> of the defending Unit, the defending unit <color=red>dies!</color>
-  - You can attack a unit from several sides.<br> <br> Front, side, and back. <br>
-    A <color=red>frontal assault</color> adds <color=red>+1 </color>to your attack
-    score , <color=red>flanking </color>adds <color=red>+2</color>, and <color=red>backstabbing</color>
-    a whopping <color=red>+3 bonus!</color>
-  - Directional attacking gives you <color=red>a bonus</color> to your <color=red>attack
-    score</color>, so take advantage of it!
-  - 'Try to <color=red>flank</color> or <color=red>backstab</color> as much as possible
-    for <color=red>bonus points</color>! '
+  - Duellum is about <color=red>the perfect kill. </color>To achieve this, you have
+    to get <color=green><b>positioning bonuses</b></color>. The <b><color=yellow>direction
+    </color></b>you attack from is crucial!
+  - If you flank an enemy you get a <color=green>+2 bonus to your attack</color>,
+    and if you backstab you get a whopping <color=green>+3 bonus to your attack</color>.
+    Position units wisely!
+  - 'If your <color=red>attack</color> stat is <color=yellow>higher</color> than
+    the <color=green>defense</color> stat of the enemy unit, <b>their unit dies</b>. '
+  - Units have an <color=red>attack</color> and a <color=green>defense</color> stat,
+    that can be found on their respective <color=blue><b>card</color></b>.
+  - If the <color=red>attack stat</color> is the <color=yellow>same or lower</color>
+    than the enemy unit's <color=green>defense</color>, <color=yellow>you do no damage,
+    and they don't die</color>! Units have no health. They either live or die.
+  - 'While exploring dungeons and in battle, you can find <color=blue>cards</color>
+    that have <color=green>special abilities.</color> '
 --- !u!1001 &1079886610
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1711,7 +1710,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b2044c1debaf01047a5d6f19881afed3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f8965afc9a60f36419ca716bdce6940e, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
