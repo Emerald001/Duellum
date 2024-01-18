@@ -99,7 +99,7 @@ Material:
     - _Blend: 0
     - _BumpScale: 1
     - _CircleOpacity: 0.77
-    - _CircleSize: 1
+    - _CircleSize: 0
     - _CircleSmoothness: 0.84
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0

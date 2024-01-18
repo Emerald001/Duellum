@@ -6,4 +6,5 @@
     ResetCamBackOnPlayer,
     ZOOM_CAM,
     QuickZoom,
+    ChangeXraySize,
 }

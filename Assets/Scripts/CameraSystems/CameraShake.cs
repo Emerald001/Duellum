@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class CameraShake : MonoBehaviour
-{
+public class CameraShake : MonoBehaviour {
     private ActionQueue queue;
 
     private void Awake() {
@@ -11,7 +10,6 @@ public class CameraShake : MonoBehaviour
     private void OnEnable() {
         EventManager<CameraEventType, float>.Subscribe(CameraEventType.DO_CAMERA_SHAKE, DoCameraShake);
     }
-
     private void OnDisable() {
         EventManager<CameraEventType, float>.Unsubscribe(CameraEventType.DO_CAMERA_SHAKE, DoCameraShake);
     }

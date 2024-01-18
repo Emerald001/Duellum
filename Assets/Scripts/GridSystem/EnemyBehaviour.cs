@@ -28,11 +28,17 @@ public class EnemyBehaviour : MonoBehaviour {
         var unit = Instantiate(unitVisual, visualsParent);
 
         unitAnimator = GetComponentInChildren<Animator>();
+
+        if (player == null)
+            Destroy(gameObject);
     }
 
     private void Update() {
         if (hasFound)
             return;
+
+        if (player == null)
+            Destroy(gameObject);
 
         Vector3 direction = (player.position - transform.position).normalized;
         if (Physics.Raycast(transform.position + new Vector3(0, .2f, 0), direction, out var hit, viewRange)) {

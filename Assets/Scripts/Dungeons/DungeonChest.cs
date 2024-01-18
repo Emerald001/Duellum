@@ -25,8 +25,8 @@ public class DungeonChest : MonoBehaviour, IPointerClickHandler {
         Material mat = lockObject.GetComponent<Renderer>().material;
 
         float amount = 0;
-        while (!Mathf.Approximately(amount, 1f)) {
-            amount = Mathf.Lerp(amount, 1f, Time.deltaTime);
+        while (1 - amount > .01f) {
+            amount = Mathf.Lerp(amount, 1f, Time.deltaTime * 2);
 
             mat.SetFloat(Dissolve, amount);
             yield return null;

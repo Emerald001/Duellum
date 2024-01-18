@@ -190,10 +190,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   line: {fileID: 1944027737191963537}
   visuals: {fileID: 157805048344579267}
-  moveSpeed: 10
-  rotSpeed: 40
   footstepManager: {fileID: 6336560662207638242}
   unitAnimator: {fileID: 2248259896437609813}
+  moveSpeed: 10
+  rotSpeed: 40
 --- !u!114 &17315637739332628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39246fd3cd3c107469f994a16070e2ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cone: {fileID: 4715639966893141151}
+  triggerObject: {fileID: 4715639966893141151}
 --- !u!136 &1326653225835411335
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -345,12 +345,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6689eb1ad87fd0e4aa463a9433cc29e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holeSize: 0.5
-  WallMaterial: {fileID: 2100000, guid: 7ad50f1cee58b2d41b2f1e776cfc6279, type: 2}
-  Mask:
-    serializedVersion: 2
-    m_Bits: 68
-  player: {fileID: 157805048160012013}
+  holeSize: 1
+  trigger: {fileID: 5927104026332402207}
 --- !u!136 &5927104026332402207
 CapsuleCollider:
   m_ObjectHideFlags: 0

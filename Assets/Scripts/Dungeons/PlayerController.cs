@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     [SerializeField] private LineRenderer line;
     [SerializeField] private GameObject visuals;
+    [SerializeField] private FootstepManager footstepManager;
+    [SerializeField] private Animator unitAnimator;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float rotSpeed;
-    [SerializeField] FootstepManager footstepManager;
-    public Vector2Int PlayerPosition => playerPosition;
 
-    private ActionQueue actionQueue;
+    public Vector2Int PlayerPosition => playerPosition;
 
     private readonly Dictionary<Vector2Int, Vector2Int> parentDictionary = new();
     private readonly List<Vector2Int> currentAccessableTiles = new();
@@ -18,13 +18,12 @@ public class PlayerController : MonoBehaviour {
     private readonly HashSet<Vector2Int> openSet = new();
     private readonly HashSet<Vector2Int> closedSet = new();
 
+    private ActionQueue actionQueue;
+
     private Vector2Int playerPosition;
     private Vector2Int lookDirection;
 
     private bool isWalking;
-
-    [SerializeField] private Animator unitAnimator;
-    private bool inBattle;
     private bool isInteractable;
 
     private void OnEnable() {
@@ -106,8 +105,8 @@ public class PlayerController : MonoBehaviour {
 
         EnqueueMovement(position);
         isWalking = true;
-        
-        EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, 
+
+        EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation,
             $"<color=green>Player</color> walked to <color=blue>{position}</color>");
     }
 
@@ -121,7 +120,6 @@ public class PlayerController : MonoBehaviour {
             Vector2Int lookDirection = GridStaticFunctions.GetVector2RotationFromDirection(GridStaticFunctions.CalcWorldPos(newPos) - GridStaticFunctions.CalcWorldPos(lastPos));
 
             actionQueue.Enqueue(new ActionStack(
-
                 new MoveObjectAction(gameObject, moveSpeed, GridStaticFunctions.CalcWorldPos(newPos)),
                 new RotateAction(visuals, new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection, true), 0), rotSpeed, .1f)
                 ));
@@ -130,16 +128,16 @@ public class PlayerController : MonoBehaviour {
                 this.lookDirection = lookDirection;
                 playerPosition = newPos;
 
-                footstepManager.CheckFootstep(footstepManager.leftFootTransform);
-                footstepManager.CheckFootstep(footstepManager.rightFootTransform);
+                footstepManager.CheckFootstep(footstepManager.LeftFootTransform);
+                footstepManager.CheckFootstep(footstepManager.RightFootTransform);
             }));
-            
+
             lastPos = newPos;
         }
 
         actionQueue.Enqueue(new DoMethodAction(() => {
             unitAnimator.SetBool("Walking", false);
-            
+
             FindAccessibleTiles(playerPosition, 30);
             GridStaticFunctions.ResetAllTileColors();
         }));
@@ -195,9 +193,7 @@ public class PlayerController : MonoBehaviour {
             currentPosition = parentDictionary[currentPosition];
         }
 
-        //path.Add(currentPosition);
         path.Reverse();
-
         return path;
     }
 

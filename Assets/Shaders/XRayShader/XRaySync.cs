@@ -1,19 +1,30 @@
 using UnityEngine;
 
 public class XRaySync : MonoBehaviour {
-    [SerializeField] private GameObject cone;
-    private Camera Camera;
+    [SerializeField] private GameObject triggerObject;
 
-    private void Awake() {
+    private Camera Camera;
+    private Plane plane;
+
+    private void Start() {
         Camera = Camera.main;
+
+        plane = new(Vector3.up, new Vector3(0, -10, 0));
     }
 
     private void Update() {
-        var dis = Vector3.Distance(Camera.transform.position, transform.position);
+        Ray ray = Camera.ScreenPointToRay(Input.mousePosition);
+        var startPoint = Camera.ScreenToWorldPoint(Input.mousePosition);
 
-        Vector3 newPos = (transform.position + Camera.transform.position) / 2;
-        cone.transform.position = newPos;
-        cone.transform.localScale = new(1, 1, dis / 2);
-        cone.transform.LookAt(transform.position);
+        if (plane.Raycast(ray, out float enter)) {
+            Vector3 hitPoint = ray.GetPoint(enter);
+
+            float dis = Vector3.Distance(startPoint, hitPoint);
+
+            Vector3 newPos = (hitPoint + startPoint) / 2;
+            triggerObject.transform.position = newPos;
+            triggerObject.transform.localScale = new(1, 1, dis / 2);
+            triggerObject.transform.LookAt(hitPoint);
+        }
     }
 }

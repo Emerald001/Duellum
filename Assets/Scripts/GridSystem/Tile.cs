@@ -22,8 +22,8 @@ public class Tile : MonoBehaviour {
 
     private readonly List<Vector3> ripplePositions = new();
 
-    private HighlightType currentType = HighlightType.None;
     private readonly ActionQueue queue = new();
+    private HighlightType currentType = HighlightType.None;
 
     private void Update() {
         queue.OnUpdate();

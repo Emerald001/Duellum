@@ -15,7 +15,10 @@ public class EnemyCardHand : CardHand {
         CardHandStateMachine.OnUse -= RemoveSpecificCard;
     }
 
-    // TODO: Make this show the back of the cards!
+    private void Start() {
+        SetHand(1);
+    }
+
     protected override void LineOutCards() {
         SortCards();
         CardHandStateMachine.OnUse -= RemoveSpecificCard;
@@ -27,6 +30,11 @@ public class EnemyCardHand : CardHand {
 
         for (int i = 0; i < cardVisuals.Count; i++) {
             CardAssetHolder card = cardVisuals[i];
+            Card cardData = cards[i];
+
+            card.Name.text = cardData.Name;
+            card.Discription.text = cardData.Discription;
+            card.Icon.sprite = cardData.Icon;
 
             float angle = startAngle - i * angleIncrement;
             float radianAngle = Mathf.Deg2Rad * angle;
@@ -34,8 +42,7 @@ public class EnemyCardHand : CardHand {
             float y = radius * -Mathf.Cos(radianAngle);
 
             Vector3 position = transform.position + new Vector3(x, y, i * .01f);
-            Quaternion rotation = Quaternion.LookRotation(Vector3.forward, position - transform.position);
-            //rotation.eulerAngles += new Vector3(0, 180, 0);
+            Quaternion rotation = Quaternion.LookRotation(Vector3.forward, position - transform.position) * Quaternion.Euler(0, 180, 0);
 
             int index = i;
             card.cardBehaviour.ClearQueue();
@@ -61,6 +68,7 @@ public class EnemyCardHand : CardHand {
     public void DisplayCard(AbilityCard card) {
         CardAssetHolder tmp = cardVisuals[cards.IndexOf(card)];
         EnemyCardBehaviour Ecard = tmp.cardBehaviour as EnemyCardBehaviour;
+        tmp.transform.rotation = Quaternion.identity;
 
         CardHandStateMachine.SetMachine(card);
         CardHandStateMachine.OnUse += RemoveSpecificCard;
