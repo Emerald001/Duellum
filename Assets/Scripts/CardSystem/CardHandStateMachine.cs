@@ -23,12 +23,12 @@ public class CardHandStateMachine {
     public void SetMachine(AbilityCard abilityCard, bool isPlayer = false) {
         currentCard = abilityCard;
         statesLeft = new(abilityCard.cardStates);
+        this.isPlayer = isPlayer;
+
         NextState();
 
         CardHand.OnPickPosition += PickPosition;
         CardHand.OnUndo += PreviousState;
-
-        this.isPlayer = isPlayer;
     }
 
     private void PickPosition(Vector2Int position) {

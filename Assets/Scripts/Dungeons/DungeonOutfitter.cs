@@ -29,9 +29,11 @@ public class DungeonOutfitter : MonoBehaviour {
         CreatePathThroughDungeon();
 
         SpawnPlayer();
+        SpawnChests();
         SpawnEnemies();
 
         EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Dungeon Generation Finished");
+        EventManager<UIEvents, EventMessage<float, System.Action>>.Invoke(UIEvents.DoFade, new(0, () => EventManager<DungeonEvents>.Invoke(DungeonEvents.GenerationDone)));
     }
 
     private void OverwriteGridPositions(RoomComponent room) {
@@ -151,7 +153,6 @@ public class DungeonOutfitter : MonoBehaviour {
 
         SetMainSequence(parentDictionary, bestStartRoom, bossroom);
         DefineSidePaths(endRooms, parentDictionary);
-        SpawnChests();
     }
 
     private void SetMainSequence(Dictionary<RoomComponent, RoomComponent> parentDictionary, RoomComponent startRoom, RoomComponent endRoom) {
@@ -246,6 +247,7 @@ public class DungeonOutfitter : MonoBehaviour {
                 Vector3 worldPosition = GridStaticFunctions.CalcWorldPos(spawnGridPosition);
 
                 DungeonChest chest = Instantiate(ChestPrefab);
+                chest.Player = playerController.transform;
                 chest.transform.position = worldPosition;
                 chest.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(0, 4), 0);
             }

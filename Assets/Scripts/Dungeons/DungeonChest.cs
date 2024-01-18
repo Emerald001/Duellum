@@ -7,14 +7,25 @@ public class DungeonChest : MonoBehaviour, IPointerClickHandler {
 
     [SerializeField] private GameObject lockObject;
 
+    public Transform Player { get; set; }
     private bool hasClicked = false;
 
     public void OnPointerClick(PointerEventData eventData) {
+        if (Vector3.Distance(Player.position, transform.position) > 3f) {
+            Tooltip.ShowTooltip_Static("Get closer to open");
+            Invoke(nameof(HideTooltip), 2f);
+            return;
+        }
+
         if (hasClicked)
             return;
 
         hasClicked = true;
         StartCoroutine(ChestSequence());
+    }
+
+    private void HideTooltip() {
+        Tooltip.HideTooltip_Static();
     }
 
     private IEnumerator ChestSequence() {
@@ -23,7 +34,6 @@ public class DungeonChest : MonoBehaviour, IPointerClickHandler {
         yield return new WaitForSeconds(1f);
 
         Material mat = lockObject.GetComponent<Renderer>().material;
-
         float amount = 0;
         while (1 - amount > .01f) {
             amount = Mathf.Lerp(amount, 1f, Time.deltaTime * 2);

@@ -18,22 +18,24 @@ public class PlayerController : MonoBehaviour {
     private readonly HashSet<Vector2Int> openSet = new();
     private readonly HashSet<Vector2Int> closedSet = new();
 
+    private readonly Stack<bool> interactableStack = new();
+
     private ActionQueue actionQueue;
 
     private Vector2Int playerPosition;
     private Vector2Int lookDirection;
 
     private bool isWalking;
-    private bool isInteractable;
+    private bool IsInteractable => interactableStack.Count < 1;
 
     private void OnEnable() {
         EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartPlayerStartSequence, (x) => StartCoroutine(OnBattleStart(x)));
-        EventManager<BattleEvents, bool>.Subscribe(BattleEvents.SetPlayerInteractable, (x) => isInteractable = x);
+        EventManager<BattleEvents, bool>.Subscribe(BattleEvents.SetPlayerInteractable, SetInteractable);
         EventManager<BattleEvents>.Subscribe(BattleEvents.BattleEnd, () => StartCoroutine(OnBattleEnd()));
     }
     private void OnDisable() {
         EventManager<BattleEvents, BattleData>.Unsubscribe(BattleEvents.StartPlayerStartSequence, (x) => StartCoroutine(OnBattleStart(x)));
-        EventManager<BattleEvents, bool>.Unsubscribe(BattleEvents.SetPlayerInteractable, (x) => isInteractable = x);
+        EventManager<BattleEvents, bool>.Unsubscribe(BattleEvents.SetPlayerInteractable, SetInteractable);
         EventManager<BattleEvents>.Unsubscribe(BattleEvents.BattleEnd, () => StartCoroutine(OnBattleEnd()));
     }
 
@@ -42,12 +44,17 @@ public class PlayerController : MonoBehaviour {
         playerPosition = gridPosition;
 
         FindAccessibleTiles(playerPosition, 30);
+    }
 
-        isInteractable = true;
+    private void SetInteractable(bool value) {
+        if (value)
+            interactableStack.Pop();
+        else
+            interactableStack.Push(value);
     }
 
     private void Update() {
-        if (!isInteractable)
+        if (!IsInteractable)
             return;
 
         actionQueue?.OnUpdate();
@@ -80,7 +87,7 @@ public class PlayerController : MonoBehaviour {
             actionQueue.Clear();
 
         line.enabled = false;
-        isInteractable = false;
+        interactableStack.Push(false);
 
         yield return new WaitForSeconds(2.5f);
         visuals.SetActive(false);
@@ -93,7 +100,7 @@ public class PlayerController : MonoBehaviour {
         EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 30);
 
         visuals.SetActive(true);
-        isInteractable = true;
+        interactableStack.Pop();
 
         FindAccessibleTiles(playerPosition, 30);
     }

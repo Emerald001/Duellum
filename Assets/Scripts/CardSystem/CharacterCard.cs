@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler {
+public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     [Header("References")]
     [SerializeField] private TextMeshProUGUI attackText;
     [SerializeField] private TextMeshProUGUI defenseText;
@@ -12,23 +12,17 @@ public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Image visuals;
 
-    [Header("Values")]
-    [SerializeField] private float hoverHeight = 0.1f; // Adjust the height as needed
-    [SerializeField] private float moveSpeed = 50f; // Adjust the speed as needed
-
     private Canvas canvas;
-    private Transform originalTransform;
-    private Transform hoverTransform;
+    private Vector3 originalPos;
+    private Vector3 hoverPos;
 
     private ActionQueue actionQueue;
-    private bool isUp;
 
     private void Update() {
         actionQueue.OnUpdate();
     }
 
-    // Hovertransform is real dirty
-    public void SetUp(UnitData unit, Transform hoverTransform) {
+    public void SetUp(UnitData unit, Vector3 hoverPos) {
         actionQueue = new();
 
         nameText.SetText(unit.name);
@@ -41,38 +35,21 @@ public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         canvas = GetComponentInChildren<Canvas>();
         canvas.worldCamera = Camera.main;
 
-        originalTransform = new GameObject().transform;
-        originalTransform.SetPositionAndRotation(transform.position, transform.rotation);
-        this.hoverTransform = hoverTransform;
+        originalPos = transform.position;
+        this.hoverPos = hoverPos;
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        if (isUp)
-            return;
+        EventManager<BattleEvents, bool>.Invoke(BattleEvents.SetPlayerInteractable, false);
 
-        Vector3 newPosition = originalTransform.position + new Vector3(0, hoverHeight, 0);
-        actionQueue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, newPosition));
-
-        transform.position = newPosition;
-    }
-
-    public void OnPointerDown(PointerEventData eventData) {
-        isUp = !isUp;
-
-        if (isUp) {
-            actionQueue.Clear();
-            actionQueue.Enqueue(new ActionStack(new MoveObjectAction(gameObject, moveSpeed, hoverTransform), new ResizeAction(transform, moveSpeed / 5, new Vector3(1, 1, 1))));
-        }
-        else {
-            actionQueue.Clear();
-            actionQueue.Enqueue(new ActionStack(new MoveObjectAction(gameObject, moveSpeed, originalTransform), new ResizeAction(transform, moveSpeed / 5, new Vector3(.3f, .3f, .3f))));
-        }
+        actionQueue.Clear();
+        actionQueue.Enqueue(new MoveObjectAction(gameObject, 5, hoverPos));
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        if (isUp)
-            return;
+        EventManager<BattleEvents, bool>.Invoke(BattleEvents.SetPlayerInteractable, true);
 
-        transform.position = originalTransform.position;
+        actionQueue.Clear();
+        actionQueue.Enqueue(new MoveObjectAction(gameObject, 5, originalPos));
     }
 }

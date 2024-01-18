@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,7 +45,8 @@ public class CardPickerManager : MonoBehaviour {
                 slot3 = null;
         }
         else {
-            pickedCards.Add(data);
+            if (pickedCards.Count < 3)
+                pickedCards.Add(data);
 
             if (slot1 == null) 
                 slot1 = data;
@@ -90,11 +92,14 @@ public class CardPickerManager : MonoBehaviour {
         if (pickedCards.Count < 1)
             return;
 
-        gameObject.SetActive(false);
-        UnitStaticManager.PlayerPickedUnits = new(pickedCards);
+        void OnFadeEnd() {
+            gameObject.SetActive(false);
+            EventManager<DungeonEvents>.Invoke(DungeonEvents.StartGeneration);
+        }
 
+        UnitStaticManager.PlayerPickedUnits = new(pickedCards.Where(x => x != null));
         EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Units Chosen");
         EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Dungeon Generation Started");
-        EventManager<DungeonEvents>.Invoke(DungeonEvents.StartGeneration);
+        EventManager<UIEvents, EventMessage<float, System.Action>>.Invoke(UIEvents.DoFade, new(1f, OnFadeEnd));
     }
 }

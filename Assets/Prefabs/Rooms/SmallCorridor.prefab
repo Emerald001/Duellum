@@ -66006,7 +66006,7 @@ MonoBehaviour:
   rotationIndex: 0
   connections: []
   EnemyTeams:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: e5ad812856f22e34d96d2659d48ab9dd, type: 2}
 --- !u!1 &5621463845492505281
 GameObject:
   m_ObjectHideFlags: 0

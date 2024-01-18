@@ -3,6 +3,8 @@ using UnityEngine.EventSystems;
 
 public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
     public void OnPointerEnter(PointerEventData eventData) {
+        EventManager<BattleEvents, bool>.Invoke(BattleEvents.SetPlayerInteractable, false);
+
         if (selected || !CanInvoke)
             return;
 
@@ -19,6 +21,8 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
     }
 
     public void OnPointerExit(PointerEventData eventData) {
+        EventManager<BattleEvents, bool>.Invoke(BattleEvents.SetPlayerInteractable, true);
+
         if (selected || !CanInvoke)
             return;
 
@@ -49,6 +53,7 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
 
         OnClick.Invoke(this);
     }
+
 
     public void DeselectCard() {
         selected = false;

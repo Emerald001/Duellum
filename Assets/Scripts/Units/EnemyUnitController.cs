@@ -55,7 +55,18 @@ public class EnemyUnitController : UnitController {
                 if (!UnitStaticManager.TryGetUnitFromGridPos(attackModule.AttackableTiles[i], out var unit))
                     continue;
 
-                if (values.currentStats.Attack > unit.Values.currentStats.Defence)
+                Vector2Int enemyPos = attackModule.AttackableTiles[i];
+                Vector2Int sideDir = new(unit.LookDirection.y, unit.LookDirection.x);
+                Vector2Int backPos = enemyPos - unit.LookDirection;
+
+                int bonus = 1;
+                if (movementModule.AccessableTiles.Contains(backPos))
+                    bonus += 2;
+                else if (movementModule.AccessableTiles.Contains(enemyPos + sideDir) || movementModule.AccessableTiles.Contains(enemyPos - sideDir))
+                    bonus += 1;
+
+                lastEnemy = lastEnemy ? lastEnemy : unit;
+                if (values.currentStats.Attack + bonus > unit.Values.currentStats.Defence)
                     if (unit.Values.currentStats.Defence > lastEnemy.Values.currentStats.Defence)
                         lastEnemy = unit;
             }
@@ -72,8 +83,18 @@ public class EnemyUnitController : UnitController {
                         if (!UnitStaticManager.TryGetUnitFromGridPos(attackModule.AttackableTiles[j], out var unit))
                             continue;
 
+                        Vector2Int enemyPos = attackModule.AttackableTiles[i];
+                        Vector2Int sideDir = new(unit.LookDirection.y, unit.LookDirection.x);
+                        Vector2Int backPos = enemyPos - unit.LookDirection;
+
+                        int bonus = 1;
+                        if (movementModule.AccessableTiles.Contains(backPos))
+                            bonus += 2;
+                        else if (movementModule.AccessableTiles.Contains(enemyPos + sideDir) || movementModule.AccessableTiles.Contains(enemyPos - sideDir))
+                            bonus += 1;
+
                         lastEnemy = lastEnemy ? lastEnemy : unit;
-                        if (values.currentStats.Attack + abilityCards[i].effectToApply.sevarity > unit.Values.currentStats.Defence)
+                        if (values.currentStats.Attack + abilityCards[i].effectToApply.sevarity + bonus > unit.Values.currentStats.Defence)
                             if (unit.Values.currentStats.Defence > lastEnemy.Values.currentStats.Defence) {
                                 CardToUse = abilityCards[i];
                                 lastEnemy = unit;
