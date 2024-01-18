@@ -39,10 +39,13 @@ public class EnemyTurnController : TurnController {
             targetPos = UnitStaticManager.GetUnitPosition(enemyUnit);
         }
 
-        actionQueue.Enqueue(new WaitAction(.5f));
-        actionQueue.Enqueue(new DoMethodAction(() => (CardHand as EnemyCardHand).DisplayCard(cardToUse)));
-        actionQueue.Enqueue(new WaitAction(2f));
-        actionQueue.Enqueue(new DoMethodAction(() => CardHand.OnPickPosition?.Invoke(targetPos)));
+        if ((CardHand as EnemyCardHand).CanUseCard(cardToUse)) {
+            actionQueue.Enqueue(new WaitAction(.5f));
+            actionQueue.Enqueue(new DoMethodAction(() => (CardHand as EnemyCardHand).DisplayCard(cardToUse)));
+            actionQueue.Enqueue(new WaitAction(2f));
+            actionQueue.Enqueue(new DoMethodAction(() => CardHand.OnPickPosition?.Invoke(targetPos)));
+        }
+
         actionQueue.Enqueue(new WaitAction(.5f));
         actionQueue.Enqueue(new DoMethodAction(() => PickUnit(UnitStaticManager.UnitPositions[pickedUnit])));
     }

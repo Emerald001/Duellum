@@ -11,13 +11,10 @@ public class XRayManager : MonoBehaviour {
     private readonly List<Renderer> currentHits = new();
     private List<Renderer> previousHits = new();
 
-    private Camera Camera;
     private Plane plane;
     private bool canInvoke = false;
 
     private void Awake() {
-        Camera = Camera.main;
-
         plane = new Plane(Vector3.up, Vector3.zero);
         trigger.radius = holeSize * 2;
     }
@@ -41,24 +38,20 @@ public class XRayManager : MonoBehaviour {
         Renderer rend = other.GetComponent<Renderer>();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (plane.Raycast(ray, out float enter)) {
-            Vector3 hitPoint = ray.GetPoint(enter);
-
-            rend.material.SetFloat(SizeID, holeSize);
-            rend.material.SetVector(PosID, Camera.WorldToViewportPoint(hitPoint));
-        }
+        if (plane.Raycast(ray, out float enter))
+            rend.enabled = false;
 
         currentHits.Add(rend);
         canInvoke = true;
     }
 
-    private void Update() {
+    private void LateUpdate() {
         if (!canInvoke)
             return;
 
         for (int i = 0; i < previousHits.Count; i++) {
             if (!currentHits.Contains(previousHits[i]))
-                previousHits[i].material.SetFloat(SizeID, 0);
+                previousHits[i].enabled = true;
         }
 
         previousHits = new(currentHits);

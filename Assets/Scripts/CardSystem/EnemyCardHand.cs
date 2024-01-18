@@ -74,4 +74,8 @@ public class EnemyCardHand : CardHand {
         CardHandStateMachine.OnUse += RemoveSpecificCard;
         Ecard.SelectCard();
     }
+
+    public bool CanUseCard(AbilityCard card) {
+        return cards.IndexOf(card) > 0;
+    }
 }

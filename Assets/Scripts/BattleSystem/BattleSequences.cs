@@ -77,7 +77,10 @@ public class BattleSequences : MonoBehaviour {
             List<Action> queue = new() {
                 new WaitAction(i / 50f),
                 new MoveObjectAction(currentHex.gameObject, 30, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength, 0)),
-                new DoMethodAction(() => currentHex.transform.GetChild(0).gameObject.SetActive(true)),
+                new DoMethodAction(() => { 
+                    for (int i = 0; i < currentHex.transform.childCount; i++)
+                        currentHex.transform.GetChild(i).gameObject.SetActive(true);
+                }),
                 new MoveObjectAction(currentHex.gameObject, 20, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 3, 0)),
                 new MoveObjectAction(currentHex.gameObject, 10, currentHex.StandardWorldPosition - new Vector3(0, rippleStrength / 6, 0)),
                 new MoveObjectAction(currentHex.gameObject, 5, currentHex.StandardWorldPosition + new Vector3(0, rippleStrength / 15, 0)),

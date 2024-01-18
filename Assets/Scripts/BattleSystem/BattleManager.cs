@@ -35,7 +35,7 @@ public class BattleManager : Singleton<BattleManager> {
         inBattle = true;
 
         Vector2Int difference = data.PlayerPos - data.EnemyPos;
-        Vector2Int direction = Mathf.Abs(difference.x) > Mathf.Abs(difference.y) ? new(0, 1) : new(1, 0);
+        Vector2Int direction = Mathf.Abs(difference.x) > Mathf.Abs(difference.y) ? new(0, difference.x < 0 ? 1 : -1) : new(difference.y < 0 ? 1 : -1, 0);
         SpawnUnits(direction, data.PlayerUnits, data.EnemyUnits);
         cardManager.SetUp();
 
@@ -123,7 +123,7 @@ public class BattleManager : Singleton<BattleManager> {
 
     private void SpawnUnits(Vector2Int direction, List<UnitData> playerUnitsToSpawn, List<UnitData> enemyUnitsToSpawn) {
         unitHolder = new GameObject("UnitHolder").transform;
-        Vector2Int reversedDirection = new(direction.y, direction.x);
+        Vector2Int lookDir = new(direction.y, direction.x);
 
         PlayerTurnController playerTurnController = new();
         UnitStaticManager.UnitTeams.Add(0, new());
@@ -132,7 +132,7 @@ public class BattleManager : Singleton<BattleManager> {
             Vector2Int spawnPos = GridStaticFunctions.PlayerSpawnPositions[i];
 
             UnitController unit = unitFactory.CreateUnit(0, playerUnitsToSpawn[i], spawnPos, PlayerUnitPrefab, unitHolder);
-            unit.ChangeUnitRotation(-reversedDirection);
+            unit.ChangeUnitRotation(lookDir);
 
             for (int j = 0; j < playerUnitsToSpawn[i].CardAmount; j++)
                 EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(0, playerUnitsToSpawn[i].Card));
@@ -152,7 +152,7 @@ public class BattleManager : Singleton<BattleManager> {
             Vector2Int spawnPos = GridStaticFunctions.EnemySpawnPositions[i];
 
             UnitController unit = unitFactory.CreateUnit(1, enemyUnitsToSpawn[i], spawnPos, EnemyUnitPrefab, unitHolder);
-            unit.ChangeUnitRotation(reversedDirection);
+            unit.ChangeUnitRotation(-lookDir);
 
             for (int j = 0; j < enemyUnitsToSpawn[i].CardAmount; j++)
                 EventManager<UIEvents, EventMessage<int, AbilityCard>>.Invoke(UIEvents.GiveCard, new(1, enemyUnitsToSpawn[i].Card));
