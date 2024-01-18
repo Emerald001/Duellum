@@ -43,8 +43,8 @@ MonoBehaviour:
     type: 0
     canBeStacked: 0
     duration: 0
-    sevarity: 2
+    sevarity: 3
   hexPrefab: {fileID: 0}
   tileEffect: 1
   Damage: 0
-  cardAbilitySFX: ph_abilityCard
+  cardAbilitySFX: abilityCard_ArrowRain

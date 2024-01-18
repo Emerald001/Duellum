@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: Skeleton
   m_EditorClassIdentifier: 
   Name: Skeleton
-  Description: Has a bow and arrow, and can do ranged damage. However, it doesn't
-    do a lot of damage.
+  Description: Has a ranged attack, and is fast.
   Rank: 1
   Catagory: 1
   Type: 2
-  Icon: {fileID: 21300000, guid: 507cb389034b0fa44902663fe86bb69a, type: 3}
+  Icon: {fileID: 21300000, guid: 84412c44bf7b4274a9dbb35af135d87a, type: 3}
   PawnPrefab: {fileID: 4807378906527954953, guid: 8c78a47f60bcba3449258f2f1232e9a5,
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
