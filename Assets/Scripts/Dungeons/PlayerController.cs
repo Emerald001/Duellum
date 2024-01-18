@@ -83,8 +83,10 @@ public class PlayerController : MonoBehaviour {
     private IEnumerator OnBattleStart(BattleData data) {
         EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Normal);
 
-        if (isWalking)
+        if (isWalking) {
+            unitAnimator.SetBool("Walking", false);
             actionQueue.Clear();
+        }
 
         line.enabled = false;
         interactableStack.Push(false);
