@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class DebugController : MonoBehaviour {
 
     private bool showConsole = false;
@@ -15,7 +15,8 @@ public class DebugController : MonoBehaviour {
         KillAll,
         KillEnemies,
         KillHeroes,
-        GiveCard
+        GiveCard,
+        Restart
     }
 
     private Dictionary<string, CommandType> commandDictionary = new() {
@@ -25,6 +26,7 @@ public class DebugController : MonoBehaviour {
         {"killenemies", CommandType.KillEnemies },
         {"killheroes", CommandType.KillHeroes },
         {"givecard", CommandType.GiveCard},
+        {"restart", CommandType.Restart},
     };
 
     public void OnToggleDebug() {
@@ -80,6 +82,9 @@ public class DebugController : MonoBehaviour {
                         for (int i = UnitStaticManager.DeadUnitsInPlay.Count - 1; i >= 0; i--)
                             UnitStaticManager.ReviveUnit(UnitStaticManager.DeadUnitsInPlay[i], 0);
                     break;
+                    case CommandType.Restart:
+                        SceneManager.LoadScene(0);
+                        break;
 
                     //case CommandType.KillAll:
                     //    for (int i = UnitStaticManager.LivingUnitsInPlay.Count - 1; i >= 0; i--)
