@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Golem
   m_EditorClassIdentifier: 
   Name: Golem
-  Description: A tank. Backstab him!
+  Description: Very high defense.
   Rank: 4
   Catagory: 3
   Type: 0
-  Icon: {fileID: 21300000, guid: df5913b52f4057249893f078b0191cc0, type: 3}
+  Icon: {fileID: 21300000, guid: ca9ea229d5ac0634ca1a5c26ffeb0113, type: 3}
   PawnPrefab: {fileID: 8753619234690991416, guid: e812c04705f47d645beb13e90ec0ff93,
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
@@ -26,7 +26,7 @@ MonoBehaviour:
   tileCover: 0
   TileCoverage: 1
   BaseStatBlock:
-    Defence: 5
+    Defence: 6
     Speed: 1
     Attack: 2
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}

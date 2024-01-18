@@ -17,7 +17,7 @@ MonoBehaviour:
   Rank: 1
   Catagory: 0
   Type: 2
-  Icon: {fileID: 21300000, guid: 273766fd3d062684c9835a2e4340c04c, type: 3}
+  Icon: {fileID: 21300000, guid: 57528e4f714608a42be5c60a69c47521, type: 3}
   PawnPrefab: {fileID: 1053088235272780181, guid: fff557d9b287b224593d8ab7ad18c774,
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
@@ -27,7 +27,7 @@ MonoBehaviour:
   TileCoverage: 3
   BaseStatBlock:
     Defence: 3
-    Speed: 6
+    Speed: 5
     Attack: 1
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []

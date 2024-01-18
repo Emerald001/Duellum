@@ -27,8 +27,8 @@ MonoBehaviour:
   TileCoverage: 3
   BaseStatBlock:
     Defence: 3
-    Speed: 6
-    Attack: 2
+    Speed: 5
+    Attack: 1
   Attack: {fileID: 11400000, guid: 30a598603e865a24097146ca25fb4322, type: 2}
   Properties: []
   Card: {fileID: 11400000, guid: 77d72e7a54570784b97fd37fea867ae4, type: 2}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Thief
   m_EditorClassIdentifier: 
   Name: Thief
-  Description: A fast and deadly Unit.
+  Description: A fast unit, but not very strong.
   Rank: 1
   Catagory: 2
   Type: 0
@@ -26,9 +26,9 @@ MonoBehaviour:
   tileCover: 0
   TileCoverage: 1
   BaseStatBlock:
-    Defence: 4
-    Speed: 3
-    Attack: 3
+    Defence: 3
+    Speed: 4
+    Attack: 1
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
   Card: {fileID: 11400000, guid: 50c69792e0d59664cbed032d77fd7f1a, type: 2}
