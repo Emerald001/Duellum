@@ -12,9 +12,6 @@ public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Image visuals;
 
-    [Header("Values")]
-    [SerializeField] private float hoverHeight = 0.1f; // Adjust the height as needed
-
     private Canvas canvas;
     private Vector3 originalPos;
     private Vector3 hoverPos;

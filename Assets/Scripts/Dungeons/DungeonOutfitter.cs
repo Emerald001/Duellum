@@ -33,7 +33,7 @@ public class DungeonOutfitter : MonoBehaviour {
         SpawnEnemies();
 
         EventManager<UIEvents, string>.Invoke(UIEvents.AddBattleInformation, "Dungeon Generation Finished");
-        EventManager<DungeonEvents>.Invoke(DungeonEvents.GenerationDone);
+        EventManager<UIEvents, EventMessage<float, System.Action>>.Invoke(UIEvents.DoFade, new(0, () => EventManager<DungeonEvents>.Invoke(DungeonEvents.GenerationDone)));
     }
 
     private void OverwriteGridPositions(RoomComponent room) {

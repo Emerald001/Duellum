@@ -9,4 +9,5 @@
     HideEnemyCardHand,
     PopUpWindow,
     ShowPauseMenu,
+    DoFade,
 }
