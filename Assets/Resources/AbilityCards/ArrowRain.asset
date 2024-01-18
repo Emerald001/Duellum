@@ -43,7 +43,7 @@ MonoBehaviour:
     type: 0
     canBeStacked: 0
     duration: 0
-    sevarity: 3
+    sevarity: -4
   hexPrefab: {fileID: 0}
   tileEffect: 1
   Damage: 3
