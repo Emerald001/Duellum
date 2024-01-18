@@ -46,5 +46,5 @@ MonoBehaviour:
     sevarity: -4
   hexPrefab: {fileID: 0}
   tileEffect: 1
-  Damage: 3
+  Damage: 4
   cardAbilitySFX: abilityCard_ArrowRain
