@@ -22,7 +22,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 7c7a81aabc2afbb4d8a57f63463e191d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 38c4581036642384d9f4ba74b24b67e9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -49,12 +49,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HeatTexture:
+        m_Texture: {fileID: 2800000, guid: 528ac9bad40652247818e30720be000e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Metallic:
-        m_Texture: {fileID: 2800000, guid: 92f37bf7e2be0db44bbdae1b4e21f86e, type: 3}
+        m_Texture: {fileID: 2800000, guid: b765b521b028863469dba41d5a2b369f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -62,7 +66,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: b797c267998a2474faa771b6268f74e9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 16fed21f1558cc24f84d0b940eb4cf41, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -82,11 +86,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShaderMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 7b6c31754d5a2154b81d1c2fb08db7e3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Smoothness:
-        m_Texture: {fileID: 2800000, guid: 92f37bf7e2be0db44bbdae1b4e21f86e, type: 3}
+        m_Texture: {fileID: 2800000, guid: ec80132bff2af184a994ed5787cbac26, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -118,13 +122,13 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FlashSpeed: 0
+    - _FlashSpeed: 5
     - _FoamOffset: 0.104
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _MetallicSlider: 0
+    - _MetallicSlider: 0.3
     - _MovementSpeed: 0
     - _NormalExtraSize: 10
     - _NormalStrengthExtra: 1
@@ -138,7 +142,7 @@ Material:
     - _RippleScale: 1.29
     - _Smootheness: 0
     - _Smoothness: 0.226
-    - _SmoothnessSlider: 0
+    - _SmoothnessSlider: 0.25
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
