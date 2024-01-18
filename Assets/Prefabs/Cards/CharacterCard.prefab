@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1133448193024140839}
   - component: {fileID: 6370737630101544114}
   - component: {fileID: 3314755630010456407}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2632573487402955055}
   - component: {fileID: 2632573487402955052}
-  m_Layer: 0
+  - component: {fileID: 2128267353798427179}
+  m_Layer: 5
   m_Name: CharacterCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +101,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2632573487402955053}
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
@@ -108,7 +109,7 @@ Transform:
   - {fileID: 2632573488689154100}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2632573487402955052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +130,19 @@ MonoBehaviour:
   visuals: {fileID: 2632573487880509870}
   hoverHeight: 0.1
   moveSpeed: 50
+--- !u!65 &2128267353798427179
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2632573487402955053}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.1929674, y: 12.171403, z: 0.2829265}
+  m_Center: {x: 0, y: 0.7242272, z: 0}
 --- !u!1 &2632573487471200682
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,7 +154,7 @@ GameObject:
   - component: {fileID: 2632573487471200693}
   - component: {fileID: 2632573487471200695}
   - component: {fileID: 2632573487471200692}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UnitName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +290,7 @@ GameObject:
   - component: {fileID: 2632573487593276700}
   - component: {fileID: 2632573487593276702}
   - component: {fileID: 2632573487593276703}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: AttackImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,7 +367,7 @@ GameObject:
   - component: {fileID: 2632573487614959448}
   - component: {fileID: 2632573487614959451}
   - component: {fileID: 2632573487614959450}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +503,7 @@ GameObject:
   - component: {fileID: 2632573487808423997}
   - component: {fileID: 2632573487808423999}
   - component: {fileID: 2632573487808423996}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Defense
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -625,7 +639,7 @@ GameObject:
   - component: {fileID: 2632573487880509871}
   - component: {fileID: 2632573487880509865}
   - component: {fileID: 2632573487880509870}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CharacterVisuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -701,7 +715,7 @@ GameObject:
   - component: {fileID: 2632573487962814551}
   - component: {fileID: 2632573487962814545}
   - component: {fileID: 2632573487962814550}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UnitDescription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -838,7 +852,7 @@ GameObject:
   - component: {fileID: 2632573488689154097}
   - component: {fileID: 2632573488689154102}
   - component: {fileID: 2632573488689154103}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -945,7 +959,7 @@ GameObject:
   - component: {fileID: 2632573488946027941}
   - component: {fileID: 2632573488946027943}
   - component: {fileID: 2632573488946027940}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DefenseShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1022,7 +1036,7 @@ GameObject:
   - component: {fileID: 3727710079909648292}
   - component: {fileID: 1689543939202978917}
   - component: {fileID: 3471189077627846853}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CardBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1098,7 +1112,7 @@ GameObject:
   - component: {fileID: 4404834996281100628}
   - component: {fileID: 5094358360876455289}
   - component: {fileID: 2301734798272847065}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Speed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1234,7 +1248,7 @@ GameObject:
   - component: {fileID: 8763507441819941216}
   - component: {fileID: 4564574531064574450}
   - component: {fileID: 1886157993247994095}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpeedImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
