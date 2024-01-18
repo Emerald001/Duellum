@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: BulbRoom
     size: {x: 4, y: 4}
-    prefab: {fileID: 6573777615837101216, guid: 77fd4a63ed0d2f943aaa33cd9d9609bc,
+    prefab: {fileID: 1667188576068576429, guid: 77fd4a63ed0d2f943aaa33cd9d9609bc,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}

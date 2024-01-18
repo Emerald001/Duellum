@@ -15,7 +15,7 @@ MonoBehaviour:
   room:
     name: TwoParts
     size: {x: 5, y: 5}
-    prefab: {fileID: 5068739141889801734, guid: 896a2da35ad7325429d5710d732b9644,
+    prefab: {fileID: 8967358455371954755, guid: 896a2da35ad7325429d5710d732b9644,
       type: 3}
     connections:
     - {x: -999, y: -999, z: -999, w: -999}
