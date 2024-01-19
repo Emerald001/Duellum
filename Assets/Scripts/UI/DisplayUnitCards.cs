@@ -8,6 +8,8 @@ public class DisplayUnitCards : MonoBehaviour {
     [SerializeField] private Transform playerHolder;
     [SerializeField] private Transform enemyHolder;
 
+    private List<GameObject> spawnedEnemyObjects = new();
+
     private void OnEnable() {
         EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartBattle, DisplayEnemyCards);
         EventManager<DungeonEvents>.Subscribe(DungeonEvents.GenerationDone, DisplayPlayerCards);
@@ -49,12 +51,16 @@ public class DisplayUnitCards : MonoBehaviour {
             CharacterCard card = Instantiate(unitCard, enemyHolder);
             card.transform.position = new Vector3(enemyHolder.position.x + dis * (i + 1) - totalWidth / 2, enemyHolder.position.y - .1f, enemyHolder.position.z);
             card.SetUp(enemyTeam[i], new Vector3(enemyHolder.position.x + dis * (i + 1) - totalWidth / 2, enemyHolder.position.y - 2.6f, enemyHolder.position.z));
+
+            spawnedEnemyObjects.Add(card.gameObject);
+            spawnedEnemyObjects.Add(holder);
         }
     }
 
     private void RemoveEnemyCards() {
-        for (int i = enemyHolder.childCount - 1; i >= 0; i--) {
-            Destroy(enemyHolder.GetChild(0).gameObject);
+        for (int i = spawnedEnemyObjects.Count - 1; i >= 0; i--) {
+            Destroy(spawnedEnemyObjects[0]);
+            spawnedEnemyObjects.RemoveAt(0);
         }
     }
 }
