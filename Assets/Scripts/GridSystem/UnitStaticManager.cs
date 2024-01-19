@@ -52,6 +52,7 @@ public static class UnitStaticManager {
         UnitTeams[id].Remove(unit);
         if (UnitTeams[id].Count < 1) {
             EventManager<BattleEvents, Vector2Int>.Invoke(BattleEvents.BattleEnd, deathPosition);
+            EventManager<BattleEvents, int>.Invoke(BattleEvents.BattleEnd, id);
             EventManager<BattleEvents>.Invoke(BattleEvents.BattleEnd);
         }
 

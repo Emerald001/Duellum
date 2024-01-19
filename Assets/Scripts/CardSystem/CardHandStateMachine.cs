@@ -47,8 +47,8 @@ public class CardHandStateMachine {
             AbilityManager.PerformAbility(currentCard, ownerId, tilesPerState);
             EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, currentCard.cardAbilitySFX);
 
-            OnUse.Invoke(currentCard);
-            OnDismiss.Invoke();
+            OnUse?.Invoke(currentCard);
+            OnDismiss?.Invoke();
 
             ResetMachine();
             return;

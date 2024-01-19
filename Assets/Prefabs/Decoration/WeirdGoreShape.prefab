@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3978631531046337467}
   - component: {fileID: 5422804726121766890}
   - component: {fileID: 8369398955885181104}
-  - component: {fileID: 4994623231542922965}
   m_Layer: 0
   m_Name: Gore
   m_TagString: Untagged
@@ -84,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4994623231542922965
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3322020867765757006}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.6329075, y: 0.9546156, z: 0.03975671}
-  m_Center: {x: 0, y: -0.000000014901165, z: 0.019232027}
 --- !u!1 &5245520350734672757
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +127,6 @@ GameObject:
   - component: {fileID: 8294260498566515351}
   - component: {fileID: 2545406179709461088}
   - component: {fileID: 6634102554388740781}
-  - component: {fileID: 1277532955602195296}
   m_Layer: 0
   m_Name: Gore
   m_TagString: Untagged
@@ -214,16 +199,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1277532955602195296
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9158546374994668598}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.6652903, y: 0.6301466, z: 0.03375366}
-  m_Center: {x: 0, y: 0, z: 0.016939001}

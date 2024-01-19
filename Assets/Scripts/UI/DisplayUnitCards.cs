@@ -8,6 +8,8 @@ public class DisplayUnitCards : MonoBehaviour {
     [SerializeField] private Transform playerHolder;
     [SerializeField] private Transform enemyHolder;
 
+    private List<GameObject> spawnedEnemyObjects = new();
+
     private void OnEnable() {
         EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartBattle, DisplayEnemyCards);
         EventManager<DungeonEvents>.Subscribe(DungeonEvents.GenerationDone, DisplayPlayerCards);
@@ -31,7 +33,7 @@ public class DisplayUnitCards : MonoBehaviour {
 
             CharacterCard card = Instantiate(unitCard, playerHolder);
             card.transform.position = new Vector3(playerHolder.position.x + dis * (i + 1) - totalWidth / 2, playerHolder.position.y + .1f, playerHolder.position.z);
-            card.SetUp(playerTeam[i], new Vector3(playerHolder.position.x + dis * (i + 1) - totalWidth / 2, playerHolder.position.y + 3, playerHolder.position.z));
+            card.SetUp(playerTeam[i], new Vector3(playerHolder.position.x + dis * (i + 1) - totalWidth / 2, playerHolder.position.y + 2.6f, playerHolder.position.z));
         }
     }
 
@@ -44,18 +46,21 @@ public class DisplayUnitCards : MonoBehaviour {
         for (int i = 0; i < enemyTeam.Count; i++) {
             GameObject holder = Instantiate(cardHolder, enemyHolder);
             holder.transform.position = new Vector3(enemyHolder.position.x + dis * (i + 1) - totalWidth / 2, enemyHolder.position.y, enemyHolder.position.z);
-            //holder.transform.rotation = Quaternion.Euler(0, 0, 180);
+            holder.transform.rotation = Quaternion.Euler(0, 0, 180);
 
             CharacterCard card = Instantiate(unitCard, enemyHolder);
             card.transform.position = new Vector3(enemyHolder.position.x + dis * (i + 1) - totalWidth / 2, enemyHolder.position.y - .1f, enemyHolder.position.z);
-            //card.transform.rotation = Quaternion.Euler(0, 0, 180);
-            card.SetUp(enemyTeam[i], new Vector3(enemyHolder.position.x + dis * (i + 1) - totalWidth / 2, enemyHolder.position.y - 3, enemyHolder.position.z));
+            card.SetUp(enemyTeam[i], new Vector3(enemyHolder.position.x + dis * (i + 1) - totalWidth / 2, enemyHolder.position.y - 2.6f, enemyHolder.position.z));
+
+            spawnedEnemyObjects.Add(card.gameObject);
+            spawnedEnemyObjects.Add(holder);
         }
     }
 
     private void RemoveEnemyCards() {
-        for (int i = enemyHolder.childCount - 1; i >= 0; i--) {
-            Destroy(enemyHolder.GetChild(0).gameObject);
+        for (int i = spawnedEnemyObjects.Count - 1; i >= 0; i--) {
+            Destroy(spawnedEnemyObjects[0]);
+            spawnedEnemyObjects.RemoveAt(0);
         }
     }
 }
