@@ -20,6 +20,7 @@ public class TutorialManager : MonoBehaviour {
 
     private void Start() {
         PlayVideo();
+        EventManager<AudioEvents, EventMessage<string, bool>>.Invoke(AudioEvents.PlayLoopedAudio, new("ExplorationAmbience", true));
     }
 
     private void PlayVideo() {

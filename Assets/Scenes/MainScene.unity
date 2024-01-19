@@ -680,7 +680,6 @@ GameObject:
   - component: {fileID: 234099681}
   - component: {fileID: 234099685}
   - component: {fileID: 234099684}
-  - component: {fileID: 234099683}
   - component: {fileID: 234099686}
   m_Layer: 0
   m_Name: GameManager
@@ -721,24 +720,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &234099683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 234099680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c71000cd6e904543834088eb6f35038, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normalCursor: {fileID: 2800000, guid: 302bd5a42cbebb14b904b77ab54720de, type: 3}
-  hoverCursor: {fileID: 2800000, guid: c94fd9931aca35547b9efafdd2a3a45b, type: 3}
-  grabCursor: {fileID: 2800000, guid: 7163c1b2f445b9540ac064300fe37451, type: 3}
-  attackCursor: {fileID: 2800000, guid: 1863fede90a93074592ba857fe27dde0, type: 3}
-  movementCursor: {fileID: 2800000, guid: 06a8c441dd4fbc04fabf95c3e99af4d8, type: 3}
-  blockedCursor: {fileID: 0}
 --- !u!114 &234099684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1840,12 +1821,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c71000cd6e904543834088eb6f35038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalCursor: {fileID: 2800000, guid: 302bd5a42cbebb14b904b77ab54720de, type: 3}
-  hoverCursor: {fileID: 2800000, guid: c94fd9931aca35547b9efafdd2a3a45b, type: 3}
-  grabCursor: {fileID: 2800000, guid: 7163c1b2f445b9540ac064300fe37451, type: 3}
+  normalCursor: {fileID: 2800000, guid: 3952a0c5535d5b5469a3a80615621870, type: 3}
+  hoverCursor: {fileID: 2800000, guid: 2bd73af0a4e117f4696fb12265df2beb, type: 3}
+  grabCursor: {fileID: 2800000, guid: 0eb3d0414246f734a8b54ef019ee8219, type: 3}
   attackCursor: {fileID: 2800000, guid: 1863fede90a93074592ba857fe27dde0, type: 3}
   movementCursor: {fileID: 2800000, guid: 06a8c441dd4fbc04fabf95c3e99af4d8, type: 3}
-  blockedCursor: {fileID: 0}
+  blockedCursor: {fileID: 2800000, guid: 7163c1b2f445b9540ac064300fe37451, type: 3}
 --- !u!114 &578185380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4250,7 +4231,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4ac9a24224cf5064b811f458e39649a0, type: 2}
   - {fileID: 11400000, guid: ab80ebd0a6bebde448976726ecea5308, type: 2}
   - {fileID: 11400000, guid: f41682d5ca5475346a70a3e45556707d, type: 2}
-  - {fileID: 11400000, guid: d3c87747fc3212c40b557dce6ae928c5, type: 2}
   - {fileID: 11400000, guid: bd41a94b47cfa394db70d46ddb343815, type: 2}
   - {fileID: 11400000, guid: d4404ea27ce8f83478b7236a253be603, type: 2}
   - {fileID: 11400000, guid: 7f43e26be94c46a4e9ef4047ba6e4988, type: 2}
@@ -4259,10 +4239,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e03e076dc70249645968ac3997b5f8fb, type: 2}
   - {fileID: 11400000, guid: d901cb1083371c246bf7d82c9bbbe2c0, type: 2}
   - {fileID: 11400000, guid: b853372de147c224eae0ae74f95216a2, type: 2}
-  - {fileID: 11400000, guid: 46ba4284f7096294588521cc8875faa4, type: 2}
+  - {fileID: 11400000, guid: bd41a94b47cfa394db70d46ddb343815, type: 2}
   - {fileID: 11400000, guid: 99ae10a227a45bb4d9baeda30e79b51e, type: 2}
   - {fileID: 11400000, guid: 375cdb62796afe14d97acd533b34a991, type: 2}
-  - {fileID: 11400000, guid: bd41a94b47cfa394db70d46ddb343815, type: 2}
+  - {fileID: 11400000, guid: 46ba4284f7096294588521cc8875faa4, type: 2}
   endRoomList:
   - {fileID: 11400000, guid: 7a6f313154ef7fb45965ffdcbeb1ad02, type: 2}
   - {fileID: 11400000, guid: 819ddf8097f014b479435134fadb4df5, type: 2}
@@ -4342,8 +4322,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.7293, y: 0.6278}
-  m_SizeDelta: {x: 437.3806, y: 143.1164}
+  m_AnchoredPosition: {x: 2.7293, y: 2.9502}
+  m_SizeDelta: {x: 483.1064, y: 164.0536}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1984525473
 MonoBehaviour:
@@ -4365,7 +4345,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5a5000dac9190184dad4b713cba906fd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f8965afc9a60f36419ca716bdce6940e, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4544,6 +4524,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a2e99f073c4f844a86d961df1b8fa4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hoverIntensity: 1.2
+  clickIntensity: 1.5
   hoverSfxName: 
   clickSfxName: 
   highlightSfxName: 

@@ -517,6 +517,7 @@ MonoBehaviour:
   unitDescription: {fileID: 3648900171503413420}
   unitAttackValue: {fileID: 3648900172839890961}
   unitDefenceValue: {fileID: 3648900173322601118}
+  unitSpeedValue: {fileID: 4446718523106309537}
   background: {fileID: 1641432239345713528}
 --- !u!114 &5393689662474335379
 MonoBehaviour:

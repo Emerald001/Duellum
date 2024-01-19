@@ -91,9 +91,9 @@ public class PlayerUnitController : UnitController {
                 int damage = Values.currentStats.Attack;
 
                 if (damage + bonus > unit.UnitBaseData.BaseStatBlock.Defence)
-                    Tooltip.ShowTooltip_Static($"<color=green> WIN <br> base damage: {damage}  bonus: + {bonus}</color>");
+                    Tooltip.ShowTooltip_Static($"{unit.UnitBaseData.Name} defense: {unit.UnitBaseData.BaseStatBlock.Defence} <br> base attack: <color=green>{damage}</color>  bonus: <color=green>+ {bonus}</color> = <b><color=green>{bonus + damage} (WIN) </color></b>");
                 else
-                    Tooltip.ShowTooltip_Static($"<color=red> FAIL <br> base damage: {damage}  bonus: + {bonus}</color>");
+                    Tooltip.ShowTooltip_Static($"{unit.UnitBaseData.Name} defense {unit.UnitBaseData.BaseStatBlock.Defence} <br> base attack: <color=red>{damage}</color>  bonus: <color=red>+ {bonus}</color> = <b><color=red>{bonus + damage} (LOSE) </color></b>");
             }
         }
         else {

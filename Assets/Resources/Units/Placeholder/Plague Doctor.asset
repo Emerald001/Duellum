@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Plague Doctor
   m_EditorClassIdentifier: 
   Name: Plague Doctor
-  Description: A crafty unit.
+  Description: Fast, sturdy but low attack.
   Rank: 1
   Catagory: 2
   Type: 0
@@ -27,8 +27,8 @@ MonoBehaviour:
   TileCoverage: 1
   BaseStatBlock:
     Defence: 4
-    Speed: 3
-    Attack: 3
+    Speed: 4
+    Attack: 1
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
   Card: {fileID: 11400000, guid: e447da347dd45094c81f9d81406dbaf6, type: 2}

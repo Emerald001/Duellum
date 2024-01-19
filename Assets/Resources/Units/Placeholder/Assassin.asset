@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Assassin
   m_EditorClassIdentifier: 
   Name: Assassin
-  Description: Deadly, but fairly slow.
+  Description: Deadly, but slow.
   Rank: 1
   Catagory: 2
   Type: 0
@@ -22,12 +22,12 @@ MonoBehaviour:
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
     type: 3}
-  movementSpeed: 2
+  movementSpeed: 3
   tileCover: 0
   TileCoverage: 1
   BaseStatBlock:
     Defence: 4
-    Speed: 2
+    Speed: 1
     Attack: 3
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []

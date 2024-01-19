@@ -44,11 +44,11 @@ public class DisplayUnitCards : MonoBehaviour {
         for (int i = 0; i < enemyTeam.Count; i++) {
             GameObject holder = Instantiate(cardHolder, enemyHolder);
             holder.transform.position = new Vector3(enemyHolder.position.x + dis * (i + 1) - totalWidth / 2, enemyHolder.position.y, enemyHolder.position.z);
-            holder.transform.rotation = Quaternion.Euler(0, 0, 180);
+            //holder.transform.rotation = Quaternion.Euler(0, 0, 180);
 
             CharacterCard card = Instantiate(unitCard, enemyHolder);
             card.transform.position = new Vector3(enemyHolder.position.x + dis * (i + 1) - totalWidth / 2, enemyHolder.position.y - .1f, enemyHolder.position.z);
-            card.transform.rotation = Quaternion.Euler(0, 0, 180);
+            //card.transform.rotation = Quaternion.Euler(0, 0, 180);
             card.SetUp(enemyTeam[i], new Vector3(enemyHolder.position.x + dis * (i + 1) - totalWidth / 2, enemyHolder.position.y - 3, enemyHolder.position.z));
         }
     }

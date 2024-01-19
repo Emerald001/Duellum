@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     [Header("References")]
@@ -18,6 +19,10 @@ public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private ActionQueue actionQueue;
 
+    string nameTT;
+    string attackTT;
+    string defenseTT;
+    string speedTT;
     private void Update() {
         actionQueue.OnUpdate();
     }
@@ -32,6 +37,11 @@ public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         speedText.SetText(unit.BaseStatBlock.Speed.ToString());
         visuals.sprite = unit.Icon;
 
+        nameTT = unit.Name;
+        attackTT = unit.BaseStatBlock.Attack.ToString();
+        defenseTT = unit.BaseStatBlock.Defence.ToString();
+        speedTT = unit.BaseStatBlock.Speed.ToString();
+
         canvas = GetComponentInChildren<Canvas>();
         canvas.worldCamera = Camera.main;
 
@@ -41,14 +51,14 @@ public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData) {
         EventManager<BattleEvents, bool>.Invoke(BattleEvents.SetPlayerInteractable, false);
-
+        Tooltip.instance.ShowTooltip($"{nameTT} <br> defense: <color=green>{defenseTT}</color> <br> base attack: <color=red>{attackTT}</color> <br> speed: <color=yellow>{speedTT}</color>");
         actionQueue.Clear();
         actionQueue.Enqueue(new MoveObjectAction(gameObject, 5, hoverPos));
     }
 
     public void OnPointerExit(PointerEventData eventData) {
         EventManager<BattleEvents, bool>.Invoke(BattleEvents.SetPlayerInteractable, true);
-
+        Tooltip.HideTooltip_Static();
         actionQueue.Clear();
         actionQueue.Enqueue(new MoveObjectAction(gameObject, 5, originalPos));
     }

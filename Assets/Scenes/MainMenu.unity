@@ -256,11 +256,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundslist:
-  - name: MainAmbience
-    clip: {fileID: 8300000, guid: a26b83a77b2bafb4c8ce448ca42cfd8c, type: 3}
+  - name: ExplorationAmbience
+    clip: {fileID: 8300000, guid: 99d0406b483e91e4dac3336d15426460, type: 3}
     mixerGroup: {fileID: 0}
     sourceObject: {fileID: 0}
-    volume: 0.611
+    volume: 0.496
     pitch: 1
     spacialBlend: 0
     range: 0

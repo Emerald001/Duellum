@@ -8,6 +8,7 @@ public class UICard : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI unitDescription;
     [SerializeField] private TextMeshProUGUI unitAttackValue;
     [SerializeField] private TextMeshProUGUI unitDefenceValue;
+    [SerializeField] private TextMeshProUGUI unitSpeedValue;
     [SerializeField] private Image background;
 
     private UnitData unitData;
@@ -20,6 +21,7 @@ public class UICard : MonoBehaviour {
 
         unitAttackValue.text = data ? data.BaseStatBlock.Attack.ToString() : "";
         unitDefenceValue.text = data ? data.BaseStatBlock.Defence.ToString() : "";
+        unitSpeedValue.text = data ? data.BaseStatBlock.Speed.ToString() : "";
 
         background.sprite = data ? data.Icon : null;
     }

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Baphomet
   m_EditorClassIdentifier: 
   Name: Baphomet
-  Description: 'High defense, but fairly slow. '
+  Description: High defense, high attack.
   Rank: 5
   Catagory: 0
   Type: 0
-  Icon: {fileID: 21300000, guid: 1bf10c375cfac1d48b9eeca1cf779b5b, type: 3}
+  Icon: {fileID: 21300000, guid: e2a4db05264508b45bfd5b94bd804acf, type: 3}
   PawnPrefab: {fileID: 1417296980327799500, guid: 22a4ababc836f644daa3aec99220883f,
     type: 3}
   UnitCard: {fileID: 2632573487402955053, guid: c1cddacee425f4544a2dbd73db5860ba,
@@ -26,8 +26,8 @@ MonoBehaviour:
   tileCover: 0
   TileCoverage: 1
   BaseStatBlock:
-    Defence: 4
-    Speed: 2
+    Defence: 5
+    Speed: 3
     Attack: 3
   Attack: {fileID: 11400000, guid: 5a50c07394189034587fc5a610a0962b, type: 2}
   Properties: []
