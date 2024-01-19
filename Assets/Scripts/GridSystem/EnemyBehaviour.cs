@@ -66,6 +66,7 @@ public class EnemyBehaviour : MonoBehaviour {
 
         yield return new WaitForSeconds(2f);
 
+        UnitStaticManager.SpawnedEnemies.Remove(this);
         Destroy(gameObject);
     }
 }

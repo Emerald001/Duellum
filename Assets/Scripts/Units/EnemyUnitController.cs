@@ -164,20 +164,22 @@ public class EnemyUnitController : UnitController {
                     List<UnitController> enemies = UnitStaticManager.GetEnemies(OwnerID);
 
                     for (int i = 0; i < enemies.Count; i++) {
-                        var unit = enemies[i];
+                        UnitController unit = enemies[i];
 
-                        weakestEnemy = weakestEnemy ? weakestEnemy : unit;
-                        if (values.currentStats.Attack > unit.Values.currentStats.Defence)
-                            if (unit.Values.currentStats.Defence > weakestEnemy.Values.currentStats.Defence)
-                                weakestEnemy = unit;
+                        weakestEnemy ??= unit;
+                        if (weakestEnemy.Values.currentStats.Defence > unit.Values.currentStats.Defence)
+                            weakestEnemy = unit;
                     }
 
                     Vector2Int enemyPos = UnitStaticManager.GetUnitPosition(weakestEnemy);
+
+                    Debug.Log($"enemy Pos {enemyPos}");
+
                     Vector2Int closestPos = GridStaticFunctions.CONST_EMPTY;
 
                     float leastDistance = Mathf.Infinity;
                     foreach (var item in movementModule.AccessableTiles) {
-                        closestPos = closestPos == GridStaticFunctions.CONST_EMPTY ? closestPos : item;
+                        closestPos = closestPos == GridStaticFunctions.CONST_EMPTY ? item : closestPos;
 
                         float dis = Vector3.Distance(GridStaticFunctions.CalcWorldPos(item), GridStaticFunctions.CalcWorldPos(enemyPos));
                         if (dis < leastDistance) {
@@ -186,6 +188,7 @@ public class EnemyUnitController : UnitController {
                         }
                     }
                     result += (int)(leastDistance / 2);
+                    Debug.Log($"closest standing Pos {closestPos}");
 
                     if (closestPos != GridStaticFunctions.CONST_EMPTY) {
                         bestPickedPosition = closestPos;

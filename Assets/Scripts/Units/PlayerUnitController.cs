@@ -75,6 +75,7 @@ public class PlayerUnitController : UnitController {
 
         if (movementModule.AccessableTiles.Contains(endPos)) {
             EventManager<UIEvents, CursorType>.Invoke(UIEvents.UpdateCursor, CursorType.Move);
+            Tooltip.HideTooltip_Static();
             CurrentPath = movementModule.GetPath(endPos);
         }
         else if (attackModule.AttackableTiles.Contains(endPos)) {

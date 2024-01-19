@@ -4,6 +4,7 @@ using UnityEngine;
 public static class UnitStaticManager {
     // Needs to be reset with Shift + R
     public static List<UnitData> PlayerPickedUnits { get; set; } = new();
+    public static List<EnemyBehaviour> SpawnedEnemies { get; set; } = new();
 
     public static Dictionary<UnitController, Vector2Int> UnitPositions { get; set; } = new();
     public static Dictionary<int, List<UnitController>> UnitTeams { get; set; } = new();

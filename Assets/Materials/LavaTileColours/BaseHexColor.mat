@@ -50,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeatTexture:
-        m_Texture: {fileID: 2800000, guid: 528ac9bad40652247818e30720be000e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6a630749a219ddf4197843ae42c587fe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -86,7 +86,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ShaderMask:
-        m_Texture: {fileID: 2800000, guid: 7b6c31754d5a2154b81d1c2fb08db7e3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 528ac9bad40652247818e30720be000e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Smoothness:
@@ -122,14 +122,14 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
-    - _FlashSpeed: 5
+    - _FlashSpeed: 0.7
     - _FoamOffset: 0.104
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
     - _MetallicSlider: 0.3
-    - _MovementSpeed: 0
+    - _MovementSpeed: 0.1
     - _NormalExtraSize: 10
     - _NormalStrengthExtra: 1
     - _NormalStrengthRipple: 1

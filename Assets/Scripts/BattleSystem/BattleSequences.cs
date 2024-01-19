@@ -55,6 +55,10 @@ public class BattleSequences : MonoBehaviour {
         actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, EventMessage<float, float>>.Invoke(CameraEventType.ZOOM_CAM, new(7, 10))));
         actionQueue.Enqueue(new WaitAction(.2f));
         actionQueue.Enqueue(new DoMethodAction(() => battleManager.StartBattle(data)));
+        actionQueue.Enqueue(new DoMethodAction(() => {
+            for (int i = 0; i < UnitStaticManager.SpawnedEnemies.Count; i++)
+                UnitStaticManager.SpawnedEnemies[i].transform.GetChild(0).gameObject.SetActive(false);
+        }));
     }
 
     private void CameraToNextUnit(UnitController unit) {
@@ -63,6 +67,10 @@ public class BattleSequences : MonoBehaviour {
     }
     private void SetEndSequence(Vector2Int startPosition) {
         actionQueue.Enqueue(new DoMethodAction(() => EndRipple(startPosition, 3)));
+        actionQueue.Enqueue(new DoMethodAction(() => {
+            for (int i = 0; i < UnitStaticManager.SpawnedEnemies.Count; i++)
+                UnitStaticManager.SpawnedEnemies[i].transform.GetChild(0).gameObject.SetActive(true);
+        }));
     }
     private void Ripple(Vector2Int gridPos, float rippleStrength, List<Vector2Int> battleMap) {
         GridStaticFunctions.RippleThroughGridPositions(gridPos, 60, (gridPos, i) => {

@@ -249,7 +249,7 @@ public class DungeonOutfitter : MonoBehaviour {
                 DungeonChest chest = Instantiate(ChestPrefab);
                 chest.Player = playerController.transform;
                 chest.transform.position = worldPosition;
-                chest.transform.rotation = Quaternion.Euler(0, 90 * Random.Range(0, 4), 0);
+                chest.transform.rotation = Quaternion.Euler(0, 180, 0);
             }
         }
     }
@@ -267,6 +267,8 @@ public class DungeonOutfitter : MonoBehaviour {
 
                 enemy.transform.position = worldPosition;
                 enemyIndex++;
+
+                UnitStaticManager.SpawnedEnemies.Add(enemy);
             }
         }
     }

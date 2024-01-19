@@ -11,14 +11,14 @@ public class DungeonChest : MonoBehaviour, IPointerClickHandler {
     private bool hasClicked = false;
 
     public void OnPointerClick(PointerEventData eventData) {
+        if (hasClicked)
+            return;
+
         if (Vector3.Distance(Player.position, transform.position) > 3f) {
             Tooltip.ShowTooltip_Static("Get closer to open");
             Invoke(nameof(HideTooltip), 2f);
             return;
         }
-
-        if (hasClicked)
-            return;
 
         hasClicked = true;
         StartCoroutine(ChestSequence());
