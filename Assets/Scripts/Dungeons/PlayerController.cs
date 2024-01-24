@@ -47,8 +47,10 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void SetInteractable(bool value) {
-        if (value)
-            interactableStack.Pop();
+        if (value) {
+            if (interactableStack.Count > 0)
+                interactableStack.Pop();
+        }
         else
             interactableStack.Push(value);
     }
@@ -102,7 +104,7 @@ public class PlayerController : MonoBehaviour {
         EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 30);
 
         visuals.SetActive(true);
-        interactableStack.Pop();
+        interactableStack.Clear();
 
         FindAccessibleTiles(playerPosition, 30);
     }

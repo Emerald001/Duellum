@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public class DungeonChest : MonoBehaviour, IPointerClickHandler {
     public static int Dissolve = Shader.PropertyToID("_Dissolve");
+    public static bool isUsing;
 
     [SerializeField] private GameObject lockObject;
 
@@ -11,7 +12,7 @@ public class DungeonChest : MonoBehaviour, IPointerClickHandler {
     private bool hasClicked = false;
 
     public void OnPointerClick(PointerEventData eventData) {
-        if (hasClicked)
+        if (hasClicked || isUsing)
             return;
 
         if (Vector3.Distance(Player.position, transform.position) > 3f) {
@@ -21,6 +22,7 @@ public class DungeonChest : MonoBehaviour, IPointerClickHandler {
         }
 
         hasClicked = true;
+        isUsing = true;
         StartCoroutine(ChestSequence());
     }
 
@@ -42,6 +44,7 @@ public class DungeonChest : MonoBehaviour, IPointerClickHandler {
             yield return null;
         }
 
+        isUsing = false;
         EventManager<UIEvents, int>.Invoke(UIEvents.GiveCard, 0);
     }
 }
