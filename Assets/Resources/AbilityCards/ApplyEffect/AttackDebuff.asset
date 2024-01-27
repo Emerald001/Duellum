@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c25c04580a62a49bc10ef81d214032, type: 3}
   m_Name: AttackDebuff
   m_EditorClassIdentifier: 
-  Name: Disarm
+  Name: Disarm (Caim)
   ShortcutName: AttackDebuff
-  Discription: From Caim, Debuff an enemy!
+  Discription: -1 attack. Can be used at any time.
   CardType: 0
   Icon: {fileID: 21300000, guid: 0a7f4c7964909fa4cb3c5267084e8aea, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}

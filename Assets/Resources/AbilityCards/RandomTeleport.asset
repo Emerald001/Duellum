@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: The Goddess of Nature has decided to help you.
   ShortcutName: 
-  Discription: Teleport a unit to a random tile.
+  Discription: Teleport a unit to a random tile. Can be used at any time.
+  Effect: 'Proximity: Ranged <br> Effect: Teleport <br> On: Any Unit<br> Duration:
+    One Turn'
   CardType: 2
   Icon: {fileID: 21300000, guid: c938c237e02b0984bb1e45f9a4272b8a, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}

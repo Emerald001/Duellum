@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: The Goddess of Nature has decided to help you.
   ShortcutName: 
-  Discription: Place a boulder at any position you want, only once.
+  Discription: Place a boulder at any position you want, only once. Can be used at
+    any time.
+  Effect: 'Proximity: Ranged <br> Effect: Place Object <br> On: Empty Tile <br> Duration:
+    Indefinitely'
   CardType: 2
   Icon: {fileID: 21300000, guid: 7a04607ae68a9bb489e0b8888c5b9968, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}

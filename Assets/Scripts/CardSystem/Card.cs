@@ -5,6 +5,7 @@ public abstract class Card : ScriptableObject {
     public string Name;
     public string ShortcutName;
     public string Discription;
+    public string Effect;
     public CardType CardType;
 
     public Sprite Icon;
