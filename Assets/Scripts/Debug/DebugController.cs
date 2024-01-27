@@ -12,7 +12,6 @@ public class DebugController : MonoBehaviour {
     public enum CommandType {
         ShakeCamera,
         ReviveAll,
-        KillAll,
         KillEnemies,
         KillHeroes,
         GiveCard,
@@ -22,7 +21,6 @@ public class DebugController : MonoBehaviour {
     private Dictionary<string, CommandType> commandDictionary = new() {
         {"shakecam", CommandType.ShakeCamera },
         {"reviveall", CommandType.ReviveAll},
-        {"killall", CommandType.KillAll },
         {"killenemies", CommandType.KillEnemies },
         {"killheroes", CommandType.KillHeroes },
         {"givecard", CommandType.GiveCard},
@@ -84,6 +82,16 @@ public class DebugController : MonoBehaviour {
                     break;
                     case CommandType.Restart:
                         SceneManager.LoadScene(0);
+                        break;
+                    case CommandType.KillEnemies:
+                        foreach(UnitController unit in UnitStaticManager.GetEnemies(0)) {
+                            UnitStaticManager.UnitDeath(unit);
+                        }
+                        break;
+                    case CommandType.KillHeroes:
+                        foreach(UnitController unit in UnitStaticManager.GetEnemies(1)) {
+                            UnitStaticManager.UnitDeath(unit);
+                        }
                         break;
 
                     //case CommandType.KillAll:
