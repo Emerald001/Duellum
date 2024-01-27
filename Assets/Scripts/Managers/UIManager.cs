@@ -27,8 +27,12 @@ public class UIManager : MonoBehaviour {
 
     private void UpdateInfoUI(string name) {
         infoText.text = name;
+        Invoke("HideInfoUI", 3);
     }
 
+    private void HideInfoUI() {
+        infoText.text = "";
+    }
     private void ShowInfoPanel(bool trigger) {
         infoPanel.SetActive(trigger);
     }
