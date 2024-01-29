@@ -22,10 +22,11 @@ public abstract class TurnController {
     public virtual void OnUpdate() {
         if (isPicking)
             return;
-
+        EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.CameraToCurrentUnit, currentUnit);
         currentUnit?.OnUpdate();
-        if (currentUnit.IsDone)
+        if (currentUnit.IsDone) {
             IsDone = true;
+        }
     }
 
     public virtual void OnExit() {

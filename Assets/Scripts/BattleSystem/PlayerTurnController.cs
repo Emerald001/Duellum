@@ -17,8 +17,9 @@ public class PlayerTurnController : TurnController {
                 PickUnit(MouseToWorldView.HoverTileGridPos);
             return;
         }
-
         currentUnit.OnUpdate();
+        EventManager<BattleEvents, UnitController>.Invoke(BattleEvents.CameraToCurrentUnit, currentUnit);
+
         if (currentUnit.IsDone)
             IsDone = true;
 
