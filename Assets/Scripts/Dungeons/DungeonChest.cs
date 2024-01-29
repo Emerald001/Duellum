@@ -29,7 +29,7 @@ public class DungeonChest : MonoBehaviour, IPointerClickHandler {
     }
 
     private IEnumerator ChestSequence() {
-        EventManager<CameraEventType, EventMessage<Transform, float, float>>.Invoke(CameraEventType.QuickZoom, new(transform, 4, 3f));
+        EventManager<CameraEventType, EventMessage<Transform, float, float>>.Invoke(CameraEventType.QuickZoom, new(transform, 4, 1f));
 
         yield return new WaitForSeconds(1f);
 
