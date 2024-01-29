@@ -3,28 +3,21 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI infoText;
-    [SerializeField] private GameObject infoPanel;
     [SerializeField] private GameObject pauseMenu;
-
-    private TextMeshProUGUI panelTitleText;
-    private TextMeshProUGUI panelContentText;
-
-    private void Start() {
-        //infoPanel.SetActive(false);
-        //panelTitleText = infoPanel.GetComponentInChildren<TextMeshProUGUI>();
-    }
+    [SerializeField] private Transform popUp;
 
     private void OnEnable() {
         EventManager<UIEvents, string>.Subscribe(UIEvents.InfoTextUpdate, UpdateInfoUI);
-        EventManager<UIEvents, bool>.Subscribe(UIEvents.PopUpWindow, ShowInfoPanel);
         EventManager<UIEvents, bool>.Subscribe(UIEvents.ShowPauseMenu, ShowPauseMenu);
+        //EventManager<UIEvents, EventMessage<Vector3, string>>.Unsubscribe(UIEvents.);
     }
     private void OnDisable() {
         EventManager<UIEvents, string>.Unsubscribe(UIEvents.InfoTextUpdate, UpdateInfoUI);
-        EventManager<UIEvents, bool>.Unsubscribe(UIEvents.PopUpWindow, ShowInfoPanel);
         EventManager<UIEvents, bool>.Unsubscribe(UIEvents.ShowPauseMenu, ShowPauseMenu);
     }
 
+    private void Start() {
+    }
     private void UpdateInfoUI(string name) {
         infoText.text = name;
         Invoke("HideInfoUI", 3);
@@ -34,7 +27,6 @@ public class UIManager : MonoBehaviour {
         infoText.text = "";
     }
     private void ShowInfoPanel(bool trigger) {
-        infoPanel.SetActive(trigger);
     }
 
     private void ShowPauseMenu(bool trigger) {
