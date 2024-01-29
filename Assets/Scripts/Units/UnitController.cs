@@ -3,7 +3,6 @@ using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
     [SerializeField] private GameObject pawnParent;
-
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
@@ -22,6 +21,7 @@ public abstract class UnitController : MonoBehaviour {
     private FootstepManager footstepManager;
     private ActionQueue queue;
     private Animator unitAnimator;
+    private Transform effectIndicator;
 
     private string attackingSounds;
     private string hurtSounds;
@@ -56,6 +56,7 @@ public abstract class UnitController : MonoBehaviour {
         attackingSounds = data.attackingSounds;
         hurtSounds = data.hurtSounds;
         unitAnimator = GetComponentInChildren<Animator>();
+        effectIndicator = pawn.transform;
     }
 
     public virtual void OnEnter() {
