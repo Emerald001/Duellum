@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 3
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 1b928c1d601392c4a9c54a6a1f8188c0, type: 2}
   m_HaloStrength: 0.5
@@ -748,7 +748,7 @@ MonoBehaviour:
   soundslist:
   - name: Music
     clip: {fileID: 8300000, guid: 67a4d8ad490761e4bbe1ab630d6bf33b, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: 42816867f6deb6f4c9bb3ea64e89c8ac, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.718
     pitch: 1
@@ -757,7 +757,7 @@ MonoBehaviour:
     loop: 1
   - name: ph_PickUpCard
     clip: {fileID: 8300000, guid: fc63346d8c7f45a4bbadec6a3165674a, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -766,7 +766,7 @@ MonoBehaviour:
     loop: 0
   - name: ui_Click
     clip: {fileID: 8300000, guid: 191ac516f3d21ad48965417a3a0b179e, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -775,7 +775,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_grabCard
     clip: {fileID: 8300000, guid: 25d096f297a83c84eb8df9d6ef15aef4, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -784,7 +784,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_shuffleCards
     clip: {fileID: 8300000, guid: ab5bb2a53362d1f44a60584c795f79ec, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -793,7 +793,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_abilityCard
     clip: {fileID: 8300000, guid: 58bc7a5c958328b419992fd2faeccdb4, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -802,7 +802,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_successAttack
     clip: {fileID: 8300000, guid: 2b122009d6dabbe4fb824075b0143b6e, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -811,7 +811,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_failureAttack
     clip: {fileID: 8300000, guid: 9766a2992cfe348488edc3fdcf15c6ae, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -820,7 +820,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_maleHurt
     clip: {fileID: 8300000, guid: c323147bbaa5e5d4f8b1a6f6989e752b, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -829,7 +829,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_bodyFall
     clip: {fileID: 8300000, guid: 0128410b524c062429c1ae5bd8e53ee5, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -838,7 +838,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_bowArrow
     clip: {fileID: 8300000, guid: 7099a82a56c9b674db5571b564e1f9ad, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -847,7 +847,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_swordHit
     clip: {fileID: 8300000, guid: 01510cb57ecc8bb4ba72b00f49f14db7, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -856,7 +856,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_bluntHit
     clip: {fileID: 8300000, guid: 3a1d76fdd1c6b5042b89c4ee7a55e33b, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -865,7 +865,7 @@ MonoBehaviour:
     loop: 0
   - name: ph_Summon
     clip: {fileID: 8300000, guid: 960ceee8f0239ef418ab81f055d86aed, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -874,7 +874,7 @@ MonoBehaviour:
     loop: 0
   - name: abilityCard_DefenseUp
     clip: {fileID: 8300000, guid: f7391630124aab64b8875d16f37de376, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -883,7 +883,7 @@ MonoBehaviour:
     loop: 0
   - name: abilityCard_AttackUp
     clip: {fileID: 8300000, guid: c1051fa81e50e5a4e9cd7b2f182a19ae, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -892,7 +892,7 @@ MonoBehaviour:
     loop: 0
   - name: abilityCard_Speed
     clip: {fileID: 8300000, guid: 68149bcda1883714ab9a70b498f70df3, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -901,7 +901,7 @@ MonoBehaviour:
     loop: 0
   - name: abilityCard_ArrowRain
     clip: {fileID: 8300000, guid: 1791614a84bd62741bbb2da35fb24249, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.666
     pitch: 1
@@ -910,7 +910,7 @@ MonoBehaviour:
     loop: 0
   - name: abilityCard_Disease
     clip: {fileID: 8300000, guid: 9cf78c9fc3eb7164e915284432c67b60, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.666
     pitch: 1
@@ -919,7 +919,7 @@ MonoBehaviour:
     loop: 0
   - name: abilityCard_Steal
     clip: {fileID: 8300000, guid: b2b5b9e6f54edbc41ba061487b9c9a57, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.666
     pitch: 1
@@ -928,7 +928,7 @@ MonoBehaviour:
     loop: 0
   - name: abilityCard_Smokebomb
     clip: {fileID: 8300000, guid: ecc8e3b5c08afee4489e8b199c759b5b, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.666
     pitch: 1
@@ -937,7 +937,7 @@ MonoBehaviour:
     loop: 0
   - name: abilityCard_Stun
     clip: {fileID: 8300000, guid: 0ef7fb51b7c672b4992171c61b461302, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.666
     pitch: 1
@@ -946,7 +946,7 @@ MonoBehaviour:
     loop: 0
   - name: BattleMusic
     clip: {fileID: 8300000, guid: 550677b2c1455244490491cb16ac2652, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -964,7 +964,7 @@ MonoBehaviour:
     loop: 0
   - name: HeavyFootsteps
     clip: {fileID: 8300000, guid: d66e3b1aab9aefe418512637996e94ce, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -973,7 +973,7 @@ MonoBehaviour:
     loop: 0
   - name: GolemFootsteps
     clip: {fileID: 8300000, guid: d186a58e707ed4046a5856979564789e, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -982,7 +982,7 @@ MonoBehaviour:
     loop: 0
   - name: ExplorationAmbience
     clip: {fileID: 8300000, guid: a26b83a77b2bafb4c8ce448ca42cfd8c, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: 67fee9bcf5979d64ca3b12eaf3519523, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.432
     pitch: 1
@@ -991,7 +991,7 @@ MonoBehaviour:
     loop: 1
   - name: CombatAmbience
     clip: {fileID: 8300000, guid: 99d0406b483e91e4dac3336d15426460, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: 67fee9bcf5979d64ca3b12eaf3519523, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.424
     pitch: 1
@@ -1000,7 +1000,7 @@ MonoBehaviour:
     loop: 1
   - name: BattleStart
     clip: {fileID: 8300000, guid: 6430b7b79451f2743a1bc0455d59a68f, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1009,7 +1009,7 @@ MonoBehaviour:
     loop: 0
   - name: HeavyFootstep1
     clip: {fileID: 8300000, guid: d186a58e707ed4046a5856979564789e, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1018,7 +1018,7 @@ MonoBehaviour:
     loop: 0
   - name: HeavyFootstep2
     clip: {fileID: 8300000, guid: f4ee5bbbc2a38fd4a8c032aa8c8ed761, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1027,7 +1027,7 @@ MonoBehaviour:
     loop: 0
   - name: HeavyFootstep3
     clip: {fileID: 8300000, guid: 6d0cac64fcec3ac4dba754ae317118f2, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1036,7 +1036,7 @@ MonoBehaviour:
     loop: 0
   - name: HeavyFootstep4
     clip: {fileID: 8300000, guid: 58ed8e0225775f748a459998418167f7, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1045,7 +1045,7 @@ MonoBehaviour:
     loop: 0
   - name: HeavyFootstep5
     clip: {fileID: 8300000, guid: 51b75abac8547ac449e8a9dbba1bf4f6, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1054,7 +1054,7 @@ MonoBehaviour:
     loop: 0
   - name: HeavyFootstep6
     clip: {fileID: 8300000, guid: d66e3b1aab9aefe418512637996e94ce, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1063,7 +1063,7 @@ MonoBehaviour:
     loop: 0
   - name: TileEffect
     clip: {fileID: 8300000, guid: 7e9947923c746b2499387d07982e2b82, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1072,7 +1072,7 @@ MonoBehaviour:
     loop: 0
   - name: Whoosh
     clip: {fileID: 8300000, guid: 88a0f952194f37240b16e4d067df086e, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1081,7 +1081,7 @@ MonoBehaviour:
     loop: 0
   - name: Ripple
     clip: {fileID: 8300000, guid: a8df62b7f3316c740857909161d4d84f, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1
@@ -1090,7 +1090,7 @@ MonoBehaviour:
     loop: 0
   - name: SummonEnemies
     clip: {fileID: 8300000, guid: 414e64f96d0200841b34102c04d330af, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.666
     pitch: 1
@@ -1110,8 +1110,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoText: {fileID: 1531117538}
-  infoPanel: {fileID: 0}
   pauseMenu: {fileID: 0}
+  popUp: {fileID: 7194649219193722565, guid: 0dd84ac9a4f7ef141a6fbf695ee48524, type: 3}
 --- !u!1 &244132521
 GameObject:
   m_ObjectHideFlags: 0
@@ -3285,10 +3285,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
+  m_fontSize: 30.6
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -4086,7 +4086,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1531117537}
   - component: {fileID: 1531117540}
-  - component: {fileID: 1531117539}
   - component: {fileID: 1531117538}
   m_Layer: 5
   m_Name: InfoText
@@ -4205,21 +4204,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1531117539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1531117536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90f74118c52375b449d6d7251bbd9f42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  infoText: {fileID: 1531117538}
-  infoPanel: {fileID: 0}
-  pauseMenu: {fileID: 0}
 --- !u!222 &1531117540
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5089,7 +5073,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 2.7293, y: 2.9502}
-  m_SizeDelta: {x: 483.1064, y: 164.0536}
+  m_SizeDelta: {x: 369.733, y: 145.564}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1984525473
 MonoBehaviour:
