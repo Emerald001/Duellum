@@ -176,5 +176,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualsParent: {fileID: 1696045434725523971}
-  viewRange: 2
+  viewRange: 5
   rotationSpeed: 30
