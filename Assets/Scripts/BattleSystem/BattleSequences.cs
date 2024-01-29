@@ -10,10 +10,12 @@ public class BattleSequences : MonoBehaviour {
     private void OnEnable() {
         EventManager<BattleEvents, BattleData>.Subscribe(BattleEvents.StartBattle, SetStartSequence);
         EventManager<BattleEvents, Vector2Int>.Subscribe(BattleEvents.BattleEnd, SetEndSequence);
+        EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.CameraToCurrentUnit, CameraToNextUnit);
     }
     private void OnDisable() {
         EventManager<BattleEvents, BattleData>.Unsubscribe(BattleEvents.StartBattle, SetStartSequence);
         EventManager<BattleEvents, Vector2Int>.Unsubscribe(BattleEvents.BattleEnd, SetEndSequence);
+        EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.CameraToCurrentUnit, CameraToNextUnit);
     }
 
     private void Update() {
@@ -55,10 +57,13 @@ public class BattleSequences : MonoBehaviour {
         actionQueue.Enqueue(new DoMethodAction(() => battleManager.StartBattle(data)));
     }
 
+    private void CameraToNextUnit(UnitController unit) {
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, float>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_SPEED, 10)));
+        actionQueue.Enqueue(new DoMethodAction(() => EventManager<CameraEventType, Transform>.Invoke(CameraEventType.CHANGE_CAM_FOLLOW_OBJECT, unit.transform)));
+    }
     private void SetEndSequence(Vector2Int startPosition) {
         actionQueue.Enqueue(new DoMethodAction(() => EndRipple(startPosition, 3)));
     }
-
     private void Ripple(Vector2Int gridPos, float rippleStrength, List<Vector2Int> battleMap) {
         GridStaticFunctions.RippleThroughGridPositions(gridPos, 60, (gridPos, i) => {
             Tile currentHex = GridStaticFunctions.Grid[gridPos];
