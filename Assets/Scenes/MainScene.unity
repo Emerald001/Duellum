@@ -4993,6 +4993,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 99ae10a227a45bb4d9baeda30e79b51e, type: 2}
   - {fileID: 11400000, guid: 375cdb62796afe14d97acd533b34a991, type: 2}
   - {fileID: 11400000, guid: 46ba4284f7096294588521cc8875faa4, type: 2}
+  - {fileID: 11400000, guid: a025c98a80c44a943a9a0e65cf06c032, type: 2}
   endRoomList:
   - {fileID: 11400000, guid: 7a6f313154ef7fb45965ffdcbeb1ad02, type: 2}
   - {fileID: 11400000, guid: 819ddf8097f014b479435134fadb4df5, type: 2}

@@ -5,6 +5,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public partial class RoomGeneratorEditor : EditorWindow {
+    private Color blue = new(0.4745098f, 0.5764706f, 0.6862745f, 1);
     private Vector2Int size = new(1, 1);
 
     private Dictionary<Vector2Int, TileType> grid = new();
@@ -22,6 +23,8 @@ public partial class RoomGeneratorEditor : EditorWindow {
     private bool isHeight = true;
     private bool shouldDrawHeight = true;
 
+    private Rect buttonRect;
+
     private int tilesPerRoom => GridStaticFunctions.TilesPerRoom;
 
     private enum Directions {
@@ -29,6 +32,36 @@ public partial class RoomGeneratorEditor : EditorWindow {
         East,
         South,
         West
+    }
+
+    private class PopupExample : PopupWindowContent {
+        private RoomGeneratorEditor editor;
+        private Rect buttonRect;
+
+        public PopupExample(RoomGeneratorEditor editor, Rect buttonRect) {
+            this.editor = editor;
+            this.buttonRect = buttonRect;
+        }
+
+        public override Vector2 GetWindowSize() {
+            return new Vector2(500, 75);
+        }
+
+        public override void OnGUI(Rect rect) {
+            GUILayout.Label("Are you sure you want to Reset the Room?", EditorStyles.boldLabel);
+
+            GUILayout.Space(10);
+
+            if (GUILayout.Button("Yes")) {
+                editor.AllocateRoomPositions();
+                editor.GenerateConnections();
+
+                PopupWindow.Show(buttonRect, this);
+            }
+
+            if (GUILayout.Button("No"))
+                PopupWindow.Show(buttonRect, this);
+        }
     }
 
     [MenuItem("Custom/Room Generator")]
@@ -64,6 +97,10 @@ public partial class RoomGeneratorEditor : EditorWindow {
         tileName = EditorGUILayout.TextField("Name", tileName);
         size = EditorGUILayout.Vector2IntField("Size", size);
 
+        buttonRect = GUILayoutUtility.GetLastRect();
+        if (GUILayout.Button("Reset Entire Room"))
+            PopupWindow.Show(buttonRect, new PopupExample(this, buttonRect));
+
         DrawUILine(Color.gray);
 
         if (size.x > 10)
@@ -82,14 +119,6 @@ public partial class RoomGeneratorEditor : EditorWindow {
             lastSize = size;
         }
 
-        if (GUILayout.Button("Reset")) {
-            AllocateRoomPositions();
-            GenerateConnections();
-        }
-
-        if (GUILayout.Button("Generate Room"))
-            GenerateRoom();
-
         if (connectionGrid.Count > 0)
             DrawConnections();
 
@@ -97,13 +126,13 @@ public partial class RoomGeneratorEditor : EditorWindow {
             DrawUILine(Color.gray);
 
             EditorGUILayout.BeginHorizontal();
-            GUI.backgroundColor = isHeight ? Color.green : Color.white;
+            GUI.backgroundColor = isHeight ? blue : Color.white;
             if (GUILayout.Button("HeightMap")) {
                 isHeight = true;
                 shouldDrawHeight = true;
             }
 
-            GUI.backgroundColor = !isHeight ? Color.green : Color.white;
+            GUI.backgroundColor = !isHeight ? blue : Color.white;
             if (GUILayout.Button("TileMap")) {
                 isHeight = false;
                 shouldDrawHeight = false;
@@ -112,6 +141,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
 
             DrawUILine(Color.gray);
 
+            GUI.backgroundColor = Color.white;
             if (shouldDrawHeight)
                 DrawHeight();
             else
@@ -120,6 +150,11 @@ public partial class RoomGeneratorEditor : EditorWindow {
 
         if (grid.Select(x => x.Value).Where(x => x == TileType.EnemySpawn).Any())
             DrawEnemySelection();
+
+        GUI.backgroundColor = Color.white;
+
+        if (GUILayout.Button("Generate Room"))
+            GenerateRoom();
     }
 
     private void GenerateRoom() {
@@ -270,7 +305,7 @@ public partial class RoomGeneratorEditor : EditorWindow {
 
 public partial class RoomGeneratorEditor {
     private void DrawConnections() {
-        GUILayout.Label("Click on the buttons to identify their connections");
+        GUILayout.Label("Click on the buttons to set their directional connections");
 
         EditorGUILayout.BeginVertical();
 
@@ -278,7 +313,7 @@ public partial class RoomGeneratorEditor {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space(21f, false);
         for (int x = 0; x < size.x; x++) {
-            GUI.backgroundColor = connectionGrid[new(x, size.y - 1)].z != GridStaticFunctions.CONST_INT ? Color.green : Color.white;
+            GUI.backgroundColor = connectionGrid[new(x, size.y - 1)].z != GridStaticFunctions.CONST_INT ? blue : Color.white;
 
             if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                 ToggleConnectionState(x, size.y - 1, Directions.North);
@@ -290,13 +325,13 @@ public partial class RoomGeneratorEditor {
             EditorGUILayout.BeginHorizontal();
             for (int x = 0; x < size.x + 2; x++) {
                 if (x == 0) {
-                    GUI.backgroundColor = connectionGrid[new(x, y)].y != GridStaticFunctions.CONST_INT ? Color.green : Color.white;
+                    GUI.backgroundColor = connectionGrid[new(x, y)].y != GridStaticFunctions.CONST_INT ? blue : Color.white;
 
                     if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                         ToggleConnectionState(x, y, Directions.West);
                 }
                 else if (x == size.x + 1) {
-                    GUI.backgroundColor = connectionGrid[new(x - 2, y)].x != GridStaticFunctions.CONST_INT ? Color.green : Color.white;
+                    GUI.backgroundColor = connectionGrid[new(x - 2, y)].x != GridStaticFunctions.CONST_INT ? blue : Color.white;
 
                     if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                         ToggleConnectionState(x - 2, y, Directions.East);
@@ -313,7 +348,7 @@ public partial class RoomGeneratorEditor {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space(21f, false);
         for (int x = 0; x < size.x; x++) {
-            GUI.backgroundColor = connectionGrid[new(x, 0)].w != GridStaticFunctions.CONST_INT ? Color.green : Color.white;
+            GUI.backgroundColor = connectionGrid[new(x, 0)].w != GridStaticFunctions.CONST_INT ? blue : Color.white;
 
             if (GUILayout.Button("  ", GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                 ToggleConnectionState(x, 0, Directions.South);
@@ -324,7 +359,7 @@ public partial class RoomGeneratorEditor {
     }
 
     private void DrawTiles() {
-        GUILayout.Label("Click on the buttons to identify blockades");
+        GUILayout.Label("Click on the buttons to set blockades");
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         EditorGUILayout.BeginVertical();
@@ -353,7 +388,7 @@ public partial class RoomGeneratorEditor {
     }
 
     private void DrawHeight() {
-        GUILayout.Label("Click on the buttons to identify Heights");
+        GUILayout.Label("Change the values to set Heights");
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         EditorGUILayout.BeginVertical();
@@ -439,27 +474,15 @@ public partial class RoomGeneratorEditor {
     private void ToggleTileState(int x, int y) {
         switch (grid[new(x, y)]) {
             case TileType.Normal:
-                grid[new(x, y)] = TileType.HalfCover;
-                break;
-            case TileType.HalfCover:
                 grid[new(x, y)] = TileType.Cover;
                 break;
             case TileType.Cover:
                 grid[new(x, y)] = TileType.Lava;
                 break;
             case TileType.Lava:
-                grid[new(x, y)] = TileType.Spawn;
-                break;
-            case TileType.Spawn:
                 grid[new(x, y)] = TileType.Special;
                 break;
             case TileType.Special:
-                grid[new(x, y)] = TileType.EnemySpawn;
-                break;
-            case TileType.EnemySpawn:
-                grid[new(x, y)] = TileType.BossSpawn;
-                break;
-            case TileType.BossSpawn:
                 grid[new(x, y)] = TileType.Normal;
                 break;
 
@@ -539,22 +562,10 @@ public partial class RoomGeneratorEditor {
                 GUI.backgroundColor = new Color(1f, .5f, 0);
                 break;
             case TileType.Cover:
-                GUI.backgroundColor = Color.black;
-                break;
-            case TileType.HalfCover:
                 GUI.backgroundColor = Color.gray;
-                break;
-            case TileType.Spawn:
-                GUI.backgroundColor = Color.green;
                 break;
             case TileType.Special:
                 GUI.backgroundColor = Color.yellow;
-                break;
-            case TileType.EnemySpawn:
-                GUI.backgroundColor = Color.red;
-                break;
-            case TileType.BossSpawn:
-                GUI.backgroundColor = new Color(.5f, 0, 0);
                 break;
 
             default:

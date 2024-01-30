@@ -65,7 +65,7 @@ public class SelectorDrawer : PropertyDrawer {
             position.y += EditorGUIUtility.singleLineHeight + VerticalSpacing;
             totalHeight += EditorGUIUtility.singleLineHeight + VerticalSpacing;
 
-            int amount = property.FindPropertyRelative("isHex").boolValue ? 5 : 3;
+            int amount = 3;
             EditorGUI.IntSlider(position, property.FindPropertyRelative("rotIndex"), 0, amount);
         }
     }
