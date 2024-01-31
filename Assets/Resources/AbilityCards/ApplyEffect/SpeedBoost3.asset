@@ -15,8 +15,8 @@ MonoBehaviour:
   Name: The Goddess of Breath has chosen to help you.
   ShortcutName: 
   Discription: Move 3 tiles extra this turn. Can be used at any time.
-  Effect: 'Proximity: Ranged <br> Effect: +3 Speed<br> On: Friendly Units<br> Duration:
-    One Turn'
+  Effect: 'Proximity: Any Distance <br> Effect: +3 Speed<br> On: Friendly Units<br>
+    Duration: One Turn'
   CardType: 1
   Icon: {fileID: 21300000, guid: 8d7e5cda259fae8428be97101179029f, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}

@@ -1,39 +1,51 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardAdditions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler{
+public class CardAdditions : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
     [SerializeField] private BaseCardBehaviour cardBehaviour;
     [SerializeField] private CardAssetHolder cardAssetHolder;
 
+    [SerializeField] private float tooltipDelay = 1f;
+    [SerializeField] private float tooltipDuration = 3f;
+
     private bool hovering = false;
-    private Coroutine hoveringRoutine;
-    private float hoverDuration = 1f;
+    private bool tooltipShowing = false;
+    private float tooltipTimer = 0f;
 
     public void OnPointerEnter(PointerEventData eventData) {
         hovering = true;
-
-        if(hoveringRoutine != null) {
-            StopCoroutine(hoveringRoutine);
-        }
-
-        hoveringRoutine = StartCoroutine(StartHoverTimer());
     }
 
     public void OnPointerExit(PointerEventData eventData) {
         hovering = false;
         Tooltip.instance.HideTooltip();
-        if (hoveringRoutine != null) {
-            StopCoroutine(hoveringRoutine);
+    }
+    private void Update() {
+        if (hovering && !tooltipShowing) {
+            tooltipTimer += Time.deltaTime;
+            if (tooltipTimer >= tooltipDelay) {
+                Tooltip.instance.ShowTooltip(cardAssetHolder.effect);
+                tooltipShowing = true;
+                Invoke("Hide", 3);
+            }
+        }
+        else {
+            tooltipTimer = 0f;
+        }
+
+        if (tooltipShowing) {
+            if (tooltipTimer >= tooltipDuration) {
+                Hide();
+            }
+            else {
+                tooltipTimer += Time.deltaTime;
+            }
         }
     }
 
-    private IEnumerator StartHoverTimer() {
-        yield return new WaitForSeconds(hoverDuration);
-        if (hovering) {
-            Tooltip.instance.ShowTooltip(cardAssetHolder.effect);
-        }
+    private void Hide() {
+        Tooltip.instance.HideTooltip();
+
     }
 }

@@ -16,8 +16,8 @@ MonoBehaviour:
   ShortcutName: 
   Discription: +1 attack to a unit of your choice, only once. Can be used at any
     time.
-  Effect: 'Proximity: Ranged <br> Effect: +1 Attack<br> On: Friendly Units<br> Duration:
-    One Turn'
+  Effect: 'Proximity: Any Distance <br> Effect: +1 Attack<br> On: Friendly Units<br>
+    Duration: One Turn'
   CardType: 1
   Icon: {fileID: 21300000, guid: 9368529358130e543862a7ce5b3db083, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}

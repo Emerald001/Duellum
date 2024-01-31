@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerTurnController : TurnController {
     public override void OnEnter() {
         base.OnEnter();
-
         HighlightUnits();
         isPicking = true;
         EventManager<UIEvents>.Subscribe(UIEvents.ReleasedAbilityCard, HighlightUnits);
@@ -13,6 +12,7 @@ public class PlayerTurnController : TurnController {
 
     public override void OnUpdate() {
         if (isPicking) {
+
             if (Input.GetKeyDown(KeyCode.Mouse0))
                 PickUnit(MouseToWorldView.HoverTileGridPos);
             return;
@@ -23,8 +23,9 @@ public class PlayerTurnController : TurnController {
         if (currentUnit.IsDone)
             IsDone = true;
 
-        if (currentUnit.HasPerformedAction)
+        if (currentUnit.HasPerformedAction) {
             return;
+        }
 
         if (Input.GetKeyDown(KeyCode.Mouse1)) {
             EventManager<UIEvents>.Subscribe(UIEvents.ReleasedAbilityCard, HighlightUnits);

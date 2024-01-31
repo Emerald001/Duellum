@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Stun an enemy
   ShortcutName: Grapple
   Discription: Enemy can't move for three turns. Can only be used when in range.
-  Effect: 'Proximity: Melee <br> Effect: Freeze Enemy <br> On: Enemy Unit<br> Duration:
+  Effect: 'Proximity: Close <br> Effect: Freeze Enemy <br> On: Enemy Unit<br> Duration:
     Three Turns'
   CardType: 0
   Icon: {fileID: 21300000, guid: 413c8dc6abcd0b241ad7771e6e5bbb98, type: 3}

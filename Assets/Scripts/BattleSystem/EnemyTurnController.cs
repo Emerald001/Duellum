@@ -48,6 +48,7 @@ public class EnemyTurnController : TurnController {
 
         actionQueue.Enqueue(new WaitAction(.5f));
         actionQueue.Enqueue(new DoMethodAction(() => PickUnit(UnitStaticManager.UnitPositions[pickedUnit])));
+
     }
 
     public override void OnExit() {

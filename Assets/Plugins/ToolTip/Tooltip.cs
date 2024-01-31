@@ -29,8 +29,8 @@ public class Tooltip : MonoBehaviour {
     }
 
     public void ShowTooltip(string tooltipString) {
-        float textpadding = 10f;
-        Vector2 backgroundSize = new(tooltipText.preferredWidth + textpadding * 2f, tooltipText.preferredHeight + textpadding * 2f);
+        float textpadding = 5f;
+        Vector2 backgroundSize = new(tooltipText.preferredWidth + textpadding * 5f, tooltipText.preferredHeight + textpadding * 5f);
 
         tooltipText.text = tooltipString;
         backgroundRectTransform.sizeDelta = backgroundSize;

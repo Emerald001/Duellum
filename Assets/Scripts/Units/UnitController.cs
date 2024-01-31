@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using HighlightPlus;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class UnitController : MonoBehaviour {
     [SerializeField] private GameObject pawnParent;
+    [SerializeField] private HighlightEffect hightlightEffect;
     public UnitData UnitBaseData { get; private set; }
     public bool HasPerformedAction { get; private set; }
     public bool IsDone { get; private set; }
@@ -34,11 +36,15 @@ public abstract class UnitController : MonoBehaviour {
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitDeath, UnitDeath);
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitHit, UnitHit);
         EventManager<BattleEvents, UnitController>.Subscribe(BattleEvents.UnitRevive, UnitRevive);
+        EventManager<UIEvents, UnitController>.Subscribe(UIEvents.ShowUnitHighlight, ShowHighlight);
+        EventManager<UIEvents, UnitController>.Subscribe(UIEvents.HideUnitHighlight, HideHighlight);
     }
     private void OnDisable() {
         EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitDeath, UnitDeath);
         EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitHit, UnitHit);
         EventManager<BattleEvents, UnitController>.Unsubscribe(BattleEvents.UnitRevive, UnitRevive);
+        EventManager<UIEvents, UnitController>.Unsubscribe(UIEvents.ShowUnitHighlight, ShowHighlight);
+        EventManager<UIEvents, UnitController>.Unsubscribe(UIEvents.HideUnitHighlight, HideHighlight);
     }
 
     public virtual void SetUp(int id, UnitData data, Vector2Int pos) {
@@ -180,5 +186,17 @@ public abstract class UnitController : MonoBehaviour {
         lookDirection = newRotation;
 
         transform.rotation = Quaternion.Euler(new Vector3(0, GridStaticFunctions.GetRotationFromVector2Direction(lookDirection), 0));
+    }
+
+    public void ShowHighlight(UnitController unit) {
+        if(unit.hightlightEffect != null) {
+        unit.hightlightEffect.highlighted = true;
+        }
+    }
+
+    public void HideHighlight(UnitController unit) {
+        if (unit.hightlightEffect != null) {
+            unit.hightlightEffect.highlighted = false;
+        }
     }
 }

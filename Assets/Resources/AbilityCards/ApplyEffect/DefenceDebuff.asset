@@ -15,8 +15,8 @@ MonoBehaviour:
   Name: Defence Down
   ShortcutName: DefenceDebuff
   Discription: 
-  Effect: 'Proximity: Ranged <br> Effect: -1 Defense<br> On: Enemy Units<br> Duration:
-    One Turn'
+  Effect: 'Proximity: Any Distance <br> Effect: -1 Defense<br> On: Enemy Units<br>
+    Duration: One Turn'
   CardType: 1
   Icon: {fileID: 21300000, guid: 85e157bae68557d4da87a1d60dc70c71, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}
