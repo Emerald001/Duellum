@@ -48,10 +48,19 @@ public class PlayerCardHand : CardHand {
         for (int i = 0; i < cardVisuals.Count; i++) {
             CardAssetHolder card = cardVisuals[i];
             Card cardData = cards[i];
+            AbilityCard abilityCard = (AbilityCard)cards[i];
+            card.effect = cardData.Effect;
 
             card.Name.text = cardData.Name;
             card.Discription.text = cardData.Discription;
             card.Icon.sprite = cardData.Icon;
+
+            if (CanUseCard(abilityCard)) {
+                card.BorderHighlighter.enabled = true;
+            }
+            else {
+                card.BorderHighlighter.enabled = false;
+            }
 
             float angle = startAngle + i * angleIncrement;
             float radianAngle = Mathf.Deg2Rad * angle;
@@ -73,7 +82,7 @@ public class PlayerCardHand : CardHand {
             });
         }
     }
-    
+
     private void SetCardsToMoveOver(BaseCardBehaviour raisedCard, System.Action actionForRaisedCard) {
         if (cardVisuals.Where(x => x.cardBehaviour.CanInvoke == false).ToList().Count > 0)
             return;
@@ -104,7 +113,6 @@ public class PlayerCardHand : CardHand {
     private void SetCardsBackToStandardPos(BaseCardBehaviour raisedCard, System.Action actionForRaisedCard) {
         if (cardVisuals.Where(x => x.cardBehaviour.CanInvoke == false).ToList().Count > 0)
             return;
-
         foreach (CardAssetHolder card in cardVisuals) {
             if (card.cardBehaviour == raisedCard) {
                 actionForRaisedCard.Invoke();
@@ -123,5 +131,9 @@ public class PlayerCardHand : CardHand {
 
         CardHandStateMachine.SetMachine(abilityCard, true);
         CardHandStateMachine.OnUse += RemoveSpecificCard;
+    }
+
+    public bool CanUseCard(AbilityCard card) {
+        return cards.IndexOf(card) > 0;
     }
 }

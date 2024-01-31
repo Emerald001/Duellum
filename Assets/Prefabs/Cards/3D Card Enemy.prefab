@@ -837,6 +837,8 @@ MonoBehaviour:
   Icon: {fileID: 2352124864769876710}
   Background: {fileID: 7259527609011229209}
   Border: {fileID: 7837841311922584407}
+  BorderHighlighter: {fileID: 8217239867070493655}
+  effect: 
 --- !u!114 &6765495845469968942
 MonoBehaviour:
   m_ObjectHideFlags: 0

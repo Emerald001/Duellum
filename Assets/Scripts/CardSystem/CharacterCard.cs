@@ -52,14 +52,18 @@ public class CharacterCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerEnter(PointerEventData eventData) {
         EventManager<BattleEvents, bool>.Invoke(BattleEvents.SetPlayerInteractable, false);
         Tooltip.instance.ShowTooltip($"{nameTT} <br> defense: <color=green>{defenseTT}</color> <br> base attack: <color=red>{attackTT}</color> <br> speed: <color=yellow>{speedTT}</color>");
+        Invoke("Hide", 3);
         actionQueue.Clear();
         actionQueue.Enqueue(new MoveObjectAction(gameObject, 15, hoverPos));
     }
 
     public void OnPointerExit(PointerEventData eventData) {
         EventManager<BattleEvents, bool>.Invoke(BattleEvents.SetPlayerInteractable, true);
-        Tooltip.HideTooltip_Static();
         actionQueue.Clear();
         actionQueue.Enqueue(new MoveObjectAction(gameObject, 15, originalPos));
+    }
+
+    void Hide() {
+        Tooltip.HideTooltip_Static();
     }
 }

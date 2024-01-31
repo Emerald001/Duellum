@@ -16,4 +16,8 @@ public class CardAssetHolder : MonoBehaviour {
     public Image Icon;
     public Image Background;
     public Image Border;
+
+    public MeshRenderer BorderHighlighter;
+
+    public string effect;
 }

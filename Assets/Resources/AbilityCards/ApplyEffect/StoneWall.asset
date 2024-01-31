@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Stone Wall
   ShortcutName: Stonewall
-  Discription: +5 defense on self, for two turns.
+  Discription: +5 defense on self, for two turns. Can be used at any time.
   CardType: 0
   Icon: {fileID: 0}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}

@@ -258,7 +258,7 @@ MonoBehaviour:
   soundslist:
   - name: ExplorationAmbience
     clip: {fileID: 8300000, guid: 99d0406b483e91e4dac3336d15426460, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: 67fee9bcf5979d64ca3b12eaf3519523, type: 2}
     sourceObject: {fileID: 0}
     volume: 0.496
     pitch: 1
@@ -267,7 +267,7 @@ MonoBehaviour:
     loop: 1
   - name: ui_Click
     clip: {fileID: 8300000, guid: 191ac516f3d21ad48965417a3a0b179e, type: 3}
-    mixerGroup: {fileID: 0}
+    mixerGroup: {fileID: 24300002, guid: c1057b63d281d0b42af1c19d56117c4e, type: 2}
     sourceObject: {fileID: 0}
     volume: 1
     pitch: 1

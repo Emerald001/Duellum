@@ -204,6 +204,7 @@ public enum BattleEvents {
     StartPlayerStartSequence,
     StartBattle,
     NewTurn,
+    CameraToCurrentUnit,
     UnitHit,
     UnitDeath,
     UnitRevive,

@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Backstab
   ShortcutName: SmokeBomb
-  Discription: When in range, throw a smokebomb and backstab a unit.
+  Discription: Throw a smokebomb and move to the back of a unit. Can only be used
+    in range.
+  Effect: 'Proximity: Melee <br> Effect: Teleport to Back<br> On: Enemy Unit<br>
+    Duration: One Turn '
   CardType: 0
   Icon: {fileID: 21300000, guid: 0c9d7658c27d8c1419f98d9fbfa14f64, type: 3}
   Background: {fileID: 0}

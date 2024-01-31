@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-
+using DG.Tweening;
 public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
     public void OnPointerEnter(PointerEventData eventData) {
         EventManager<BattleEvents, bool>.Invoke(BattleEvents.SetPlayerInteractable, false);
-
-        if (selected || !CanInvoke)
+        
+        if (selected || !CanInvoke) 
             return;
 
         EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ui_Click");
@@ -18,6 +18,7 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
             queue.Enqueue(new MoveObjectAction(gameObject, moveSpeed, raisedPos));
             resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, raisedSize));
         });
+
     }
 
     public void OnPointerExit(PointerEventData eventData) {
@@ -52,6 +53,8 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
         EventManager<AudioEvents, string>.Invoke(AudioEvents.PlayAudio, "ph_grabCard");
 
         OnClick.Invoke(this);
+
+        if (!CanInvoke) UnableToUseCard();
     }
 
 
@@ -61,5 +64,9 @@ public class PlayerCardBehaviour : BaseCardBehaviour, IPointerEnterHandler, IPoi
         resizeQueue.Enqueue(new ResizeAction(transform, resizeSpeed, standardSize));
 
         CardHandStateMachine.OnDismiss -= DeselectCard;
+    }
+
+    private void UnableToUseCard() {
+        EventManager<UIEvents, string>.Invoke(UIEvents.InfoTextUpdate, "Target is not in range!");
     }
 }

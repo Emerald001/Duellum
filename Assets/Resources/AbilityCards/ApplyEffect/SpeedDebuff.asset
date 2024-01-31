@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: A unit is trapped.
   ShortcutName: 
-  Discription: Pick a unit that stays still for 2 turns.
+  Discription: Pick a unit that stays still for 2 turns. Can be used at any time.
   CardType: 1
   Icon: {fileID: 21300000, guid: 66d4b48c2375ba1408af22e1ea5ee370, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}

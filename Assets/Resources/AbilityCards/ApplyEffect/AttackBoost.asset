@@ -14,14 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: You found a better weapon!
   ShortcutName: 
-  Discription: +1 attack to a unit of your choice, only once.
+  Discription: +1 attack to a unit of your choice, only once. Can be used at any
+    time.
+  Effect: 'Proximity: Any Distance <br> Effect: +1 Attack<br> On: Friendly Units<br>
+    Duration: One Turn'
   CardType: 1
   Icon: {fileID: 21300000, guid: 9368529358130e543862a7ce5b3db083, type: 3}
   Background: {fileID: 21300000, guid: 22c7e030b98401049a647b04b168b3e6, type: 3}
   Border: {fileID: 21300000, guid: 422cca4457711724f8071b6a683349fa, type: 3}
   cardStates:
   - areaOfSelection:
-      type: 3
+      type: 4
       includeCentreTile: 0
       AllDirections: 0
       range: 0

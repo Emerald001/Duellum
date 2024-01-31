@@ -4,6 +4,8 @@
     GrabbedAbilityCard,
     ReleasedAbilityCard,
     AddBattleInformation,
+    ShowUnitHighlight,
+    HideUnitHighlight,
     GiveCard,
     ShowEnemyCardHand,
     HideEnemyCardHand,
